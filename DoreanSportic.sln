@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoreanSportic.Web", "DoreanSportic\DoreanSportic.Web.csproj", "{E793B7BC-381F-4F19-B169-E66FC2BEF5A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoreanSportic.Application", "DoreanSportic.Application\DoreanSportic.Application.csproj", "{2A9E8D7A-5995-4B55-91B4-326F72E7FEB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoreanSportic.Infrastructure", "DoreanSportic.Infrastructure\DoreanSportic.Infrastructure.csproj", "{98FAC3B8-2D78-4495-B786-C4904804CBE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{E793B7BC-381F-4F19-B169-E66FC2BEF5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E793B7BC-381F-4F19-B169-E66FC2BEF5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E793B7BC-381F-4F19-B169-E66FC2BEF5A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A9E8D7A-5995-4B55-91B4-326F72E7FEB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A9E8D7A-5995-4B55-91B4-326F72E7FEB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A9E8D7A-5995-4B55-91B4-326F72E7FEB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A9E8D7A-5995-4B55-91B4-326F72E7FEB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
