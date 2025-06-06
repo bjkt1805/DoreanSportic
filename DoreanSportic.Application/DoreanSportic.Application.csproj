@@ -14,4 +14,10 @@
     <ProjectReference Include="..\DoreanSportic.Infrastructure\DoreanSportic.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Services\" />
+    <Folder Include="Profiles\" />
+  </ItemGroup>
+
 </Project>

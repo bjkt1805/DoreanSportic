@@ -2259,7 +2259,7 @@
               <Width>120 px</Width>
               <Height>70 px</Height>
             </Size>
-            <Text>"Relación 1:1 entre MetodoPago y Pedido"
+            <Text>"Relación 1:1 entre Pedido y MetodoPago"
 </Text>
           </Model>
           <Model xsi:type="NoteModel">
@@ -2466,13 +2466,51 @@
             <Text>"Relación N:M entre Producto y Promoción a través de la tabla intermedia Promocion_Producto"
 </Text>
           </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>143</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1160 px</X>
+              <Y>1070 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Pedido y Cliente"
+</Text>
+          </Model>
+          <Model xsi:type="StampModel">
+            <CustomProperties>
+              <OID>144</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1250 px</X>
+              <Y>80 px</Y>
+            </Location>
+            <Size>
+              <Width>370 px</Width>
+              <Height>147 px</Height>
+            </Size>
+            <CompanyName>Proyecto Progra VI</CompanyName>
+            <ProjectName>Nombre del proyecto: "Dorean Sportic"</ProjectName>
+            <Version>1.0.0.0</Version>
+            <Author>Bryan Kellerman Todd</Author>
+            <Date>6/6/2025</Date>
+            <Copyrights />
+            <Text>Proyecto Progra VI Nombre del proyecto: "Dorean Sportic"</Text>
+          </Model>
         </Children>
         <ViewPort>
           <ScaleMode>Free</ScaleMode>
-          <Scale>0.337470621</Scale>
+          <Scale>0.3365403</Scale>
           <Location>
-            <X>-1122.07300205976 px</X>
-            <Y>61.2398915921566 px</Y>
+            <X>-1129.13668332524 px</X>
+            <Y>61.4091875396621 px</Y>
           </Location>
         </ViewPort>
       </Model>
