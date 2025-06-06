@@ -17,16 +17,16 @@
     </DbDiagramOptions>
     <Options xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PageOptions">
       <TopLeftMargins>
-        <Width>10 mm</Width>
-        <Height>10 mm</Height>
+        <Width>39.3700787401575 in/100</Width>
+        <Height>39.3700787401575 in/100</Height>
       </TopLeftMargins>
       <BottomRightMargins>
-        <Width>10 mm</Width>
-        <Height>10 mm</Height>
+        <Width>39.3700787401575 in/100</Width>
+        <Height>39.3700787401575 in/100</Height>
       </BottomRightMargins>
       <PaperSize>
-        <Width>210 mm</Width>
-        <Height>297 mm</Height>
+        <Width>827 in/100</Width>
+        <Height>1169 in/100</Height>
       </PaperSize>
     </Options>
     <Options xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="PrintOptions" />
@@ -57,8 +57,8 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>890 px</X>
-              <Y>610 px</Y>
+              <X>1390 px</X>
+              <Y>280 px</Y>
             </Location>
             <Size>
               <Width>230 px</Width>
@@ -80,12 +80,12 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>790 px</X>
-              <Y>190 px</Y>
+              <X>850 px</X>
+              <Y>280 px</Y>
             </Location>
             <Size>
-              <Width>189 px</Width>
-              <Height>223 px</Height>
+              <Width>230 px</Width>
+              <Height>187 px</Height>
             </Size>
             <DbOid>
               <Path>DoreanSportic.dbo.Carrito_Detalle</Path>
@@ -110,40 +110,40 @@
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>149.25 px</X>
-                  <Y>0 px</Y>
+                  <X>235.128244930472 px</X>
+                  <Y>45.3952489570892 px</Y>
                 </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Bottom</Align>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
                 <CustomProperties>
                   <OID>5</OID>
-                  <PortType>FloatAnchor</PortType>
+                  <PortType>FixedAnchor</PortType>
                 </CustomProperties>
               </Port>
               <Port>
                 <Location>
-                  <X>119.25 px</X>
-                  <Y>0 px</Y>
+                  <X>3.58981488019322 px</X>
+                  <Y>40.0000117375305 px</Y>
                 </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
+                <Anchors>None</Anchors>
+                <Align>Left</Align>
                 <CustomProperties>
                   <OID>6</OID>
-                  <PortType>FloatAnchor</PortType>
+                  <PortType>FixedAnchor</PortType>
                 </CustomProperties>
               </Port>
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>939.25 px</X>
-                <Y>453 px</Y>
+                <X>1140 px</X>
+                <Y>325.395248957089 px</Y>
               </PointD>
               <PointD>
-                <X>1009.25 px</X>
-                <Y>453 px</Y>
+                <X>1140 px</X>
+                <Y>320.00001173753 px</Y>
               </PointD>
             </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
+            <IsManuallyRouted>true</IsManuallyRouted>
             <DbOid>
               <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Carrito</Path>
               <TypeName>ForeignKey</TypeName>
@@ -161,11 +161,11 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>-70 px</X>
-                  <Y>-118.5 px</Y>
+                  <X>-185 px</X>
+                  <Y>5.39524895708922 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
-                <Align>Bottom</Align>
+                <Align>Right</Align>
                 <CustomProperties>
                   <OID>7</OID>
                   <PortType>FixedAnchor</PortType>
@@ -184,11 +184,11 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>-490 px</X>
-              <Y>-20 px</Y>
+              <X>680 px</X>
+              <Y>90 px</Y>
             </Location>
             <Size>
-              <Width>195 px</Width>
+              <Width>230 px</Width>
               <Height>133 px</Height>
             </Size>
             <DbOid>
@@ -207,11 +207,11 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>480 px</X>
-              <Y>-130 px</Y>
+              <X>910 px</X>
+              <Y>890 px</Y>
             </Location>
             <Size>
-              <Width>231 px</Width>
+              <Width>230 px</Width>
               <Height>241 px</Height>
             </Size>
             <DbOid>
@@ -230,15 +230,15 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>510 px</X>
-              <Y>660 px</Y>
+              <X>-90 px</X>
+              <Y>210 px</Y>
             </Location>
             <Size>
-              <Width>209 px</Width>
-              <Height>151 px</Height>
+              <Width>230 px</Width>
+              <Height>133 px</Height>
             </Size>
             <DbOid>
-              <Path>DoreanSportic.dbo.Color</Path>
+              <Path>DoreanSportic.dbo.Etiqueta</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -247,323 +247,14 @@
               <TriggersCollapsed>True</TriggersCollapsed>
             </Compartments>
           </Model>
-          <Model xsi:type="RelationLinkModel">
+          <Model xsi:type="TableModel">
             <CustomProperties>
               <OID>11</OID>
-              <Comment>12</Comment>
-              <OutModel>2</OutModel>
-              <InModel>10</InModel>
-              <OutPort>13</OutPort>
-              <InPort>14</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>-0.5 px</X>
-                  <Y>206.625 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>13</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>181.125 px</X>
-                  <Y>-0.625 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>14</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>691.125 px</X>
-                <Y>396.625 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Color</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>12</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>11</HolderModel>
-              <Port>15</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>98.875 px</X>
-                  <Y>-131.6875 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>15</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>16</OID>
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>-120 px</X>
-              <Y>540 px</Y>
-            </Location>
-            <Size>
-              <Width>257 px</Width>
-              <Height>151 px</Height>
-            </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Empaque</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>17</OID>
-              <Comment>18</Comment>
-              <OutModel>2</OutModel>
-              <InModel>16</InModel>
-              <OutPort>19</OutPort>
-              <InPort>20</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>94.375 px</X>
-                  <Y>223.875 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Bottom</Align>
-                <CustomProperties>
-                  <OID>19</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>256.875 px</X>
-                  <Y>76.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>20</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>884.375 px</X>
-                <Y>514.75 px</Y>
-              </PointD>
-              <PointD>
-                <X>870 px</X>
-                <Y>514.75 px</Y>
-              </PointD>
-              <PointD>
-                <X>870 px</X>
-                <Y>590 px</Y>
-              </PointD>
-              <PointD>
-                <X>510.6875 px</X>
-                <Y>590 px</Y>
-              </PointD>
-              <PointD>
-                <X>510.6875 px</X>
-                <Y>616.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>true</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Empaque</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>18</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>17</HolderModel>
-              <Port>21</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>194.03125 px</X>
-                  <Y>-177 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Bottom</Align>
-                <CustomProperties>
-                  <OID>21</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>22</OID>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <Location>
-              <X>-490 px</X>
-              <Y>500 px</Y>
-            </Location>
-            <Size>
-              <Width>246 px</Width>
-              <Height>187 px</Height>
-            </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Estampado</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>23</OID>
-              <Comment>24</Comment>
-              <OutModel>2</OutModel>
-              <InModel>22</InModel>
-              <OutPort>25</OutPort>
-              <InPort>26</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>55.75 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>25</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>61.5 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>26</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>760 px</X>
-                <Y>245.75 px</Y>
-              </PointD>
-              <PointD>
-                <X>760 px</X>
-                <Y>241 px</Y>
-              </PointD>
-              <PointD>
-                <X>-569 px</X>
-                <Y>241 px</Y>
-              </PointD>
-              <PointD>
-                <X>-569 px</X>
-                <Y>462.5 px</Y>
-              </PointD>
-              <PointD>
-                <X>-428.5 px</X>
-                <Y>462.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Estampado</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>24</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>23</HolderModel>
-              <Port>27</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>694.5 px</X>
-                  <Y>4.75 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>27</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>28</OID>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <Location>
-              <X>-550 px</X>
-              <Y>280 px</Y>
+              <X>270 px</X>
+              <Y>90 px</Y>
             </Location>
             <Size>
               <Width>230 px</Width>
@@ -581,19 +272,304 @@
           </Model>
           <Model xsi:type="TableModel">
             <CustomProperties>
+              <OID>12</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1420 px</X>
+              <Y>1360 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>151 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.MetodoPago</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>13</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>280 px</X>
+              <Y>350 px</Y>
+            </Location>
+            <Size>
+              <Width>280 px</Width>
+              <Height>169 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Producto</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>14</OID>
+              <Comment>15</Comment>
+              <OutModel>13</OutModel>
+              <InModel>8</InModel>
+              <OutPort>16</OutPort>
+              <InPort>17</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>241.052638117296 px</X>
+                  <Y>0.877197385384704 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>16</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>-0.0113636363637397 px</X>
+                  <Y>67.8749999999999 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>17</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>521.052638117296 px</X>
+                <Y>157.875 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Producto.FK_Producto_Categoria</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>15</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>14</HolderModel>
+              <Port>18</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>2.58126085554977E-05 px</X>
+                  <Y>96.0625 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>18</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>24.0156278610229 px</X>
+              <Y>-12.1872727272726 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>19</OID>
+              <Comment>20</Comment>
+              <OutModel>13</OutModel>
+              <InModel>11</InModel>
+              <OutPort>21</OutPort>
+              <InPort>22</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>66.9565217391304 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>21</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>65 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>22</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>346.956512451172 px</X>
+                <Y>330 px</Y>
+              </PointD>
+              <PointD>
+                <X>335 px</X>
+                <Y>330 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Producto.FK_Producto_Marca</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>20</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>19</HolderModel>
+              <Port>23</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>11.9565217391304 px</X>
+                  <Y>64.5 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>23</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>24.0156278610229 px</X>
+              <Y>-116.95652173913 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>24</OID>
+              <Comment>25</Comment>
+              <OutModel>2</OutModel>
+              <InModel>13</InModel>
+              <OutPort>26</OutPort>
+              <InPort>27</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>-7.89472627507666 px</X>
+                  <Y>86.1912226585105 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>26</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>249.590909090909 px</X>
+                  <Y>7.50650697849863 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>27</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>676.452237215909 px</X>
+                <Y>366.191222658511 px</Y>
+              </PointD>
+              <PointD>
+                <X>676.452237215909 px</X>
+                <Y>357.506506978499 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Producto</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>25</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>24</HolderModel>
+              <Port>28</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>86.77392578125 px</X>
+                  <Y>-4.86020780954277E-07 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>28</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
               <OID>29</OID>
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>430 px</X>
-              <Y>380 px</Y>
+              <X>-170 px</X>
+              <Y>460 px</Y>
             </Location>
             <Size>
-              <Width>226 px</Width>
-              <Height>205 px</Height>
+              <Width>230 px</Width>
+              <Height>115 px</Height>
             </Size>
             <DbOid>
-              <Path>DoreanSportic.dbo.Pedido</Path>
+              <Path>DoreanSportic.dbo.Producto_Etiqueta</Path>
               <TypeName>Table</TypeName>
             </DbOid>
             <Compartments>
@@ -607,7 +583,7 @@
               <OID>30</OID>
               <Comment>31</Comment>
               <OutModel>29</OutModel>
-              <InModel>9</InModel>
+              <InModel>10</InModel>
               <OutPort>32</OutPort>
               <InPort>33</InPort>
               <Parent>0</Parent>
@@ -615,7 +591,7 @@
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>75.5 px</X>
+                  <X>110 px</X>
                   <Y>0 px</Y>
                 </Location>
                 <Anchors>Left Right</Anchors>
@@ -627,7 +603,7 @@
               </Port>
               <Port>
                 <Location>
-                  <X>155.5 px</X>
+                  <X>120 px</X>
                   <Y>0 px</Y>
                 </Location>
                 <Anchors>Left Right</Anchors>
@@ -640,17 +616,17 @@
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>505.5 px</X>
-                <Y>300 px</Y>
+                <X>-60 px</X>
+                <Y>400 px</Y>
               </PointD>
               <PointD>
-                <X>635.5 px</X>
-                <Y>300 px</Y>
+                <X>30 px</X>
+                <Y>400 px</Y>
               </PointD>
             </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>DoreanSportic.dbo.Pedido.FK_Pedido_Cliente</Path>
+              <Path>DoreanSportic.dbo.Producto_Etiqueta.FK_Producto_Etiqueta_Etiqueta</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -666,8 +642,8 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>-65 px</X>
-                  <Y>80 px</Y>
+                  <X>-45 px</X>
+                  <Y>60 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Top</Align>
@@ -683,18 +659,815 @@
               <Y>2 px</Y>
             </CommentOffset>
           </Model>
-          <Model xsi:type="TableModel">
+          <Model xsi:type="RelationLinkModel">
             <CustomProperties>
               <OID>35</OID>
+              <Comment>36</Comment>
+              <OutModel>29</OutModel>
+              <InModel>13</InModel>
+              <OutPort>37</OutPort>
+              <InPort>38</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>49.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>37</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>119.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>38</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>150 px</X>
+                <Y>509.5 px</Y>
+              </PointD>
+              <PointD>
+                <X>150 px</X>
+                <Y>469.5 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Producto_Etiqueta.FK_Producto_Etiqueta_Producto</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>36</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>35</HolderModel>
+              <Port>39</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>-90 px</X>
+                  <Y>20 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>39</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>40</OID>
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>160 px</X>
-              <Y>660 px</Y>
+              <X>210 px</X>
+              <Y>790 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>169 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Promocion</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>41</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>220 px</X>
+              <Y>600 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>115 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Promocion_Producto</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>42</OID>
+              <Comment>43</Comment>
+              <OutModel>41</OutModel>
+              <InModel>13</InModel>
+              <OutPort>44</OutPort>
+              <InPort>45</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>102.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>44</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>42.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>45</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Promocion_Producto.FK_PromocionProducto_Producto</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>43</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>42</HolderModel>
+              <Port>46</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>0 px</X>
+                  <Y>40.5 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>46</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>47</OID>
+              <Comment>48</Comment>
+              <OutModel>41</OutModel>
+              <InModel>40</InModel>
+              <OutPort>49</OutPort>
+              <InPort>50</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>110 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>49</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>120 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>50</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Promocion_Producto.FK_PromocionProducto_Promocion</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>48</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>47</HolderModel>
+              <Port>51</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>0 px</X>
+                  <Y>-37.5 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>51</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>52</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>580 px</X>
+              <Y>680 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>169 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.ResennaValoracion</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>53</OID>
+              <Comment>54</Comment>
+              <OutModel>52</OutModel>
+              <InModel>9</InModel>
+              <OutPort>55</OutPort>
+              <InPort>56</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>84.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>55</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>115 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>56</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>1025 px</X>
+                <Y>764.5 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.ResennaValoracion.FK_Resenna_Cliente</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>54</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>53</HolderModel>
+              <Port>57</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>-107.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>57</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>58</OID>
+              <Comment>59</Comment>
+              <OutModel>52</OutModel>
+              <InModel>13</InModel>
+              <OutPort>60</OutPort>
+              <InPort>61</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>115 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>60</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>278.974379477417 px</X>
+                  <Y>152.564120998045 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>61</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>695 px</X>
+                <Y>570 px</Y>
+              </PointD>
+              <PointD>
+                <X>562.5 px</X>
+                <Y>570 px</Y>
+              </PointD>
+              <PointD>
+                <X>562.5 px</X>
+                <Y>502.564120998045 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>true</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.ResennaValoracion.FK_Resenna_Producto</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>59</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>58</HolderModel>
+              <Port>62</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>66.25 px</X>
+                  <Y>110 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>62</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>63</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1170 px</X>
+              <Y>1320 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>133 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Rol</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>64</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>520 px</X>
+              <Y>940 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>115 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Sexo</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>65</OID>
+              <Comment>66</Comment>
+              <OutModel>9</OutModel>
+              <InModel>64</InModel>
+              <OutPort>67</OutPort>
+              <InPort>68</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>73.3218470466208 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>67</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>97.8611450195313 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>68</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>890 px</X>
+                <Y>963.321847046621 px</Y>
+              </PointD>
+              <PointD>
+                <X>890 px</X>
+                <Y>1037.86114501953 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Cliente.FK_Cliente_Sexo</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>66</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>65</HolderModel>
+              <Port>69</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>90 px</X>
+                  <Y>-74.5392369377541 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>69</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>70</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>470 px</X>
+              <Y>1123.55541992188 px</Y>
+            </Location>
+            <Size>
+              <Width>294.888793945313 px</Width>
+              <Height>187 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Tarjeta</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>71</OID>
+              <Comment>72</Comment>
+              <OutModel>70</OutModel>
+              <InModel>9</InModel>
+              <OutPort>73</OutPort>
+              <InPort>74</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>93.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>73</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>57.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>74</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>790 px</X>
+                <Y>1217.05541992188 px</Y>
+              </PointD>
+              <PointD>
+                <X>790 px</X>
+                <Y>1151 px</Y>
+              </PointD>
+              <PointD>
+                <X>967.5 px</X>
+                <Y>1151 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Tarjeta.FK_Tarjeta_Cliente</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>72</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>71</HolderModel>
+              <Port>75</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>-113.861206054687 px</X>
+                  <Y>66.05541992188 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>75</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>76</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1320 px</X>
+              <Y>520 px</Y>
+            </Location>
+            <Size>
+              <Width>265 px</Width>
+              <Height>187 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Empaque</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>77</OID>
+              <Comment>78</Comment>
+              <OutModel>2</OutModel>
+              <InModel>76</InModel>
+              <OutPort>79</OutPort>
+              <InPort>80</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>140.25 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>79</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>66.25 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>80</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>1100 px</X>
+                <Y>420.25 px</Y>
+              </PointD>
+              <PointD>
+                <X>1100 px</X>
+                <Y>500 px</Y>
+              </PointD>
+              <PointD>
+                <X>1386.25 px</X>
+                <Y>500 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Empaque</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>78</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>77</HolderModel>
+              <Port>81</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>-163.125 px</X>
+                  <Y>-79.75 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>81</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>82</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1350 px</X>
+              <Y>770 px</Y>
             </Location>
             <Size>
               <Width>223 px</Width>
-              <Height>259 px</Height>
+              <Height>187 px</Height>
             </Size>
             <DbOid>
               <Path>DoreanSportic.dbo.Pedido_Detalle</Path>
@@ -708,781 +1481,10 @@
           </Model>
           <Model xsi:type="RelationLinkModel">
             <CustomProperties>
-              <OID>36</OID>
-              <Comment>37</Comment>
-              <OutModel>35</OutModel>
-              <InModel>10</InModel>
-              <OutPort>38</OutPort>
-              <InPort>39</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>83.25 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>38</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>123.25 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>39</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>413 px</X>
-                <Y>743.25 px</Y>
-              </PointD>
-              <PointD>
-                <X>413 px</X>
-                <Y>783.25 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Color</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>37</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>36</HolderModel>
-              <Port>40</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>-78.5 px</X>
-                  <Y>-40 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>40</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>41</OID>
-              <Comment>42</Comment>
-              <OutModel>35</OutModel>
-              <InModel>16</InModel>
-              <OutPort>43</OutPort>
-              <InPort>44</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>55.75 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>43</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>113.25 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>44</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>215.75 px</X>
-                <Y>653.25 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Empaque</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>42</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>41</HolderModel>
-              <Port>45</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>39.375 px</X>
-                  <Y>6.75 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>45</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>83 px</X>
-              <Y>4.5 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>46</OID>
-              <Comment>47</Comment>
-              <OutModel>35</OutModel>
-              <InModel>22</InModel>
-              <OutPort>48</OutPort>
-              <InPort>49</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>129.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>48</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>184.5 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Bottom</Align>
-                <CustomProperties>
-                  <OID>49</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>-305.5 px</X>
-                <Y>789.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Estampado</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>47</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>46</HolderModel>
-              <Port>50</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>232.75 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>50</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>51</OID>
-              <Comment>52</Comment>
-              <OutModel>35</OutModel>
-              <InModel>29</InModel>
-              <OutPort>53</OutPort>
-              <InPort>54</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>195.125 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>53</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>102.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>54</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>355.125 px</X>
-                <Y>482.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Pedido</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>52</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>51</HolderModel>
-              <Port>55</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>0 px</X>
-                  <Y>88.75 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>55</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>56</OID>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <Location>
-              <X>-160 px</X>
-              <Y>-30 px</Y>
-            </Location>
-            <Size>
-              <Width>270 px</Width>
-              <Height>241 px</Height>
-            </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Producto</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>57</OID>
-              <Comment>58</Comment>
-              <OutModel>56</OutModel>
-              <InModel>8</InModel>
-              <OutPort>59</OutPort>
-              <InPort>60</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>86.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>59</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>66.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>60</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>-180 px</X>
-                <Y>56.5 px</Y>
-              </PointD>
-              <PointD>
-                <X>-180 px</X>
-                <Y>46.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Producto.FK_Producto_Categoria</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>58</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>57</HolderModel>
-              <Port>61</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>77.5 px</X>
-                  <Y>10 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>61</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>-1.31245422363281 px</X>
-              <Y>13.5 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>62</OID>
-              <Comment>63</Comment>
-              <OutModel>56</OutModel>
-              <InModel>28</InModel>
-              <OutPort>64</OutPort>
-              <InPort>65</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>180.75 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>64</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>115 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>65</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>-180 px</X>
-                <Y>150.75 px</Y>
-              </PointD>
-              <PointD>
-                <X>-180 px</X>
-                <Y>230 px</Y>
-              </PointD>
-              <PointD>
-                <X>-435 px</X>
-                <Y>230 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Producto.FK_Producto_Marca</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>63</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>62</HolderModel>
-              <Port>66</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>147.5 px</X>
-                  <Y>-79.25 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>66</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>67</OID>
-              <Comment>68</Comment>
-              <OutModel>2</OutModel>
-              <InModel>56</InModel>
-              <OutPort>69</OutPort>
-              <InPort>70</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>111.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>69</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>135 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Bottom</Align>
-                <CustomProperties>
-                  <OID>70</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>451 px</X>
-                <Y>301.5 px</Y>
-              </PointD>
-              <PointD>
-                <X>451 px</X>
-                <Y>261 px</Y>
-              </PointD>
-              <PointD>
-                <X>-25 px</X>
-                <Y>261 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Carrito_Detalle.FK_CarritoDetalle_Producto</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>68</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>67</HolderModel>
-              <Port>71</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>577 px</X>
-                  <Y>40.5 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>71</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>72</OID>
-              <Comment>73</Comment>
-              <OutModel>35</OutModel>
-              <InModel>56</InModel>
-              <OutPort>74</OutPort>
-              <InPort>75</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>167.25 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>74</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>60.25 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>75</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>327.25 px</X>
-                <Y>646 px</Y>
-              </PointD>
-              <PointD>
-                <X>300 px</X>
-                <Y>646 px</Y>
-              </PointD>
-              <PointD>
-                <X>300 px</X>
-                <Y>30.25 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>true</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Producto</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>73</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>72</HolderModel>
-              <Port>76</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>27.25 px</X>
-                  <Y>321.875 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>76</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>77</OID>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <Location>
-              <X>-120 px</X>
-              <Y>290 px</Y>
-            </Location>
-            <Size>
-              <Width>247 px</Width>
-              <Height>205 px</Height>
-            </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Producto_Personalizacion</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>78</OID>
-              <Comment>79</Comment>
-              <OutModel>77</OutModel>
-              <InModel>10</InModel>
-              <OutPort>80</OutPort>
-              <InPort>81</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>247.125 px</X>
-                  <Y>102.875 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>80</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>17.25 px</X>
-                  <Y>-0.625 px</Y>
-                </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
-                <CustomProperties>
-                  <OID>81</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>527.25 px</X>
-                <Y>392.875 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Producto_Personalizacion.FK_ProdPers_Color</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>79</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>78</HolderModel>
-              <Port>82</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>-200.125 px</X>
-                  <Y>0 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>82</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
               <OID>83</OID>
               <Comment>84</Comment>
-              <OutModel>77</OutModel>
-              <InModel>16</InModel>
+              <OutModel>82</OutModel>
+              <InModel>76</InModel>
               <OutPort>85</OutPort>
               <InPort>86</InPort>
               <Parent>0</Parent>
@@ -1490,11 +1492,11 @@
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>183.5 px</X>
+                  <X>92.5 px</X>
                   <Y>0 px</Y>
                 </Location>
                 <Anchors>Left Right</Anchors>
-                <Align>Bottom</Align>
+                <Align>Top</Align>
                 <CustomProperties>
                   <OID>85</OID>
                   <PortType>FloatAnchor</PortType>
@@ -1502,11 +1504,11 @@
               </Port>
               <Port>
                 <Location>
-                  <X>63.5 px</X>
+                  <X>172.5 px</X>
                   <Y>0 px</Y>
                 </Location>
                 <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
+                <Align>Bottom</Align>
                 <CustomProperties>
                   <OID>86</OID>
                   <PortType>FloatAnchor</PortType>
@@ -1515,17 +1517,17 @@
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>63.5 px</X>
-                <Y>515 px</Y>
+                <X>1442.5 px</X>
+                <Y>730 px</Y>
               </PointD>
               <PointD>
-                <X>-56.5 px</X>
-                <Y>515 px</Y>
+                <X>1492.5 px</X>
+                <Y>730 px</Y>
               </PointD>
             </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>DoreanSportic.dbo.Producto_Personalizacion.FK_ProdPers_Empaque</Path>
+              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Empaque</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -1541,11 +1543,11 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>60 px</X>
-                  <Y>-20 px</Y>
+                  <X>-25 px</X>
+                  <Y>40 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
-                <Align>Bottom</Align>
+                <Align>Top</Align>
                 <CustomProperties>
                   <OID>87</OID>
                   <PortType>FixedAnchor</PortType>
@@ -1554,16 +1556,16 @@
               </Port>
             </PortAnchors>
             <CommentOffset>
-              <X>22 px</X>
-              <Y>2 px</Y>
+              <X>184.015627861023 px</X>
+              <Y>157.5 px</Y>
             </CommentOffset>
           </Model>
           <Model xsi:type="RelationLinkModel">
             <CustomProperties>
               <OID>88</OID>
               <Comment>89</Comment>
-              <OutModel>77</OutModel>
-              <InModel>22</InModel>
+              <OutModel>82</OutModel>
+              <InModel>13</InModel>
               <OutPort>90</OutPort>
               <InPort>91</InPort>
               <Parent>0</Parent>
@@ -1572,7 +1574,7 @@
               <Port>
                 <Location>
                   <X>0 px</X>
-                  <Y>102.5 px</Y>
+                  <Y>93.5 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
                 <Align>Left</Align>
@@ -1583,11 +1585,11 @@
               </Port>
               <Port>
                 <Location>
-                  <X>123 px</X>
+                  <X>140 px</X>
                   <Y>0 px</Y>
                 </Location>
                 <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
+                <Align>Bottom</Align>
                 <CustomProperties>
                   <OID>91</OID>
                   <PortType>FloatAnchor</PortType>
@@ -1596,21 +1598,29 @@
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>-170 px</X>
-                <Y>392.5 px</Y>
+                <X>1301 px</X>
+                <Y>863.5 px</Y>
               </PointD>
               <PointD>
-                <X>-170 px</X>
-                <Y>480 px</Y>
+                <X>1301 px</X>
+                <Y>530 px</Y>
               </PointD>
               <PointD>
-                <X>-367 px</X>
-                <Y>480 px</Y>
+                <X>630 px</X>
+                <Y>530 px</Y>
+              </PointD>
+              <PointD>
+                <X>630 px</X>
+                <Y>529 px</Y>
+              </PointD>
+              <PointD>
+                <X>420 px</X>
+                <Y>529 px</Y>
               </PointD>
             </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
+            <IsManuallyRouted>true</IsManuallyRouted>
             <DbOid>
-              <Path>DoreanSportic.dbo.Producto_Personalizacion.FK_ProdPers_Estampado</Path>
+              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Producto</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
@@ -1626,8 +1636,8 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>148.5 px</X>
-                  <Y>-87.5 px</Y>
+                  <X>384.5 px</X>
+                  <Y>333.5 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Left</Align>
@@ -1643,73 +1653,327 @@
               <Y>2 px</Y>
             </CommentOffset>
           </Model>
-          <Model xsi:type="RelationLinkModel">
+          <Model xsi:type="TableModel">
             <CustomProperties>
               <OID>93</OID>
-              <Comment>94</Comment>
-              <OutModel>77</OutModel>
-              <InModel>56</InModel>
-              <OutPort>95</OutPort>
-              <InPort>96</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1420 px</X>
+              <Y>1040 px</Y>
+            </Location>
+            <Size>
+              <Width>230 px</Width>
+              <Height>241 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Pedido</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>94</OID>
+              <Comment>95</Comment>
+              <OutModel>93</OutModel>
+              <InModel>9</InModel>
+              <OutPort>96</OutPort>
+              <InPort>97</InPort>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>61.75 px</X>
-                  <Y>0 px</Y>
+                  <X>0 px</X>
+                  <Y>9.5 px</Y>
                 </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Left</Align>
                 <CustomProperties>
-                  <OID>95</OID>
+                  <OID>96</OID>
                   <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
               <Port>
                 <Location>
                   <X>0 px</X>
-                  <Y>180.75 px</Y>
+                  <Y>227.452662721893 px</Y>
                 </Location>
                 <Anchors>Top Bottom</Anchors>
                 <Align>Right</Align>
                 <CustomProperties>
-                  <OID>96</OID>
+                  <OID>97</OID>
                   <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>-58.25 px</X>
-                <Y>150.75 px</Y>
+                <X>1400 px</X>
+                <Y>1049.5 px</Y>
+              </PointD>
+              <PointD>
+                <X>1400 px</X>
+                <Y>1117.45266272189 px</Y>
               </PointD>
             </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
-              <Path>DoreanSportic.dbo.Producto_Personalizacion.FK_ProdPers_Producto</Path>
+              <Path>DoreanSportic.dbo.Pedido.FK_Pedido_Cliente</Path>
               <TypeName>ForeignKey</TypeName>
             </DbOid>
           </Model>
           <Model xsi:type="RelationCommentModel">
             <CustomProperties>
-              <OID>94</OID>
+              <OID>95</OID>
               <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>93</HolderModel>
-              <Port>97</Port>
+              <HolderModel>94</HolderModel>
+              <Port>98</Port>
               <Font>Tahoma, 9pt</Font>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>-84.125 px</X>
-                  <Y>139.25 px</Y>
+                  <X>150 px</X>
+                  <Y>-67.95263671875 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
+                <Align>Left</Align>
+                <CustomProperties>
+                  <OID>98</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>99</OID>
+              <Comment>100</Comment>
+              <OutModel>93</OutModel>
+              <InModel>12</InModel>
+              <OutPort>101</OutPort>
+              <InPort>102</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>115 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>101</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>115 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
                 <Align>Top</Align>
                 <CustomProperties>
-                  <OID>97</OID>
+                  <OID>102</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Pedido.FK_Pedido_MetodoPago</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>100</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>99</HolderModel>
+              <Port>103</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>0 px</X>
+                  <Y>-39.5 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>103</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>19 px</X>
+              <Y>-145 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>104</OID>
+              <Comment>105</Comment>
+              <OutModel>82</OutModel>
+              <InModel>93</InModel>
+              <OutPort>106</OutPort>
+              <InPort>107</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>146.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>106</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>76.5 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>107</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Pedido_Detalle.FK_PedidoDetalle_Pedido</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>105</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>104</HolderModel>
+              <Port>108</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>0 px</X>
+                  <Y>-41.5 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>108</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>13 px</X>
+              <Y>-156.5 px</Y>
+            </CommentOffset>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>109</OID>
+              <Comment>110</Comment>
+              <OutModel>1</OutModel>
+              <InModel>9</InModel>
+              <OutPort>111</OutPort>
+              <InPort>112</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>115 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>111</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>0 px</X>
+                  <Y>120.5 px</Y>
+                </Location>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
+                <CustomProperties>
+                  <OID>112</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>1505 px</X>
+                <Y>469 px</Y>
+              </PointD>
+              <PointD>
+                <X>1160 px</X>
+                <Y>469 px</Y>
+              </PointD>
+              <PointD>
+                <X>1160 px</X>
+                <Y>1010.5 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.Carrito.FK_Carrito_Cliente</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>110</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>109</HolderModel>
+              <Port>113</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>345 px</X>
+                  <Y>-290.75 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>113</OID>
                   <PortType>FixedAnchor</PortType>
                 </CustomProperties>
                 <LinkPortAnchor>OutPoint</LinkPortAnchor>
@@ -1722,139 +1986,12 @@
           </Model>
           <Model xsi:type="TableModel">
             <CustomProperties>
-              <OID>98</OID>
+              <OID>114</OID>
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>1120 px</X>
-              <Y>280 px</Y>
-            </Location>
-            <Size>
-              <Width>195 px</Width>
-              <Height>133 px</Height>
-            </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Rol</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>99</OID>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <Location>
-              <X>770 px</X>
-              <Y>-50 px</Y>
-            </Location>
-            <Size>
-              <Width>195 px</Width>
-              <Height>115 px</Height>
-            </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Sexo</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
-          </Model>
-          <Model xsi:type="RelationLinkModel">
-            <CustomProperties>
-              <OID>100</OID>
-              <Comment>101</Comment>
-              <OutModel>9</OutModel>
-              <InModel>99</InModel>
-              <OutPort>102</OutPort>
-              <InPort>103</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>96.25 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>102</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>86.25 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>103</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>731 px</X>
-                <Y>-33.75 px</Y>
-              </PointD>
-              <PointD>
-                <X>731 px</X>
-                <Y>36.25 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Cliente.FK_Cliente_Sexo</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>101</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>100</HolderModel>
-              <Port>104</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>-20 px</X>
-                  <Y>-35 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>104</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>19 px</X>
-              <Y>-116.25 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>105</OID>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <Location>
-              <X>1060 px</X>
-              <Y>-30 px</Y>
+              <X>830 px</X>
+              <Y>1310 px</Y>
             </Location>
             <Size>
               <Width>232 px</Width>
@@ -1872,36 +2009,36 @@
           </Model>
           <Model xsi:type="RelationLinkModel">
             <CustomProperties>
-              <OID>106</OID>
-              <Comment>107</Comment>
-              <OutModel>105</OutModel>
-              <InModel>98</InModel>
-              <OutPort>108</OutPort>
-              <InPort>109</InPort>
+              <OID>115</OID>
+              <Comment>116</Comment>
+              <OutModel>114</OutModel>
+              <InModel>63</InModel>
+              <OutPort>117</OutPort>
+              <InPort>118</InPort>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>146 px</X>
-                  <Y>0 px</Y>
+                  <X>0 px</X>
+                  <Y>76.5 px</Y>
                 </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Bottom</Align>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Right</Align>
                 <CustomProperties>
-                  <OID>108</OID>
+                  <OID>117</OID>
                   <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
               <Port>
                 <Location>
-                  <X>86 px</X>
-                  <Y>0 px</Y>
+                  <X>0 px</X>
+                  <Y>66.5 px</Y>
                 </Location>
-                <Anchors>Left Right</Anchors>
-                <Align>Top</Align>
+                <Anchors>Top Bottom</Anchors>
+                <Align>Left</Align>
                 <CustomProperties>
-                  <OID>109</OID>
+                  <OID>118</OID>
                   <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
@@ -1914,23 +2051,23 @@
           </Model>
           <Model xsi:type="RelationCommentModel">
             <CustomProperties>
-              <OID>107</OID>
+              <OID>116</OID>
               <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>106</HolderModel>
-              <Port>110</Port>
+              <HolderModel>115</HolderModel>
+              <Port>119</Port>
               <Font>Tahoma, 9pt</Font>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>0 px</X>
-                  <Y>-43.5 px</Y>
+                  <X>-54 px</X>
+                  <Y>0 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
-                <Align>Bottom</Align>
+                <Align>Right</Align>
                 <CustomProperties>
-                  <OID>110</OID>
+                  <OID>119</OID>
                   <PortType>FixedAnchor</PortType>
                 </CustomProperties>
                 <LinkPortAnchor>OutPoint</LinkPortAnchor>
@@ -1943,48 +2080,48 @@
           </Model>
           <Model xsi:type="RelationLinkModel">
             <CustomProperties>
-              <OID>111</OID>
-              <Comment>112</Comment>
-              <OutModel>105</OutModel>
+              <OID>120</OID>
+              <Comment>121</Comment>
+              <OutModel>114</OutModel>
               <InModel>9</InModel>
-              <OutPort>113</OutPort>
-              <InPort>114</InPort>
+              <OutPort>122</OutPort>
+              <InPort>123</InPort>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
               <Port>
                 <Location>
-                  <X>0 px</X>
-                  <Y>105.5 px</Y>
+                  <X>85 px</X>
+                  <Y>0 px</Y>
                 </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
                 <CustomProperties>
-                  <OID>113</OID>
+                  <OID>122</OID>
                   <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
               <Port>
                 <Location>
-                  <X>0 px</X>
-                  <Y>135.5 px</Y>
+                  <X>145 px</X>
+                  <Y>0 px</Y>
                 </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
                 <CustomProperties>
-                  <OID>114</OID>
+                  <OID>123</OID>
                   <PortType>FloatAnchor</PortType>
                 </CustomProperties>
               </Port>
             </PortAnchors>
             <BendPoints>
               <PointD>
-                <X>1040 px</X>
-                <Y>75.5 px</Y>
+                <X>915 px</X>
+                <Y>1290 px</Y>
               </PointD>
               <PointD>
-                <X>1040 px</X>
-                <Y>5.5 px</Y>
+                <X>1055 px</X>
+                <Y>1290 px</Y>
               </PointD>
             </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
@@ -1995,23 +2132,23 @@
           </Model>
           <Model xsi:type="RelationCommentModel">
             <CustomProperties>
-              <OID>112</OID>
+              <OID>121</OID>
               <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>111</HolderModel>
-              <Port>115</Port>
+              <HolderModel>120</HolderModel>
+              <Port>124</Port>
               <Font>Tahoma, 9pt</Font>
               <Parent>0</Parent>
             </CustomProperties>
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>184.5 px</X>
-                  <Y>70 px</Y>
+                  <X>-70 px</X>
+                  <Y>20 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
-                <Align>Left</Align>
+                <Align>Top</Align>
                 <CustomProperties>
-                  <OID>115</OID>
+                  <OID>124</OID>
                   <PortType>FixedAnchor</PortType>
                 </CustomProperties>
                 <LinkPortAnchor>OutPoint</LinkPortAnchor>
@@ -2022,221 +2159,320 @@
               <Y>2 px</Y>
             </CommentOffset>
           </Model>
-          <Model xsi:type="TableModel">
+          <Model xsi:type="NoteModel">
             <CustomProperties>
-              <OID>116</OID>
+              <OID>125</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>1130 px</X>
-              <Y>460 px</Y>
+              <X>1510 px</X>
+              <Y>970 px</Y>
             </Location>
             <Size>
-              <Width>246 px</Width>
-              <Height>151 px</Height>
+              <Width>170 px</Width>
+              <Height>40 px</Height>
             </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.MetodoPago</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
+            <Text>"Relación 1:N entre Pedido y Pedido_Detalle"</Text>
           </Model>
-          <Model xsi:type="RelationLinkModel">
+          <Model xsi:type="NoteModel">
             <CustomProperties>
-              <OID>117</OID>
-              <Comment>118</Comment>
-              <OutModel>29</OutModel>
-              <InModel>116</InModel>
-              <OutPort>119</OutPort>
-              <InPort>120</InPort>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>167.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>119</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>37.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>120</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>676 px</X>
-                <Y>547.5 px</Y>
-              </PointD>
-              <PointD>
-                <X>676 px</X>
-                <Y>497.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Pedido.FK_Pedido_MetodoPago</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
-          </Model>
-          <Model xsi:type="RelationCommentModel">
-            <CustomProperties>
-              <OID>118</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>117</HolderModel>
-              <Port>121</Port>
-              <Font>Tahoma, 9pt</Font>
-              <Parent>0</Parent>
-            </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>-247 px</X>
-                  <Y>50 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>121</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>44 px</X>
-              <Y>-27.5 px</Y>
-            </CommentOffset>
-          </Model>
-          <Model xsi:type="TableModel">
-            <CustomProperties>
-              <OID>122</OID>
+              <OID>126</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>130 px</X>
-              <Y>-170 px</Y>
+              <X>1590 px</X>
+              <Y>600 px</Y>
             </Location>
             <Size>
-              <Width>268 px</Width>
-              <Height>187 px</Height>
+              <Width>170 px</Width>
+              <Height>40 px</Height>
             </Size>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Tarjeta</Path>
-              <TypeName>Table</TypeName>
-            </DbOid>
-            <Compartments>
-              <ConstraintsCollapsed>True</ConstraintsCollapsed>
-              <IndexesCollapsed>True</IndexesCollapsed>
-              <TriggersCollapsed>True</TriggersCollapsed>
-            </Compartments>
+            <Text>"Relación N:1 entre Pedido_Detalle y Empaque"
+</Text>
           </Model>
-          <Model xsi:type="RelationLinkModel">
+          <Model xsi:type="NoteModel">
             <CustomProperties>
-              <OID>123</OID>
-              <Comment>124</Comment>
-              <OutModel>122</OutModel>
-              <InModel>9</InModel>
-              <OutPort>125</OutPort>
-              <InPort>126</InPort>
+              <OID>127</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
               <Parent>0</Parent>
             </CustomProperties>
-            <PortAnchors>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>148.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>125</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-              <Port>
-                <Location>
-                  <X>0 px</X>
-                  <Y>38.5 px</Y>
-                </Location>
-                <Anchors>Top Bottom</Anchors>
-                <Align>Left</Align>
-                <CustomProperties>
-                  <OID>126</OID>
-                  <PortType>FloatAnchor</PortType>
-                </CustomProperties>
-              </Port>
-            </PortAnchors>
-            <BendPoints>
-              <PointD>
-                <X>418 px</X>
-                <Y>-21.5 px</Y>
-              </PointD>
-              <PointD>
-                <X>418 px</X>
-                <Y>-91.5 px</Y>
-              </PointD>
-            </BendPoints>
-            <IsManuallyRouted>false</IsManuallyRouted>
-            <DbOid>
-              <Path>DoreanSportic.dbo.Tarjeta.FK_Tarjeta_Cliente</Path>
-              <TypeName>ForeignKey</TypeName>
-            </DbOid>
+            <Location>
+              <X>1630 px</X>
+              <Y>370 px</Y>
+            </Location>
+            <Size>
+              <Width>170 px</Width>
+              <Height>50 px</Height>
+            </Size>
+            <Text>"Relación 1:N entre Cliente y carrito"
+
+</Text>
           </Model>
-          <Model xsi:type="RelationCommentModel">
+          <Model xsi:type="NoteModel">
             <CustomProperties>
-              <OID>124</OID>
-              <ForeColor>68, 68, 68</ForeColor>
-              <HolderModel>123</HolderModel>
-              <Port>127</Port>
-              <Font>Tahoma, 9pt</Font>
+              <OID>128</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
               <Parent>0</Parent>
             </CustomProperties>
-            <PortAnchors>
-              <Port xsi:type="LinkPort">
-                <Location>
-                  <X>-20 px</X>
-                  <Y>35 px</Y>
-                </Location>
-                <Anchors>None</Anchors>
-                <Align>Right</Align>
-                <CustomProperties>
-                  <OID>127</OID>
-                  <PortType>FixedAnchor</PortType>
-                </CustomProperties>
-                <LinkPortAnchor>OutPoint</LinkPortAnchor>
-              </Port>
-            </PortAnchors>
-            <CommentOffset>
-              <X>12 px</X>
-              <Y>-138.5 px</Y>
-            </CommentOffset>
+            <Location>
+              <X>1150 px</X>
+              <Y>270 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación 1:N entre Carrito y Carrito_Detalle"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>129</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>880 px</X>
+              <Y>470 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>50 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Carrito_Detalle" y Empaque"
+ 
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>130</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1550 px</X>
+              <Y>1290 px</Y>
+            </Location>
+            <Size>
+              <Width>120 px</Width>
+              <Height>70 px</Height>
+            </Size>
+            <Text>"Relación 1:1 entre MetodoPago y Pedido"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>131</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1070 px</X>
+              <Y>1460 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Usuariio y Rol"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>132</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>850 px</X>
+              <Y>800 px</Y>
+            </Location>
+            <Size>
+              <Width>170 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación 1:N entre Cliente y ResennaValoracion"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>133</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>710 px</X>
+              <Y>580 px</Y>
+            </Location>
+            <Size>
+              <Width>190 px</Width>
+              <Height>50 px</Height>
+            </Size>
+            <Text>"Relación 1:N entre Producto y ResennaValoracion"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>134</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>530 px</X>
+              <Y>1070 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación 1:N entre cliente y tarjeta"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>135</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>630 px</X>
+              <Y>230 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>50 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Producto y Categoría"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>136</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>340 px</X>
+              <Y>250 px</Y>
+            </Location>
+            <Size>
+              <Width>170 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Producto y Marca"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>137</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>560 px</X>
+              <Y>890 px</Y>
+            </Location>
+            <Size>
+              <Width>160 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Cliente y Sexo"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>138</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>1170 px</X>
+              <Y>720 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Pedido_Detalle y Producto"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>139</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>670 px</X>
+              <Y>400 px</Y>
+            </Location>
+            <Size>
+              <Width>170 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación N:1 entre Carrito_Detalle y Producto"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>140</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>970 px</X>
+              <Y>1170 px</Y>
+            </Location>
+            <Size>
+              <Width>170 px</Width>
+              <Height>40 px</Height>
+            </Size>
+            <Text>"Relación 1:1 entre Usuario y Cliente"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>141</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>-120 px</X>
+              <Y>590 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>60 px</Height>
+            </Size>
+            <Text>"Relación N:M entre Producto y Etiqueta a través de tabla intermedia Producto_Etiqueta"
+</Text>
+          </Model>
+          <Model xsi:type="NoteModel">
+            <CustomProperties>
+              <OID>142</OID>
+              <BackgroundColor>255, 255, 225</BackgroundColor>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>10 px</X>
+              <Y>690 px</Y>
+            </Location>
+            <Size>
+              <Width>200 px</Width>
+              <Height>75 px</Height>
+            </Size>
+            <Text>"Relación N:M entre Producto y Promoción a través de la tabla intermedia Promocion_Producto"
+</Text>
           </Model>
         </Children>
         <ViewPort>
           <ScaleMode>Free</ScaleMode>
-          <Scale>0.49</Scale>
+          <Scale>0.337470621</Scale>
           <Location>
-            <X>-654.421755970642 px</X>
-            <Y>-180.952377862704 px</Y>
+            <X>-1122.07300205976 px</X>
+            <Y>61.2398915921566 px</Y>
           </Location>
         </ViewPort>
       </Model>

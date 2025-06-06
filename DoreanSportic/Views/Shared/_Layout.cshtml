@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en", data-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,14 +9,37 @@
 </head>
 <body class="bg-base-100 text-base-content min-h-screen flex flex-col">
     <header>
-        <div class="navbar bg-neutral text-neutral-content shadow-md">
-            <div class="container mx-auto px-4">
-                <div class="flex-1">
-                    <a class="btn btn-ghost normal-case text-xl" asp-area="" asp-controller="Home" asp-action="Index">DoreanSportic</a>
-                </div>
-                <div class="flex-none hidden md:flex space-x-4">
-                    <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="navbar bg-primary text-primary-content">
+
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl" asp-area="" asp-controller="Home" asp-action="Index">DoreanSportic</a>
+            </div>
+            <div class="flex-none hidden md:flex space-x-4">
+                <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+                <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Listados</a>
+                <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Privacy">Mantenimientos</a>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" placeholder="Buscar producto" class="input input-bordered w-24 md:w-auto" />
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                        <div class="w-10 rounded-full">
+                            <img alt="Tailwind CSS Navbar component"
+                                 src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                        </div>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                        <li>
+                            <a class="justify-between">
+                                Profile
+                                <span class="badge">New</span>
+                            </a>
+                        </li>
+                        <li><a>Settings</a></li>
+                        <li><a>Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -26,9 +49,9 @@
         @RenderBody()
     </main>
 
-    <footer class="footer footer-center p-4 bg-neutral text-neutral-content">
+    <footer class="footer footer-center p-4 bg-primary text-neutral-content">
         <div>
-            <p>&copy; 2025 - DoreanSportic - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="underline">Privacy</a></p>
+            <p>&copy; 2025 - DoreanSportic - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="underline">Privacidad</a></p>
         </div>
     </footer>
 
