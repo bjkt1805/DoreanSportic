@@ -19,6 +19,11 @@
 
   <ItemGroup>
     <Folder Include="BD\" />
+    <Folder Include="wwwroot\Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Assets\DoreanSporticLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
