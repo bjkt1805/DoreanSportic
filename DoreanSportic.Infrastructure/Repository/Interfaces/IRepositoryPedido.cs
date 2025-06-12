@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DoreanSportic.Infrastructure.Repository.Interfaces
 {
-    internal interface IRepositoryPedido
+    public interface IRepositoryPedido
     {
         Task<ICollection<Pedido>> ListAsync();
         Task<Pedido> FindByIdAsync(int id);

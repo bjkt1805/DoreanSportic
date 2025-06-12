@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DoreanSportic.Infrastructure.Repository.Interfaces
 {
-    internal interface IRepositoryCarritoDetalle
+    public interface IRepositoryCarritoDetalle
     {
         Task<ICollection<CarritoDetalle>> ListAsync();
         Task<CarritoDetalle> FindByIdAsync(int id);

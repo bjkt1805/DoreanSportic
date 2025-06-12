@@ -4,12 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace Libreria.Application.DTOs
+
+namespace DoreanSportic.Application.DTOs;
+
+public record CarritoDTO
 {
-    public record CarritoDTO
-    {
-        public int IdAutor { get; set; }
-        public string Nombre { get; set; } = null!;
-        public virtual List<Carrito> Libro { get; set; } = new List<Carrito>();
-    }
+    public int Id { get; set; }
+
+    public int IdCliente { get; set; }
+
+    public DateTime FechaCreacion { get; set; }
+
+    public string EstadoPago { get; set; } = null!;
+
+    public bool Estado { get; set; }
+
+    public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
+
+    public virtual Cliente IdClienteNavigation { get; set; } = null!;
 }
