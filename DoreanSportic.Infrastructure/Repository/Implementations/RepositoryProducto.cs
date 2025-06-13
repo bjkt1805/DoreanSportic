@@ -17,15 +17,34 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
+        
+        // Listar todos los productos
+        public async Task<ICollection<Producto>> ListAsync()
+        {
+            //Select * from Producto
+            //Consulta LINQ
+            var collection = await _context
+                .Set<Producto>()
+                .ToListAsync(); 
+            return collection;
+        }
+
+        // Listar los productos por categoria
+        public async Task<ICollection<Producto>> GetProductoByCategoria(int idCategoria)
+        {
+            //Select * from Producto where idCategoria = @idCategoria
+            //Consulta LINQ
+            var collection = await _context
+                .Set<Producto>()
+                .Where(p => p.IdCategoria == idCategoria)
+                .ToListAsync();
+            return collection;
+        }
+
         public Task<Producto> FindByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
-        public async Task<ICollection<Producto>> ListAsync()
-        {
-            //Select * from Producto
-            var collection = await _context.Set<Producto>().ToListAsync();
-            return collection;
-        }
+
     }
 }

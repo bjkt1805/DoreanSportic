@@ -20,12 +20,24 @@ namespace DoreanSportic.Application.Services.Implementations
             _repository = repository;
             _mapper = mapper;
         }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ProductoDTO> FindByIdAsync(int id)
         {
             var @object = await _repository.FindByIdAsync(id);
             var objectMapped = _mapper.Map<ProductoDTO>(@object);
             return objectMapped;
         }
+
+        public Task<ICollection<ProductoDTO>> GetProductoByCategoria(int IdCategoria)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ICollection<ProductoDTO>> ListAsync()
         {
             //Obtener datos del repositorio
@@ -34,6 +46,11 @@ namespace DoreanSportic.Application.Services.Implementations
             var collection = _mapper.Map<ICollection<ProductoDTO>>(list);
             // Return lista
             return collection;
+        }
+
+        public Task UpdateAsync(int id, ProductoDTO dto, string[] selectedCategorias)
+        {
+            throw new NotImplementedException();
         }
     }
 }

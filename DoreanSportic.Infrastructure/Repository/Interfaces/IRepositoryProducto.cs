@@ -10,6 +10,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
     public interface IRepositoryProducto
     {
         Task<ICollection<Producto>> ListAsync();
+
+        Task<ICollection<Producto>> GetProductoByCategoria(int idCategoria);
         Task<Producto> FindByIdAsync(int id);
     }
 }

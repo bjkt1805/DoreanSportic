@@ -4,19 +4,23 @@
 
 <div class="text-center">
     <h1 class="display-4">Bienvenido(a)</h1>
-    <p>Ofrecemos diferentes productos deportivos a un cómodo precio</a>.</p>
-    <div class="carousel w-full h-[500px]">
-        <div id="slide1" class="carousel-item relative w-full">
+    <p>Ofrecemos diferentes productos deportivos a un cómodo precio.</p>
+</div>
+
+<!--Carrusel-->
+<div class="w-screen overflow-hidden">
+    <div class="carousel h-[500px] z-0 relative w-screen">
+        <div id="slide1" class="carousel-item relative w-screen">
             <video class="w-full h-full object-cover" autoplay muted loop>
                 <source src="./Assets/video1.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
-            </video>            
+            </video>
             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
                 <a href="#slide4" class="btn btn-circle">❮</a>
                 <a href="#slide2" class="btn btn-circle">❯</a>
             </div>
         </div>
-        <div id="slide2" class="carousel-item relative w-full">
+        <div id="slide2" class="carousel-item relative w-screen">
             <img src="~/Assets/tenis1.jpg"
                  class="w-full h-full object-cover" />
             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
@@ -24,7 +28,7 @@
                 <a href="#slide3" class="btn btn-circle">❯</a>
             </div>
         </div>
-        <div id="slide3" class="carousel-item relative w-full">
+        <div id="slide3" class="carousel-item relative w-screen">
             <video class="w-full h-full object-cover" autoplay muted loop>
                 <source src="./Assets/video2.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -34,7 +38,7 @@
                 <a href="#slide4" class="btn btn-circle">❯</a>
             </div>
         </div>
-        <div id="slide4" class="carousel-item relative w-full">
+        <div id="slide4" class="carousel-item relative w-screen">
             <img src="~/Assets/football.jpg"
                  class="w-full h-full object-cover" />
             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
@@ -43,4 +47,6 @@
             </div>
         </div>
     </div>
+
 </div>
+

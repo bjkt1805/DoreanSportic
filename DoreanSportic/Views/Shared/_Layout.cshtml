@@ -15,11 +15,12 @@
 </head>
 <body class="bg-base-100 text-base-content min-h-screen flex flex-col">
     <header>
-        <!--Cargar de forma asíncrona el partial view (Menú)-->
+        <!--Cargar de forma asíncrona el partial view (Menú = navbar)-->
         @await Html.PartialAsync("_Menu")
     </header>
 
-    <main role="main" class="flex-grow container mx-auto px-4 py-6">
+    <!--Cargar el body-->
+    <main role="main" class="flex-grow mx-auto py-6">
         @RenderBody()
     </main>
 
