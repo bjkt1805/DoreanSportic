@@ -41,9 +41,15 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return collection;
         }
 
-        public Task<Producto> FindByIdAsync(int id)
+        public async Task<Producto> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            //Obtener un Producto
+            var @object = await _context.Set<Producto>()
+                                .Where(x => x.Id == id)
+                                //.Include(x => x.IdAutorNavigation)
+                                //.Include(x => x.IdCategoria)
+                                .FirstAsync();
+            return @object!;
         }
 
     }

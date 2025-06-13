@@ -2088,9 +2088,6 @@
   .z-1 {
     z-index: 1;
   }
-  .z-10 {
-    z-index: 10;
-  }
   .z-50 {
     z-index: 50;
   }
@@ -2910,9 +2907,6 @@
   .h-full {
     height: 100%;
   }
-  .h-screen {
-    height: 100vh;
-  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -2943,14 +2937,8 @@
   .w-75 {
     width: calc(var(--spacing) * 75);
   }
-  .w-96 {
-    width: calc(var(--spacing) * 96);
-  }
   .w-100 {
     width: calc(var(--spacing) * 100);
-  }
-  .w-\[100\%\] {
-    width: 100%;
   }
   .w-auto {
     width: auto;
@@ -3055,8 +3043,8 @@
   .justify-center {
     justify-content: center;
   }
-  .justify-end {
-    justify-content: flex-end;
+  .justify-start {
+    justify-content: flex-start;
   }
   .gap-0 {
     gap: calc(var(--spacing) * 0);
@@ -3163,15 +3151,6 @@
     color: var(--color-warning-content);
     --alert-color: var(--color-warning);
   }
-  .border-\[\#004AAD\] {
-    border-color: #004AAD;
-  }
-  .border-\[\#DC143C\] {
-    border-color: #DC143C;
-  }
-  .border-indigo-600 {
-    border-color: var(--color-indigo-600);
-  }
   .border-info {
     border-color: var(--color-info);
   }
@@ -3196,17 +3175,11 @@
   .bg-\[\#004AAD\] {
     background-color: #004AAD;
   }
-  .bg-\[\#DC143C\] {
-    background-color: #DC143C;
-  }
   .bg-base-100 {
     background-color: var(--color-base-100);
   }
   .bg-black {
     background-color: var(--color-black);
-  }
-  .bg-indigo-500 {
-    background-color: var(--color-indigo-500);
   }
   .bg-info {
     background-color: var(--color-info);
@@ -3393,9 +3366,6 @@
   .pl-5 {
     padding-left: calc(var(--spacing) * 5);
   }
-  .pl-10 {
-    padding-left: calc(var(--spacing) * 10);
-  }
   .text-center {
     text-align: center;
   }
@@ -3513,9 +3483,6 @@
   }
   .text-purple-600 {
     color: var(--color-purple-600);
-  }
-  .text-red-600 {
-    color: var(--color-red-600);
   }
   .text-secondary {
     color: var(--color-secondary);
@@ -3675,10 +3642,6 @@
     --btn-color: var(--color-info);
     --btn-fg: var(--color-info-content);
   }
-  .btn-neutral {
-    --btn-color: var(--color-neutral);
-    --btn-fg: var(--color-neutral-content);
-  }
   .btn-primary {
     --btn-color: var(--color-primary);
     --btn-fg: var(--color-primary-content);
@@ -3694,11 +3657,6 @@
   .btn-warning {
     --btn-color: var(--color-warning);
     --btn-fg: var(--color-warning-content);
-  }
-  .toggle-secondary {
-    &:checked, &[aria-checked="true"] {
-      --input-color: var(--color-secondary);
-    }
   }
   .checked\:border-orange-500 {
     &:checked {

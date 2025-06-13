@@ -10,7 +10,7 @@
             </div>
             <ul tabindex="0"
                 class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow ">
-                <li class="bg-[#004AAD]"><a class="btn btn-ghost">Inicio</a></li>
+                <li class="bg-[#004AAD]"><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
 
 
                 <!--Productos-->
@@ -38,7 +38,7 @@
     <!--Navbar en pantalla extendida-->
     <div class="navbar-center hidden lg:flex z-50 relative">
         <ul class="menu menu-horizontal px-1">
-            <li><a class="btn btn-ghost">Inicio </a></li>
+            <li><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio </a></li>
 
             <!--Dropdown Productos-->
             <li><a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">Productos </a></li>

@@ -1,27 +1,28 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
 
-@* <div class="flex flex-row gap-2"> *@
 @foreach (var item in Model)
 {
-        <div class="card bg-base-100 w-100 shadow-lg">
-            <figure class="px-10 pt-10 h-48 flex justify-center items-center">
-                <img style="width:70%; height: 80%"src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.Foto)"
-                     alt="Ropa/accesorios deportivos"
-                     class=" h-full object-contain rounded-xl" />
-            </figure>
-            <div class="card-body">
-                <h2 class="card-title">
-                    @Html.DisplayFor(m => item.Nombre)
-                    <div class="badge badge-secondary">HOT SALE!</div>
-                </h2>
-                <p>
-                    @Html.DisplayFor(m => item.Descripcion)
-                </p>
-                <div class="card-actions justify-end">
-                    <div class="badge badge-outline">Fashion</div>
-                    <div class="badge badge-outline">Products</div>
+    <div class="card bg-base-100 w-100 shadow-lg">
+        <figure class="px-10 pt-10 h-48 flex justify-center items-center">
+            <img style="width:70%; height: 80%" src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.Foto)"
+                 alt="Ropa/accesorios deportivos"
+                 class=" h-full object-contain rounded-xl" />
+        </figure>
+        <div class="card-body">
+            <h2 class="card-title">
+                @Html.DisplayFor(m => item.Nombre)
+                <div class="badge badge-secondary">HOT SALE!</div>
+            </h2>
+            <p>
+                @Html.DisplayFor(m => item.Descripcion)
+            </p>
+            <div class="card-actions flex flex-col items-stretch mt-4">
+                <div class="badge badge-outline mb-2 w-fit"><b>Precio Base:</b> ₡@Html.DisplayFor(m => item.PrecioBase)</div>
+                <div class="flex justify-end">
+                    <a class="btn btn-soft btn-primary text-white ml:10" asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
                 </div>
             </div>
         </div>
+    </div>
 }
-@* </div> *@
+
