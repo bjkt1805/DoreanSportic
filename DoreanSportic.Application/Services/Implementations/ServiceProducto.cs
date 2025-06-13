@@ -33,11 +33,6 @@ namespace DoreanSportic.Application.Services.Implementations
             return objectMapped;
         }
 
-        public Task<ICollection<ProductoDTO>> GetProductoByCategoria(int IdCategoria)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ICollection<ProductoDTO>> ListAsync()
         {
             //Obtener datos del repositorio
@@ -45,6 +40,15 @@ namespace DoreanSportic.Application.Services.Implementations
             // Map List<Producto> a ICollection<ProductoDTO>
             var collection = _mapper.Map<ICollection<ProductoDTO>>(list);
             // Return lista
+            return collection;
+        }
+
+        public async Task<ICollection<ProductoDTO>> GetProductoByCategoria(int IdCategoria)
+        {
+            var list = await _repository.GetProductoByCategoria(IdCategoria);
+
+            var collection = _mapper.Map<ICollection<ProductoDTO>>(list);
+
             return collection;
         }
 

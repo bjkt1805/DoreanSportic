@@ -1,4 +1,6 @@
-﻿using DoreanSportic.Application.Services.Interfaces;
+﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Application.Services.Interfaces;
+using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 //using X.PagedList.Extensions;
@@ -21,6 +23,16 @@ namespace Libreria.Web.Controllers
         {
             var collection = await _serviceProducto.ListAsync();
             return View(collection);
+        }
+
+        // GET: ProductoController
+        [HttpGet]
+        public async Task<ActionResult> FiltrarPorCategoria(int idCategoria)
+        {
+            // Listar los productos por categoría
+            var collection = await _serviceProducto.GetProductoByCategoria(idCategoria);
+
+            return PartialView("_CardsProducto", collection);
         }
 
         // GET: ProductoController para el ADMIN

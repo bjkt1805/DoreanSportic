@@ -12,6 +12,9 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Listado de productos 
         Task<ICollection<ProductoDTO>> ListAsync();
 
+        // Obtener los productos por categoría
+        Task<ICollection<ProductoDTO>> GetProductoByCategoria(int IdCategoria);
+
         // Listado de producto por ID (detalle)
         Task<ProductoDTO> FindByIdAsync(int id);
 
@@ -21,7 +24,6 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Actualizar el producto
         Task UpdateAsync(int id, ProductoDTO dto, string[] selectedCategorias);
 
-        // Obtener los productos por categoría
-        Task<ICollection<ProductoDTO>> GetProductoByCategoria(int IdCategoria);
+
     }
 }
