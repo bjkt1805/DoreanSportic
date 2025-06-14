@@ -23,8 +23,6 @@ public record ProductoDTO
 
     public int IdCategoria { get; set; }
 
-    public byte[]? Foto { get; set; }
-
     public bool Estado { get; set; }
 
     public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
@@ -40,4 +38,9 @@ public record ProductoDTO
     public virtual ICollection<Etiqueta> IdEtiqueta { get; set; } = new List<Etiqueta>();
 
     public virtual ICollection<Promocion> IdPromocion { get; set; } = new List<Promocion>();
+
+    public byte[]? PrimeraImagen { get; set; }
+
+    public virtual ICollection<ImagenProducto> ImagenesProducto { get; set; } = new List<ImagenProducto>();
+
 }

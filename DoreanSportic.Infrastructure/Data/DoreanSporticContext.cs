@@ -24,6 +24,8 @@ public partial class DoreanSporticContext : DbContext
 
     public virtual DbSet<Etiqueta> Etiqueta { get; set; }
 
+    public virtual DbSet<ImagenProducto> ImagenProducto { get; set; }
+
     public virtual DbSet<Marca> Marca { get; set; }
 
     public virtual DbSet<MetodoPago> MetodoPago { get; set; }
@@ -65,7 +67,6 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Carrito)
                 .HasForeignKey(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Carrito_Cliente");
         });
 
@@ -84,17 +85,14 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdCarritoNavigation).WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdCarrito)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CarritoDetalle_Carrito");
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdEmpaque)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CarritoDetalle_Empaque");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdProducto)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CarritoDetalle_Producto");
         });
 
@@ -139,6 +137,7 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdSexoNavigation).WithMany(p => p.Cliente)
                 .HasForeignKey(d => d.IdSexo)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Cliente_Sexo");
         });
 
@@ -166,6 +165,23 @@ public partial class DoreanSporticContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("nombre");
+        });
+
+        modelBuilder.Entity<ImagenProducto>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Estado).HasColumnName("estado");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            entity.Property(e => e.Imagen).HasColumnName("imagen");
+
+            entity.HasOne(d => d.IdProductoNavigation)
+                .WithMany(p => p.ImagenesProducto)
+                .HasForeignKey(d => d.IdProducto)
+                .HasConstraintName("FK_ImagenProducto_Producto");
         });
 
         modelBuilder.Entity<Marca>(entity =>
@@ -220,11 +236,11 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Pedido)
                 .HasForeignKey(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Pedido_Cliente");
 
             entity.HasOne(d => d.IdMetodoPagoNavigation).WithMany(p => p.Pedido)
                 .HasForeignKey(d => d.IdMetodoPago)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Pedido_MetodoPago");
         });
 
@@ -243,17 +259,14 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdEmpaque)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PedidoDetalle_Empaque");
 
             entity.HasOne(d => d.IdPedidoNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdPedido)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PedidoDetalle_Pedido");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdProducto)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PedidoDetalle_Producto");
         });
 
@@ -264,7 +277,6 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Descripcion).HasColumnName("descripcion");
             entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.Foto).HasColumnName("foto");
             entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
             entity.Property(e => e.IdMarca).HasColumnName("idMarca");
             entity.Property(e => e.Nombre)
@@ -277,12 +289,10 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdCategoriaNavigation).WithMany(p => p.Producto)
                 .HasForeignKey(d => d.IdCategoria)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Producto_Categoria");
 
             entity.HasOne(d => d.IdMarcaNavigation).WithMany(p => p.Producto)
                 .HasForeignKey(d => d.IdMarca)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Producto_Marca");
 
             entity.HasMany(d => d.IdEtiqueta).WithMany(p => p.IdProducto)
@@ -290,11 +300,9 @@ public partial class DoreanSporticContext : DbContext
                     "ProductoEtiqueta",
                     r => r.HasOne<Etiqueta>().WithMany()
                         .HasForeignKey("IdEtiqueta")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_Producto_Etiqueta_Etiqueta"),
                     l => l.HasOne<Producto>().WithMany()
                         .HasForeignKey("IdProducto")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_Producto_Etiqueta_Producto"),
                     j =>
                     {
@@ -335,11 +343,9 @@ public partial class DoreanSporticContext : DbContext
                     "PromocionProducto",
                     r => r.HasOne<Producto>().WithMany()
                         .HasForeignKey("IdProducto")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_PromocionProducto_Producto"),
                     l => l.HasOne<Promocion>().WithMany()
                         .HasForeignKey("IdPromocion")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_PromocionProducto_Promocion"),
                     j =>
                     {
@@ -369,12 +375,10 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.ResennaValoracion)
                 .HasForeignKey(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Resenna_Cliente");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.ResennaValoracion)
                 .HasForeignKey(d => d.IdProducto)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Resenna_Producto");
         });
 
@@ -418,7 +422,6 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Tarjeta)
                 .HasForeignKey(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tarjeta_Cliente");
         });
 
@@ -450,13 +453,11 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithOne(p => p.Usuario)
                 .HasForeignKey<Usuario>(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Usuario_Cliente");
 
             entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuario)
                 .HasForeignKey(d => d.IdRol)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Rol");
+                .HasConstraintName("FK_Usuario_Rol");
         });
 
         OnModelCreatingPartial(modelBuilder);

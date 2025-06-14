@@ -47,7 +47,24 @@ namespace DoreanSportic.Application.Services.Implementations
         {
             var list = await _repository.GetProductoByCategoria(IdCategoria);
 
-            var collection = _mapper.Map<ICollection<ProductoDTO>>(list);
+
+            //var collection = _mapper.Map<ICollection<ProductoDTO>>(list);
+
+            // Para poder traer la primera imagen del producto
+            var collection = list.Select(p => new ProductoDTO
+            {
+                Id = p.Id,
+                Nombre = p.Nombre,
+                Descripcion = p.Descripcion,
+                PrecioBase = p.PrecioBase,
+                Stock = p.Stock,
+                IdMarca = p.IdMarca,
+                IdCategoriaNavigation = p.IdCategoriaNavigation,
+                IdCategoria = p.IdCategoria,
+                Estado = p.Estado,
+                // Traer la primera imagen del producto
+                PrimeraImagen = p.ImagenesProducto.FirstOrDefault()?.Imagen 
+            }).ToList();
 
             return collection;
         }

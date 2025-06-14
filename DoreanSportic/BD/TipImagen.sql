@@ -30,14 +30,3 @@ GO
 SELECT 
   'data:image/jpeg;base64,' + CAST('' AS XML).value('xs:base64Binary(sql:column("libro.imagen"))', 'varchar(max)') AS image_base64
 FROM libro where IdLibro=19;
-
--- ACTUALIZAR LA FOTO DEL PRODUCTO (CAMBIAR ID DE SER NECESARIO)
-UPDATE Producto
-SET foto = (
-    SELECT BulkData
-    FROM OPENROWSET(
-        BULK 'C:\Users\1\OneDrive - Universidad Técnica Nacional\Respaldo_Brian\ISW\Programación en Ambiente Web II\Proyecto\DoreanSportic\DoreanSportic\wwwroot\Assets\tennis.webp',
-        SINGLE_BLOB
-    ) AS Imagen 
-)
-WHERE id = 1;

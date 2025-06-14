@@ -50,3 +50,18 @@
 
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const totalSlides = 4;
+            let currentSlide = 1;
+
+            setInterval(() => {
+                const nextSlide = currentSlide >= totalSlides ? 1 : currentSlide + 1;
+                location.hash = `#slide${nextSlide}`;
+                currentSlide = nextSlide;
+            }, 5000); // cambia cada 5 segundos (5000ms)
+        });
+    </script>
+}
+

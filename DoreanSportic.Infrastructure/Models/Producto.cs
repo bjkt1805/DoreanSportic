@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DoreanSportic.Infrastructure.Models;
 
@@ -19,8 +20,6 @@ public partial class Producto
 
     public int IdCategoria { get; set; }
 
-    public byte[]? Foto { get; set; }
-
     public bool Estado { get; set; }
 
     public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
@@ -36,4 +35,11 @@ public partial class Producto
     public virtual ICollection<Etiqueta> IdEtiqueta { get; set; } = new List<Etiqueta>();
 
     public virtual ICollection<Promocion> IdPromocion { get; set; } = new List<Promocion>();
+
+    // Aplicar data notation NotMapped para hacerle entender a EF Core que esta propiedad no es mapeada de la base de datos.
+    [NotMapped]
+    public byte[]? PrimeraImagen { get; set; }
+
+    public virtual ICollection<ImagenProducto> ImagenesProducto { get; set; } = new List<ImagenProducto>();
+
 }

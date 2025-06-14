@@ -34,20 +34,20 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             //Select * from Producto where idCategoria = @idCategoria
             //Consulta LINQ
-            var collection = await _context
-                .Set<Producto>()
-                .Where(p => p.IdCategoria == idCategoria)
-                .ToListAsync();
+            var collection = await _context.Producto
+                    .Include(p => p.ImagenesProducto)
+                    .Where(p => p.IdCategoria == idCategoria)
+                    .ToListAsync();
+
             return collection;
         }
 
         public async Task<Producto> FindByIdAsync(int id)
         {
-            //Obtener un Producto
-            var @object = await _context.Set<Producto>()
+            //Obtener un Producto (Eager loading con Imagenes Producto)
+            var @object = await _context.Producto
                                 .Where(x => x.Id == id)
-                                //.Include(x => x.IdAutorNavigation)
-                                //.Include(x => x.IdCategoria)
+                                .Include(p => p.ImagenesProducto)
                                 .FirstAsync();
             return @object!;
         }

@@ -746,8 +746,8 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>210 px</X>
-              <Y>790 px</Y>
+              <X>30 px</X>
+              <Y>780 px</Y>
             </Location>
             <Size>
               <Width>230 px</Width>
@@ -769,8 +769,8 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>220 px</X>
-              <Y>600 px</Y>
+              <X>50 px</X>
+              <Y>610 px</Y>
             </Location>
             <Size>
               <Width>230 px</Width>
@@ -822,6 +822,16 @@
                 </CustomProperties>
               </Port>
             </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>152.5 px</X>
+                <Y>590 px</Y>
+              </PointD>
+              <PointD>
+                <X>322.5 px</X>
+                <Y>590 px</Y>
+              </PointD>
+            </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
               <Path>DoreanSportic.dbo.Promocion_Producto.FK_PromocionProducto_Producto</Path>
@@ -840,8 +850,8 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>0 px</X>
-                  <Y>40.5 px</Y>
+                  <X>-85 px</X>
+                  <Y>20 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
                 <Align>Top</Align>
@@ -893,6 +903,16 @@
                 </CustomProperties>
               </Port>
             </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>160 px</X>
+                <Y>745 px</Y>
+              </PointD>
+              <PointD>
+                <X>150 px</X>
+                <Y>745 px</Y>
+              </PointD>
+            </BendPoints>
             <IsManuallyRouted>false</IsManuallyRouted>
             <DbOid>
               <Path>DoreanSportic.dbo.Promocion_Producto.FK_PromocionProducto_Promocion</Path>
@@ -911,7 +931,7 @@
             <PortAnchors>
               <Port xsi:type="LinkPort">
                 <Location>
-                  <X>0 px</X>
+                  <X>10 px</X>
                   <Y>-37.5 px</Y>
                 </Location>
                 <Anchors>None</Anchors>
@@ -2439,8 +2459,8 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>-120 px</X>
-              <Y>590 px</Y>
+              <X>-180 px</X>
+              <Y>610 px</Y>
             </Location>
             <Size>
               <Width>200 px</Width>
@@ -2456,8 +2476,8 @@
               <Parent>0</Parent>
             </CustomProperties>
             <Location>
-              <X>10 px</X>
-              <Y>690 px</Y>
+              <X>-180 px</X>
+              <Y>700 px</Y>
             </Location>
             <Size>
               <Width>200 px</Width>
@@ -2504,13 +2524,117 @@
             <Copyrights />
             <Text>Proyecto Progra VI Nombre del proyecto: "Dorean Sportic"</Text>
           </Model>
+          <Model xsi:type="TableModel">
+            <CustomProperties>
+              <OID>145</OID>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <Location>
+              <X>320 px</X>
+              <Y>610 px</Y>
+            </Location>
+            <Size>
+              <Width>247 px</Width>
+              <Height>109 px</Height>
+            </Size>
+            <DbOid>
+              <Path>DoreanSportic.dbo.ImagenProducto</Path>
+              <TypeName>Table</TypeName>
+            </DbOid>
+            <Compartments>
+              <ConstraintsCollapsed>True</ConstraintsCollapsed>
+              <IndexesCollapsed>True</IndexesCollapsed>
+              <TriggersCollapsed>True</TriggersCollapsed>
+            </Compartments>
+          </Model>
+          <Model xsi:type="RelationLinkModel">
+            <CustomProperties>
+              <OID>146</OID>
+              <Comment>147</Comment>
+              <OutModel>145</OutModel>
+              <InModel>13</InModel>
+              <OutPort>148</OutPort>
+              <InPort>149</InPort>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port>
+                <Location>
+                  <X>216.125 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>148</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+              <Port>
+                <Location>
+                  <X>226.125 px</X>
+                  <Y>0 px</Y>
+                </Location>
+                <Anchors>Left Right</Anchors>
+                <Align>Bottom</Align>
+                <CustomProperties>
+                  <OID>149</OID>
+                  <PortType>FloatAnchor</PortType>
+                </CustomProperties>
+              </Port>
+            </PortAnchors>
+            <BendPoints>
+              <PointD>
+                <X>536.125 px</X>
+                <Y>590 px</Y>
+              </PointD>
+              <PointD>
+                <X>506.125 px</X>
+                <Y>590 px</Y>
+              </PointD>
+            </BendPoints>
+            <IsManuallyRouted>false</IsManuallyRouted>
+            <DbOid>
+              <Path>DoreanSportic.dbo.ImagenProducto.FK_ImagenProducto_Producto</Path>
+              <TypeName>ForeignKey</TypeName>
+            </DbOid>
+          </Model>
+          <Model xsi:type="RelationCommentModel">
+            <CustomProperties>
+              <OID>147</OID>
+              <ForeColor>68, 68, 68</ForeColor>
+              <HolderModel>146</HolderModel>
+              <Port>150</Port>
+              <Font>Tahoma, 9pt</Font>
+              <Parent>0</Parent>
+            </CustomProperties>
+            <PortAnchors>
+              <Port xsi:type="LinkPort">
+                <Location>
+                  <X>30 px</X>
+                  <Y>55.5 px</Y>
+                </Location>
+                <Anchors>None</Anchors>
+                <Align>Top</Align>
+                <CustomProperties>
+                  <OID>150</OID>
+                  <PortType>FixedAnchor</PortType>
+                </CustomProperties>
+                <LinkPortAnchor>OutPoint</LinkPortAnchor>
+              </Port>
+            </PortAnchors>
+            <CommentOffset>
+              <X>22 px</X>
+              <Y>2 px</Y>
+            </CommentOffset>
+          </Model>
         </Children>
         <ViewPort>
           <ScaleMode>Free</ScaleMode>
-          <Scale>0.3365403</Scale>
+          <Scale>0.74</Scale>
           <Location>
-            <X>-1129.13668332524 px</X>
-            <Y>61.4091875396621 px</Y>
+            <X>-571.171163810208 px</X>
+            <Y>272.972969100688 px</Y>
           </Location>
         </ViewPort>
       </Model>
