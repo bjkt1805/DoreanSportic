@@ -34,9 +34,13 @@
             }
         </div>
     </figure>
-    <div class="card-body w-2/3">
-        <h2 class="card-title text-xl font-semibold">New movie is released!</h2>
-        <p class="text-base">Click the button to watch on Jetflix app.</p>
+    <div class="bg-sky-500/50 card-body w-2/3 min-h-40">
+        <h2 class="card-title text-xl font-semibold">
+            @Html.DisplayFor(model => model.Nombre)
+        </h2>
+        <p class="text-base">
+            @Html.DisplayFor(model => model.Descripcion)
+        </p>
         <div class="card-actions justify-end">
         </div>
     </div>
