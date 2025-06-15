@@ -48,6 +48,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var @object = await _context.Producto
                                 .Where(x => x.Id == id)
                                 .Include(p => p.ImagenesProducto)
+                                .Include(p => p.IdCategoriaNavigation)
                                 .FirstAsync();
             return @object!;
         }
