@@ -26,7 +26,7 @@ DBCC CHECKIDENT ('NombreTabla', RESEED, 0);
 
 -- ACTUALIZAR LA FOTO DEL PRODUCTO (CAMBIAR ID DE SER NECESARIO)
 UPDATE ImagenProducto
-SET foto = (
+SET imagen = (
     SELECT BulkData
     FROM OPENROWSET(
         BULK 'C:\TEMP\ ',
