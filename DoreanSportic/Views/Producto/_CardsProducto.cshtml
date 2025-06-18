@@ -15,9 +15,11 @@
                 @Html.DisplayFor(m => item.Nombre)
             </h2>
 
-            <div class="flex flex-row gap gap-1">
-                <div class="badge badge-primary">@item.IdMarcaNavigation?.Nombre</div>
-                <div class="badge badge-secondary">HOT SALE!</div>
+            <div class="flex flex-col gap gap-1">
+                <div class="flex flex-row gap gap-1">
+                    <div class="badge bg-[#000000] text-white">@item.IdMarcaNavigation?.Nombre.ToUpper()</div>
+                    <div class="badge badge-secondary">EN OFERTA</div>
+                </div>
             </div>
 
             <!-- Precio -->

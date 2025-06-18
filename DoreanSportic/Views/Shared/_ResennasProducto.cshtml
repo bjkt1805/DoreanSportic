@@ -1,18 +1,38 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
 
-@foreach (var item in Model)
-{
-    <div class="card p-4 shadow mb-2">
-        <div class="flex justify-between">
-            <span class="font-semibold">@item.IdUsuarioNavigation.UserName</span>
-            <span class="text-sm text-gray-400">@item.FechaResenna.ToShortDateString()</span>
-        </div>
-        <p class="mt-2">@item.Comentario</p>
-        <div class="text-yellow-400">
-            @for (int i = 1; i <= 5; i++)
-            {
-                <span class="@(i <= item.Calificacion ? "text-yellow-400" : "text-gray-300")">&#9733;</span>
-            }
-        </div>
+<h1><b>PROMEDIO DE VALORACIONES</b></h1>
+<br />
+<div class="collapse collapse-arrow bg-base-100 border border-base-300">
+@*     <input type="radio" name="my-accordion-2" checked="checked" />
+ *@    <input type="checkbox" />
+    <div class="collapse-title font-semibold">Ver reseñas</div>
+    <div class="collapse-content">
+        @foreach (var item in Model)
+        {
+            <div class="card p-4 shadow mb-2">
+                <div class="flex flex-col justify-between">
+                    <span class="font-bold">@item.IdUsuarioNavigation.UserName</span>
+                    <span class="text-[10px] underline">@item.FechaResenna.ToShortDateString()</span>
+                </div>
+                <p class="mt-2">@item.Comentario</p>
+                <br />
+                <div class="flex gap-1">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        var isActive = i <= item.Calificacion;
+                        var fillColor = isActive ? "text-yellow-400" : "text-gray-300";
+                        var animationClass = isActive ? "animate-bounce" : "";
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             fill="currentColor"
+                             viewBox="0 0 24 24"
+                             stroke="none"
+                             class=@($"w-5 h-5 {fillColor} {animationClass} transition-all duration-300")>
+                            <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.175L12 18.896l-7.336 3.861 1.402-8.175-5.934-5.782 8.2-1.192z" />
+                        </svg>
+                    }
+                </div>
+            </div>
+        }
     </div>
-}
+</div>

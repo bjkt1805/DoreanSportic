@@ -57,7 +57,7 @@ namespace DoreanSportic.Application.Services.Implementations
                 Descripcion = p.Descripcion,
                 PrecioBase = p.PrecioBase,
                 Stock = p.Stock,
-                IdMarca = p.IdMarca,
+                IdMarcaNavigation = p.IdMarcaNavigation,
                 IdCategoriaNavigation = p.IdCategoriaNavigation,
                 IdCategoria = p.IdCategoria,
                 Estado = p.Estado,
