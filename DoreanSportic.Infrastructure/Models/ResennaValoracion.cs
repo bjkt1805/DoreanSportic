@@ -7,7 +7,7 @@ public partial class ResennaValoracion
 {
     public int Id { get; set; }
 
-    public int IdCliente { get; set; }
+    public int IdUsuario { get; set; }
 
     public int IdProducto { get; set; }
 
@@ -19,7 +19,7 @@ public partial class ResennaValoracion
 
     public bool Estado { get; set; }
 
-    public virtual Cliente IdClienteNavigation { get; set; } = null!;
-
     public virtual Producto IdProductoNavigation { get; set; } = null!;
+
+    public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 }

@@ -1,0 +1,18 @@
+﻿@model IEnumerable<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
+
+@foreach (var item in Model)
+{
+    <div class="card p-4 shadow mb-2">
+        <div class="flex justify-between">
+            <span class="font-semibold">@item.IdUsuarioNavigation.UserName</span>
+            <span class="text-sm text-gray-400">@item.FechaResenna.ToShortDateString()</span>
+        </div>
+        <p class="mt-2">@item.Comentario</p>
+        <div class="text-yellow-400">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="@(i <= item.Calificacion ? "text-yellow-400" : "text-gray-300")">&#9733;</span>
+            }
+        </div>
+    </div>
+}

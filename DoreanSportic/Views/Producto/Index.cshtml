@@ -16,14 +16,14 @@
 <br />
 
 <div id="card-productos-body" class="pl-5 flex flex-wrap gap-4 justify-center">
-    @Html.PartialAsync("_CardsProducto", Model)
+    @await Html.PartialAsync("_CardsProducto", Model)
 </div>
 
 @section Scripts {
     <script>
         const toggle = document.querySelector('input[type="checkbox"]');
 
-                function cargarProductosPorCategoria(idCategoria) {
+                function cargarProductosPorCategoria() {
             fetch(`/Producto/FiltrarPorCategoria?idCategoria=${idCategoria}`)
                 .then(res => res.text())
                 .then(html => {

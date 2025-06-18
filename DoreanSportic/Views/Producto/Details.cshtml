@@ -5,10 +5,15 @@
 }
 
 
-<div class="flex-row gap-2">
-    <h1><b>Detalles del producto</b></h1>
-@*     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
- *@    <a asp-action="Index">Volver al listado</a>
+<div class="flex flex-row gap-2">
+    <div class="justify-start">
+        <h1><b>Detalles del producto</b></h1>
+        @*     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+ *@    </div>
+    <div class="justify-end">
+        <a class="justify-end" asp-action="Index">Volver al listado</a>
+    </div>
+
 </div>
 
 <div class="card card-side flex-row bg-base shadow-lg rounded-3">
@@ -45,13 +50,17 @@
         <h2 class="card-title text-xl font-semibold">
             @Html.DisplayFor(model => model.Nombre)
         </h2>
-        <p class="text-base bg- w-auto">
+        <p class="text-base bg-base w-auto">
             @Html.DisplayFor(model => model.Descripcion)
         </p>
 
     </div>
 </div>
 
+<br />
+
+<div id="zona-resennas">
+    <p class="text-sm">Cargando reseñas...</p>
 </div>
 
 @section Scripts {
@@ -67,4 +76,17 @@
             }, 3000); // cambia cada 3 segundos (3000ms)
         });
     </script>
+
+@*     Script para cargar las reseñas del producto
+ *@    <script>
+        fetch('/ResennaValoracion/GetResennasPorProducto?idProducto=@Model.Id')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("zona-resennas").innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
+            });
+    </script>
+
 }

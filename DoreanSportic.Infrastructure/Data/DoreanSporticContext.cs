@@ -172,10 +172,13 @@ public partial class DoreanSporticContext : DbContext
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Estado).HasColumnName("estado");
+
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("id");
+
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+
             entity.Property(e => e.Imagen).HasColumnName("imagen");
 
             entity.HasOne(d => d.IdProductoNavigation)
@@ -183,6 +186,7 @@ public partial class DoreanSporticContext : DbContext
                 .HasForeignKey(d => d.IdProducto)
                 .HasConstraintName("FK_ImagenProducto_Producto");
         });
+
 
         modelBuilder.Entity<Marca>(entity =>
         {
@@ -370,16 +374,17 @@ public partial class DoreanSporticContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("fechaResenna");
-            entity.Property(e => e.IdCliente).HasColumnName("idCliente");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
-
-            entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.ResennaValoracion)
-                .HasForeignKey(d => d.IdCliente)
-                .HasConstraintName("FK_Resenna_Cliente");
+            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.ResennaValoracion)
                 .HasForeignKey(d => d.IdProducto)
                 .HasConstraintName("FK_Resenna_Producto");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.ResennaValoracion)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Resenna_Usuario");
         });
 
         modelBuilder.Entity<Rol>(entity =>

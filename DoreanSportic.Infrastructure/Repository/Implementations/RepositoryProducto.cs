@@ -36,6 +36,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             //Consulta LINQ
             var collection = await _context.Producto
                     .Include(p => p.ImagenesProducto)
+                    .Include(p => p.IdMarcaNavigation)
                     .Where(p => p.IdCategoria == idCategoria)
                     .ToListAsync();
 
@@ -44,11 +45,12 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
         public async Task<Producto> FindByIdAsync(int id)
         {
-            //Obtener un Producto (Eager loading con Imagenes Producto)
+            //Obtener un Producto (Eager loading con Imagenes Producto, Categoria y Marca)
             var @object = await _context.Producto
                                 .Where(x => x.Id == id)
                                 .Include(p => p.ImagenesProducto)
                                 .Include(p => p.IdCategoriaNavigation)
+                                .Include(p=> p.IdMarcaNavigation)
                                 .FirstAsync();
             return @object!;
         }

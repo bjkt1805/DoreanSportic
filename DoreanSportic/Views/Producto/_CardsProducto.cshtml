@@ -14,8 +14,11 @@
             <h2 class="card-title">
                 @Html.DisplayFor(m => item.Nombre)
             </h2>
-            <div class="badge badge-secondary">HOT SALE!</div>
 
+            <div class="flex flex-row gap gap-1">
+                <div class="badge badge-primary">@item.IdMarcaNavigation?.Nombre</div>
+                <div class="badge badge-secondary">HOT SALE!</div>
+            </div>
 
             <!-- Precio -->
             <div class="mt-4">

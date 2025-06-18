@@ -10,6 +10,9 @@ namespace DoreanSportic.Application.Services.Interfaces
     public interface IServiceResennaValoracion
     {
         Task<ICollection<ResennaValoracionDTO>> ListAsync();
+
+        Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto);
+
         Task<ResennaValoracionDTO> FindByIdAsync(int id);
     }
 }

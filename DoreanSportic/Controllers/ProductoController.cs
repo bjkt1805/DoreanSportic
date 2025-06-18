@@ -17,7 +17,6 @@ namespace Libreria.Web.Controllers
 
         }
 
-
         // GET: ProductoController
         public async Task<ActionResult> Index()
         {

@@ -35,5 +35,15 @@ namespace DoreanSportic.Application.Services.Implementations
             // Return lista
             return collection;
         }
+
+        public async Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto)
+        {
+            //Obtener datos del repositorio
+            var list = await _repository.GetResennasPorProducto(idProducto);
+            // Map List<ResennaValoracion> a ICollection<ResennaValoracionDTO>
+            var collection = _mapper.Map<ICollection<ResennaValoracionDTO>>(list);
+            // Return lista
+            return collection;
+        }
     }
 }

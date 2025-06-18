@@ -35,4 +35,12 @@ SET imagen = (
 )
 WHERE id = 1;
 
+-- AGREGAR UN CONSTRAINT PARA ACEPTAR VALORES SOLO ENTRE 1 Y 5 -- 
+
+ALTER TABLE ResennaValoracion
+ADD CONSTRAINT chk_columna_rango
+CHECK (calificacion BETWEEN 1 AND 5);
+
+
+
 
