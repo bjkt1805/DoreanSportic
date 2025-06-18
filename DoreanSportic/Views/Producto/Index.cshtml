@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
+<!--Toggle para seleccionar entre "Ropa" y "Accesorios"-->
 <div class="w-screen flex justify-center items-center">
     <div class="text-center flex flex-row gap-2 justify-center">
         <p class="text-purple-600"><b>Ropa</b> </p>
@@ -15,15 +16,25 @@
 </div>
 <br />
 
+<!--Cargar los productos (cards) dependiendo de la categoría del producto-->
 <div id="card-productos-body" class="pl-5 flex flex-wrap gap-4 justify-center">
     @await Html.PartialAsync("_CardsProducto", Model)
 </div>
 
 @section Scripts {
+
+    <!-- Script para filtrar los productos por categoría a través de AJAX -->
     <script>
+
         const toggle = document.querySelector('input[type="checkbox"]');
 
-                function cargarProductosPorCategoria() {
+        // Manejar cambio de toggle
+        toggle.addEventListener('change', () => {
+            const idCategoria = toggle.checked ? 2 : 1;
+            cargarProductosPorCategoria(idCategoria);
+        });
+
+        function cargarProductosPorCategoria(idCategoria) {
             fetch(`/Producto/FiltrarPorCategoria?idCategoria=${idCategoria}`)
                 .then(res => res.text())
                 .then(html => {
@@ -38,10 +49,6 @@
             toggle.checked = false; // visualmente reflejar que Ropa está seleccionado
         });
 
-        // Manejar cambio de toggle
-        toggle.addEventListener('change', () => {
-            const idCategoria = toggle.checked ? 2 : 1;
-            cargarProductosPorCategoria(idCategoria);
-        });
+
     </script>
 }
