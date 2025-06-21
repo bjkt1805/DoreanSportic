@@ -7,44 +7,32 @@
 <h1 class="font-bold">Listado de reseñas</h1>
 <br />
 
-@* <p>
-    <a asp-action="Create">Create New</a>
-</p> *@
-
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
     <table class="table">
         <!-- head -->
         <thead class="bg-primary text-white">
             <tr>
-@*                 <th></th>
- *@                <th>Usuario</th>
-                <th>Producto</th>
-                <th>Calificación</th>
-@*                 <th>Comentario</th>
- *@                <th>Fecha de la reseña</th>
-                <th></th>
-
+                <th class="text-center">Usuario</th>
+                <th class="text-center">Producto</th>
+                <th class="text-center">Calificación</th>
+                <th class="text-center">Fecha de la reseña</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-@*                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td> *@
-                    <td class="font-bold">
+
+                    <td class="font-bold text-center">
                         @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.UserName)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
                     </td>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.Calificacion)
                     </td>
-@*                     <td>
-                        @Html.DisplayFor(modelItem => item.Comentario)
-                    </td> *@
                     <td class="text-center">
                         @item.FechaResenna.ToString("dd-MM-yyyy")
                     </td>

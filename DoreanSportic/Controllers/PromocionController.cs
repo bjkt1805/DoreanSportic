@@ -7,34 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoreanSportic.Controllers
 {
-    public class ProductoController : Controller
+    public class PromocionController : Controller
     {
-        private readonly IServiceProducto _serviceProducto;
+        private readonly IServicePromocion _servicePromocion;
 
-        public ProductoController(IServiceProducto serviceProducto)
+        public PromocionController(IServicePromocion servicePromocion)
         {
-            _serviceProducto = serviceProducto;
+            _servicePromocion = servicePromocion;
 
         }
 
-        // GET: ProductoController
+        // GET: PromocionController
         public async Task<ActionResult> Index()
         {
-            var collection = await _serviceProducto.ListAsync();
+            var collection = await _servicePromocion.ListAsync();
             return View(collection);
         }
 
-        // GET: ProductoController
-        [HttpGet]
-        public async Task<ActionResult> FiltrarPorCategoria(int idCategoria)
-        {
-            // Listar los productos por categoría
-            var collection = await _serviceProducto.GetProductoByCategoria(idCategoria);
-
-            return PartialView("_CardsProducto", collection);
-        }
-
-        // GET: ProductoController para el ADMIN
+        // GET: PromocionController para el ADMIN
 
         //public async Task<ActionResult> IndexAdmin(int? page)
         //{
@@ -42,14 +32,14 @@ namespace DoreanSportic.Controllers
         //    return View(collection.ToPagedList(page ?? 1, 5));
         //}
 
-        // GET: ProductoController/Details/5
+        // GET: PromocionController/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var @object = await _serviceProducto.FindByIdAsync(id);
+            var @object = await _servicePromocion.FindByIdAsync(id);
             return View(@object);
         }
 
-        // GET: ProductoController/Create
+        // GET: PromocionController/Create
         //public ActionResult Create()
         //{
         //    return View();
