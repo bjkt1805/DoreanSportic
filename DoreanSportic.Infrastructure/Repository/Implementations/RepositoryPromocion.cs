@@ -17,9 +17,15 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
-        public Task<Promocion> FindByIdAsync(int id)
+        public async Task<Promocion> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            //Obtener una Promocion (Eager loading con los productos que tienen la promoción)
+            var @object = await _context.Promocion
+                                .Where(x => x.Id == id)
+                                .Include(p => p.IdProducto)
+                                    .ThenInclude(p => p.ImagenesProducto)
+                                .FirstAsync();
+            return @object!;
         }
         public async Task<ICollection<Promocion>> ListAsync()
         {

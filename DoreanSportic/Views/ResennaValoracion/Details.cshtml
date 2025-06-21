@@ -6,14 +6,12 @@
 
 
 <div>
-    @*     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
- *@        <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
-    <h1><b>DETALLES DE LA RESEÑA</b></h1>
+<a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+    <h1 class="pt-2"><b>DETALLES DE LA RESEÑA</b></h1>
     <br />
 </div>
 
-
-<div class="card bg-base-100 shadow max-h-96 overflow-y-auto">
+<div class="card bg-base-100 shadow max-h-96 overflow-y-auto w-100">
 
     <div class="card-body">
 
@@ -27,8 +25,7 @@
             <br />
             <figure class="px-10 pt-10 h-48 flex justify-center items-center">
                 <img style="width:70%; height: 80%"
-@*                      src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.IdProductoNavigation.PrimeraImagen ?? new byte[0])"
- *@                     src="data:image/jpeg;base64,@Convert.ToBase64String(Model.IdProductoNavigation.PrimeraImagen ?? Array.Empty<byte>())"
+                    src="data:image/jpeg;base64,@Convert.ToBase64String(Model.IdProductoNavigation.PrimeraImagen ?? Array.Empty<byte>())"
                      alt="Ropa/accesorios deportivos"
                      class=" h-full object-contain rounded-xl" />
             </figure>
