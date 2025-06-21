@@ -63,7 +63,8 @@ namespace DoreanSportic.Application.Services.Implementations
                 IdCategoria = p.IdCategoria,
                 Estado = p.Estado,
                 // Traer la primera imagen del producto
-                PrimeraImagen = p.PrimeraImagen
+                PrimeraImagen = p.PrimeraImagen,
+                IdPromocion = p.IdPromocion
             }).ToList();
 
             return collection;

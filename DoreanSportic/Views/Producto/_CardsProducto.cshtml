@@ -2,6 +2,7 @@
 
 @foreach (var item in Model)
 {
+ 
     <div class="card bg-base-100 w-100 shadow-lg">
         <figure class="px-10 pt-10 h-48 flex justify-center items-center">
             <img style="width:70%; height: 80%" 
@@ -18,15 +19,49 @@
             <div class="flex flex-col gap gap-1">
                 <div class="flex flex-row gap gap-1">
                     <div class="badge bg-[#000000] text-white">@item.IdMarcaNavigation?.Nombre.ToUpper()</div>
-                    <div class="badge badge-secondary">EN OFERTA</div>
+                    
+                    <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
+                        exista una promoción
+                    -->
+                    @if (item.IdPromocion != null && item.IdPromocion.Any())
+                    {
+                        <div class="badge badge-secondary">EN OFERTA</div>
+
+                    }
                 </div>
             </div>
 
-            <!-- Precio -->
-            <div class="mt-4">
-                <div class="badge badge-outline w-fit">
-                    <b>Precio Base:</b> ₡@Html.DisplayFor(m => item.PrecioBase)
-                </div>
+            <div class="flex flex-row gap gap-1"> 
+                                
+                    @if (item.IdPromocion != null && item.IdPromocion.Any())
+                    {
+                        var promocion = item.IdPromocion.FirstOrDefault();
+                        var porcentajeDescuento = promocion?.PorcentajeDescuento ?? 0;
+                        var precioConDescuento = item.PrecioBase - (item.PrecioBase * porcentajeDescuento / 100);
+                        
+                        <!-- Precio original tachado -->
+                        <div class="text-xs text-gray-400">
+@*                             <b>Precio base anterior: </b> <span class="line-through">₡@item.PrecioBase</span>
+ *@                            <span class="line-through">₡@item.PrecioBase</span>
+
+                        </div>
+                        <!-- Precio con descuento resaltado -->
+                        <div class="badge badge-xl bg-success text-black font-bold">
+                            ₡@precioConDescuento.ToString("N2")
+                        </div>
+
+                    }
+
+                    // Solo mostrar el precio base si no hay promoción
+                    else
+                    {
+                        <!-- Precio -->
+                            <div class="badge badge-outline w-fit">
+@*                                 <b>Precio base:</b> ₡@Html.DisplayFor(m => item.PrecioBase)
+ *@                                ₡@Html.DisplayFor(m => item.PrecioBase)
+
+                            </div>
+                    }
             </div>
 
             <!-- Botón alineado abajo a la derecha -->

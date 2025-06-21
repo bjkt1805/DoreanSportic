@@ -27,12 +27,10 @@
                         %
                     </p>
                     <p class="pb-2 text-xs opacity-60 tracking-wide">
-                        <b>Fecha de inicio: </b>@($"{Model.PorcentajeDescuento:0.#}")
-                        %
+                        <b>Fecha de inicio: </b>@Model.FechaInicio.ToString("dd-MM-yyyy")
                     </p>
                     <p class="pb-2 text-xs opacity-60 tracking-wide">
-                        <b>Fecha de fin: </b>@($"{Model.PorcentajeDescuento:0.#}")
-                        %
+                        <b>Fecha de fin: </b>@Model.FechaFin.ToString("dd-MM-yyyy")
                     </p>
 
 
@@ -52,7 +50,7 @@
         {
             <div class="card bg-base-100 shadow max-h-96 overflow-y-auto w-100">
                 <div class="flex flex-row gap gap-2">
-                    <h2 class="p-5 font-bold">@item.Nombre</h2>
+                    <h2 class="p-5 font-semibold">@item.Nombre</h2>
                        <img style="width:10%; height: 80%"
                              src="data:image/jpeg;base64,@Convert.ToBase64String(item.PrimeraImagen ?? Array.Empty<byte>())"
                              alt="Ropa/accesorios deportivos"

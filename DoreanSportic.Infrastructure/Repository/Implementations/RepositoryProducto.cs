@@ -37,6 +37,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var collection = await _context.Producto
                     .Include(p => p.ImagenesProducto)
                     .Include(p => p.IdMarcaNavigation)
+                    .Include(p => p.IdPromocion)
                     .Where(p => p.IdCategoria == idCategoria)
                     .ToListAsync();
 
