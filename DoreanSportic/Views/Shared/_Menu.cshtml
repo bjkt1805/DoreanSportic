@@ -14,9 +14,13 @@
 
 
                 <!--Productos-->
-                <li class="bg-
-">
+                <li>
                     <a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
+                </li>
+
+                <!--Resennas-->
+                <li>
+                    <a class="btn btn-ghost" asp-area="" asp-controller="ResennaValoracion" asp-action="Index">Reseñas</a>
                 </li>
 
                 <!--Mantenimientos-->
@@ -30,8 +34,10 @@
                 <li class="bg-[#004AAD]"><a class="btn btn-ghost">Procesos</a></li>
             </ul>
         </div>
+        <!--Logo de la aplicación-->
         <a class="btn btn-ghost text-xl" asp-area="" asp-controller="Home" asp-action="Index">
-            <img src="./Assets/DoreanSporticLogo.png" style="height: 100%; width: auto;border-radius: 100%" />
+            <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
+                 style="height: 100%; width: auto; border-radius: 100%" />
             <span>Dorean Sportic</span>
         </a>
     </div>
@@ -43,6 +49,9 @@
 
             <!--Dropdown Productos-->
             <li><a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">Productos </a></li>
+
+            <!--Dropdown Reseñas-->
+            <li><a class="btn btn-ghost" asp-area="" asp-controller="ResennaValoracion" asp-action="Index">Reseñas </a></li>
 
             <!--Dropdown Mantenimientos-->
             <li>

@@ -17,20 +17,32 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
-        public Task<ResennaValoracion> FindByIdAsync(int id)
+        public async Task<ResennaValoracion> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            //Obtener una Resenna (Eager loading con el nombre del producto)
+            var @object = await _context.ResennaValoracion
+                                .Where(x => x.Id == id)
+                                .Include(r => r.IdUsuarioNavigation)
+                                .Include(r => r.IdProductoNavigation)
+                                    .ThenInclude(p => p.ImagenesProducto)
+                                .FirstAsync();
+            return @object!;
         }
         public async Task<ICollection<ResennaValoracion>> ListAsync()
         {
             //Select * from ResennaValoracion
-            var collection = await _context.Set<ResennaValoracion>().ToListAsync();
+            var collection = await _context.ResennaValoracion
+                    .Include(r => r.IdUsuarioNavigation)
+                    .Include(r => r.IdProductoNavigation)
+                    .OrderByDescending(r => r.FechaResenna) // Ordenar por fecha descendente
+                    .ToListAsync();
             return collection;
+
         }
 
         public async Task<ICollection<ResennaValoracion>> GetResennasPorProducto(int idProducto)
         {
-            //Select * from ResennaValoracion
+            //Select * from ResennaValoracion where idProducto = idProducto
             var collection = await _context.ResennaValoracion
                     .Include(r => r.IdUsuarioNavigation)
                     .Include(r => r.IdProductoNavigation)

@@ -50,6 +50,7 @@ namespace DoreanSportic.Application.Services.Implementations
             //var collection = _mapper.Map<ICollection<ProductoDTO>>(list);
 
             // Para poder traer la primera imagen del producto
+            // (la cual no está mappeada en la base de datos)
             var collection = list.Select(p => new ProductoDTO
             {
                 Id = p.Id,
@@ -62,7 +63,7 @@ namespace DoreanSportic.Application.Services.Implementations
                 IdCategoria = p.IdCategoria,
                 Estado = p.Estado,
                 // Traer la primera imagen del producto
-                PrimeraImagen = p.ImagenesProducto.FirstOrDefault()?.Imagen 
+                PrimeraImagen = p.PrimeraImagen
             }).ToList();
 
             return collection;

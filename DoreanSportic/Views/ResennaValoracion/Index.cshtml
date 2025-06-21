@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="font-bold">Listado de reseñas</h1>
+<br />
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+
+<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+    <table class="table">
+        <!-- head -->
+        <thead class="bg-primary text-white">
+            <tr>
+@*                 <th></th>
+ *@                <th>Usuario</th>
+                <th>Producto</th>
+                <th>Calificación</th>
+@*                 <th>Comentario</th>
+ *@                <th>Fecha de la reseña</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+@*                     <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td> *@
+                    <td class="font-bold">
+                        @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Calificacion)
+                    </td>
+@*                     <td>
+                        @Html.DisplayFor(modelItem => item.Comentario)
+                    </td> *@
+                    <td class="text-center">
+                        @item.FechaResenna.ToString("dd-MM-yyyy")
+                    </td>
+                    <td>
+@*                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+ *@@*                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+ *@                        <!-- Botón alineado abajo a la derecha -->
+                        <div class="mt-auto flex justify-end">
+                            <a class="btn btn-soft btn-primary text-white"
+                               asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
+                        </div>
+@*                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+ *@                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
