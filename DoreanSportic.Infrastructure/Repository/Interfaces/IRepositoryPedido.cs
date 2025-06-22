@@ -10,6 +10,6 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
     public interface IRepositoryPedido
     {
         Task<ICollection<Pedido>> ListAsync();
-        Task<Pedido> FindByIdAsync(int id);
+        Task<Pedido> FindByIdAsync(string id);
     }
 }

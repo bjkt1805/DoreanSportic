@@ -1,0 +1,38 @@
+PARA RECONSTRUIR RELACIÓN ENTRE EL PRODUCTO Y SUS IMÁGENES
+
+- En el dbcontext: 
+
+        modelBuilder.Entity<ImagenProducto>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(20)
+                .HasColumnName("descripcion");
+            
+            entity.Property(e => e.Estado).HasColumnName("estado");
+            
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
+            
+            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            
+            entity.Property(e => e.Imagen).HasColumnName("imagen");
+
+            
+            entity.HasOne(d => d.IdProductoNavigation)
+                .WithMany(p => p.ImagenesProducto)
+                .HasForeignKey(d => d.IdProducto)
+                .HasConstraintName("FK_ImagenProducto_Producto");
+        });
+	
+- En producto (Infrastructure - Model) 
+	// Aplicar data notation NotMapped para hacerle entender a EF Core que esta propiedad no es mapeada de la base de datos.
+    //[NotMapped]
+    //public byte[]? PrimeraImagen { get; set; }
+
+    [NotMapped]
+    public byte[]? PrimeraImagen => ImagenesProducto?.FirstOrDefault()?.Imagen;
+	
+	public virtual ICollection<ImagenProducto> ImagenesProducto { get; set; } = new List<ImagenProducto>();

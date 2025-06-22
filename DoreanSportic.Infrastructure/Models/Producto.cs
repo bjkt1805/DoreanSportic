@@ -44,6 +44,4 @@ public partial class Producto
     public byte[]? PrimeraImagen => ImagenesProducto?.FirstOrDefault()?.Imagen;
 
     public virtual ICollection<ImagenProducto> ImagenesProducto { get; set; } = new List<ImagenProducto>();
-
-
 }

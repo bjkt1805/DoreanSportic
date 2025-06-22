@@ -9,8 +9,6 @@ public partial class MetodoPago
 
     public string Nombre { get; set; } = null!;
 
-    public string? Descripcion { get; set; }
-
     public bool Estado { get; set; }
 
     public virtual ICollection<Pedido> Pedido { get; set; } = new List<Pedido>();

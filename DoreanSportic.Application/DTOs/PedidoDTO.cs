@@ -9,19 +9,19 @@ namespace DoreanSportic.Application.DTOs;
 
 public record PedidoDTO
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = null!;
 
     public int IdCliente { get; set; }
 
     public DateTime FechaPedido { get; set; }
 
-    public string EstadoPedido { get; set; } = null!;
+    public string? EstadoPedido { get; set; }
 
-    public decimal SubTotal { get; set; }
+    public decimal? SubTotal { get; set; }
 
-    public decimal Impuesto { get; set; }
+    public decimal? Impuesto { get; set; }
 
-    public decimal Total { get; set; }
+    public decimal? Total { get; set; }
 
     public int? IdMetodoPago { get; set; }
 

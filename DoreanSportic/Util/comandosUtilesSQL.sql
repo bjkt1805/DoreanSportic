@@ -41,6 +41,28 @@ ALTER TABLE ResennaValoracion
 ADD CONSTRAINT chk_columna_rango
 CHECK (calificacion BETWEEN 1 AND 5);
 
+-- CREAR UN TRIGGER PARA QUE EL ID DE PEDIDO SEA YYYYMMDDhhmmss
+
+CREATE TRIGGER trg_GenerarIdPedido
+ON Pedido
+INSTEAD OF INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @fechaActual VARCHAR(14) = CONVERT(VARCHAR(14), GETDATE(), 112) + 
+                                       RIGHT('0' + CAST(DATEPART(HOUR, GETDATE()) AS VARCHAR), 2) + 
+                                       RIGHT('0' + CAST(DATEPART(MINUTE, GETDATE()) AS VARCHAR), 2) + 
+                                       RIGHT('0' + CAST(DATEPART(SECOND, GETDATE()) AS VARCHAR), 2);
+
+    INSERT INTO Pedido (
+        id, idCliente, estadoPedido, fechaPedido, estado, total, idMetodoPago
+    )
+    SELECT 
+        @fechaActual, idCliente, estadoPedido, fechaPedido, estado, total, idMetodoPago
+    FROM inserted;
+END;
+
 
 
 

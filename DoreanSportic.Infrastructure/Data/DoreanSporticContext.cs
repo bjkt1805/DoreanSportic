@@ -171,6 +171,10 @@ public partial class DoreanSporticContext : DbContext
         {
             entity.HasKey(e => e.Id);
 
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(20)
+                .HasColumnName("descripcion");
+
             entity.Property(e => e.Estado).HasColumnName("estado");
 
             entity.Property(e => e.Id)
@@ -181,12 +185,12 @@ public partial class DoreanSporticContext : DbContext
 
             entity.Property(e => e.Imagen).HasColumnName("imagen");
 
+
             entity.HasOne(d => d.IdProductoNavigation)
                 .WithMany(p => p.ImagenesProducto)
                 .HasForeignKey(d => d.IdProducto)
                 .HasConstraintName("FK_ImagenProducto_Producto");
         });
-
 
         modelBuilder.Entity<Marca>(entity =>
         {
@@ -205,7 +209,6 @@ public partial class DoreanSporticContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__MetodoPa__3213E83FAE32F481");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Descripcion).HasColumnName("descripcion");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
@@ -214,9 +217,12 @@ public partial class DoreanSporticContext : DbContext
 
         modelBuilder.Entity<Pedido>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Pedido__3213E83F826C3F11");
+            entity.ToTable(tb => tb.HasTrigger("trg_GenerarIdPedido"));
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("id");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.EstadoPedido)
                 .HasMaxLength(50)
@@ -258,7 +264,10 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.IdEmpaque).HasColumnName("idEmpaque");
-            entity.Property(e => e.IdPedido).HasColumnName("idPedido");
+            entity.Property(e => e.IdPedido)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("idPedido");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.PedidoDetalle)
@@ -267,6 +276,7 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdPedidoNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdPedido)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PedidoDetalle_Pedido");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.PedidoDetalle)

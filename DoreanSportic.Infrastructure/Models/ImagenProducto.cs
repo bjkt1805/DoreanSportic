@@ -9,7 +9,9 @@ public partial class ImagenProducto
 
     public int IdProducto { get; set; }
 
-    public byte[] Imagen { get; set; } = null!;
+    public byte[]? Imagen { get; set; }
+
+    public string? Descripcion { get; set; }
 
     public bool Estado { get; set; }
 

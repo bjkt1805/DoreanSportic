@@ -1,0 +1,97 @@
+﻿@model DoreanSportic.Application.DTOs.PedidoDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="pb-4">
+    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+</div>
+
+<div class="max-w-4xl mx-auto p-6 bg-white text-slate-500 shadow-md rounded mt-10 border rounded font-sans">
+    <!-- Header -->
+    <div class="border-b pb-8 mb-8 flex items-center">
+        <div class="flex-1 text-left p-2">
+            <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
+                 alt="Company Logo" class="h-10 w-25 mr-4">
+            <p class="text-sm text-slate-500">123 Business Street, City, Country</p>
+            <p class="text-sm text-slate-500">Phone: (123) 456-7890</p>
+            <p class="text-sm text-slate-500">Email: contact@company.com</p>
+        </div>
+        <h1 class="pb-2 text-4xl font-bold text-slate-400 uppercase flex-1 text-right">Factura</h1>
+    </div>
+
+    <div class="p-4 mb-4 flex items-start">
+        <!-- Información del cliente -->
+        <div class="mb-4">
+            <p class="text-sm text-slate-500">
+                <b>Pedido #</b>:@Html.DisplayFor(model => model.Id)
+            </p>
+            <h2 class="font-bold text-slate-700">Información del cliente</h2>
+            <p class="pl-2 text-slate-600">Client Name</p>
+            <p class="text-sm text-slate-500">Client Address</p>
+            <p class="text-sm text-slate-500">Client City, Country</p>
+            <p class="text-sm text-slate-500">Phone: (987) 654-3210</p>
+            <p class="text-sm text-slate-500">Email: client@example.com</p>
+        </div>
+
+        <!-- Información del pedido/factura -->
+        <div class="ml-4 mb-4 text-right flex-1">
+            <p class="text-sm text-slate-500">Date: 2024-10-10</p>
+            <p class="text-sm text-slate-500">Due Date: 2024-11-10</p>
+        </div>
+    </div>
+
+    <!-- Invoice Table -->
+    <table class="min-w-full table-auto mb-24">
+        <thead>
+            <tr class="bg-slate-100">
+                <th class="px-4 py-2 text-left">Item</th>
+                <th class="px-4 py-2 text-left">Description</th>
+                <th class="px-4 py-2 text-left">Qty</th>
+                <th class="px-4 py-2 text-left">Price</th>
+                <th class="px-4 py-2 text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border px-4 py-2">Service A</td>
+                <td class="border px-4 py-2">Web Design Service</td>
+                <td class="border px-4 py-2">1</td>
+                <td class="border px-4 py-2">$100.00</td>
+                <td class="border px-4 py-2 text-right">$100.00</td>
+            </tr>
+            <tr>
+                <td class="border px-4 py-2">Service B</td>
+                <td class="border px-4 py-2">SEO Optimization</td>
+                <td class="border px-4 py-2">2</td>
+                <td class="border px-4 py-2">$50.00</td>
+                <td class="border px-4 py-2 text-right">$100.00</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="border px-4 py-2 text-right">Subtotal</td>
+                <td class="border px-4 py-2 text-right">$200.00</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="border px-4 py-2 text-right">Tax (10%)</td>
+                <td class="border px-4 py-2 text-right">$20.00</td>
+            </tr>
+            <tr class="font-bold">
+                <td colspan="4" class="border px-4 py-2 text-right">Total Due</td>
+                <td class="border px-4 py-2 text-right">$220.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mb-6"></div>
+
+    <!-- Footer -->
+    <div class="text-sm text-slate-500 border-t pt-8 mt-8">
+        <p>Payment is due within 30 days of receipt.</p>
+        <p>Bank Account: 123456789, Routing Number: 000111222</p>
+        <p>Thank you for your business!</p>
+        <p>Template by <a href="https://themelize.me/">Themelize.me!</a></p>
+    </div>
+</div>
+
+

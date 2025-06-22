@@ -35,6 +35,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             //Select * from Producto where idCategoria = @idCategoria
             //Consulta LINQ
             var collection = await _context.Producto
+                    //.Include(p => p.ImagenesProducto)
                     .Include(p => p.ImagenesProducto)
                     .Include(p => p.IdMarcaNavigation)
                     .Include(p => p.IdPromocion)
