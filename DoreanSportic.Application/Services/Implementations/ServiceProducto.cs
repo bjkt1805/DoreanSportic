@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace DoreanSportic.Application.Services.Implementations
 {
     public class ServiceProducto : IServiceProducto
@@ -70,9 +71,19 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
-        public Task UpdateAsync(int id, ProductoDTO dto, string[] selectedCategorias)
+        public async Task<int> AddAsync(ProductoDTO dto)
         {
-            throw new NotImplementedException();
+            var objectMapped = _mapper.Map<Producto>(dto);
+            return await _repository.AddAsync(objectMapped);
+        }
+
+        public async Task UpdateAsync(int id, ProductoDTO dto)
+        {
+            //Obtener el modelo original a actualizar
+            var @object = await _repository.FindByIdAsync(id);
+            //       source, destination
+            var entity = _mapper.Map(dto, @object!);
+            await _repository.UpdateAsync(entity);
         }
     }
 }

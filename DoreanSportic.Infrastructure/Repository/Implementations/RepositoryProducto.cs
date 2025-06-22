@@ -56,5 +56,33 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return @object!;
         }
 
+        public async Task<int> AddAsync(Producto entity)
+        {
+            //Relación de muchos a muchos solo con llave primaria compuesta
+            //var categorias = await getCategorias(selectedCategorias);
+            //entity.IdCategoria = categorias;
+
+            // Añadir el producto a la base de datos
+            await _context.Set<Producto>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+        public async Task UpdateAsync(Producto entity)
+        {
+            //Las relaciones a actualizar depende de la consulta utilizada en el servicio
+
+            // Asegurar que la relación con Autor se mantenga
+            //var autor = await _context.Set<Autor>().FindAsync(entity.IdAutor);
+            //entity.IdAutorNavigation = autor!;
+
+            ////Relación de muchos a muchos solo con llave primaria compuesta
+            //var nuevasCategorias = await getCategorias(selectedCategorias);
+            //entity.IdCategoria.Clear();// Eliminar todas las categorías actuales
+            ////Asignar las categorias actualizadas
+            //entity.IdCategoria = nuevasCategorias;
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

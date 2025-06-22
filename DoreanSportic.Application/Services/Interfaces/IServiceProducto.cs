@@ -19,11 +19,14 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Listado de producto por ID (detalle)
         Task<ProductoDTO> FindByIdAsync(int id);
 
+        // Añadir un nuevo producto
+        Task<int> AddAsync(ProductoDTO dto);
+
         // Borrar el producto (por su ID)
         Task DeleteAsync(int id);
 
         // Actualizar el producto
-        Task UpdateAsync(int id, ProductoDTO dto, string[] selectedCategorias);
+        Task UpdateAsync(int id, ProductoDTO dto);
 
 
     }
