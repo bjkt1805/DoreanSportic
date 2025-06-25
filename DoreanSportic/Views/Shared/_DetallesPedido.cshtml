@@ -1,34 +1,41 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.PedidoDetalleDTO>
 
-<!-- Tabla detalles de productos -->
+<h2 class="p-2 font-bold text-slate-700">Detalle de productos</h2>
+
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
     <table class="table">
-
-        <!-- head -->
         <thead class="bg-primary text-white">
             <tr>
                 <th class="text-center">Nombre</th>
                 <th class="text-center">Cantidad</th>
-                <th class="text-center">Precio unitario (₡)</th>
+                <th class="text-center">Precio unitario</th>
                 <th class="text-center">Subtotal</th>
             </tr>
         </thead>
         <tbody>
+            @{
+                decimal subTotalProducto = 0;
+            }
+
             @foreach (var item in Model)
             {
-                <tr>
+                var subtotal = item.IdProductoNavigation.PrecioBase * item.Cantidad;
+                subTotalProducto += subtotal;
 
-                    <td class="text-center">
+                <tr>
+                    <td class="text-center p-0">
                         @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
                     </td>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.Cantidad)
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.PrecioBase)
+                        ₡@item.IdProductoNavigation.PrecioBase.ToString("N2")
+                    </td>
+                    <td class="text-center">
+                        ₡@subtotal.ToString("N2")
                     </td>
                 </tr>
-
             }
         </tbody>
     </table>
@@ -36,38 +43,72 @@
 
 <br />
 
-<h2 class="p-2 font-bold text-slate-700">Detalles de productos personalizados</h2>
+<h2 class="p-2 font-bold text-slate-700">Detalle de productos personalizados</h2>
 
-<!-- Tabla detalles de productos personalizados -->
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
     <table class="table">
-
-        <!-- head -->
         <thead class="bg-primary text-white">
             <tr>
                 <th class="text-center">Nombre</th>
-                <th class="text-center">Cantidad</th>
+                <th class="text-center">Precio base</th>
                 <th class="text-center">Criterios del producto</th>
                 <th class="text-center">Total</th>
             </tr>
         </thead>
         <tbody>
+            @{
+                decimal subTotalProductoPersonalizado = 0;
+            }
+
             @foreach (var item in Model)
             {
-                <tr>
+                decimal mensajePersonalizado = 1000.00M;
+                decimal foto = 1500.00M;
+                decimal totalProductoPersonalizado = item.IdProductoNavigation.PrecioBase + mensajePersonalizado + foto;
+                subTotalProductoPersonalizado += totalProductoPersonalizado;
 
+                <tr>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.Cantidad)
+                        ₡@item.IdProductoNavigation.PrecioBase.ToString("N2")
+                    </td>
+                    <td class="text-left">
+                        <div class="flex flex-col">
+                            <p><b>Tipo de empaque: </b>@Html.DisplayFor(modelItem => item.IdEmpaqueNavigation.TipoEmpaque)</p>
+                            <p><b>Precio base: </b>₡@item.IdEmpaqueNavigation?.PrecioBase?.ToString("N2")</p>
+                            <p><b>Mensaje personalizado: </b>₡@mensajePersonalizado.ToString("N2")</p>
+                            <p><b>Foto: </b>₡@foto.ToString("N2")</p>
+                        </div>
                     </td>
                     <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.PrecioBase)
+                        ₡@totalProductoPersonalizado.ToString("N2")
                     </td>
                 </tr>
-
             }
+
+            @{
+                var subtotalGeneral = subTotalProducto + subTotalProductoPersonalizado;
+                var impuesto = subtotalGeneral * 0.13M;
+                var total = subtotalGeneral + impuesto;
+            }
+
+            <tr>
+                <td colspan="4" class="text-end fw-bold">
+                    <b>Subtotal:</b> ₡@subtotalGeneral.ToString("N2")
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-end">
+                    <b>Impuesto (IVA 13%): </b> ₡@impuesto.ToString("N2")
+                </td>
+            </tr>
+            <tr class="bg-primary text-white">
+                <td colspan="4" class="text-end fw-bold">
+                    <b>Total a pagar: </b>₡@total.ToString("N2")
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

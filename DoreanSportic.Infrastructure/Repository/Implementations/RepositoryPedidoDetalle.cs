@@ -32,6 +32,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             //Select * from ResennaValoracion where idProducto = idProducto
             var collection = await _context.PedidoDetalle
                     .Include(r => r.IdProductoNavigation)
+                    .Include(r => r.IdEmpaqueNavigation)
                     .Where(r => r.IdPedido == idPedido)
                     .ToListAsync();
 
