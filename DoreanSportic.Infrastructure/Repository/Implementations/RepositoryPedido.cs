@@ -23,6 +23,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var @object = await _context.Pedido
                                 .Where(x => x.Id == id)
                                 .Include(p => p.PedidoDetalle)
+                                .Include(p => p.IdClienteNavigation)
+                                .Include(p => p.PedidoDetalle)
                                 .FirstAsync();
             return @object!;
         }

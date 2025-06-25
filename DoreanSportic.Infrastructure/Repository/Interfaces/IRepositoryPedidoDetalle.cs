@@ -11,5 +11,7 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
     {
         Task<ICollection<PedidoDetalle>> ListAsync();
         Task<PedidoDetalle> FindByIdAsync(int id);
+        Task<ICollection<ResennaValoracion>> GetResennasPorProducto(int idProducto);
+
     }
 }

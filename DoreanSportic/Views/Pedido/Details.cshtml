@@ -14,83 +14,89 @@
         <div class="flex-1 text-left p-2">
             <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
                  alt="Company Logo" class="h-10 w-25 mr-4">
-            <p class="text-sm text-slate-500">123 Business Street, City, Country</p>
-            <p class="text-sm text-slate-500">Phone: (123) 456-7890</p>
-            <p class="text-sm text-slate-500">Email: contact@company.com</p>
+            <p class="text-sm text-slate-500"><b>Dirección: </b>San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
+            <p class="text-sm text-slate-500"><b>Teléfono: </b>(123) 456-7890</p>
+            <p class="text-sm text-slate-500"><b>Email:</b> contact@company.com</p>
         </div>
         <h1 class="pb-2 text-4xl font-bold text-slate-400 uppercase flex-1 text-right">Factura</h1>
     </div>
 
-    <div class="p-4 mb-4 flex items-start">
+    <div class="p-4 mb-4 flex flex-row gap gap-5 items-start">
         <!-- Información del cliente -->
         <div class="mb-4">
             <p class="text-sm text-slate-500">
-                <b>Pedido #</b>:@Html.DisplayFor(model => model.Id)
+                <b>Pedido #: </b><u>@Html.DisplayFor(model => model.Id)</u>
             </p>
+            <br /><br />
             <h2 class="font-bold text-slate-700">Información del cliente</h2>
-            <p class="pl-2 text-slate-600">Client Name</p>
-            <p class="text-sm text-slate-500">Client Address</p>
-            <p class="text-sm text-slate-500">Client City, Country</p>
-            <p class="text-sm text-slate-500">Phone: (987) 654-3210</p>
-            <p class="text-sm text-slate-500">Email: client@example.com</p>
+            <div class="p-1">
+                <p class="text-slate-600"><b>Nombre: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Nombre)</p>
+                <p class="text-sm text-slate-500"><b>Dirección: </b>@Html.DisplayFor(model => model.IdClienteNavigation.DireccionEnvio)</p>
+                <p class="text-sm text-slate-500"><b>Nombre: </b>Client City, Country</p>
+                <p class="text-sm text-slate-500"><b>Nombre: </b>Phone: (987) 654-3210</p>
+                <p class="text-sm text-slate-500"><b>Nombre: </b>Email: client@example.com</p>
+            </div>
+
         </div>
 
         <!-- Información del pedido/factura -->
-        <div class="ml-4 mb-4 text-right flex-1">
-            <p class="text-sm text-slate-500">Date: 2024-10-10</p>
-            <p class="text-sm text-slate-500">Due Date: 2024-11-10</p>
+        <div class="p-8 text-right flex-1 items-end">
+            <p class="text-sm text-slate-500"><b>Fecha del pedido: </b>@Model.FechaPedido.ToString("dd/MM/yyyy")</p>
+
+            <!-- Código para extraer la hora desde el id del pedido el cual trae la hora, minuto y segundo de creación-->
+            @{
+
+                //extraer los útlimos 6 caracteres del id del pedido
+                string timepart = Model.Id.Substring(Model.Id.Length - 6);
+
+                //Separar en hora, minuto y segundos la variable
+                string hora = timepart.Substring(0, 2);
+                string minutos = timepart.Substring(2, 2);
+                string segundos = timepart.Substring(4, 2);
+
+                //Darle formato a la hora 
+                string horaFormateada = $"{hora}:{minutos}:{segundos}";
+            }
+
+            <p class="text-sm text-slate-500"><b>Hora de emisión (24H): </b>@horaFormateada</p>
         </div>
     </div>
 
-    <!-- Invoice Table -->
-    <table class="min-w-full table-auto mb-24">
-        <thead>
-            <tr class="bg-slate-100">
-                <th class="px-4 py-2 text-left">Item</th>
-                <th class="px-4 py-2 text-left">Description</th>
-                <th class="px-4 py-2 text-left">Qty</th>
-                <th class="px-4 py-2 text-left">Price</th>
-                <th class="px-4 py-2 text-right">Total</th>
+    <h2 class="p-2 font-bold text-slate-700">Detalles de productos</h2>
+
+    <!-- Tabla detalles de productos -->
+    <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+    <table class="table">
+
+        <!-- head -->
+        <thead class="bg-primary text-white">
+            <tr>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Precio unitario</th>
+                <th class="text-center">Subtotal</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="border px-4 py-2">Service A</td>
-                <td class="border px-4 py-2">Web Design Service</td>
-                <td class="border px-4 py-2">1</td>
-                <td class="border px-4 py-2">$100.00</td>
-                <td class="border px-4 py-2 text-right">$100.00</td>
-            </tr>
-            <tr>
-                <td class="border px-4 py-2">Service B</td>
-                <td class="border px-4 py-2">SEO Optimization</td>
-                <td class="border px-4 py-2">2</td>
-                <td class="border px-4 py-2">$50.00</td>
-                <td class="border px-4 py-2 text-right">$100.00</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="border px-4 py-2 text-right">Subtotal</td>
-                <td class="border px-4 py-2 text-right">$200.00</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="border px-4 py-2 text-right">Tax (10%)</td>
-                <td class="border px-4 py-2 text-right">$20.00</td>
-            </tr>
-            <tr class="font-bold">
-                <td colspan="4" class="border px-4 py-2 text-right">Total Due</td>
-                <td class="border px-4 py-2 text-right">$220.00</td>
-            </tr>
+            @foreach (var item in Model.PedidoDetalle)
+            {                 
+                <tr>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                    </td>
+                </tr>
+                        
+            }
         </tbody>
     </table>
-
-    <div class="mb-6"></div>
+</div>
 
     <!-- Footer -->
     <div class="text-sm text-slate-500 border-t pt-8 mt-8">
-        <p>Payment is due within 30 days of receipt.</p>
-        <p>Bank Account: 123456789, Routing Number: 000111222</p>
-        <p>Thank you for your business!</p>
-        <p>Template by <a href="https://themelize.me/">Themelize.me!</a></p>
+        <p>Tiene 30 días naturales para realizar el pago del recibo</p>
+        <p>Cuenta de banco: 123456789</p>
+        <p>¡Gracias por su compra!</p>
     </div>
 </div>
 

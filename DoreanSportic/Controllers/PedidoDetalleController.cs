@@ -7,35 +7,35 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoreanSportic.Web.Controllers
 {
-    public class ResennaValoracionController : Controller
+    public class PedidoDetalleController : Controller
     {
-        private readonly IServiceResennaValoracion _serviceResennaValoracion;
+        private readonly IServicePedidoDetalle _servicePedidoDetalle;
 
-        public ResennaValoracionController(IServiceResennaValoracion serviceProducto)
+        public PedidoDetalleController(IServicePedidoDetalle servicePedidoDetalle)
         {
-            _serviceResennaValoracion = serviceProducto;
+            _servicePedidoDetalle = servicePedidoDetalle;
 
         }
 
-        // GET: ResennaValoracionController
+        // GET: PedidoDetalleController
         public async Task<ActionResult> Index()
         {
-            var collection = await _serviceResennaValoracion.ListAsync();
+            var collection = await _servicePedidoDetalle.ListAsync();
             return View(collection);
         }
 
-        // GET: ProductoController
+        // GET: PedidoController
         [HttpGet]
-        public async Task<ActionResult> GetResennasPorProducto(int idProducto)
+        public async Task<ActionResult> GetDetallesPorPedido(string idPedido)
         {
             // Listar las reseñas asociadas a un producto
-            var collection = await _serviceResennaValoracion.GetResennasPorProducto(idProducto);
+            var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);
 
             return PartialView("_ResennasProducto", collection);
         }
         public async Task<ActionResult> Details(int id)
         {
-            var @object = await _serviceResennaValoracion.FindByIdAsync(id);
+            var @object = await _servicePedidoDetalle.FindByIdAsync(id);
             return View(@object);
         }
     }

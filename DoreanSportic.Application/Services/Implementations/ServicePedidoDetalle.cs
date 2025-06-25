@@ -35,5 +35,15 @@ namespace DoreanSportic.Application.Services.Implementations
             // Return lista
             return collection;
         }
+
+        public async Task<ICollection<PedidoDetalleDTO>> GetDetallesPorPedido(string idProducto)
+        {
+            //Obtener datos del repositorio
+            var list = await _repository.GetDetallesPorPedido(idProducto);
+            // Map List<PedidoDetalle> a ICollection<PedidoDetalleDTO>
+            var collection = _mapper.Map<ICollection<PedidoDetalleDTO>>(list);
+            // Return lista
+            return collection;
+        }
     }
 }
