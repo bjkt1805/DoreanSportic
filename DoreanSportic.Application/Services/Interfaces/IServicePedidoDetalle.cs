@@ -12,7 +12,7 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<ICollection<PedidoDetalleDTO>> ListAsync();
         Task<PedidoDetalleDTO> FindByIdAsync(int id);
 
-        Task<ICollection<PedidoDetalle>> GetDetallesPorPedido(string idPedido);
+        Task<ICollection<PedidoDetalleDTO>> GetDetallesPorPedido(string idPedido);
 
     }
 }

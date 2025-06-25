@@ -31,7 +31,7 @@ namespace DoreanSportic.Web.Controllers
             // Listar las reseñas asociadas a un producto
             var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);
 
-            return PartialView("_ResennasProducto", collection);
+            return PartialView("_DetallesPedido", collection);
         }
         public async Task<ActionResult> Details(int id)
         {

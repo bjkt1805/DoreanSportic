@@ -1,0 +1,29 @@
+﻿@model IEnumerable<DoreanSportic.Application.DTOs.PedidoDetalleDTO>
+
+<!-- Tabla detalles de productos -->
+<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+    <table class="table">
+
+        <!-- head -->
+        <thead class="bg-primary text-white">
+            <tr>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Precio unitario</th>
+                <th class="text-center">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>

@@ -11,13 +11,13 @@ public partial class PedidoDetalle
 
     public int IdProducto { get; set; }
 
-    public int IdEmpaque { get; set; }
+    public int? IdEmpaque { get; set; }
 
     public int Cantidad { get; set; }
 
     public bool Estado { get; set; }
 
-    public virtual Empaque IdEmpaqueNavigation { get; set; } = null!;
+    public virtual Empaque? IdEmpaqueNavigation { get; set; }
 
     public virtual Pedido IdPedidoNavigation { get; set; } = null!;
 

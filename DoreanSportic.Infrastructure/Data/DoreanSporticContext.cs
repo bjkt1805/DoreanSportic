@@ -272,6 +272,7 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdEmpaque)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_PedidoDetalle_Empaque");
 
             entity.HasOne(d => d.IdPedidoNavigation).WithMany(p => p.PedidoDetalle)
