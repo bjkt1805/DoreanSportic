@@ -9,7 +9,7 @@
             <tr>
                 <th class="text-center">Nombre</th>
                 <th class="text-center">Cantidad</th>
-                <th class="text-center">Precio unitario</th>
+                <th class="text-center">Precio unitario (₡)</th>
                 <th class="text-center">Subtotal</th>
             </tr>
         </thead>
@@ -20,6 +20,50 @@
 
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.PrecioBase)
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<h2 class="p-2 font-bold text-slate-700">Detalles de productos personalizados</h2>
+
+<!-- Tabla detalles de productos personalizados -->
+<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+    <table class="table">
+
+        <!-- head -->
+        <thead class="bg-primary text-white">
+            <tr>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Criterios del producto</th>
+                <th class="text-center">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.PrecioBase)
                     </td>
                 </tr>
 

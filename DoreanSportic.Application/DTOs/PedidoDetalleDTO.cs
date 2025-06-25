@@ -11,7 +11,7 @@ public record PedidoDetalleDTO
 {
     public int Id { get; set; }
 
-    public int IdPedido { get; set; }
+    public string IdPedido { get; set; } = null!;
 
     public int IdProducto { get; set; }
 
@@ -21,10 +21,7 @@ public record PedidoDetalleDTO
 
     public bool Estado { get; set; }
 
-    //public virtual Empaque IdEmpaqueNavigation { get; set; } = null!;
-
     public virtual Empaque? IdEmpaqueNavigation { get; set; }
-
 
     public virtual Pedido IdPedidoNavigation { get; set; } = null!;
 
