@@ -5,7 +5,7 @@
 }
 
 <!--Toggle para seleccionar entre "Ropa" y "Accesorios"-->
-<div class="w-screen flex justify-center items-center">
+<div class="py-4 w-screen flex justify-center items-center">
     <div class="text-center flex flex-row gap-2 justify-center">
         <p class="text-purple-600"><b>Ropa</b> </p>
         <input type="checkbox"
@@ -17,7 +17,7 @@
 <br />
 
 <!--Cargar los productos (cards) dependiendo de la categoría del producto-->
-<div id="card-productos-body" class="pl-5 flex flex-wrap gap-4 justify-center">
+<div id="card-productos-body" class="flex flex-wrap gap-4 justify-center">
     @await Html.PartialAsync("_CardsProducto", Model)
 </div>
 
