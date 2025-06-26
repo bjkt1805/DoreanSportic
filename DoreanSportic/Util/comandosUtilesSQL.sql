@@ -29,7 +29,7 @@ UPDATE ImagenProducto
 SET imagen = (
     SELECT BulkData
     FROM OPENROWSET(
-        BULK 'C:\TEMP\ ',
+        BULK 'C:\TEMP\',
         SINGLE_BLOB
     ) AS Imagen (BulkData)
 )

@@ -5,7 +5,7 @@
     var promedioEntero = (int)Math.Floor(promedio); // para estrellas completas
 }
 <div class="flex items-center gap-2 mb-4">
-    <span class="font-bold">PROMEDIO: @promedio.ToString("0.0")</span>
+    <span class="font-bold">PROMEDIO DE VALORACIÓN: @promedio.ToString("0.0")</span>
     <div class="flex gap-1">
         @for (int i = 1; i <= 5; i++)
         {
@@ -28,7 +28,7 @@
 <div class="flex flex-col gap gap-2">
     @foreach (var item in Model)
     {
-        <div class="card bg-base-100 shadow max-h-96 overflow-y-auto">
+        <div class="card bg-base-100 shadow-lg max-h-96 overflow-y-auto">
 
             <div class="card-body">
 
