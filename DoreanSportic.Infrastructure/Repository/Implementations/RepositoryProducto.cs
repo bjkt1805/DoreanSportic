@@ -39,6 +39,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                     .Include(p => p.ImagenesProducto)
                     .Include(p => p.IdMarcaNavigation)
                     .Include(p => p.IdPromocion)
+                    .Include(p => p.IdCategoriaNavigation)
+                    .ThenInclude(c => c.IdPromocion)
                     .Where(p => p.IdCategoria == idCategoria)
                     .ToListAsync();
 

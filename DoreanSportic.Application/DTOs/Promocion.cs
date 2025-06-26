@@ -25,5 +25,7 @@ public record PromocionDTO
 
     public bool Estado { get; set; }
 
+    public virtual ICollection<Categoria> IdCategoria { get; set; } = new List<Categoria>();
+
     public virtual ICollection<Producto> IdProducto { get; set; } = new List<Producto>();
 }

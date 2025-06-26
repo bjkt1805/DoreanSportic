@@ -21,10 +21,18 @@
                 <br />
                 <ul class="list bg-base-100 rounded-box shadow-md">
 
-                    <p class="pb-2 text-xs opacity-60 tracking-wide"><b>Tipo de promoción: </b>por producto</p>
+                    <p class="pb-2 text-xs opacity-60 tracking-wide">@Model.Descripcion</p>
                     <p class="pb-2 text-xs opacity-60 tracking-wide">
-                        <b>Porcentaje de descuento: </b>@($"{Model.PorcentajeDescuento:0.#}")
-                        %
+                        <b>Tipo de promoción: </b>
+                        @{
+                            var tipoPromocion = Model.IdProducto.Any() ? "Por producto" :
+                            Model.IdCategoria.Any() ? "Por categoría" :
+                            "Sin tipo definido";
+                        }
+                        @tipoPromocion
+                    </p>
+                    <p class="pb-2 text-xs opacity-60 tracking-wide">
+                        <b>Porcentaje de descuento: </b>@($"{Model.PorcentajeDescuento:0.#}")%
                     </p>
                     <p class="pb-2 text-xs opacity-60 tracking-wide">
                         <b>Fecha de inicio: </b>@Model.FechaInicio.ToString("dd-MM-yyyy")
@@ -44,21 +52,44 @@
         </div>
     </div>
 
-    <div class="w-100 pl-5">
-        <p class="pb-2 text-xs opacity-60 tracking-wide"><b>Aplica a :</b></p>
-        @foreach (var item in Model.IdProducto)
+    <div class="w-100 pl-5 gap gap-1">
+        <p class="pb-2 text-xs opacity-60 tracking-wide"><b>Aplica a</b></p>
+        @if (Model.IdProducto.Any())
         {
-            <div class="card bg-base-100 shadow-lg max-h-96 overflow-y-auto w-100">
-                <div class="flex flex-row gap gap-2">
-                    <h2 class="p-5 font-semibold">@item.Nombre</h2>
-                       <img style="width:10%; height: 80%"
+            foreach (var item in Model.IdProducto)
+            {
+                <div class="card mb-2 bg-base-100 shadow-lg max-h-96 overflow-y-auto w-100">
+                    <div class="flex flex-row justify-between items-center px-5 py-0">
+                        <h2 class="p-5 font-semibold">@item.Nombre</h2>
+                        <img style="width:10%; height: 80%"
                              src="data:image/jpeg;base64,@Convert.ToBase64String(item.PrimeraImagen ?? Array.Empty<byte>())"
                              alt="Ropa/accesorios deportivos"
-                             class=" h-full object-contain rounded-xl pt-3" />
+                             class="items-end h-full object-contain rounded-xl pt-3" />
+                    </div>
                 </div>
-
-
-            </div>
+            }
+        }
+        else if (Model.IdCategoria.Any())
+        {
+            foreach (var categoria in Model.IdCategoria)
+            {
+                foreach (var producto in categoria.Producto)
+                {
+                    <div class="card mb-2 bg-base-100 shadow-lg max-h-96 overflow-y-auto w-100">
+                        <div class="flex flex-row justify-between items-center px-5 py-0">
+                            <h2 class="p-5 font-semibold">@producto.Nombre</h2>
+                            <img style="width:10%; height: 80%"
+                                 src="data:image/jpeg;base64,@Convert.ToBase64String(producto.PrimeraImagen ?? Array.Empty<byte>())"
+                                 alt="Ropa/accesorios deportivos"
+                                 class="items-end h-full object-contain rounded-xl pt-3" />
+                        </div>
+                    </div>
+                }
+            }
+        }
+        else
+        {
+            <p class="text-xs text-gray-500">No hay productos asociados a esta promoción.</p>
         }
     </div>
 

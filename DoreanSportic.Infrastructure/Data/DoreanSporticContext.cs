@@ -353,6 +353,25 @@ public partial class DoreanSporticContext : DbContext
                 .HasColumnType("decimal(5, 2)")
                 .HasColumnName("porcentajeDescuento");
 
+            entity.HasMany(d => d.IdCategoria).WithMany(p => p.IdPromocion)
+                .UsingEntity<Dictionary<string, object>>(
+                    "PromocionCategoria",
+                    r => r.HasOne<Categoria>().WithMany()
+                        .HasForeignKey("IdCategoria")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Promocion_Categoria_Categoría"),
+                    l => l.HasOne<Promocion>().WithMany()
+                        .HasForeignKey("IdPromocion")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_Promocion_Categoria_Promocion"),
+                    j =>
+                    {
+                        j.HasKey("IdPromocion", "IdCategoria");
+                        j.ToTable("Promocion_Categoria");
+                        j.IndexerProperty<int>("IdPromocion").HasColumnName("idPromocion");
+                        j.IndexerProperty<int>("IdCategoria").HasColumnName("idCategoria");
+                    });
+
             entity.HasMany(d => d.IdProducto).WithMany(p => p.IdPromocion)
                 .UsingEntity<Dictionary<string, object>>(
                     "PromocionProducto",

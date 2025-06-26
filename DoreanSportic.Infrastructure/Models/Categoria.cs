@@ -12,4 +12,6 @@ public partial class Categoria
     public bool Estado { get; set; }
 
     public virtual ICollection<Producto> Producto { get; set; } = new List<Producto>();
+
+    public virtual ICollection<Promocion> IdPromocion { get; set; } = new List<Promocion>();
 }

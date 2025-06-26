@@ -22,6 +22,9 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             //Obtener una Promocion (Eager loading con los productos que tienen la promoción)
             var @object = await _context.Promocion
                                 .Where(x => x.Id == id)
+                                .Include(p => p.IdCategoria)
+                                    .ThenInclude(c => c.Producto)
+                                        .ThenInclude(p => p.ImagenesProducto)
                                 .Include(p => p.IdProducto)
                                     .ThenInclude(p => p.ImagenesProducto)
                                 .FirstAsync();
