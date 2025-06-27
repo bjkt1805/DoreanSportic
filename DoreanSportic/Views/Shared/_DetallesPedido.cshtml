@@ -50,8 +50,8 @@
         <thead class="bg-primary text-white">
             <tr>
                 <th class="text-center">Nombre</th>
-                <th class="text-center">Precio base</th>
-                <th class="text-center">Criterios del producto</th>
+@*                 <th class="text-center">Precio base</th>
+ *@                <th class="text-center">Criterios del producto</th>
                 <th class="text-center">Total</th>
             </tr>
         </thead>
@@ -64,16 +64,18 @@
             {
                 decimal mensajePersonalizado = 1000.00M;
                 decimal foto = 1500.00M;
-                decimal totalProductoPersonalizado = item.IdProductoNavigation.PrecioBase + mensajePersonalizado + foto;
+
+                // Fix for CS0029, CS8602, CS1003, and CS1525
+                decimal totalProductoPersonalizado = (item.IdEmpaqueNavigation?.PrecioBase ?? 0) + mensajePersonalizado + foto;
                 subTotalProductoPersonalizado += totalProductoPersonalizado;
 
                 <tr>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
                     </td>
-                    <td class="text-center">
+@*                     <td class="text-center">
                         ₡@item.IdProductoNavigation.PrecioBase.ToString("N2")
-                    </td>
+                    </td> *@
                     <td class="text-left">
                         <div class="flex flex-col">
                             <p><b>Tipo de empaque: </b>@Html.DisplayFor(modelItem => item.IdEmpaqueNavigation.TipoEmpaque)</p>
@@ -103,6 +105,11 @@
                 <td colspan="4" class="text-end">
                     <b>Impuesto (IVA 13%): </b> ₡@impuesto.ToString("N2")
                 </td>
+            </tr>
+            <tr>
+                <td class="text-start">
+                    <b>Método de pago:</b> @Model.FirstOrDefault()?.IdPedidoNavigation.IdMetodoPagoNavigation.Nombre
+                </td>         
             </tr>
             <tr class="bg-primary text-white">
                 <td colspan="4" class="text-end fw-bold">

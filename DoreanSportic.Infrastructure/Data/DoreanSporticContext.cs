@@ -217,12 +217,9 @@ public partial class DoreanSporticContext : DbContext
 
         modelBuilder.Entity<Pedido>(entity =>
         {
-            entity.ToTable(tb => tb.HasTrigger("trg_GenerarIdPedido"));
+            entity.HasKey(e => e.Id).HasName("PK__Pedido__3213E83FA6BF513B");
 
-            entity.Property(e => e.Id)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.EstadoPedido)
                 .HasMaxLength(50)
@@ -237,6 +234,10 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Impuesto)
                 .HasColumnType("decimal(12, 2)")
                 .HasColumnName("impuesto");
+            entity.Property(e => e.NumFactura)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("numFactura");
             entity.Property(e => e.SubTotal)
                 .HasColumnType("decimal(12, 2)")
                 .HasColumnName("subTotal");
@@ -264,10 +265,7 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.IdEmpaque).HasColumnName("idEmpaque");
-            entity.Property(e => e.IdPedido)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("idPedido");
+            entity.Property(e => e.IdPedido).HasColumnName("idPedido");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.PedidoDetalle)

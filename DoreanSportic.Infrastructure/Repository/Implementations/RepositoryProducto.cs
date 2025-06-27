@@ -53,8 +53,10 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var @object = await _context.Producto
                                 .Where(x => x.Id == id)
                                 .Include(p => p.ImagenesProducto)
+                                .Include(p => p.IdMarcaNavigation)
+                                .Include(p => p.IdPromocion)
                                 .Include(p => p.IdCategoriaNavigation)
-                                .Include(p=> p.IdMarcaNavigation)
+                                    .ThenInclude(c => c.IdPromocion)
                                 .FirstAsync();
             return @object!;
         }

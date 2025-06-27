@@ -27,12 +27,14 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var collection = await _context.Set<PedidoDetalle>().ToListAsync();
             return collection;
         }
-        public async Task<ICollection<PedidoDetalle>> GetDetallesPorPedido(string idPedido)
+        public async Task<ICollection<PedidoDetalle>> GetDetallesPorPedido(int idPedido)
         {
             //Select * from ResennaValoracion where idProducto = idProducto
             var collection = await _context.PedidoDetalle
                     .Include(r => r.IdProductoNavigation)
                     .Include(r => r.IdEmpaqueNavigation)
+                    .Include(r => r.IdPedidoNavigation)
+                        .ThenInclude(p => p.IdMetodoPagoNavigation)
                     .Where(r => r.IdPedido == idPedido)
                     .ToListAsync();
 

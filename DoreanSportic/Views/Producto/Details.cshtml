@@ -46,15 +46,68 @@
                 <div class="flex flex-row gap gap-1">
                     <div class="badge bg-primary text-white">@(Model.IdCategoriaNavigation.Nombre.ToUpper())</div>
                     <div class="badge bg-[#000000] text-white">@(Model.IdMarcaNavigation.Nombre.ToUpper())</div>
-                    <div class="badge badge-secondary">EN STOCK</div>
+                    <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                    <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
+                        exista una promoción
+                    -->
+                    @if ((Model.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
+                    (Model.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                    {
+                        <div class="badge badge-secondary">EN OFERTA</div>
+                    }
                 </div>
 
                 <h2 class="card-title text-xl font-semibold">
                     @Html.DisplayFor(model => model.Nombre)
                 </h2>
-                <div class="badge badge-outline w-fit">
-                    <b>Precio Base:</b> ₡@(Model.PrecioBase)
-                </div>
+                @{
+                    decimal precioBase = Model.PrecioBase;
+                    DateTime hoy = DateTime.Today;
+
+                    // Obtener promociones activas por producto
+                    var promoProducto = Model.IdPromocion
+                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+
+                    var descuentoProducto = promoProducto?.PorcentajeDescuento ?? 0;
+
+                    // Obtener promociones activas por categoría (si existen)
+                    var promoCategoria = Model.IdCategoriaNavigation?.IdPromocion
+                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+
+                    var descuentoCategoria = promoCategoria?.PorcentajeDescuento ?? 0;
+
+                    // Sumar ambos descuentos
+                    var descuentoTotal = descuentoProducto + descuentoCategoria;
+
+                    // Límite opcional a 100%
+                    if (descuentoTotal > 100) descuentoTotal = 100;
+                    var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);
+                }
+
+                @if (descuentoTotal > 0)
+                {
+                    <div class="p-2 w-75 flex flex-col ml-2 gap gap-1 rounded-lg border border-base-300">
+                        <div class="text-xs text-gray-400">
+                            <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                        </div>
+                        <div class="flex flex-row gap gap-1">
+                            <b>Precio en oferta: </b>
+                            <div class="badge badge-xl bg-success text-black font-bold">
+                                ₡@precioConDescuento.ToString("N2") + I.V.A
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="flex flex-row gap gap-1">
+                        <b class="mt-1">Precio base: </b>
+                        <div class="badge badge-outline w-fit">
+                            ₡@precioBase.ToString("N2") + I.V.A
+                        </div>
+                    </div>
+
+                }
                 <p class="text-base bg-base w-auto">
                     @Html.DisplayFor(model => model.Descripcion)
                 </p>

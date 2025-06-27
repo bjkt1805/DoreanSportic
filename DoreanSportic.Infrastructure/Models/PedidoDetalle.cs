@@ -7,7 +7,7 @@ public partial class PedidoDetalle
 {
     public int Id { get; set; }
 
-    public string IdPedido { get; set; } = null!;
+    public int IdPedido { get; set; }
 
     public int IdProducto { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.PromocionDTO>
-
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
 @{
     ViewData["Title"] = "Index";
 }
@@ -47,7 +48,7 @@
                 }
                 <tr>
 
-                    <td class="text-center">
+                    <td class="font-bold text-left">
                         @Html.DisplayFor(modelItem => item.Nombre)
                     </td>
                     <td class="text-center">
@@ -77,5 +78,26 @@
                 </tr>
             }
         </tbody>
+        <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
+            <tr>
+                <td colspan="5">
+                    <div class="flex justify-end my-2">
+                        <div class="join">
+                            @Html.PagedListPager((IPagedList)Model, page =>
+                            Url.Action("Index", new { page }),
+                                                        new PagedListRenderOptions
+                                                        {
+                                                            Display = PagedListDisplayMode.Always,
+                                                            MaximumPageNumbersToDisplay = 5,
+                                                            LiElementClasses = new[] { "join-item" },
+                                                            PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item" },
+                                                            UlElementClasses = new[] { "join" },
+                                                            ContainerDivClasses = new[] { "join" }
+                                                        })
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>

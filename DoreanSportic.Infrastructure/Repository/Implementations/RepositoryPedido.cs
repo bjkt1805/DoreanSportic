@@ -17,7 +17,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
-        public async Task<Pedido> FindByIdAsync(string id)
+        public async Task<Pedido> FindByIdAsync(int id)
         {
             //Obtener una Promocion (Eager loading con los productos que tienen la promoción)
             var @object = await _context.Pedido

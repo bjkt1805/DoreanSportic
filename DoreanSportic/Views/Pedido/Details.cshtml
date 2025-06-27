@@ -4,11 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="pb-4">
+<div class="py-4">
     <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
 </div>
 
-<div class="max-w-4xl mx-auto p-6 bg-white text-slate-500 shadow-md rounded mt-10 border rounded font-sans">
+<div class="mb-4 max-w-4xl mx-auto p-6 bg-white text-slate-500 shadow-md rounded mt-10 border rounded font-sans">
     <!-- Header -->
     <div class="border-b pb-8 mb-8 flex items-center">
         <div class="flex-1 text-left p-2">
@@ -42,25 +42,15 @@
 
         <!-- Información del pedido/factura -->
         <div class="p-8 text-right flex-1 items-end">
-            <p class="text-sm text-slate-500"><b>Fecha del pedido: </b>@Model.FechaPedido.ToString("dd/MM/yyyy")</p>
 
-            <!-- Código para extraer la hora desde el id del pedido el cual trae la hora, minuto y segundo de creación-->
+            <!-- Código para extraer la fehca y la hora desde el campo fechaPedido del pedido el cual trae la hora, minuto y segundo de creación-->
             @{
-
-                //extraer los útlimos 6 caracteres del id del pedido
-                string timepart = Model.Id.Substring(Model.Id.Length - 6);
-
-                //Separar en hora, minuto y segundos la variable
-                string hora = timepart.Substring(0, 2);
-                string minutos = timepart.Substring(2, 2);
-                string segundos = timepart.Substring(4, 2);
-
-                //Darle formato a la hora 
-                string horaFormateada = $"{hora}:{minutos}:{segundos}";
+                var fechaFormateada = Model.FechaPedido.ToString("dd/MM/yyyy");
+                var horaFormateada = Model.FechaPedido.ToString("HH:mm:ss");
             }
-
-            <p class="text-sm text-slate-500"><b>Hora de emisión (24H): </b>@horaFormateada</p>
-            <p class="text-slate-500" style="font-size: 10px"><i>* La hora especificada es en horario militar *</i></p>
+            <p class="text-sm text-slate-500"><b>Fecha del pedido: </b>@fechaFormateada</p>
+            <p class="text-sm text-slate-500"><b>Hora de emisión: </b>@horaFormateada</p>
+            <p class="text-slate-500" style="font-size: 10px"><i>* Formato de 24 horas *</i></p>
 
         </div>
     </div>
@@ -68,13 +58,6 @@
     <!-- Cargar los detalles del pedido-->
     <div id="tabla-detalles">
         <p class="text-sm">Cargando detalles del pedido...</p>
-    </div>
-
-    <!-- Footer -->
-    <div class="p-2 text-sm text-slate-500 border-t mt-8">
-        <p>Tiene 30 días naturales para realizar el pago del recibo</p>
-        <p>Cuenta de banco: 123456789</p>
-        <p>¡Gracias por su compra!</p>
     </div>
 </div>
 

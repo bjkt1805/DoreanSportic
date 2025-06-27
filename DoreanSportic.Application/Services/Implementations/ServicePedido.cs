@@ -20,7 +20,7 @@ namespace DoreanSportic.Application.Services.Implementations
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<PedidoDTO> FindByIdAsync(string id)
+        public async Task<PedidoDTO> FindByIdAsync(int id)
         {
             var @object = await _repository.FindByIdAsync(id);
             var objectMapped = _mapper.Map<PedidoDTO>(@object);

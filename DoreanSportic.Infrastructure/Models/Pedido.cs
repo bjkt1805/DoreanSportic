@@ -5,7 +5,9 @@ namespace DoreanSportic.Infrastructure.Models;
 
 public partial class Pedido
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
+
+    public string? NumFactura { get; set; }
 
     public int IdCliente { get; set; }
 

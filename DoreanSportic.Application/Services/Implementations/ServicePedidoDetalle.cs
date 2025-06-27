@@ -36,7 +36,7 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
-        public async Task<ICollection<PedidoDetalleDTO>> GetDetallesPorPedido(string idPedido)
+        public async Task<ICollection<PedidoDetalleDTO>> GetDetallesPorPedido(int idPedido)
         {
             //Obtener datos del repositorio
             var list = await _repository.GetDetallesPorPedido(idPedido);

@@ -1,9 +1,10 @@
 ﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using X.PagedList.Extensions;
+using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
 {
@@ -18,10 +19,10 @@ namespace DoreanSportic.Controllers
         }
 
         // GET: PedidoController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
             var collection = await _servicePedido.ListAsync();
-            return View(collection);
+            return View(collection.ToPagedList(page ?? 1, 5));
         }
 
         // GET: ProductoController para el ADMIN
@@ -33,7 +34,7 @@ namespace DoreanSportic.Controllers
         //}
 
         // GET: PedidoController/Details/5
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Details(int id)
         {
             var @object = await _servicePedido.FindByIdAsync(id);
             return View(@object);

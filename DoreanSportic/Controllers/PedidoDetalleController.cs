@@ -26,7 +26,7 @@ namespace DoreanSportic.Web.Controllers
 
         // GET: PedidoController
         [HttpGet]
-        public async Task<ActionResult> GetDetallesPorPedido(string idPedido)
+        public async Task<ActionResult> GetDetallesPorPedido(int idPedido)
         {
             // Listar las reseñas asociadas a un producto
             var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);

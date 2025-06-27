@@ -3,7 +3,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using X.PagedList.Extensions;
+using X.PagedList.Extensions;
 
 namespace DoreanSportic.Web.Controllers
 {
@@ -18,10 +18,10 @@ namespace DoreanSportic.Web.Controllers
         }
 
         // GET: ResennaValoracionController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
             var collection = await _serviceResennaValoracion.ListAsync();
-            return View(collection);
+            return View(collection.ToPagedList(page ?? 1, 5));
         }
 
         // GET: ProductoController

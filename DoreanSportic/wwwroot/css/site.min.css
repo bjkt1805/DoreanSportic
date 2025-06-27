@@ -4160,6 +4160,14 @@ input:is(:checked, :indeterminate) ~ .swap-off, &.swap-active .swap-off {
     background-color: #FF4D4D;
 }
 
+.bg-\[\#50C878\] {
+    background-color: #50C878;
+}
+
+.bg-\[\#E5E4E2\] {
+    background-color: #E5E4E2;
+}
+
 .bg-base-100 {
     background-color: var(--color-base-100);
 }
