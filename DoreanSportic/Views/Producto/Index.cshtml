@@ -16,6 +16,13 @@
 </div>
 <br />
 
+<!-- Contenedor del spinner de carga -->
+
+<div id="loader" class="hidden flex flex-col items-center gap-1 my-4">
+    <p class="text-gray-600 font-bold mb-2">Cargando</p>
+    <span class="loading loading-ring loading-xl"></span>
+</div>
+
 <!--Cargar los productos (cards) dependiendo de la categoría del producto-->
 <div id="card-productos-body" class="flex flex-wrap gap-4 justify-center">
     @await Html.PartialAsync("_CardsProducto", Model)
@@ -35,12 +42,29 @@
         });
 
         function cargarProductosPorCategoria(idCategoria) {
+        const loader = document.getElementById('loader');
+        const container = document.getElementById('card-productos-body');
+
+        // Mostrar spinner de carga
+        loader.classList.remove('hidden');
+        // Limpiar contenedor de productos (card-productos-body) mientras se carga
+        container.innerHTML = "";
             fetch(`/Producto/FiltrarPorCategoria?idCategoria=${idCategoria}`)
                 .then(res => res.text())
                 .then(html => {
-                    document.getElementById('card-productos-body').innerHTML = html;
+                    // Esperar medio segundo antes de mostrar los productos
+                    setTimeout(() => {
+                        container.innerHTML = html;
+                        loader.classList.add('hidden'); // Ocultar spinner después del delay
+                    }, 500); // 500 ms = medio segundo
                 })
-                .catch(error => console.error("Error al cargar productos:", error));
+                .catch(error => {
+                    console.error("Error al cargar productos:", error);
+                    setTimeout(() => {
+                        container.innerHTML = "<p class='text-red-500'>Error al cargar los productos.</p>";
+                        loader.classList.add('hidden'); // Ocultar spinner después del delay
+                    }, 500);
+                })
         }
 
         // Cargar categoría por defecto (Ropa: id = 1) al cargar la página
