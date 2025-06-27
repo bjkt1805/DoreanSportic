@@ -26,7 +26,7 @@
                     @if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
                     (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                     {
-                        <div class="badge badge-secondary">EN OFERTA</div>
+                        <div class="badge badge-secondary">OFERTA</div>
                     }
                 </div>
             </div>
