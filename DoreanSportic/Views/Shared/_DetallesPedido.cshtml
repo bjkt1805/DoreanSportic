@@ -62,20 +62,19 @@
 
             @foreach (var item in Model)
             {
-                decimal mensajePersonalizado = 1000.00M;
-                decimal foto = 1500.00M;
-
-                // Fix for CS0029, CS8602, CS1003, and CS1525
-                decimal totalProductoPersonalizado = (item.IdEmpaqueNavigation?.PrecioBase ?? 0) + mensajePersonalizado + foto;
+                if (item.IdEmpaque != null)
+                {
+                    decimal subTotalProductoBase = item.IdProductoNavigation.PrecioBase * item.Cantidad;
+                    decimal mensajePersonalizado = 1000.00M;
+                    decimal foto = 1500.00M;
+                    decimal totalProductoPersonalizado = subTotalProductoBase + (item.IdEmpaqueNavigation?.PrecioBase ?? 0) + mensajePersonalizado + foto;
                 subTotalProductoPersonalizado += totalProductoPersonalizado;
 
                 <tr>
-                    <td class="text-center">
+                    <td class="text-left">
                         @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
                     </td>
-@*                     <td class="text-center">
-                        ₡@item.IdProductoNavigation.PrecioBase.ToString("N2")
-                    </td> *@
+
                     <td class="text-left">
                         <div class="flex flex-col">
                             <p><b>Tipo de empaque: </b>@Html.DisplayFor(modelItem => item.IdEmpaqueNavigation.TipoEmpaque)</p>
@@ -84,10 +83,13 @@
                             <p><b>Foto: </b>₡@foto.ToString("N2")</p>
                         </div>
                     </td>
+
                     <td class="text-center">
                         ₡@totalProductoPersonalizado.ToString("N2")
                     </td>
                 </tr>
+                }
+                
             }
 
             @{
