@@ -104,18 +104,42 @@
 
 </div>
 
-@section Scripts {
+@* @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const totalSlides = 4;
             let currentSlide = 1;
 
             setInterval(() => {
-                const nextSlide = currentSlide >= totalSlides ? 1 : currentSlide + 1;
-                location.hash = `#slide${nextSlide}`;
-                currentSlide = nextSlide;
-            }, 5000); // cambia cada 5 segundos (5000ms)
+             const nextSlide = currentSlide >= totalSlides ? 1 : currentSlide + 1;
+             const nextLink = document.querySelector(`a[href="#slide${nextSlide}"]`);
+             if (nextLink) nextLink.click();
+             currentSlide = nextSlide;
+            }, 5000); // cambia cada 5 segundos
+            });
+    </script>
+} *@
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const carousel = document.querySelector('.carousel');
+            const slides = document.querySelectorAll('.carousel-item');
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                const nextSlide = slides[currentSlide];
+                if (nextSlide && carousel) {
+                    carousel.scrollTo({
+                        left: nextSlide.offsetLeft,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 5000); // cambia cada 5 segundos
         });
     </script>
 }
+
 
