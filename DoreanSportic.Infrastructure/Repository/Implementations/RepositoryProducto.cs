@@ -25,6 +25,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             //Consulta LINQ
             var collection = await _context
                 .Set<Producto>()
+                .Include(p => p.IdPromocion)
                 .ToListAsync(); 
             return collection;
         }

@@ -58,8 +58,11 @@
             @if (descuentoTotal > 0)
             {
                 <div class="flex flex-col gap gap-1">
-                    <div class="text-xs text-gray-400">
+                    <div class="flex flex-row gap gap-1 text-xs text-gray-400">
                         <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                        <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
+                            @descuentoTotal.ToString("0")% OFF!
+                        </div>
                     </div>
                     <div class="flex flex-row gap gap-1">
                         <b>Precio en oferta: </b>

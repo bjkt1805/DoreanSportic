@@ -15,43 +15,73 @@
         <tbody>
             @{
                 decimal subTotalProducto = 0;
+                DateTime hoy = DateTime.Today;
+
+                foreach (var item in Model)
+                {
+                    var producto = item.IdProductoNavigation;
+                    decimal precioBase = producto.PrecioBase;
+
+                    // Obtener promociones activas por producto
+                    var promoProducto = producto.IdPromocion?
+                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                    var descuentoProducto = promoProducto?.PorcentajeDescuento ?? 0;
+
+                    // Obtener promociones activas por categoría
+                    var promoCategoria = producto.IdCategoriaNavigation?.IdPromocion?
+                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                    var descuentoCategoria = promoCategoria?.PorcentajeDescuento ?? 0;
+
+                    var descuentoTotal = descuentoProducto + descuentoCategoria;
+                    if (descuentoTotal > 100) descuentoTotal = 100;
+
+                    var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);
+                    var subtotal = (descuentoTotal > 0 ? precioConDescuento : precioBase) * item.Cantidad;
+                    subTotalProducto += subtotal;
+                    <tr>
+                        <td class="text-center">@producto.Nombre</td>
+                        <td class="text-center">@item.Cantidad</td>
+
+                        @if (descuentoTotal > 0)
+                        {
+                            <td class="text-center">
+                                <div class="text-xs text-gray-400">
+                                    <b>Antes:</b> <span class="line-through">₡@precioBase.ToString("N2")</span>
+                                </div>
+                                <div class="text-green-600 font-bold">
+                                    ₡@precioConDescuento.ToString("N2")
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center">
+                                ₡@precioBase.ToString("N2")
+                            </td>
+                        }
+
+                        <td class="text-center">
+                            ₡@subtotal.ToString("N2")
+                        </td>
+                    </tr>
+                }
             }
 
-            @foreach (var item in Model)
-            {
-                var subtotal = item.IdProductoNavigation.PrecioBase * item.Cantidad;
-                subTotalProducto += subtotal;
-
-                <tr>
-                    <td class="text-center p-0">
-                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.Cantidad)
-                    </td>
-                    <td class="text-center">
-                        ₡@item.IdProductoNavigation.PrecioBase.ToString("N2")
-                    </td>
-                    <td class="text-center">
-                        ₡@subtotal.ToString("N2")
-                    </td>
-                </tr>
-            }
         </tbody>
     </table>
 </div>
 
 <br />
 
-<h2 class="p-2 font-bold text-slate-700">Detalle de productos personalizados</h2>
+<h2 class="p-2 font-bold text-slate-700">Detalle de personalizaciones</h2>
 
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
     <table class="table">
         <thead class="bg-primary text-white">
             <tr>
-                <th class="text-center">Nombre</th>
-@*                 <th class="text-center">Precio base</th>
- *@                <th class="text-center">Criterios del producto</th>
+                <th class="text-center">Producto</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Criterios de personalización</th>
                 <th class="text-center">Total</th>
             </tr>
         </thead>
@@ -64,32 +94,34 @@
             {
                 if (item.IdEmpaque != null)
                 {
-                    decimal subTotalProductoBase = item.IdProductoNavigation.PrecioBase * item.Cantidad;
                     decimal mensajePersonalizado = 1000.00M;
                     decimal foto = 1500.00M;
-                    decimal totalProductoPersonalizado = subTotalProductoBase + (item.IdEmpaqueNavigation?.PrecioBase ?? 0) + mensajePersonalizado + foto;
-                subTotalProductoPersonalizado += totalProductoPersonalizado;
+                    decimal totalProductoPersonalizado = ((item.IdEmpaqueNavigation?.PrecioBase ?? 0) + mensajePersonalizado + foto) * item.Cantidad;
+                    subTotalProductoPersonalizado += totalProductoPersonalizado;
 
-                <tr>
-                    <td class="text-left">
-                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
-                    </td>
+                    <tr>
+                        <td class="text-left">
+                            @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                        </td>
 
-                    <td class="text-left">
-                        <div class="flex flex-col">
-                            <p><b>Tipo de empaque: </b>@Html.DisplayFor(modelItem => item.IdEmpaqueNavigation.TipoEmpaque)</p>
-                            <p><b>Precio base: </b>₡@item.IdEmpaqueNavigation?.PrecioBase?.ToString("N2")</p>
-                            <p><b>Mensaje personalizado: </b>₡@mensajePersonalizado.ToString("N2")</p>
-                            <p><b>Foto: </b>₡@foto.ToString("N2")</p>
-                        </div>
-                    </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
 
-                    <td class="text-center">
-                        ₡@totalProductoPersonalizado.ToString("N2")
-                    </td>
-                </tr>
+                        <td class="text-left">
+                            <div class="flex flex-col">
+                                <p><b>Tipo de empaque: </b>@Html.DisplayFor(modelItem => item.IdEmpaqueNavigation.TipoEmpaque)</p>
+                                <p><b>Precio base: </b>₡@item.IdEmpaqueNavigation?.PrecioBase?.ToString("N2")</p>
+                                <p><b>Mensaje personalizado: </b>₡@mensajePersonalizado.ToString("N2")</p>
+                                <p><b>Foto: </b>₡@foto.ToString("N2")</p>
+                            </div>
+                        </td>
+
+                        <td class="text-center">
+                            ₡@totalProductoPersonalizado.ToString("N2")
+                        </td>
+                    </tr>
                 }
-                
             }
 
             @{
@@ -111,7 +143,7 @@
             <tr>
                 <td class="text-start">
                     <b>Método de pago:</b> @Model.FirstOrDefault()?.IdPedidoNavigation.IdMetodoPagoNavigation.Nombre
-                </td>         
+                </td>
             </tr>
             <tr class="bg-primary text-white">
                 <td colspan="4" class="text-end fw-bold">

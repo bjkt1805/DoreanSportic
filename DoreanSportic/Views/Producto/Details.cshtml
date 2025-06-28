@@ -87,14 +87,18 @@
                 @if (descuentoTotal > 0)
                 {
                     <div class="p-2 w-75 flex flex-col ml-2 gap gap-1 rounded-lg border border-base-300">
-                        <div class="text-xs text-gray-400">
+                        <div class="flex flex-row gap gap-1 text-xs text-gray-400">
                             <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                            <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
+                                @descuentoTotal.ToString("0")% OFF!
+                            </div>
                         </div>
                         <div class="flex flex-row gap gap-1">
                             <b>Precio en oferta: </b>
                             <div class="badge badge-xl bg-success text-black font-bold">
                                 ₡@precioConDescuento.ToString("N2") + I.V.A
                             </div>
+
                         </div>
                     </div>
                 }
