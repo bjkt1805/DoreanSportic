@@ -1,4 +1,5 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
+@using DoreanSportic.Infrastructure.Models
 
 @{
     ViewData["Title"] = "Details";
@@ -65,19 +66,24 @@
                     DateTime hoy = DateTime.Today;
 
                     // Obtener promociones activas por producto
-                    var promoProducto = Model.IdPromocion
-                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                    var promocionesProductoActivas = Model.IdPromocion
+                    .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
 
-                    var descuentoProducto = promoProducto?.PorcentajeDescuento ?? 0;
+                    decimal descuentoProducto = promocionesProductoActivas.Sum(p => p.PorcentajeDescuento ?? 0);
 
                     // Obtener promociones activas por categoría (si existen)
-                    var promoCategoria = Model.IdCategoriaNavigation?.IdPromocion
-                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                    IEnumerable<Promocion> promocionesCategoriaActivas = Enumerable.Empty<Promocion>();
 
-                    var descuentoCategoria = promoCategoria?.PorcentajeDescuento ?? 0;
+                    if (Model.IdCategoriaNavigation?.IdPromocion != null)
+                    {
+                        promocionesCategoriaActivas = Model.IdCategoriaNavigation.IdPromocion
+                        .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                    }
+
+                    decimal descuentoCategoria = promocionesCategoriaActivas.Sum(p => p.PorcentajeDescuento ?? 0);
 
                     // Sumar ambos descuentos
-                    var descuentoTotal = descuentoProducto + descuentoCategoria;
+                    decimal descuentoTotal = descuentoProducto + descuentoCategoria;
 
                     // Límite opcional a 100%
                     if (descuentoTotal > 100) descuentoTotal = 100;

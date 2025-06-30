@@ -1,95 +1,97 @@
-﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
+﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>  
+@using DoreanSportic.Infrastructure.Models  
 
-@foreach (var item in Model)
-{
+@foreach (var item in Model)  
+{  
+    <div class="mb-4 mr-2 card bg-base-100 w-100 shadow-lg">  
+        <figure class="px-10 pt-10 h-48 flex justify-center items-center">  
+            <img style="width:80%; height: 100%"  
+                 src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.PrimeraImagen ?? new byte[0])"  
+                 alt="Ropa/accesorios deportivos"  
+                 class=" h-full object-contain rounded-xl" />  
+        </figure>  
+        <div class="card-body flex flex-col justify-between h-full">  
+            <!-- Título + Badge -->  
+            <h2 class="card-title">  
+                @Html.DisplayFor(m => item.Nombre)  
+            </h2>  
 
-    <div class="mb-4 mr-2 card bg-base-100 w-100 shadow-lg">
-        <figure class="px-10 pt-10 h-48 flex justify-center items-center">
-            <img style="width:80%; height: 100%" 
-                 src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.PrimeraImagen ?? new byte[0])"
-                 alt="Ropa/accesorios deportivos"
-                 class=" h-full object-contain rounded-xl" />
-        </figure>
-        <div class="card-body flex flex-col justify-between h-full">
-            <!-- Título + Badge -->
-            <h2 class="card-title">
-                @Html.DisplayFor(m => item.Nombre)
-            </h2>
+            <div class="flex flex-col gap gap-1">  
+                <div class="flex flex-row gap gap-1">  
+                    <div class="badge bg-[#000000] text-white">@item.IdMarcaNavigation?.Nombre.ToUpper()</div>  
 
-            <div class="flex flex-col gap gap-1">
-                <div class="flex flex-row gap gap-1">
-                    <div class="badge bg-[#000000] text-white">@item.IdMarcaNavigation?.Nombre.ToUpper()</div>
-                    
-                    <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
-                        exista una promoción
-                    -->
-                    @if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
-                    (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
-                    {
-                        <div class="badge badge-secondary">OFERTA</div>
-                    }
-                </div>
-            </div>
+                    <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que  
+                        exista una promoción  
+                    -->  
+                    @if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||  
+                    (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))  
+                    {  
+                        <div class="badge badge-secondary">OFERTA</div>  
+                    }  
+                </div>  
+            </div>  
 
-            @{
-                decimal precioBase = item.PrecioBase;
-                DateTime hoy = DateTime.Today;
+            @{  
+                decimal precioBase = item.PrecioBase;  
+                DateTime hoy = DateTime.Today;  
 
-                // Obtener promociones activas por producto
-                var promoProducto = item.IdPromocion
-                .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                // Obtener promociones activas por producto  
+                var promocionesProductoActivas = item.IdPromocion  
+                .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);  
 
-                var descuentoProducto = promoProducto?.PorcentajeDescuento ?? 0;
+                decimal descuentoProducto = promocionesProductoActivas.Sum(p => p.PorcentajeDescuento ?? 0);  
 
-                // Obtener promociones activas por categoría (si existen)
-                var promoCategoria = item.IdCategoriaNavigation?.IdPromocion
-                .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                // Obtener promociones activas por categoría (si existen)  
+                IEnumerable<Promocion> promocionesCategoriaActivas = Enumerable.Empty<Promocion>();  
 
-                var descuentoCategoria = promoCategoria?.PorcentajeDescuento ?? 0;
-                
-                // Sumar ambos descuentos
-                var descuentoTotal = descuentoProducto + descuentoCategoria;
-                
-                // Límite opcional a 100%
-                if (descuentoTotal > 100) descuentoTotal = 100;
-                var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);
-            }
+                if (item.IdCategoriaNavigation?.IdPromocion != null)  
+                {  
+                    promocionesCategoriaActivas = item.IdCategoriaNavigation.IdPromocion  
+                    .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);  
+                }  
 
-            @if (descuentoTotal > 0)
-            {
-                <div class="flex flex-col gap gap-1">
-                    <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                        <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                decimal descuentoCategoria = promocionesCategoriaActivas.Sum(p => p.PorcentajeDescuento ?? 0);  
+
+                // Sumar ambos descuentos  
+                decimal descuentoTotal = descuentoProducto + descuentoCategoria;  
+
+                // Límite opcional a 100%  
+                if (descuentoTotal > 100) descuentoTotal = 100;  
+                var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);  
+            }  
+
+            @if (descuentoTotal > 0)  
+            {  
+                <div class="flex flex-col gap gap-1">  
+                    <div class="flex flex-row gap gap-1 text-xs text-gray-400">  
+                        <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>  
                         <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                             @descuentoTotal.ToString("0")% DE DESCUENTO
-                        </div>
-                    </div>
-                    <div class="flex flex-row gap gap-1">
-                        <b>Precio en oferta: </b>
+                        </div>  
+                    </div>  
+                    <div class="flex flex-row gap gap-1">  
+                        <b>Precio en oferta: </b>  
                         <div class="badge badge-xl bg-success text-black font-bold">
-                            ₡@precioConDescuento.ToString("N2") + I.V.A
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="flex flex-row gap gap-1">
-                    <b class="mt-1">Precio base: </b>
-                    <div class="badge badge-outline w-fit">
-                        ₡@precioBase.ToString("N2") + I.V.A
-                    </div>
-                </div>
+                            ₡@precioConDescuento.ToString("N2")
+                        </div>  
+                    </div>  
+                </div>  
+            }  
+            else  
+            {  
+                <div class="flex flex-row gap gap-1">  
+                    <b class="mt-1">Precio base: </b>  
+                    <div class="badge badge-outline w-fit">  
+                        ₡@precioBase.ToString("N2") + I.V.A  
+                    </div>  
+                </div>  
+            }  
 
-            }
-
-            <!-- Botón alineado abajo a la derecha -->
-            <div class="mt-auto flex justify-end">
-                <a class="btn btn-soft btn-primary text-white"
-                   asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
-            </div>
-
-        </div>
-    </div>
+            <!-- Botón alineado abajo a la derecha -->  
+            <div class="mt-auto flex justify-end">  
+                <a class="btn btn-soft btn-primary text-white"  
+                   asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>  
+            </div>  
+        </div>  
+    </div>  
 }
-
