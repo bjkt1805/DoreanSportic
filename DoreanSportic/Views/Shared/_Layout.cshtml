@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.4/dist/sweetalert2.min.css" rel="stylesheet">
 
 </head>
+
 <body class="bg-base-100 text-base-content min-h-screen flex flex-col">
     <header>
         <!--Cargar de forma asíncrona el partial view (Menú = navbar)-->
@@ -22,15 +23,13 @@
     </header>
 
     <!--Cargar el body-->
-    <main role="main" class="flex-grow mx-auto py-0">
+    <div class="container">
+        <main role="main" class="flex-grow mx-auto py-0" id="contenido-dinamico">
         @RenderBody()
     </main>
+    </div>
 
-@*     <footer class="footer footer-center p-4 bg-[#004AAD] text-white">
-        <div>
-            <p>&copy; 2025 - DoreanSportic - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="underline">Privacidad</a></p>
-        </div>
-    </footer> *@
+    <!--Cargar el footer-->
     <footer class="footer footer-center p-4 bg-[#004AAD] text-white">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap flex-row gap gap-4 justify-between items-center">
@@ -99,6 +98,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+
+
 </html>
 
 @if (ViewBag.NotificationMessage != null)

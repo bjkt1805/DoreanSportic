@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "DashboardAdmin";
+}
+
+<div class="flex min-h-screen w-full gap gap-2 pt-0">
+    <!-- Sidebar -->
+    <aside class="w-75 bg-success p-4 rounded-lg text-white"
+           style="background-image: linear-gradient(to bottom, #004aad 0%, #3b82f6 60%, #ffffff 100%);">
+        <h2 class="flex items-center gap-3 text-xl font-bold flex items-center gap-2 pb-4 mt-2 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" style="height: 10%; width: 10%">
+                <path fill-rule="evenodd" d="M15 4.5A3.5 3.5 0 0 1 11.435 8c-.99-.019-2.093.132-2.7.913l-4.13 5.31a2.015 2.015 0 1 1-2.827-2.828l5.309-4.13c.78-.607.932-1.71.914-2.7L8 4.5a3.5 3.5 0 0 1 4.477-3.362c.325.094.39.497.15.736L10.6 3.902a.48.48 0 0 0-.033.653c.271.314.565.608.879.879a.48.48 0 0 0 .653-.033l2.027-2.027c.239-.24.642-.175.736.15.09.31.138.637.138.976ZM3.75 13a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" clip-rule="evenodd" />
+                <path d="M11.5 9.5c.313 0 .62-.029.917-.084l1.962 1.962a2.121 2.121 0 0 1-3 3l-2.81-2.81 1.35-1.734c.05-.064.158-.158.426-.233.278-.078.639-.11 1.062-.102l.093.001ZM5 4l1.446 1.445a2.256 2.256 0 0 1-.047.21c-.075.268-.169.377-.233.427l-.61.474L4 5H2.655a.25.25 0 0 1-.224-.139l-1.35-2.7a.25.25 0 0 1 .047-.289l.745-.745a.25.25 0 0 1 .289-.047l2.7 1.35A.25.25 0 0 1 5 2.654V4Z" />
+            </svg>
+
+            Administrador
+        </h2>
+
+        <!-- Menú -->
+        <ul class="space-y-4 mt-2">
+            <!-- Productos -->
+            <li class="py-2">
+                <a class="flex items-center gap-3 btn btn-ghost justify-start"
+                   asp-area="" asp-controller="Producto" asp-action="Index">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 2c-.552 0-1 .448-1 1v4h2V4h2v6H5v13h14V10h-4V4h2v3h2V3c0-.552-.448-1-1-1h-2a1 1 0 0 0-.894.553L14 5.118V9h-4V5.118L8.894 2.553A1 1 0 0 0 8 2H6z" />
+                    </svg>
+                    Productos
+                </a>
+                <hr class="bg-white">
+            </li>
+            <!-- Reseñas -->
+            <li class="py-2">
+                <a class="flex items-center gap-3 btn btn-ghost justify-start"
+                   asp-area="" asp-controller="ResennaValoracion" asp-action="Index">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                    Reseñas
+                </a>
+                <hr class="bg-white">
+            </li>
+            <!-- Promociones -->
+            <li class="py-2">
+                <a class="flex items-center gap-3 btn btn-ghost justify-start"
+                   asp-area="" asp-controller="Promocion" asp-action="Index">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4.81V19.2c0 .45.54.67.85.35l4.79-4.8c.2-.2.2-.51 0-.71l-4.79-4.8a.5.5 0 0 0-.85.36zm-2-2a.5.5 0 0 0-.85-.36l-4.79 4.8a.5.5 0 0 0 0 .71l4.79 4.8a.5.5 0 0 0 .85-.35V2.81z" />
+                    </svg>
+                    Promociones
+                </a>
+                <hr class="bg-white">
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="flex-1 p-4">
+        <h1 class="text-2xl font-bold mb-4">Bienvenido al panel de administrador</h1>
+        <p>Selecciona una opción del menú lateral para empezar.</p>
+    </main>
+</div>
+
+
+
+
+
+
+
+

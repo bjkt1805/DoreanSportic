@@ -10,8 +10,12 @@
             </div>
             <ul tabindex="0"
                 class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow ">
-                <li class="bg-[#004AAD]"><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
 
+                <li class="bg-[#004AAD]"><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <!--Administrador-->
+                <li>
+                    <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">Administrador</a>
+                </li>
                 <!--Listados-->
                 <li class="bg-[#004AAD]">
                     <a class="btn btn-ghost">Listados</a>
@@ -59,7 +63,10 @@
     <div class="navbar-center hidden lg:flex z-50 relative">
         <ul class="menu menu-horizontal px-1">
             <li><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio </a></li>
-
+            <!--Administrador-->
+            <li>
+                <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">Administrador</a>
+            </li>
             <!--Dropdown Listados-->
             <li>
                 <details>
@@ -110,6 +117,7 @@
             </svg>
         </label> *@
 
+        <!-- Contenedor del buscador del sitio-->
         <input type="text" placeholder="Buscar" class="input input-bordered w-24 md:w-auto" style="margin-right: 10px" />
         <div class="dropdown dropdown-end" style="padding-right: 10px">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -130,6 +138,7 @@
             </div>
         </div>
 
+        <!-- Contenedor del perfil de usuario-->
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full">

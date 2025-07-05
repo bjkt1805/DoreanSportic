@@ -3,6 +3,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Extensions;
 //using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
@@ -35,11 +36,11 @@ namespace DoreanSportic.Controllers
         }
 
         // GET: ProductoController para el ADMIN
-
         //public async Task<ActionResult> IndexAdmin(int? page)
         //{
-        //    var collection = await _serviceLibro.ListAsync();
+        //    var collection = await _serviceProducto.ListAsync();
         //    return View(collection.ToPagedList(page ?? 1, 5));
+        //    return View("IndexAdmin");
         //}
 
         // GET: ProductoController/Details/5
