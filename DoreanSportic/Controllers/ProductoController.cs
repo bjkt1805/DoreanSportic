@@ -25,6 +25,13 @@ namespace DoreanSportic.Controllers
             return View(collection);
         }
 
+        //GET: ProductoController para el ADMIN
+        public async Task<ActionResult> IndexAdmin()
+        {
+            var collection = await _serviceProducto.ListAsync();
+            return PartialView("_IndexAdmin", collection);
+        }
+
         // GET: ProductoController
         [HttpGet]
         public async Task<ActionResult> FiltrarPorCategoria(int idCategoria)
@@ -35,13 +42,6 @@ namespace DoreanSportic.Controllers
             return PartialView("_CardsProducto", collection);
         }
 
-        // GET: ProductoController para el ADMIN
-        //public async Task<ActionResult> IndexAdmin(int? page)
-        //{
-        //    var collection = await _serviceProducto.ListAsync();
-        //    return View(collection.ToPagedList(page ?? 1, 5));
-        //    return View("IndexAdmin");
-        //}
 
         // GET: ProductoController/Details/5
         public async Task<ActionResult> Details(int id)

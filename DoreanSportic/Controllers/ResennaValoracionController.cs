@@ -24,6 +24,13 @@ namespace DoreanSportic.Web.Controllers
             return View(collection.ToPagedList(page ?? 1, 5));
         }
 
+        // GET: ResennaValoracionController DASHBOARDADMIN
+        public async Task<ActionResult> IndexAdmin(int? page)
+        {
+            var collection = await _serviceResennaValoracion.ListAsync();
+            return PartialView("_IndexAdmin", collection.ToPagedList(page ?? 1, 5));
+        }
+
         // GET: ProductoController
         [HttpGet]
         public async Task<ActionResult> GetResennasPorProducto(int idProducto)

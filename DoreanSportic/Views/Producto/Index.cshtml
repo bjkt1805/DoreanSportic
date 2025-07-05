@@ -35,7 +35,7 @@
 
         const toggle = document.querySelector('input[type="checkbox"]');
 
-        // Manejar cambio de toggle
+        // Manejar cambio de toggle para las categorías
         toggle.addEventListener('change', () => {
             const idCategoria = toggle.checked ? 2 : 1;
             cargarProductosPorCategoria(idCategoria);

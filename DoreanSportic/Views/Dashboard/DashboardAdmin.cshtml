@@ -19,8 +19,7 @@
         <ul class="space-y-4 mt-2">
             <!-- Productos -->
             <li class="py-2">
-                <a class="flex items-center gap-3 btn btn-ghost justify-start"
-                   asp-area="" asp-controller="Producto" asp-action="Index">
+                <a class="flex items-center gap-3 btn btn-ghost justify-start" onclick="cargarVista('/Producto/IndexAdmin')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M6 2c-.552 0-1 .448-1 1v4h2V4h2v6H5v13h14V10h-4V4h2v3h2V3c0-.552-.448-1-1-1h-2a1 1 0 0 0-.894.553L14 5.118V9h-4V5.118L8.894 2.553A1 1 0 0 0 8 2H6z" />
                     </svg>
@@ -30,8 +29,7 @@
             </li>
             <!-- Reseñas -->
             <li class="py-2">
-                <a class="flex items-center gap-3 btn btn-ghost justify-start"
-                   asp-area="" asp-controller="ResennaValoracion" asp-action="Index">
+                <a class="flex items-center gap-3 btn btn-ghost justify-start" onclick="cargarVista('/ResennaValoracion/IndexAdmin')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
@@ -54,11 +52,110 @@
     </aside>
 
     <!-- Contenido principal -->
-    <main class="flex-1 p-4">
-        <h1 class="text-2xl font-bold mb-4">Bienvenido al panel de administrador</h1>
-        <p>Selecciona una opción del menú lateral para empezar.</p>
+    <main class="py-2 flex-1 overflow-x-hidden">
+
+        <!-- Contenedor para cargar las vistas parciales -->
+        <div id="contenido-dinamico" class="py-2 w-full flex items-center justify-center">
+
+            <!-- Mensaje por defecto -->
+            <div id="contenido-vista">
+                <h1 class="text-2xl font-bold mb-4">Bienvenido al panel de administrador.</h1>
+                <p>Selecciona una opción del menú lateral para empezar.</p>
+            </div>
+
+        </div>
+
+        <!-- Spinner -->
+        <div id="loader" class="hidden flex flex-col items-center justify-center gap-2">
+            <p class="text-gray-600 font-bold">Cargando</p>
+            <span class="loading loading-ring loading-xl"></span>
+        </div>
+
     </main>
+
 </div>
+
+@section Scripts {
+
+    <!-- Script para cargar dinámicamente las vistas dentro del dashboard -->
+    <script>
+        function cargarVista(ruta) {
+
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('contenido-dinamico');
+
+            // Mostrar spinner de carga
+            loader.classList.remove('hidden');
+
+            // Limpiar contenedor de vistas parciales mientras se carga
+            container.innerHTML = "";
+            fetch(ruta)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // Esperar un breve momento (opcional) antes de insertar el contenido
+                    setTimeout(() => {
+                        container.innerHTML = html;
+                        loader.classList.add('hidden'); // Ocultar spinner después del delay
+
+                                // Ejecutar scripts específicos de la vista
+                                if (typeof inicializarVistaProductos === 'function') {
+                                    inicializarVistaProductos();
+                                }
+                        }, 300);
+                })
+                .catch(error => {
+                    console.error("Error al cargar la vista:", error);
+                    container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar la vista.</p>`;
+                });
+        }
+
+            // Script para filtrar los productos por categoría a través de AJAX -->
+            function inicializarVistaProductos() {
+
+                const toggle = document.querySelector('input[type="checkbox"]');
+                const loader = document.getElementById('loader');
+                const container = document.getElementById('card-productos-body');
+
+                if (!toggle || !loader || !container) return;
+
+                toggle.addEventListener('change', () => {
+                    const idCategoria = toggle.checked ? 2 : 1;
+                    cargarProductosPorCategoria(idCategoria);
+                });
+
+                function cargarProductosPorCategoria(idCategoria) {
+                    loader.classList.remove('hidden');
+                    container.innerHTML = "";
+                    fetch(`/Producto/FiltrarPorCategoria?idCategoria=${idCategoria}`)
+                        .then(res => res.text())
+                        .then(html => {
+                            setTimeout(() => {
+                                container.innerHTML = html;
+                                loader.classList.add('hidden');
+                            }, 500);
+                        })
+                        .catch(error => {
+                            console.error("Error al cargar productos:", error);
+                            setTimeout(() => {
+                                container.innerHTML = "<p class='text-red-500'>Error al cargar los productos.</p>";
+                                loader.classList.add('hidden');
+                            }, 500);
+                        });
+                }
+
+                // Inicializar
+                cargarProductosPorCategoria(1);
+                toggle.checked = false;
+            }
+    </script>
+
+}
+
 
 
 
