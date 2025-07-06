@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
 
 <!-- Contenedor padre centrado -->
-<div class="w-full min-h-full flex flex-col items-center justify-center gap-6 px-4">
+<div class="w-full min-h-full flex flex-col gap-6 px-4">
 
     <!-- Toggle centrado -->
     <div class="mb-2 text-center flex flex-row gap-2 items-center">
@@ -13,9 +13,8 @@
     </div>
 
     <!-- Contenedor de cards -->
-    <div id="card-productos-body"
-         class="w-full max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center">
-        <!-- Las cards se insertarán aquí por JS -->
+    <div id="card-productos-body" class="flex flex-wrap gap-4 justify-left w-full p-0 m-0">
+        <!-- Las cards se insertan por JS -->
     </div>
 </div>
 

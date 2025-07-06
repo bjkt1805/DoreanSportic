@@ -4,13 +4,12 @@
 
 <div class="flex min-h-screen w-full gap gap-2 pt-0">
     <!-- Sidebar -->
-    <aside class="w-75 bg-success p-4 rounded-lg text-white"
-           style="background-image: linear-gradient(to bottom, #004aad 0%, #3b82f6 60%, #ffffff 100%);">
+    <aside class="w-50 p-4 rounded-lg bg-black text-white" style="border-radius: 0px 30px 30px 0px;">
         <h2 class="flex items-center gap-3 text-xl font-bold flex items-center gap-2 pb-4 mt-2 text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" style="height: 10%; width: 10%">
-                <path fill-rule="evenodd" d="M15 4.5A3.5 3.5 0 0 1 11.435 8c-.99-.019-2.093.132-2.7.913l-4.13 5.31a2.015 2.015 0 1 1-2.827-2.828l5.309-4.13c.78-.607.932-1.71.914-2.7L8 4.5a3.5 3.5 0 0 1 4.477-3.362c.325.094.39.497.15.736L10.6 3.902a.48.48 0 0 0-.033.653c.271.314.565.608.879.879a.48.48 0 0 0 .653-.033l2.027-2.027c.239-.24.642-.175.736.15.09.31.138.637.138.976ZM3.75 13a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" clip-rule="evenodd" />
-                <path d="M11.5 9.5c.313 0 .62-.029.917-.084l1.962 1.962a2.121 2.121 0 0 1-3 3l-2.81-2.81 1.35-1.734c.05-.064.158-.158.426-.233.278-.078.639-.11 1.062-.102l.093.001ZM5 4l1.446 1.445a2.256 2.256 0 0 1-.047.21c-.075.268-.169.377-.233.427l-.61.474L4 5H2.655a.25.25 0 0 1-.224-.139l-1.35-2.7a.25.25 0 0 1 .047-.289l.745-.745a.25.25 0 0 1 .289-.047l2.7 1.35A.25.25 0 0 1 5 2.654V4Z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.14 12.936a7.948 7.948 0 0 0 .06-.936 7.948 7.948 0 0 0-.06-.936l2.037-1.588a.5.5 0 0 0 .12-.638l-1.926-3.33a.5.5 0 0 0-.607-.222l-2.4.96a7.973 7.973 0 0 0-1.617-.936l-.36-2.544A.5.5 0 0 0 14.4 2h-4.8a.5.5 0 0 0-.495.42l-.36 2.544a7.973 7.973 0 0 0-1.617.936l-2.4-.96a.5.5 0 0 0-.607.222L2.702 8.49a.5.5 0 0 0 .12.638L4.86 10.71a7.948 7.948 0 0 0 0 1.872l-2.037 1.588a.5.5 0 0 0-.12.638l1.926 3.33a.5.5 0 0 0 .607.222l2.4-.96a7.973 7.973 0 0 0 1.617.936l.36 2.544A.5.5 0 0 0 9.6 22h4.8a.5.5 0 0 0 .495-.42l.36-2.544a7.973 7.973 0 0 0 1.617-.936l2.4.96a.5.5 0 0 0 .607-.222l1.926-3.33a.5.5 0 0 0-.12-.638l-2.037-1.588zM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
             </svg>
+
 
             Administrador
         </h2>
@@ -39,8 +38,7 @@
             </li>
             <!-- Promociones -->
             <li class="py-2">
-                <a class="flex items-center gap-3 btn btn-ghost justify-start"
-                   asp-area="" asp-controller="Promocion" asp-action="Index">
+                <a class="flex items-center gap-3 btn btn-ghost justify-start" onclick="cargarVista('/Promocion/IndexAdmin')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 4.81V19.2c0 .45.54.67.85.35l4.79-4.8c.2-.2.2-.51 0-.71l-4.79-4.8a.5.5 0 0 0-.85.36zm-2-2a.5.5 0 0 0-.85-.36l-4.79 4.8a.5.5 0 0 0 0 .71l4.79 4.8a.5.5 0 0 0 .85-.35V2.81z" />
                     </svg>
@@ -52,10 +50,9 @@
     </aside>
 
     <!-- Contenido principal -->
-    <main class="py-2 flex-1 overflow-x-hidden">
-
+    <main class="py-2">
         <!-- Contenedor para cargar las vistas parciales -->
-        <div id="contenido-dinamico" class="py-2 w-full flex items-center justify-center">
+        <div id="contenido-dinamico" class="py-2 w-full">
 
             <!-- Mensaje por defecto -->
             <div id="contenido-vista">

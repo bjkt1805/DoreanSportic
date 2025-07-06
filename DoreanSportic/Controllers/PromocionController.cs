@@ -1,4 +1,5 @@
 ﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
@@ -24,13 +25,12 @@ namespace DoreanSportic.Controllers
             return View(collection.ToPagedList(page ?? 1, 5));
         }
 
-        // GET: PromocionController para el ADMIN
-
-        //public async Task<ActionResult> IndexAdmin(int? page)
-        //{
-        //    var collection = await _serviceLibro.ListAsync();
-        //    return View(collection.ToPagedList(page ?? 1, 5));
-        //}
+        // GET: ResennaValoracionController DASHBOARDADMIN
+        public async Task<ActionResult> IndexAdmin(int? page)
+        {
+            var collection = await _servicePromocion.ListAsync();
+            return PartialView("_IndexAdmin", collection.ToPagedList(page ?? 1, 5));
+        }
 
         // GET: PromocionController/Details/5
         public async Task<ActionResult> Details(int id)

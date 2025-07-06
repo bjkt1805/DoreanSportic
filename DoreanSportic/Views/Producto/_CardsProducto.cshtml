@@ -2,8 +2,8 @@
 @using DoreanSportic.Infrastructure.Models  
 
 @foreach (var item in Model)  
-{  
-    <div class="mb-4 mr-2 card bg-base-100 w-100 shadow-lg">  
+{
+    <div class="mb-4 mr-2 card bg-base-100 w-100 shadow-lg">
         <figure class="px-10 pt-10 h-48 flex justify-center items-center">  
             <img style="width:80%; height: 100%"  
                  src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.PrimeraImagen ?? new byte[0])"  
