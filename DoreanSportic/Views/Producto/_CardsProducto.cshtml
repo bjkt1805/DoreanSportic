@@ -87,10 +87,18 @@
                 </div>  
             }  
 
-            <!-- Botón alineado abajo a la derecha -->  
+            <!-- Botón alineado abajo a la izquierda -->  
             <div class="mt-auto flex justify-end">  
+                
+            <!-- 
                 <a class="btn btn-soft btn-primary text-white"  
-                   asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>  
+                   asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
+            -->
+
+                <!-- Redirección por medio de AJAX  -->
+                <a href="javascript:void(0);"
+                   class="btn btn-soft btn-primary text-white"
+                   onclick="cargarDetalleProducto(@item.Id)">Ver detalles</a>
             </div>  
         </div>  
     </div>  

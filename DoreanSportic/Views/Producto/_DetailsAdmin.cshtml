@@ -1,11 +1,6 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
 @using DoreanSportic.Infrastructure.Models
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-
 <div class="p-4 flex flex-row gap-5">
     <div class="flex flex-col gap-2">
         <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
@@ -52,7 +47,7 @@
                         exista una promoción
                     -->
                     @if ((Model.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
-                    (Model.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                                        (Model.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                     {
                         <div class="badge badge-secondary">OFERTA</div>
                     }
@@ -135,64 +130,3 @@
 </div>
 
 
-
-@section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const totalSlides = @Model.ImagenesProducto.Count;
-            let currentSlide = 1;
-
-            function mostrarSlide(n) {
-                // Ocultar todos
-                document.querySelectorAll('.carousel-item').forEach(div => div.classList.add('hidden'));
-                // Mostrar el actual
-                const actual = document.getElementById(`slide${n}`);
-                if (actual) actual.classList.remove('hidden');
-
-                // Actualizar botones
-                actualizarBotonActivo(`#slide${n}`);
-            }
-
-            function actualizarBotonActivo(hash) {
-                document.querySelectorAll('.btn-xs').forEach(btn => {
-                    if (btn.getAttribute('href') === hash) {
-                        btn.classList.add('bg-[#004AAD]', 'text-white');
-                        btn.classList.remove('bg-base-200', 'text-black');
-                    } else {
-                        btn.classList.remove('bg-[#004AAD]', 'text-white');
-                        btn.classList.add('bg-base-200', 'text-black');
-                    }
-                });
-            }
-
-            // Botones numerados
-            document.querySelectorAll('.btn-xs').forEach(btn => {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const hash = this.getAttribute('href');
-                    const match = hash.match(/#slide(\d+)/);
-                    if (match) {
-                        currentSlide = parseInt(match[1]);
-                        mostrarSlide(currentSlide);
-                    }
-                });
-            });
-
-            // Mostrar slide inicial
-            mostrarSlide(currentSlide);
-        });
-    </script>
-
-@*     Script para cargar las reseñas del producto
- *@    <script>
-        fetch('/ResennaValoracion/GetResennasPorProducto?idProducto=@Model.Id')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("zona-resennas").innerHTML = html;
-            })
-            .catch(error => {
-                document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
-            });
-    </script>
-
-}

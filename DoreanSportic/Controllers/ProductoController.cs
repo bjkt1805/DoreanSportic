@@ -43,11 +43,18 @@ namespace DoreanSportic.Controllers
         }
 
 
-        // GET: ProductoController/Details/5
+        // GET: ProductoController/Details/{id}
         public async Task<ActionResult> Details(int id)
         {
             var @object = await _serviceProducto.FindByIdAsync(id);
             return View(@object);
+        }
+
+        // GET: ProductoController/Dashboard (Producto/Details/{id})
+        public async Task<ActionResult> DetailsAdmin(int id)
+        {
+            var @object = await _serviceProducto.FindByIdAsync(id);
+            return PartialView("_DetailsAdmin",@object);
         }
 
         // GET: ProductoController/Create
