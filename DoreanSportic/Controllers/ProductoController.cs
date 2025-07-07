@@ -1,8 +1,10 @@
 ﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList.Extensions;
 //using X.PagedList.Extensions;
 
@@ -11,11 +13,20 @@ namespace DoreanSportic.Controllers
     public class ProductoController : Controller
     {
         private readonly IServiceProducto _serviceProducto;
+        private readonly IServiceMarca _serviceMarca;
+        private readonly IServiceCategoria _serviceCategoria;
+        private readonly ILogger<ServiceProducto> _logger;
 
-        public ProductoController(IServiceProducto serviceProducto)
+        public ProductoController(IServiceProducto serviceProducto,
+            IServiceMarca serviceMarca,
+            IServiceCategoria serviceCategoria,
+            ILogger<ServiceProducto> logger)
         {
             _serviceProducto = serviceProducto;
-
+            _serviceMarca = serviceMarca;
+            _serviceCategoria = serviceCategoria;
+            _logger = logger;
+            _logger = logger;
         }
 
         // GET: ProductoController
@@ -73,8 +84,12 @@ namespace DoreanSportic.Controllers
         //}
 
         //GET: ProductoController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var marcas = await _serviceMarca.ListAsync();
+            ViewBag.ListMarcas = new SelectList(marcas, "Id", "Nombre");
+            var categorias = await _serviceCategoria.ListAsync();
+            ViewBag.ListCategorias = new SelectList (categorias, "Id", "Nombre");
             return PartialView("_CreateProducto"); 
         }
 
