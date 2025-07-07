@@ -57,13 +57,7 @@ namespace DoreanSportic.Controllers
             return PartialView("_DetailsAdmin",@object);
         }
 
-        // GET: ProductoController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        // POST: ProductoController/Create
+        //POST: ProductoController/Create
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult Create(IFormCollection collection)
@@ -77,6 +71,14 @@ namespace DoreanSportic.Controllers
         //        return View();
         //    }
         //}
+
+        //GET: ProductoController/Create
+        public ActionResult Create()
+        {
+            return PartialView("_CreateProducto"); 
+        }
+
+
 
         // GET: ProductoController/Edit/5
         //public ActionResult Edit(int id)

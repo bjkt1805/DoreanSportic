@@ -1,0 +1,62 @@
+﻿@model DoreanSportic.Application.DTOs.ProductoDTO
+
+<form asp-action="Create" method="post" class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
+    @Html.AntiForgeryToken()
+
+    
+    <div class="form-control w-full">
+        <label asp-for="Nombre" class="label">
+            <span class="label-text font-bold">Nombre del producto</span>
+        </label>
+        <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1" />
+        <span asp-validation-for="Nombre" class="text-error text-sm mt-1"></span>
+    </div>
+
+    <div class="form-control w-full">
+        <label asp-for="Descripcion" class="label">
+            <span class="label-text font-bold">Descripción</span>
+        </label>
+        <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1"></textarea>
+        <span asp-validation-for="Descripcion" class="text-error text-sm mt-1"></span>
+    </div>
+
+    <div class="form-control w-full">
+        <label asp-for="PrecioBase" class="label">
+            <span class="label-text font-bold">Precio base</span>
+        </label>
+        <input asp-for="PrecioBase" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" />
+        <span asp-validation-for="PrecioBase" class="text-error text-sm mt-1"></span>
+    </div>
+
+    <div class="form-control w-full">
+        <label asp-for="Stock" class="label">
+            <span class="label-text font-bold">Stock</span>
+        </label>
+        <input asp-for="Stock" type="number" class="input input-bordered w-full mb-3 mt-1" />
+        <span asp-validation-for="Stock" class="text-error text-sm mt-1"></span>
+    </div>
+
+    <div class="form-control w-full">
+        <label asp-for="IdCategoria" class="label">
+            <span class="label-text font-bold">Categoría</span>
+        </label>
+        <select asp-for="IdCategoria" asp-items="ViewBag.Categorias" class="select select-bordered w-full mb-3 mt-1">
+            <option value="">Seleccione una categoría</option>
+        </select>
+        <span asp-validation-for="IdCategoria" class="text-error text-sm mt-1"></span>
+    </div>
+
+    <div class="form-control w-full">
+        <label asp-for="IdMarca" class="label">
+            <span class="label-text font-bold">Marca</span>
+        </label>
+        <select asp-for="IdMarca" asp-items="ViewBag.Marcas" class="select select-bordered w-full mb-4 mt-1">
+            <option value="">Seleccione una marca</option>
+        </select>
+        <span asp-validation-for="IdMarca" class="text-error text-sm mt-1"></span>
+    </div>
+
+    <div class="form-control mt-6">
+        <button type="submit" class="btn btn-success w-full">Crear producto</button>
+    </div>
+</form>

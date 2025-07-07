@@ -4,8 +4,8 @@
     var promedio = Model.Any() ? Model.Average(r => r.Calificacion) : 0;
     var promedioEntero = (int)Math.Floor(promedio); // para estrellas completas
 }
-<div class="flex items-center gap-2 mb-4">
-    <span class="font-bold">PROMEDIO DE VALORACIÓN: @promedio.ToString("0.0")</span>
+<div class="flex w-75 items-center gap-2 mb-4">
+    <span class="font-bold">PROMEDIO DE CALIFICACIÓN: @promedio.ToString("0.0")</span>
     <div class="flex gap-1">
         @for (int i = 1; i <= 5; i++)
         {

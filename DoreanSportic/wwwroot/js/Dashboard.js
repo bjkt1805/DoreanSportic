@@ -22,9 +22,7 @@ function cargarVista(ruta) {
                     inicializarVistaProductos();
                 }
 
-                if (typeof inicializarCarrusel === 'function') {
-                    inicializarCarrusel();
-                }
+
 
             }, 300);
         })
@@ -93,6 +91,10 @@ function cargarDetalleProducto(idProducto) {
                     inicializarCarrusel();
                 }
 
+                // Cargar reseñas del producto
+                cargarResennasProducto();
+
+
             }, 300);
         })
         .catch(err => {
@@ -139,4 +141,23 @@ function inicializarCarrusel() {
 
     mostrarSlide(currentSlide);
 }
+
+// Función para cargar las reseñas del producto den tro de la vista de detalle de producto
+function cargarResennasProducto() {
+    const zonaDetalle = document.getElementById("detalle-producto");
+    const idProducto = zonaDetalle?.dataset?.id;
+
+    if (!idProducto) return;
+
+    fetch(`/ResennaValoracion/GetResennasPorProducto?idProducto=${idProducto}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("zona-resennas").innerHTML = html;
+        })
+        .catch(error => {
+            document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
+        });
+}
+
+
 
