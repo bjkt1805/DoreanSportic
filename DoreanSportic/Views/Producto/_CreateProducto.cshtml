@@ -3,12 +3,12 @@
 <form asp-action="Create" asp-antiforgery="true" method="post" enctype="multipart/form-data"
       class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
 
-    <h2 class="text-center font-bold mb-3">NUEVO PRODUCTO</h2>
+    <h2 class="text-left font-bold mb-3">NUEVO PRODUCTO</h2>
 
     <div class="flex flex-row gap-4 w-full">
-        <!-- Columna izquierda: formulario -->
+        <!-- Primera columna (izquierda): formulario -->
         <div class="w-2/3 flex flex-col gap-4">
-            <!-- Todo el formulario, excepto la parte de imágenes -->
+            <!-- Todo el formulario, excepto la parte de imágenes y etiquetas-->
             <!-- Para controlar la inserción del nombre del producto-->
             <div class="form-control w-full">
                 <label asp-for="Nombre" class="label">
@@ -74,11 +74,30 @@
             </div>
         </div>
 
-        <!-- Columna derecha: imágenes (dropzone) -->
-        <div class="bg-white p7 rounded w-9/12 mx-auto">
+        <!-- Tercera columna (derecha): Manejo de etiquetas -->
+        <div class="w-full">
+            <p class="font-bold mb-1">Etiquetas del producto</p>
+            <div class="w-full bg-gray-200 space-x-10 flex border p-4 rounded">
+                <div id="dp1" droppable="true" class="drop flex-2 rounded-lg my-1 mx-1 border">
+                    <div id="dg1" draggable="true" class="drag w-full p-1 bg-primary rounded font-bold text-center text-white">Item1</div>
+                    <div id="dg2" draggable="true" class="drag w-full p-1 bg-secondary rounded font-bold text-center text-white">Item2</div>
+                    <div id="dg3" draggable="true" class="drag w-full p-1 bg-warning rounded font-bold text-center text-white">Item3</div>
+                    <div id="dg4" draggable="true" class="drag w-full p-1 bg-info rounded font-bold text-center text-white">Item4</div>
+                    <div id="dg5" draggable="true" class="drag w-full p-1 bg-success rounded font-bold text-center text-white">Item5</div>
+                </div>
+                <div id="dp2" droppable="true" class="drop flex-1 bg-gray-100 rounded-lg p-5 space-y-2"></div>
+            </div>
+        </div>
+
+
+        <!-- Segunda columna (centro): imágenes (dropzone) -->
+        <div class="bg-white rounded w-9/12 mx-4">
+            <p class="font-bold mb-1">Imágenes del producto</p>
             <div x-data="dataFileDnD()" class="relative flex flex-col p-4 border border-gray-100 rounded">
                 <div x-ref="dnd"
                      class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
+
+                    <!-- Para manejar la inserción de las imágenes -->
                     <input accept="image/*" type="file" multiple
                            class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
                            x-on:change="addFiles($event)"
@@ -98,14 +117,15 @@
                 </div>
 
                 <template x-if="files.length > 0">
-                    <div class="flex flex-wrap gap-4 mt-4 md:grid-cols-4 lg:grid-cols-6" x-on:drop.prevent="drop($event)"
+                    <div class="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4 lg:grid-cols-6" x-on:drop.prevent="drop($event)"
                          x-on:dragover.prevent="$event.dataTransfer.dropEffect = 'move'">
                         <template x-for="(_, index) in Array.from({ length: files.length })">
 
-                            <div class="w-50 h-50 relative flex flex-row items-center overflow-hidden text-center bg-gray-100 border rounded cursor-move select-none"
+                            <div class="w-25 h-25 relative flex flex-row items-center overflow-hidden text-center bg-gray-100 border rounded cursor-move select-none"
                                  x-on:dragstart="dragstart($event)" x-on:dragend="fileDragging = null"
                                  :class="{'border-blue-600': fileDragging == index}" draggable="true" :data-index="index">
 
+                                <!-- Botón para quitar la imagen -->
                                 <button class="btn-borrar absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none cursor-pointer hover:bg-gray-200" type="button" x-on:click="remove(index)">
                                     <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
                                          viewBox="0 0 24 24" stroke="currentColor">
@@ -114,17 +134,18 @@
                                     </svg>
                                 </button>
 
+                                <!-- Para aceptar archivos tipo imagen-->
                                 <template x-if="files[index].type.includes('image/')">
                                     <img x-bind:src="loadFile(files[index])"
-                                         class="p-4 w-48 h-48 absolute top-0 left-0 object-cover z-0 rounded"
-                                         alt="Preview image" />
+                                         class="p-4 w-25 h-25 absolute top-0 left-0 object-cover z-0 rounded"
+                                         alt="Prevista de imagen" />
                                 </template>
 
-                                <div class="absolute bottom-0 left-0 right-0 flex flex-col p-2 text-xs bg-white bg-opacity-50 rounded">
+@*                                 <div class="absolute bottom-0 left-0 right-0 flex flex-col p-2 text-xs bg-white bg-opacity-50 rounded">
                                     <span class="w-full font-bold text-gray-900 truncate"
-                                          x-text="files[index].name">Loading</span>
+                                          x-text="files[index].name">Cargando... </span>
                                     <span class="text-xs text-gray-900" x-text="humanFileSize(files[index].size)">...</span>
-                                </div>
+                                </div> *@
 
                                 <div class="absolute inset-0 z-40 transition-colors duration-300" x-on:dragenter="dragenter($event)"
                                      x-on:dragleave="fileDropping = null"
@@ -136,9 +157,6 @@
                 </template>
             </div>
         </div>
-
-
-
     </div>
 
 </form>
