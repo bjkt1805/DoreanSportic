@@ -94,6 +94,17 @@ function cargarDetalleProducto(idProducto) {
                 // Cargar reseñas del producto
                 cargarResennasProducto();
 
+                // Inicializar el dropzone si es la vista de crear producto
+                if (typeof inicializarDropzoneImagenes === 'function') {
+                    inicializarDropzoneImagenes();
+                }
+
+                // También llamar a la función de inicializarDropZone 
+                // si el elemento que se carga en el DOM tiene el id de dropzone
+                if (document.getElementById('dropzone')) {
+                    inicializarDropzoneImagenes();
+                }
+
 
             }, 300);
         })
@@ -159,54 +170,8 @@ function cargarResennasProducto() {
         });
 }
 
-// JavaScript para poder cargar imágenes por drag and drop
-document.addEventListener("DOMContentLoaded", () => {
-    const dropzone = document.getElementById("dropzone");
-    const fileInput = document.getElementById("fileInput");
-    const preview = document.getElementById("preview");
 
-    // Click en zona de drop abre el selector
-    dropzone.addEventListener("click", () => fileInput.click());
 
-    // Detectar archivos seleccionados manualmente
-    fileInput.addEventListener("change", handleFiles);
-
-    // Detectar archivos arrastrados
-    dropzone.addEventListener("dragover", e => {
-        e.preventDefault();
-        dropzone.classList.add("border-blue-500", "bg-blue-50");
-    });
-
-    dropzone.addEventListener("dragleave", () => {
-        dropzone.classList.remove("border-blue-500", "bg-blue-50");
-    });
-
-    dropzone.addEventListener("drop", e => {
-        e.preventDefault();
-        dropzone.classList.remove("border-blue-500", "bg-blue-50");
-        const files = e.dataTransfer.files;
-        fileInput.files = files; // vincula con el input hidden
-        handleFiles({ target: { files } });
-    });
-
-    // Función para mostrar la vista previa
-    function handleFiles(e) {
-        const files = e.target.files;
-        preview.innerHTML = ""; // limpiar previews previas
-        Array.from(files).forEach(file => {
-            if (!file.type.startsWith("image/")) return;
-
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const img = document.createElement("img");
-                img.src = e.target.result;
-                img.classList.add("w-full", "h-32", "object-cover", "rounded");
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-});
 
 
 

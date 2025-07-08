@@ -68,21 +68,6 @@ namespace DoreanSportic.Controllers
             return PartialView("_DetailsAdmin",@object);
         }
 
-        //POST: ProductoController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
         //GET: ProductoController/Create
         public async Task<IActionResult> Create()
         {
@@ -93,6 +78,30 @@ namespace DoreanSportic.Controllers
             return PartialView("_CreateProducto"); 
         }
 
+        //POST: Crear producto
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ProductoDTO model, List<IFormFile> imagenesProducto)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var file in imagenesProducto)
+                {
+                    if (file != null && file.Length > 0)
+                    {
+                        using var ms = new MemoryStream();
+                        await file.CopyToAsync(ms);
+                        var imagenBytes = ms.ToArray();
+
+                        // Aquí podés guardar la imagen en tu modelo, base de datos, etc.
+                    }
+                }
+
+                // Resto de lógica para crear producto...
+            }
+
+            return View(model);
+        }
 
 
         // GET: ProductoController/Edit/5
