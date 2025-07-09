@@ -24,38 +24,9 @@ function cargarVista(ruta) {
                 }
 
                 // Cargar la función JavaScript si se hace drag and drop en crear producto
-                //if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
-                //    inicializarDragAndDropEtiquetas();
-                //}
-
-                setTimeout(() => {
-                    const intentoMaximo = 10;
-                    let reintentos = 0;
-
-                    const esperarContenedor = setInterval(() => {
-                        const dp1 = document.getElementById('dp1');
-                        const dg1 = document.getElementById('dg1');
-
-                        console.log(`Reintento ${reintentos}: dp1=`, dp1, 'dg1=', dg1); // DEBUG VISUAL
-
-                        if (dp1 && dg1) {
-                            if (typeof inicializarDragAndDropEtiquetas === 'function') {
-                                console.log('Ejecutando inicializarDragAndDropEtiquetas'); // <-- CLAVE
-                                inicializarDragAndDropEtiquetas();
-                            } else {
-                                console.warn('La función inicializarDragAndDropEtiquetas no está definida aún');
-                            }
-                            clearInterval(esperarContenedor);
-                        }
-
-                        reintentos++;
-                        if (reintentos >= intentoMaximo) {
-                            console.error('dp1 o dg1 no encontrados después de múltiples intentos');
-                            clearInterval(esperarContenedor);
-                        }
-                    }, 200);
-                }, 300);
-
+                if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
+                    inicializarDragAndDropEtiquetas();
+                }
 
             }, 300);
         })

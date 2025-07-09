@@ -2,6 +2,7 @@
 using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
+using DoreanSportic.Web.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,11 +16,13 @@ namespace DoreanSportic.Controllers
         private readonly IServiceProducto _serviceProducto;
         private readonly IServiceMarca _serviceMarca;
         private readonly IServiceCategoria _serviceCategoria;
+        private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly ILogger<ServiceProducto> _logger;
 
         public ProductoController(IServiceProducto serviceProducto,
             IServiceMarca serviceMarca,
             IServiceCategoria serviceCategoria,
+            IServiceResennaValoracion serviceResennaValoracion,
             ILogger<ServiceProducto> logger)
         {
             _serviceProducto = serviceProducto;
@@ -71,11 +74,21 @@ namespace DoreanSportic.Controllers
         //GET: ProductoController/Create
         public async Task<IActionResult> Create()
         {
+            //var viewModel = new CrearProductoViewModel
+            //{
+            //    Producto = new ProductoDTO(),
+            //    Resennas = _serviceResennaValoracion.GetResennasPorProducto(0)
+            //};
+            // Viewbag para cargar la lista de marcas desde 
+            // el servicio de marcas
             var marcas = await _serviceMarca.ListAsync();
             ViewBag.ListMarcas = new SelectList(marcas, "Id", "Nombre");
+
+            // Viewbag para cargar la lista de categorías desde 
+            // el servicio de categorías
             var categorias = await _serviceCategoria.ListAsync();
             ViewBag.ListCategorias = new SelectList (categorias, "Id", "Nombre");
-            return PartialView("_CreateProducto"); 
+            return PartialView("_CreateProducto", viewModel); 
         }
 
         //POST: Crear producto
@@ -92,11 +105,8 @@ namespace DoreanSportic.Controllers
                         using var ms = new MemoryStream();
                         await file.CopyToAsync(ms);
                         var imagenBytes = ms.ToArray();
-
-                        // Aquí podés guardar la imagen en tu modelo, base de datos, etc.
                     }
                 }
-
                 // Resto de lógica para crear producto...
             }
 
