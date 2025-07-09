@@ -8,7 +8,7 @@
     <div id="zona-errores-validacion" class="text-error font-semibold mb-2"></div>
 
     <div class="flex flex-row gap-4 w-full">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
         
         <!-- Primera columna (izquierda): formulario -->
         <div class="w-2/3 flex flex-col gap-4">
@@ -84,6 +84,7 @@
                 <p class="font-bold">Etiquetas del producto</p>
                 <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado derecho para asignarlas al producto.</p>
                 <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado izquierdo para desasignarlas.</p>
+                <div id="error-etiquetas" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
                 <div class="w-full bg-gray-200 space-x-10 flex border rounded" style="padding-left: 1%; padding-top:1%; padding-bottom:1%; padding-right:1%">
                     <div id="dp1" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
                          style="padding-left: 5%; padding-top:1%; padding-right: 5%">
@@ -135,13 +136,14 @@
                      class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
 
                     <!-- Para manejar la inserción de las imágenes -->
-                    <input accept="image/*" type="file" multiple
+                    <input asp-for="ImagenesProducto" accept="image/*" type="file" multiple
                            class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
                            x-on:change="addFiles($event)"
                            x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
                            x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
                            x-on:drop="$refs.dnd.classList.remove('drag-over')"
                            title="" />
+                    <span asp-validation-for="ImagenesProducto" class="text-sm italic" style="color:red; font-size: small"></span>
 
                     <div class="flex flex-col items-center justify-center py-10 text-center rounded">
                         <svg class="w-6 h-6 mr-1 text-current-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

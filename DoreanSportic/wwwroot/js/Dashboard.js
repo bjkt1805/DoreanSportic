@@ -32,7 +32,7 @@ function cargarVista(ruta) {
                 activarValidacionCliente();
 
                 // Cargar la función de validación del cliente (imágenes y etiquetas) por medio de JQuery
-                validarFormularioCrearProducto();
+                //validarFormularioCrearProducto();
 
 
             }, 300);
@@ -225,35 +225,26 @@ function activarValidacionCliente() {
     const form = document.querySelector('form');
     if (form) {
         $.validator.unobtrusive.parse(form);
-    } else {
     }
-}
-
-// Función javascript para validar que se inserte al menos una imagen y se seleccione una categoría
-function validarFormularioCrearProducto() {
-    const form = document.querySelector("form[asp-action='Create']");
-    if (!form) return;
-
     form.addEventListener("submit", function (e) {
-        const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
-        const inputFile = form.querySelector("input[type='file']");
-        const files = inputFile?.files;
+        // Limpiar mensajes anteriores
+        document.getElementById("error-etiquetas").innerText = "";
+        document.getElementById("zona-errores-validacion").innerText = "";
 
-        // Validar imágenes
-        if (!files || files.length === 0) {
-            e.preventDefault();
-            mostrarErrorVisual("Debe insertar al menos una imagen.");
-            return;
-        }
+        //// Validar campos estándar primero
+        //if (!$(form).valid()) {
+        //    return;
+        //}
 
         // Validar etiquetas
+        const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
         if (etiquetasAsignadas.length === 0) {
             e.preventDefault();
-            mostrarErrorVisual("Debe asignar al menos una etiqueta al producto.");
+            document.getElementById("error-etiquetas").innerText = "* Debe asignar al menos una etiqueta *";
             return;
         }
 
-        // Agregar inputs ocultos para etiquetas seleccionadas
+        // Agregar etiquetas al formulario como inputs ocultos
         etiquetasAsignadas.forEach((el) => {
             const input = document.createElement("input");
             input.type = "hidden";
@@ -263,6 +254,45 @@ function validarFormularioCrearProducto() {
         });
     });
 }
+
+// Función javascript para validar que se inserte al menos se seleccione una categoría
+function validarFormularioCrearProducto() {
+    const form = document.querySelector("form[asp-action='Create']");
+    if (!form) return;
+
+    if ($.validator && $.validator.unobtrusive) {
+        $.validator.unobtrusive.parse(form);
+    }
+
+    //form.addEventListener("submit", function (e) {
+    //    // Limpiar mensajes anteriores
+    //    document.getElementById("error-etiquetas").innerText = "";
+    //    document.getElementById("zona-errores-validacion").innerText = "";
+
+    //    // Validar campos estándar primero
+    //    if (!$(form).valid()) {
+    //        return;
+    //    }
+
+    //    // Validar etiquetas
+    //    const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
+    //    if (etiquetasAsignadas.length === 0) {
+    //        e.preventDefault();
+    //        document.getElementById("error-etiquetas").innerText = "Debe asignar al menos una etiqueta.";
+    //        return;
+    //    }
+
+    //    // Agregar etiquetas al formulario como inputs ocultos
+    //    etiquetasAsignadas.forEach((el) => {
+    //        const input = document.createElement("input");
+    //        input.type = "hidden";
+    //        input.name = "selectedEtiquetas";
+    //        input.value = el.dataset.id || el.innerText.trim();
+    //        form.appendChild(input);
+    //    });
+    //});
+}
+
 
 // Mensaje de error visual (en la Vista)
 function mostrarErrorVisual(mensaje) {

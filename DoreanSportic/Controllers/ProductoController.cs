@@ -107,6 +107,12 @@ namespace DoreanSportic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductoDTO dto, List<IFormFile> imagenesProducto, string[] selectedEtiquetas)
         {
+            // Validar si hay etiquetas asignadas ANTES del ModelState
+            if (selectedEtiquetas == null || selectedEtiquetas.Length == 0)
+            {
+                ModelState.AddModelError("", "Debe asignar al menos una etiqueta.");
+            }
+
             if (ModelState.IsValid)
             {
                 foreach (var file in imagenesProducto)

@@ -59,6 +59,7 @@ public record ProductoDTO
 
     public byte[]? PrimeraImagen { get; set; }
 
+    [Required(ErrorMessage = "* Debe insertar al menos una imagen *")]
     public virtual ICollection<ImagenProducto> ImagenesProducto { get; set; } = new List<ImagenProducto>();
 
 }
