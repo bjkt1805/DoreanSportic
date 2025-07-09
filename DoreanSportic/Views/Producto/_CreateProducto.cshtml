@@ -12,30 +12,30 @@
             <!-- Todo el formulario, excepto la parte de imágenes y etiquetas-->
             <!-- Para controlar la inserción del nombre del producto-->
             <div class="form-control w-full">
-                <label asp-for="Producto.Nombre" class="label">
+                <label asp-for="Nombre" class="label">
                     <span class="label-text font-bold text-black">Nombre del producto</span>
                 </label>
-                <input asp-for="Producto.Nombre" class="input input-bordered w-full mb-3 mt-1 border"/>
-                <span asp-validation-for="Producto.Nombre" class="text-error text-sm mt-1"></span>
+                <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 border"/>
+                <span asp-validation-for="Nombre" class="text-error text-sm mt-1"></span>
             </div>
 
             <!-- Para controlar la inserción de la descripción del producto-->
             <div class="form-control w-full">
-                <label asp-for="Producto.Descripcion" class="label">
+                <label asp-for="Descripcion" class="label">
                     <span class="label-text font-bold text-black">Descripción</span>
                 </label>
-                <textarea asp-for="Producto.Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1"></textarea>
-                <span asp-validation-for="Producto.Descripcion" class="text-error text-sm mt-1"></span>
+                <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1"></textarea>
+                <span asp-validation-for="Descripcion" class="text-error text-sm mt-1"></span>
             </div>
 
             <!-- Para controlar la inserción del precio base del producto-->
             <div class="flex flex-row gap-4">
                 <div class="form-control w-full">
-                    <label asp-for="Producto.PrecioBase" class="label">
+                    <label asp-for="PrecioBase" class="label">
                         <span class="label-text font-bold text-black">Precio base (₡)</span>
                     </label>
-                    <input asp-for="Producto.PrecioBase" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" />
-                    <span asp-validation-for="Producto.PrecioBase" class="text-error text-sm mt-1"></span>
+                    <input asp-for="PrecioBase" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" />
+                    <span asp-validation-for="PrecioBase" class="text-error text-sm mt-1"></span>
                 </div>
 
 @*                 <!-- Para controlar la inserción del stock (cantidad) del producto-->
@@ -50,24 +50,24 @@
 
             <!-- Para controlar la selección de la categoría del producto-->
             <div class="form-control w-full">
-                <label asp-for="Producto.IdCategoria" class="label">
+                <label asp-for="IdCategoria" class="label">
                     <span class="label-text font-bold text-black">Categoría</span>
                 </label>
-                <select asp-for="Producto.IdCategoria" asp-items="ViewBag.ListCategorias" class="select select-bordered w-full mb-3 mt-1">
+                <select asp-for="IdCategoria" asp-items="ViewBag.ListCategorias" class="select select-bordered w-full mb-3 mt-1">
                     <option value="">Seleccione una categoría</option>
                 </select>
-                <span asp-validation-for="Producto.IdCategoria" class="text-error text-sm mt-1"></span>
+                <span asp-validation-for="IdCategoria" class="text-error text-sm mt-1"></span>
             </div>
 
             <!-- Para controlar la selección de la marca del producto-->
             <div class="form-control w-full">
-                <label asp-for="Producto.IdMarca" class="label">
+                <label asp-for="IdMarca" class="label">
                     <span class="label-text font-bold text-black">Marca</span>
                 </label>
-                <select asp-for="Producto.IdMarca" asp-items="ViewBag.ListMarcas" class="select select-bordered w-full mb-4 mt-1">
+                <select asp-for="IdMarca" asp-items="ViewBag.ListMarcas" class="select select-bordered w-full mb-4 mt-1">
                     <option value="">Seleccione una marca</option>
                 </select>
-                <span asp-validation-for="Producto.IdMarca" class="text-error text-sm mt-1"></span>
+                <span asp-validation-for="IdMarca" class="text-error text-sm mt-1"></span>
             </div>
 
             <div class="form-control mt-6">

@@ -16,13 +16,13 @@ namespace DoreanSportic.Controllers
         private readonly IServiceProducto _serviceProducto;
         private readonly IServiceMarca _serviceMarca;
         private readonly IServiceCategoria _serviceCategoria;
-        private readonly IServiceResennaValoracion _serviceResennaValoracion;
+        //private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly ILogger<ServiceProducto> _logger;
 
         public ProductoController(IServiceProducto serviceProducto,
             IServiceMarca serviceMarca,
             IServiceCategoria serviceCategoria,
-            IServiceResennaValoracion serviceResennaValoracion,
+            //IServiceResennaValoracion serviceResennaValoracion,
             ILogger<ServiceProducto> logger)
         {
             _serviceProducto = serviceProducto;
@@ -88,7 +88,7 @@ namespace DoreanSportic.Controllers
             // el servicio de categorías
             var categorias = await _serviceCategoria.ListAsync();
             ViewBag.ListCategorias = new SelectList (categorias, "Id", "Nombre");
-            return PartialView("_CreateProducto", viewModel); 
+            return PartialView("_CreateProducto"); 
         }
 
         //POST: Crear producto
