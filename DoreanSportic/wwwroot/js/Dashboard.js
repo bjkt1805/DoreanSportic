@@ -18,10 +18,43 @@ function cargarVista(ruta) {
                 container.innerHTML = html;
                 loader.classList.add('hidden');
 
+                // Cargar la función JavaScript si se carga la vista de productos
                 if (typeof inicializarVistaProductos === 'function') {
                     inicializarVistaProductos();
                 }
 
+                // Cargar la función JavaScript si se hace drag and drop en crear producto
+                //if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
+                //    inicializarDragAndDropEtiquetas();
+                //}
+
+                setTimeout(() => {
+                    const intentoMaximo = 10;
+                    let reintentos = 0;
+
+                    const esperarContenedor = setInterval(() => {
+                        const dp1 = document.getElementById('dp1');
+                        const dg1 = document.getElementById('dg1');
+
+                        console.log(`Reintento ${reintentos}: dp1=`, dp1, 'dg1=', dg1); // DEBUG VISUAL
+
+                        if (dp1 && dg1) {
+                            if (typeof inicializarDragAndDropEtiquetas === 'function') {
+                                console.log('Ejecutando inicializarDragAndDropEtiquetas'); // <-- CLAVE
+                                inicializarDragAndDropEtiquetas();
+                            } else {
+                                console.warn('La función inicializarDragAndDropEtiquetas no está definida aún');
+                            }
+                            clearInterval(esperarContenedor);
+                        }
+
+                        reintentos++;
+                        if (reintentos >= intentoMaximo) {
+                            console.error('dp1 o dg1 no encontrados después de múltiples intentos');
+                            clearInterval(esperarContenedor);
+                        }
+                    }, 200);
+                }, 300);
 
 
             }, 300);
@@ -169,6 +202,46 @@ function cargarResennasProducto() {
             document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
         });
 }
+
+// Función javascript para manejar el drag and drop de las etiquetas al crear un producto
+function inicializarDragAndDropEtiquetas() {
+
+    console.log('Drag and Drop inicializado');
+    let dragTemp;
+
+    $('.drag').on('dragstart', function (e) {
+        dragTemp = e.target;
+        console.log('Start', dragTemp);
+    });
+
+    $('.drop').on('dragover', function (e) {
+        e.preventDefault();
+    });
+
+    $('.drop').on('dragenter', function () {
+        $(this).addClass('ring ring-blue-400');
+    });
+
+    $('.drop').on('dragleave drop', function () {
+        $(this).removeClass('ring ring-blue-400');
+    });
+
+    $('.drop').on('drop', function (e) {
+        e.preventDefault();
+        if (dragTemp && this !== dragTemp.parentElement) {
+            this.appendChild(dragTemp);
+            console.log('Drop en:', this.id); 
+        }
+        dragTemp = null;
+
+        if (this.id === 'dp2') {
+            $('#dp2').children('.drag').each(function () {
+                console.log(this.innerText);
+            });
+        }
+    });
+}
+
 
 
 

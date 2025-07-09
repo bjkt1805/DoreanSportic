@@ -14,7 +14,7 @@
                 <label asp-for="Nombre" class="label">
                     <span class="label-text font-bold text-black">Nombre del producto</span>
                 </label>
-                <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 border" />
+                <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 border"/>
                 <span asp-validation-for="Nombre" class="text-error text-sm mt-1"></span>
             </div>
 
@@ -75,19 +75,30 @@
         </div>
 
         <!-- Tercera columna (derecha): Manejo de etiquetas -->
-        <div class="w-full">
-            <p class="font-bold mb-1">Etiquetas del producto</p>
-            <div class="w-full bg-gray-200 space-x-10 flex border p-4 rounded">
-                <div id="dp1" droppable="true" class="drop flex-2 rounded-lg my-1 mx-1">
-                    <div id="dg1" draggable="true" class="drag w-full p-1 mb-2 bg-primary rounded font-bold text-center text-white">Item1</div>
-                    <div id="dg2" draggable="true" class="drag w-full p-1 mb-2 bg-secondary rounded font-bold text-center text-white">Item2</div>
-                    <div id="dg3" draggable="true" class="drag w-full p-1 mb-2 bg-warning rounded font-bold text-center text-white">Item3</div>
-                    <div id="dg4" draggable="true" class="drag w-full p-1 mb-2 bg-info rounded font-bold text-center text-white">Item4</div>
-                    <div id="dg5" draggable="true" class="drag w-full p-1 mb-2 bg-success rounded font-bold text-center text-white">Item5</div>
+        <div class="w-100">
+            <p class="font-bold">Etiquetas del producto</p>
+            <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado derecho para asignarlas al producto.</p>
+            <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado izquierdo para desasignarlas.</p>
+            <div class="w-full bg-gray-200 space-x-10 flex border rounded" style="padding-left: 1%; padding-top:1%; padding-bottom:1%; padding-right:1%">
+                <div id="dp1" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
+                     style="padding-left: 5%; padding-top:1%; padding-right: 5%">
+                    <p class="mb-1 font-bold text-center" style="font-size: small">Etiquetas</p>
+                    <p class="mb-1 font-bold text-center" style="font-size: small">disponibles</p>
+                    <div id="dg1" draggable="true" class="drag w-48 p-1 mb-2 bg-primary rounded font-bold text-center text-white">Item1</div>
+                    <div id="dg2" draggable="true" class="drag w-48 p-1 mb-2 bg-secondary rounded font-bold text-center text-white">Item2</div>
+                    <div id="dg3" draggable="true" class="drag w-48 p-1 mb-2 bg-warning rounded font-bold text-center text-white">Item3</div>
+                    <div id="dg4" draggable="true" class="drag w-48 p-1 mb-2 bg-info rounded font-bold text-center text-white">Item4</div>
+                    <div id="dg5" draggable="true" class="drag w-48 p-1 mb-2 bg-success rounded font-bold text-center text-white">Item5</div>
                 </div>
-                <div id="dp2" droppable="true" class="drop flex-1 bg-gray-100 rounded-lg p-5 space-y-2"></div>
+                <div id="dp2" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
+                     style="padding-left: 5%; padding-top:1%; padding-right: 5%">
+                    <p class="mb-1 font-bold text-center" style="font-size: small">Etiquetas</p>
+                    <p class="mb-1 font-bold text-center" style="font-size: small">asignadas</p>
+                </div>
             </div>
         </div>
+
+
 
 
         <!-- Segunda columna (centro): imágenes (dropzone) -->
@@ -117,7 +128,7 @@
                 </div>
 
                 <template x-if="files.length > 0">
-                    <div class="grid grid-cols-2 gap-2 mt-4 md:grid-cols-4 lg:grid-cols-6" x-on:drop.prevent="drop($event)"
+                    <div class="flex flex-wrap gap-2 mt-4 md:grid-cols-4 lg:grid-cols-6" x-on:drop.prevent="drop($event)"
                          x-on:dragover.prevent="$event.dataTransfer.dropEffect = 'move'">
                         <template x-for="(_, index) in Array.from({ length: files.length })">
 
