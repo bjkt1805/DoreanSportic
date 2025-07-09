@@ -62,11 +62,11 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return @object!;
         }
 
-        public async Task<int> AddAsync(Producto entity)
+        public async Task<int> AddAsync(Producto entity, string[] selectedEtiquetas)
         {
-            //Relación de muchos a muchos solo con llave primaria compuesta
-            //var categorias = await getCategorias(selectedCategorias);
-            //entity.IdCategoria = categorias;
+            // Relación de muchos a muchos solo con llave primaria compuesta
+            var etiquetas = await getEtiquetas(selectedEtiquetas);
+            entity.IdEtiqueta = etiquetas;
 
             // Añadir el producto a la base de datos
             await _context.Set<Producto>().AddAsync(entity);
@@ -88,6 +88,16 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             //entity.IdCategoria = nuevasCategorias;
 
             await _context.SaveChangesAsync();
+        }
+
+        private async Task<ICollection<Etiqueta>> getEtiquetas(string[] selectedEtiquetas)
+        {
+            // Buscar o crear etiquetas
+            var ids = selectedEtiquetas.Select(id => int.Parse(id)).ToList();
+            return await _context.Etiqueta
+                                 .Where(e => ids.Contains(e.Id))
+                                 .ToListAsync();
+
         }
 
     }

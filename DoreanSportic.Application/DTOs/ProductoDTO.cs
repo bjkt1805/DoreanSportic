@@ -43,12 +43,16 @@ public record ProductoDTO
     [Required(ErrorMessage = "* {0} es requerido *")]
     public bool Estado { get; set; }
 
+    [ValidateNever]
     public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
 
+    [ValidateNever]
     public virtual Categoria IdCategoriaNavigation { get; set; } = null!;
 
+    [ValidateNever]
     public virtual Marca IdMarcaNavigation { get; set; } = null!;
 
+    [ValidateNever]
     public virtual ICollection<PedidoDetalle> PedidoDetalle { get; set; } = new List<PedidoDetalle>();
 
     public virtual ICollection<ResennaValoracion> ResennaValoracion { get; set; } = new List<ResennaValoracion>();

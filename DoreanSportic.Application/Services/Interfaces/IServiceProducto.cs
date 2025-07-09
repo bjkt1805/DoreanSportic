@@ -20,7 +20,7 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<ProductoDTO> FindByIdAsync(int id);
 
         // Añadir un nuevo producto
-        Task<int> AddAsync(ProductoDTO dto);
+        Task<int> AddAsync(ProductoDTO dto, string[] selectedEtiquetas);
 
         // Borrar el producto (por su ID)
         Task DeleteAsync(int id);

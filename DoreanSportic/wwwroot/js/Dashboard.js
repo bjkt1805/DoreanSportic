@@ -231,11 +231,6 @@ function activarValidacionCliente() {
         document.getElementById("error-etiquetas").innerText = "";
         document.getElementById("zona-errores-validacion").innerText = "";
 
-        //// Validar campos estándar primero
-        //if (!$(form).valid()) {
-        //    return;
-        //}
-
         // Validar etiquetas
         const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
         if (etiquetasAsignadas.length === 0) {
@@ -246,10 +241,13 @@ function activarValidacionCliente() {
 
         // Agregar etiquetas al formulario como inputs ocultos
         etiquetasAsignadas.forEach((el) => {
+            const id = el.dataset.id;
+            if (!id) return; // evita valores vacíos o undefined
             const input = document.createElement("input");
             input.type = "hidden";
             input.name = "selectedEtiquetas";
-            input.value = el.dataset.id || el.innerText.trim();
+            //input.value = el.dataset.id || el.innerText.trim();
+            input.value = el.dataset.id;
             form.appendChild(input);
         });
     });
@@ -263,34 +261,6 @@ function validarFormularioCrearProducto() {
     if ($.validator && $.validator.unobtrusive) {
         $.validator.unobtrusive.parse(form);
     }
-
-    //form.addEventListener("submit", function (e) {
-    //    // Limpiar mensajes anteriores
-    //    document.getElementById("error-etiquetas").innerText = "";
-    //    document.getElementById("zona-errores-validacion").innerText = "";
-
-    //    // Validar campos estándar primero
-    //    if (!$(form).valid()) {
-    //        return;
-    //    }
-
-    //    // Validar etiquetas
-    //    const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
-    //    if (etiquetasAsignadas.length === 0) {
-    //        e.preventDefault();
-    //        document.getElementById("error-etiquetas").innerText = "Debe asignar al menos una etiqueta.";
-    //        return;
-    //    }
-
-    //    // Agregar etiquetas al formulario como inputs ocultos
-    //    etiquetasAsignadas.forEach((el) => {
-    //        const input = document.createElement("input");
-    //        input.type = "hidden";
-    //        input.name = "selectedEtiquetas";
-    //        input.value = el.dataset.id || el.innerText.trim();
-    //        form.appendChild(input);
-    //    });
-    //});
 }
 
 

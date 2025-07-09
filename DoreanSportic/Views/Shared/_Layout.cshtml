@@ -107,25 +107,30 @@
                 files: [],
                 fileDragging: null,
                 fileDropping: null,
+
                 loadFile(file) {
                     return URL.createObjectURL(file);
                 },
+
                 addFiles(event) {
                     let droppedFiles = event.target.files;
                     if (!droppedFiles) return;
-
                     [...droppedFiles].forEach(file => this.files.push(file));
                 },
+
                 remove(index) {
                     this.files.splice(index, 1);
                 },
+
                 dragstart(event) {
                     this.fileDragging = event.target.dataset.index;
                     event.dataTransfer.effectAllowed = 'move';
                 },
+
                 dragenter(event) {
                     this.fileDropping = event.target.dataset.index;
                 },
+
                 drop(event) {
                     event.preventDefault();
                     const from = this.fileDragging;
@@ -140,12 +145,49 @@
                     this.fileDragging = null;
                     this.fileDropping = null;
                 },
+
                 humanFileSize(size) {
                     const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
                     return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+                },
+
+                async submitForm(e) {
+                    e.preventDefault();
+
+                    const form = e.target;
+                    const formData = new FormData(form);
+
+                    this.files.forEach(file => {
+                        formData.append("imagenesProducto", file);
+                    });
+
+                    // const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
+                    // etiquetasAsignadas.forEach((el) => {
+                    //     const id = el.dataset.id;
+                    //     if (id) {
+                    //         formData.append("selectedEtiquetas", id);
+                    //     }
+                    // });
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: "POST",
+                            body: formData
+                        });
+
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        } else {
+                            const html = await response.text();
+                            document.body.innerHTML = html;
+                        }
+                    } catch (err) {
+                        console.error("Error al enviar el formulario", err);
+                    }
                 }
             };
         }
+
 
     </script>
     @await RenderSectionAsync("Scripts", required: false)

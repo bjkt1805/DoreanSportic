@@ -71,10 +71,10 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
-        public async Task<int> AddAsync(ProductoDTO dto)
+        public async Task<int> AddAsync(ProductoDTO dto, string[] selectedEtiquetas)
         {
             var objectMapped = _mapper.Map<Producto>(dto);
-            return await _repository.AddAsync(objectMapped);
+            return await _repository.AddAsync(objectMapped, selectedEtiquetas);
         }
 
         public async Task UpdateAsync(int id, ProductoDTO dto)

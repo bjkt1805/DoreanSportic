@@ -71,7 +71,7 @@ namespace DoreanSportic.Controllers
         public async Task<ActionResult> DetailsAdmin(int id)
         {
             var @object = await _serviceProducto.FindByIdAsync(id);
-            return PartialView("_DetailsAdmin",@object);
+            return PartialView("_DetailsAdmin", @object);
         }
 
         //GET: ProductoController/Create
@@ -91,7 +91,7 @@ namespace DoreanSportic.Controllers
             // Viewbag para cargar la lista de categorías desde 
             // el servicio de categorías
             var categorias = await _serviceCategoria.ListAsync();
-            ViewBag.ListCategorias = new SelectList (categorias, "Id", "Nombre");
+            ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
 
 
             // Viewbag para cargar la lista de etiquetas desde
@@ -102,19 +102,38 @@ namespace DoreanSportic.Controllers
 
         }
 
-        //POST: Crear producto
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductoDTO dto, List<IFormFile> imagenesProducto, string[] selectedEtiquetas)
         {
-            // Validar si hay etiquetas asignadas ANTES del ModelState
+            // Validar etiquetas
             if (selectedEtiquetas == null || selectedEtiquetas.Length == 0)
             {
                 ModelState.AddModelError("", "Debe asignar al menos una etiqueta.");
             }
 
+            // Validar que haya al menos una imagen
+            if (imagenesProducto == null || !imagenesProducto.Any(f => f != null && f.Length > 0))
+            {
+                ModelState.AddModelError("ImagenesProducto", "Debe insertar al menos una imagen.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // Lee del ModelState todos los errores que
+                // vienen por el lado del server
+                string errors = string.Join("; ", ModelState.Values
+                                   .SelectMany(x => x.Errors)
+                                   .Select(x => x.ErrorMessage));
+                // Response errores
+                return BadRequest(errors);
+            }
+
             if (ModelState.IsValid)
             {
+                // Crear la lista de objetos ImagenProducto
+                var listaImagenes = new List<ImagenProducto>();
+
                 foreach (var file in imagenesProducto)
                 {
                     if (file != null && file.Length > 0)
@@ -122,13 +141,33 @@ namespace DoreanSportic.Controllers
                         using var ms = new MemoryStream();
                         await file.CopyToAsync(ms);
                         var imagenBytes = ms.ToArray();
+
+                        listaImagenes.Add(new ImagenProducto
+                        {
+                            Imagen = imagenBytes,
+                            // Podés agregar otras propiedades como NombreArchivo, MimeType, etc.
+                        });
                     }
                 }
-                // Resto de lógica para crear producto...
+
+                // Asignar imágenes al DTO
+                dto.ImagenesProducto = listaImagenes;
+
+                // Asignar etiquetas (para la relación muchos a muchos)
+                dto.IdEtiqueta = selectedEtiquetas.Select(id => new Etiqueta { Id = int.Parse(id) }).ToList();
+
+                // Guardar el producto usando service Producto
+                await _serviceProducto.AddAsync(dto, selectedEtiquetas);
+
+                TempData["Mensaje"] = "Producto creado exitosamente";
+                return RedirectToAction("Index");
+
             }
 
-            return View(dto);
+            // Redirigir o confirmar
+            return RedirectToAction("Index");
         }
+
 
 
         // GET: ProductoController/Edit/5
