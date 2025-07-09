@@ -17,17 +17,20 @@ namespace DoreanSportic.Controllers
         private readonly IServiceMarca _serviceMarca;
         private readonly IServiceCategoria _serviceCategoria;
         //private readonly IServiceResennaValoracion _serviceResennaValoracion;
+        private readonly IServiceEtiqueta _serviceEtiqueta;
         private readonly ILogger<ServiceProducto> _logger;
 
         public ProductoController(IServiceProducto serviceProducto,
             IServiceMarca serviceMarca,
             IServiceCategoria serviceCategoria,
             //IServiceResennaValoracion serviceResennaValoracion,
+            IServiceEtiqueta serviceEtiqueta,
             ILogger<ServiceProducto> logger)
         {
             _serviceProducto = serviceProducto;
             _serviceMarca = serviceMarca;
             _serviceCategoria = serviceCategoria;
+            _serviceEtiqueta = serviceEtiqueta;
             _logger = logger;
             _logger = logger;
         }
@@ -79,6 +82,7 @@ namespace DoreanSportic.Controllers
             //    Producto = new ProductoDTO(),
             //    Resennas = _serviceResennaValoracion.GetResennasPorProducto(0)
             //};
+
             // Viewbag para cargar la lista de marcas desde 
             // el servicio de marcas
             var marcas = await _serviceMarca.ListAsync();
@@ -88,13 +92,20 @@ namespace DoreanSportic.Controllers
             // el servicio de categorías
             var categorias = await _serviceCategoria.ListAsync();
             ViewBag.ListCategorias = new SelectList (categorias, "Id", "Nombre");
-            return PartialView("_CreateProducto"); 
+
+
+            // Viewbag para cargar la lista de etiquetas desde
+            // el servicio de etiquetas
+            ViewBag.ListaEtiquetas = await _serviceEtiqueta.ListAsync();
+
+            return PartialView("_CreateProducto");
+
         }
 
         //POST: Crear producto
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductoDTO model, List<IFormFile> imagenesProducto)
+        public async Task<IActionResult> Create(ProductoDTO dto, List<IFormFile> imagenesProducto, string[] selectedEtiquetas)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +121,7 @@ namespace DoreanSportic.Controllers
                 // Resto de lógica para crear producto...
             }
 
-            return View(model);
+            return View(dto);
         }
 
 

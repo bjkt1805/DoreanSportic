@@ -1,9 +1,11 @@
 ﻿using DoreanSportic.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace DoreanSportic.Application.DTOs;
 
@@ -11,18 +13,34 @@ public record ProductoDTO
 {
     public int Id { get; set; }
 
+    [Display(Name = "Nombre del producto")]
+    [Required(AllowEmptyStrings = false, ErrorMessage = "* {0} es requerido *")]
     public string Nombre { get; set; } = null!;
 
+    [Display(Name = "Descripción del producto")]
+    [Required(AllowEmptyStrings = false, ErrorMessage = "* {0} es requerida *")]
     public string? Descripcion { get; set; }
 
+    [Display(Name = "Precio Base")]
+    [DisplayFormat(DataFormatString = "{0:C0}")]
+    [Required(ErrorMessage = "* {0} es requerido *")]
     public decimal PrecioBase { get; set; }
 
+    [Display(Name = "Cantidad")]
+    [Required(ErrorMessage = "{0} es requerida")]
+    [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
     public int Stock { get; set; }
 
+    [Display(Name = "Marca")]
+    [Required(ErrorMessage = "* {0} es requerida *")]
     public int IdMarca { get; set; }
 
+    [Display(Name = "Categoría")]
+    [Required(ErrorMessage = "* {0} es requerida *")]
     public int IdCategoria { get; set; }
 
+    [Display(Name = "Estado")]
+    [Required(ErrorMessage = "* {0} es requerido *")]
     public bool Estado { get; set; }
 
     public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();

@@ -23,10 +23,17 @@ function cargarVista(ruta) {
                     inicializarVistaProductos();
                 }
 
-                // Cargar la función JavaScript si se hace drag and drop en crear producto
+                // Cargar la función JavaScript si se hace drag and drop (etiquetas) en crear producto 
                 if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
                     inicializarDragAndDropEtiquetas();
                 }
+
+                // Cargar la función de validación del cliente por medio de JQuery
+                activarValidacionCliente();
+
+                // Cargar la función de validación del cliente (imágenes y etiquetas) por medio de JQuery
+                validarFormularioCrearProducto();
+
 
             }, 300);
         })
@@ -212,6 +219,60 @@ function inicializarDragAndDropEtiquetas() {
         }
     });
 }
+
+// Función javascript para realizar la validación de formularios por del lado del cliente (client-side verification)
+function activarValidacionCliente() {
+    const form = document.querySelector('form');
+    if (form) {
+        $.validator.unobtrusive.parse(form);
+    } else {
+    }
+}
+
+// Función javascript para validar que se inserte al menos una imagen y se seleccione una categoría
+function validarFormularioCrearProducto() {
+    const form = document.querySelector("form[asp-action='Create']");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
+        const inputFile = form.querySelector("input[type='file']");
+        const files = inputFile?.files;
+
+        // Validar imágenes
+        if (!files || files.length === 0) {
+            e.preventDefault();
+            mostrarErrorVisual("Debe insertar al menos una imagen.");
+            return;
+        }
+
+        // Validar etiquetas
+        if (etiquetasAsignadas.length === 0) {
+            e.preventDefault();
+            mostrarErrorVisual("Debe asignar al menos una etiqueta al producto.");
+            return;
+        }
+
+        // Agregar inputs ocultos para etiquetas seleccionadas
+        etiquetasAsignadas.forEach((el) => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "selectedEtiquetas";
+            input.value = el.dataset.id || el.innerText.trim();
+            form.appendChild(input);
+        });
+    });
+}
+
+// Mensaje de error visual (en la Vista)
+function mostrarErrorVisual(mensaje) {
+    const zonaErrores = document.getElementById("zona-errores-validacion");
+    if (zonaErrores) {
+        zonaErrores.innerText = mensaje;
+    }
+
+}
+
 
 
 
