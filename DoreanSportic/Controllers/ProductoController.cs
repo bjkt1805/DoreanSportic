@@ -157,6 +157,8 @@ namespace DoreanSportic.Controllers
                         listaImagenes.Add(new ImagenProducto
                         {
                             Imagen = imagenBytes,
+                            Descripcion = file.FileName,
+                            Estado = true
                             // Podés agregar otras propiedades como NombreArchivo, MimeType, etc.
                         });
                     }

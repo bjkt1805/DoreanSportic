@@ -15,6 +15,9 @@ function dataFileDnD() {
             if (!droppedFiles) return;
 
             [...droppedFiles].forEach(file => this.files.push(file));
+
+            // Resetear el input para permitir volver a cargar el mismo archivo
+            event.target.value = "";
         },
 
         remove(index) {

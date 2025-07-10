@@ -13,6 +13,7 @@
         <!-- Primera columna (izquierda): formulario -->
         <div class="w-2/3 flex flex-col gap-4">
             <!-- Todo el formulario, excepto la parte de imágenes y etiquetas-->
+            
             <!-- Para controlar la inserción del nombre del producto-->
             <div class="form-control w-full">
                 <label asp-for="Nombre" class="label">
@@ -31,8 +32,10 @@
                 <span asp-validation-for="Descripcion" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
-            <!-- Para controlar la inserción del precio base del producto-->
+            <!-- Contenedor en fila para Precio base y Stock (cantidad)-->
             <div class="flex flex-row gap-4">
+
+                <!-- Para controlar la inserción del precio base del producto-->
                 <div class="form-control w-full">
                     <label asp-for="PrecioBase" class="label">
                         <span class="label-text font-bold text-black">Precio base (₡)</span>
@@ -41,14 +44,14 @@
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"></span>
                 </div>
 
-@*                 <!-- Para controlar la inserción del stock (cantidad) del producto-->
+                 <!-- Para controlar la inserción del stock (cantidad) del producto-->
                 <div class="form-control w-full">
                     <label asp-for="Stock" class="label">
-                        <span class="label-text font-bold text-black">Stock</span>
+                        <span class="label-text font-bold text-black">Cantidad</span>
                     </label>
                     <input asp-for="Stock" type="number" class="input input-bordered w-full mb-3 mt-1" />
-                    <span asp-validation-for="Stock" class="text-error text-sm mt-1"></span>
-                </div> *@
+                    <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"></span>
+                </div>
             </div>
 
             <!-- Para controlar la selección de la categoría del producto-->
@@ -73,6 +76,13 @@
                 <span asp-validation-for="IdMarca" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
+            <!-- Input oculto para enviar True para el estado del producto-->
+            <div class="form-control w-full">
+                <input type="hidden" name="Estado" value="true" />
+            </div>
+
+
+            <!-- Botón para enviar datos en el formulario-->
             <div class="form-control mt-6">
                 <input type="submit" value="Crear Producto" class="btn btn-success w-full" />
             </div>

@@ -5,7 +5,11 @@
     <div class="flex flex-row gap-5" id="detalle-producto" data-id="@Model.Id"></div>
     <div class="flex flex-col gap-4 w-full lg:w-3/4">
         <div class="flex flex-row gap-4">
-            <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+         <a href="javascript:void(0);"
+               class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
+               onclick="cargarVista('/Producto/IndexAdmin')">
+                Volver al listado
+            </a>
             <a class="btn btn-sm btn-outline bg-warning text-black w-50" asp-action="Index">Editar</a>
         </div>
         <h1><b>DETALLE DEL PRODUCTO</b></h1>

@@ -24,11 +24,14 @@ public record ProductoDTO
     [Display(Name = "Precio Base")]
     [DisplayFormat(DataFormatString = "{0:C0}")]
     [Required(ErrorMessage = "* {0} es requerido *")]
+    //[RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
+    [Range(5000, 100000, ErrorMessage = " * {0} debe estar en el rango de {1} y {2} *")]
     public decimal PrecioBase { get; set; }
 
     [Display(Name = "Cantidad")]
-    [Required(ErrorMessage = "{0} es requerida")]
+    [Required(ErrorMessage = "* {0} es requerida *")]
     [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
+    [Range(1, 100, ErrorMessage = " * {0} debe estar en el rango de {1} y {2} *")]
     public int Stock { get; set; }
 
     [Display(Name = "Marca")]
