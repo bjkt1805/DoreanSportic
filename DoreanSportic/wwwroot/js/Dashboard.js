@@ -202,6 +202,39 @@ function inicializarDragAndDropEtiquetas() {
     });
 }
 
+// Función javascript para cargar la vista de editar producto (_EditProducto)
+// Función para cargar la vista parcial de edición de un producto
+function cargarEditarProducto(idProducto) {
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('contenido-dinamico');
+
+    loader.classList.remove('hidden');
+    container.innerHTML = "";
+
+    fetch(`/Producto/EditAdmin/${idProducto}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            setTimeout(() => {
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+
+                // Inicializar función de drag and drop para las etiquetas
+                if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
+                    inicializarDragAndDropEtiquetas();
+                }
+            }, 300);
+        })
+        .catch(err => {
+            console.error("Error al cargar la vista de edición:", err);
+            container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición del producto.</p>`;
+            loader.classList.add('hidden');
+        });
+}
+
+
 // Función para mostrar el toast en las vistas parciales
 function mostrarToast(mensaje, tipo = "info") {
     const toast = document.createElement("div");

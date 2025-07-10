@@ -53,10 +53,14 @@ function dataFileDnD() {
             return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
         },
 
+        // Función para manejar el evento de envío del formulario
         async submitForm(e) {
             e.preventDefault();
 
             const form = e.target;
+            // Constante para manejar si se va a crear o editar un producto
+            const modo = form.dataset.modo;
+            const isEdicion = modo === "editar";    
 
             // Limpiar mensajes anteriores
             document.getElementById("error-etiquetas").innerText = "";
@@ -80,8 +84,8 @@ function dataFileDnD() {
                 hasError = true;
             }
 
-            // Validar que haya al menos una imagen cargada
-            if (this.files.length === 0) {
+            // Validar que haya al menos una imagen cargada (modo creación)
+            if  (!isEdicion && this.files.length === 0) {
                 const zonaErrores = document.getElementById("zona-errores-validacion");
                 if (zonaErrores) {
                     zonaErrores.innerText = "* Debe subir al menos una imagen del producto *";
@@ -100,9 +104,9 @@ function dataFileDnD() {
             // Preparar FormData
             const formData = new FormData(form);
 
-            // Agregar imágenes
+            // Agregar imágenes (si hay nuevas imágnes cargadas)
             this.files.forEach(file => {
-                formData.append("imagenesProducto", file);
+                formData.append(isEdicion ? "nuevasImagenes" : "imagenesProducto", file);
             });
 
             // Agregar etiquetas seleccionadas

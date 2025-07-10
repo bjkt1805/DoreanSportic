@@ -84,7 +84,7 @@ namespace DoreanSportic.Controllers
             return PartialView("_DetailsAdmin", @object);
         }
 
-        //GET: ProductoController/Create
+        // GET: ProductoController/Create
         public async Task<IActionResult> Create()
         {
             //var viewModel = new CrearProductoViewModel
@@ -112,6 +112,7 @@ namespace DoreanSportic.Controllers
 
         }
 
+        // POST: ProductoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductoDTO dto, List<IFormFile> imagenesProducto, string[] selectedEtiquetas)
@@ -189,27 +190,90 @@ namespace DoreanSportic.Controllers
         }
 
 
-
         // GET: ProductoController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        public async Task<IActionResult> EditAdmin(int id)
+        {
+            var producto = await _serviceProducto.FindByIdAsync(id);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            // Viewbag para cargar la lista de marcas desde 
+            // el servicio de marcas
+            var marcas = await _serviceMarca.ListAsync();
+            ViewBag.ListMarcas = new SelectList(marcas, "Id", "Nombre");
+
+            // Viewbag para cargar la lista de categorías desde 
+            // el servicio de categorías
+            var categorias = await _serviceCategoria.ListAsync();
+            ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
+
+
+            // Viewbag para cargar la lista de etiquetas desde
+            // el servicio de etiquetas
+            ViewBag.ListaEtiquetas = await _serviceEtiqueta.ListAsync();
+
+            return PartialView("_EditProducto", producto);
+        }
 
         // POST: ProductoController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ProductoDTO dto, List<IFormFile> nuevasImagenes, string[] selectedEtiquetas)
+        {
+            if (selectedEtiquetas == null || selectedEtiquetas.Length == 0)
+            {
+                ModelState.AddModelError("", "Debe asignar al menos una etiqueta.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // Volver a cargar listas por si hay errores
+                ViewBag.ListMarcas = new SelectList(await _serviceMarca.ListAsync(), "Id", "Nombre");
+                ViewBag.ListCategorias = new SelectList(await _serviceCategoria.ListAsync(), "Id", "Nombre");
+                ViewBag.ListaEtiquetas = await _serviceEtiqueta.ListAsync();
+
+                return PartialView("_EditProducto", dto);
+            }
+
+            var listaImagenes = new List<ImagenProducto>();
+
+            // Procesar nuevas imágenes si las hay
+            if (nuevasImagenes != null && nuevasImagenes.Any())
+            {
+                foreach (var file in nuevasImagenes)
+                {
+                    if (file != null && file.Length > 0)
+                    {
+                        using var ms = new MemoryStream();
+                        await file.CopyToAsync(ms);
+                        var imagenBytes = ms.ToArray();
+
+                        listaImagenes.Add(new ImagenProducto
+                        {
+                            Imagen = imagenBytes,
+                            Descripcion = file.FileName // Puedes cambiar esto si deseas otro nombre
+                        });
+                    }
+                }
+            }
+
+            // Actualizar DTO
+            dto.ImagenesProducto = listaImagenes;
+            dto.IdEtiqueta = selectedEtiquetas.Select(id => new Etiqueta { Id = int.Parse(id) }).ToList();
+
+            // Llamar al servicio para actualizar el producto
+            await _serviceProducto.UpdateAsync(id, dto);
+
+            return Json(new
+            {
+                success = true,
+                mensaje = "Producto actualizado correctamente"
+            });
+        }
+
 
         // GET: ProductoController/Delete/5
         //public ActionResult Delete(int id)

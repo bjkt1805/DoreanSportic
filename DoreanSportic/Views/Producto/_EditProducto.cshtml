@@ -1,0 +1,152 @@
+﻿@model DoreanSportic.Application.DTOs.ProductoDTO
+
+<form asp-action="Edit" asp-antiforgery="true" method="post" enctype="multipart/form-data"
+      x-data="dataFileDnD()"
+      x-on:submit.prevent="submitForm($event)"
+      class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
+
+    <h2 class="text-left font-bold mb-3">EDITAR PRODUCTO</h2>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="flex flex-row gap-4 w-full">
+        <div asp-validation-summary="ModelOnly" class="text-sm italic text-red-600"></div>
+
+        <!-- Columna izquierda -->
+        <div class="w-2/3 flex flex-col gap-4">
+            <div class="form-control w-full">
+                <label asp-for="Nombre" class="label font-bold text-black">Nombre del producto</label>
+                <input asp-for="Nombre" class="input input-bordered w-full" />
+                <span asp-validation-for="Nombre" class="text-sm italic text-red-600"></span>
+            </div>
+
+            <div class="form-control w-full">
+                <label asp-for="Descripcion" class="label font-bold text-black">Descripción</label>
+                <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full"></textarea>
+                <span asp-validation-for="Descripcion" class="text-sm italic text-red-600"></span>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="form-control w-full">
+                    <label asp-for="PrecioBase" class="label font-bold text-black">Precio base (₡)</label>
+                    <input asp-for="PrecioBase" type="number" step="0.01" class="input input-bordered w-full" />
+                    <span asp-validation-for="PrecioBase" class="text-sm italic text-red-600"></span>
+                </div>
+
+                <div class="form-control w-full">
+                    <label asp-for="Stock" class="label font-bold text-black">Cantidad</label>
+                    <input asp-for="Stock" type="number" class="input input-bordered w-full" />
+                    <span asp-validation-for="Stock" class="text-sm italic text-red-600"></span>
+                </div>
+            </div>
+
+            <div class="form-control w-full">
+                <label asp-for="IdCategoria" class="label font-bold text-black">Categoría</label>
+                <select asp-for="IdCategoria" asp-items="ViewBag.ListCategorias" class="select select-bordered w-full">
+                    <option value="">Seleccione una categoría</option>
+                </select>
+                <span asp-validation-for="IdCategoria" class="text-sm italic text-red-600"></span>
+            </div>
+
+            <div class="form-control w-full">
+                <label asp-for="IdMarca" class="label font-bold text-black">Marca</label>
+                <select asp-for="IdMarca" asp-items="ViewBag.ListMarcas" class="select select-bordered w-full">
+                    <option value="">Seleccione una marca</option>
+                </select>
+                <span asp-validation-for="IdMarca" class="text-sm italic text-red-600"></span>
+            </div>
+
+            <input type="hidden" name="Estado" value="true" />
+
+            <div class="form-control mt-6">
+                <input type="submit" value="Actualizar Producto" class="btn btn-primary w-full" />
+            </div>
+        </div>
+
+        <!-- Columna etiquetas -->
+        <div class="flex flex-col gap-2">
+            <p class="font-bold">Etiquetas del producto</p>
+            <div id="error-etiquetas" class="text-sm italic text-red-600"></div>
+            <div class="w-full bg-gray-200 space-x-10 flex border rounded p-2">
+                <div id="dp1" droppable="true" class="w-1/2 drop border rounded p-2">
+                    <p class="font-bold text-center text-sm">Etiquetas disponibles</p>
+                    @{
+                        var etiquetas = ViewBag.ListaEtiquetas as List<DoreanSportic.Application.DTOs.EtiquetaDTO>;
+                        var asignadas = Model.IdEtiqueta?.Select(e => e.Id).ToList() ?? new List<int>();
+                        int index = 1;
+                    }
+                    @foreach (var etiqueta in etiquetas.Where(e => !asignadas.Contains(e.Id)))
+                    {
+                        <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary" data-id="@etiqueta.Id">
+                            @etiqueta.Nombre
+                        </div>
+                    }
+                </div>
+                <div id="dp2" droppable="true" class="w-1/2 drop border rounded p-2">
+                    <p class="font-bold text-center text-sm">Etiquetas asignadas</p>
+                    @foreach (var etiqueta in etiquetas.Where(e => asignadas.Contains(e.Id)))
+                    {
+                        <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-secondary" data-id="@etiqueta.Id">
+                            @etiqueta.Nombre
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna imágenes -->
+        <div class="bg-white rounded w-9/12 mx-4">
+            <p class="font-bold mb-1">Imágenes del producto</p>
+            <div id="zona-errores-validacion" class="text-sm italic text-red-600"></div>
+
+            <!-- Mostrar imágenes actuales -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                @foreach (var img in Model.ImagenesProducto)
+                {
+                    <img src="data:image/png;base64,@Convert.ToBase64String(img.Imagen)" class="w-20 h-20 object-cover rounded" />
+                }
+            </div>
+
+            <!-- Dropzone de nuevas imágenes -->
+            <div class="relative flex flex-col p-4 border border-gray-100 rounded">
+                <div x-ref="dnd" class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 p-4 transition hover:border-blue-500">
+                    <input accept="image/*" type="file" multiple class="drop-zone absolute inset-0 z-50 w-full h-full opacity-0"
+                           x-on:change="addFiles($event)"
+                           x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
+                           x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
+                           x-on:drop="$refs.dnd.classList.remove('drag-over')" />
+
+                    <div class="flex flex-col items-center justify-center text-center">
+                        <svg class="w-6 h-6 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <p>Arrastre nuevas imágenes o haga clic para seleccionar.</p>
+                    </div>
+                </div>
+
+                <template x-if="files.length > 0">
+                    <div class="flex flex-wrap gap-2 mt-4" x-on:drop.prevent="drop($event)" x-on:dragover.prevent="$event.dataTransfer.dropEffect = 'move'">
+                        <template x-for="(_, index) in Array.from({ length: files.length })">
+                            <div class="w-25 h-25 relative flex items-center overflow-hidden text-center bg-gray-100 border rounded cursor-move select-none"
+                                 x-on:dragstart="dragstart($event)" x-on:dragend="fileDragging = null"
+                                 :class="{'border-blue-600': fileDragging == index}" draggable="true" :data-index="index">
+
+                                <button class="absolute top-0 right-0 z-50 p-1 bg-white rounded-bl hover:bg-gray-200" type="button" x-on:click="remove(index)">
+                                    <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+
+                                <template x-if="files[index].type.includes('image/')">
+                                    <img x-bind:src="loadFile(files[index])" class="p-4 w-25 h-25 absolute top-0 left-0 object-cover z-0 rounded" alt="Preview" />
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</form>

@@ -60,8 +60,11 @@
                 var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);
             }
 
+            
             @if (descuentoTotal > 0)
             {
+                // Si el descuento Total es mayor a 0 mostrar los badges
+                // de porcentaje de descuento y el precio con descuento
                 <div class="flex flex-col gap gap-1">
                     <div class="flex flex-row gap gap-1 text-xs text-gray-400">
                         <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
@@ -102,7 +105,7 @@
                 <!-- Redirección por medio de AJAX a EDITAR -->
                 <a href="javascript:void(0);"
                    class="btn btn-soft btn-warning text-black"
-                   onclick="cargarDetalleProducto(@item.Id)">
+                   onclick="cargarEditarProducto(@item.Id)">
                     Editar
                 </a>
 
