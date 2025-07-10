@@ -1,21 +1,11 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
 
-@if (TempData["Mensaje"] != null)
-{
-    <div class="toast toast-top toast-end z-50">
-        <div class="alert alert-success">
-            <span>@TempData["Mensaje"]</span>
-        </div>
-    </div>
-}
-
 <form asp-action="Create" asp-antiforgery="true" method="post" enctype="multipart/form-data"
       x-data="dataFileDnD()"
       x-on:submit.prevent="submitForm($event)"
       class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
 
     <h2 class="text-left font-bold mb-3">NUEVO PRODUCTO</h2>
-    <div id="zona-errores-validacion" class="text-error font-semibold mb-2"></div>
 
     <div class="flex flex-row gap-4 w-full">
         <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
@@ -110,9 +100,7 @@
                         @foreach (var etiqueta in etiquetas)
                         {
                             <div id="dg@(index++)"
-                             draggable="true"
-@*                              class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white @(etiqueta.Color ?? "bg-gray-500")">
- *@                            class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary"
+                             draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary"
                                  data-id="@etiqueta.Id">
                             @etiqueta.Nombre
                             </div>
@@ -136,6 +124,10 @@
         <!-- Terecera columna (derecha): imágenes (dropzone) -->
         <div class="bg-white rounded w-9/12 mx-4">
             <p class="font-bold mb-1">Imágenes del producto</p>
+
+            <!-- Mostrar error si no se sube ninguna imagen -->
+            <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small"></div>
+
             <div class="relative flex flex-col p-4 border border-gray-100 rounded">
                 <div x-ref="dnd"
                      class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">

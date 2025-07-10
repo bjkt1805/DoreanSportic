@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession(); // Para poder utilizar TempData
 //***********************
 // Configurar D.I.
 //Repository
@@ -130,6 +131,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();//Para utilizar TempData
 
 app.UseAuthorization();
 

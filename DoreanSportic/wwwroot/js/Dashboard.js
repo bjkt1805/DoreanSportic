@@ -28,13 +28,6 @@ function cargarVista(ruta) {
                     inicializarDragAndDropEtiquetas();
                 }
 
-                // Cargar la función de validación del cliente por medio de JQuery
-                activarValidacionCliente();
-
-                // Cargar la función de validación del cliente (imágenes y etiquetas) por medio de JQuery
-                //validarFormularioCrearProducto();
-
-
             }, 300);
         })
         .catch(error => {
@@ -220,40 +213,6 @@ function inicializarDragAndDropEtiquetas() {
     });
 }
 
-// Función javascript para realizar la validación de formularios por del lado del cliente (client-side verification)
-function activarValidacionCliente() {
-    const form = document.querySelector('form');
-    if (form) {
-        $.validator.unobtrusive.parse(form);
-    }
-    form.addEventListener("submit", function (e) {
-        // Limpiar mensajes anteriores
-        document.getElementById("error-etiquetas").innerText = "";
-        document.getElementById("zona-errores-validacion").innerText = "";
-
-        // Validar etiquetas
-        const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
-        if (etiquetasAsignadas.length === 0) {
-            e.preventDefault();
-            document.getElementById("error-etiquetas").innerText = "* Debe asignar al menos una etiqueta *";
-            return;
-        }
-
-        // Agregar etiquetas al formulario como inputs ocultos
-        etiquetasAsignadas.forEach((el) => {
-            const id = el.dataset.id;
-            if (!id) return; // evita valores vacíos o undefined
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = "selectedEtiquetas";
-            //input.value = el.dataset.id || el.innerText.trim();
-            input.value = el.dataset.id;
-            form.appendChild(input);
-        });
-    });
-}
-
-// Función javascript para validar que se inserte al menos se seleccione una categoría
 function validarFormularioCrearProducto() {
     const form = document.querySelector("form[asp-action='Create']");
     if (!form) return;

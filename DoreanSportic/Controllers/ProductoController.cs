@@ -118,17 +118,19 @@ namespace DoreanSportic.Controllers
                 ModelState.AddModelError("ImagenesProducto", "Debe insertar al menos una imagen.");
             }
 
-            if (!ModelState.IsValid)
-            {
-                // Lee del ModelState todos los errores que
-                // vienen por el lado del server
-                string errors = string.Join("; ", ModelState.Values
-                                   .SelectMany(x => x.Errors)
-                                   .Select(x => x.ErrorMessage));
-                // Response errores
-                return BadRequest(errors);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    // Lee del ModelState todos los errores que
+            //    // vienen por el lado del server
+            //    string errors = string.Join("; ", ModelState.Values
+            //                       .SelectMany(x => x.Errors)
+            //                       .Select(x => x.ErrorMessage));
+            //    // Response errores
+            //    return BadRequest(errors);
+            //}
 
+            // Si el estado del modelo es correcto, proceder con la creación
+            // del producto-
             if (ModelState.IsValid)
             {
                 // Crear la lista de objetos ImagenProducto
@@ -159,8 +161,7 @@ namespace DoreanSportic.Controllers
                 // Guardar el producto usando service Producto
                 await _serviceProducto.AddAsync(dto, selectedEtiquetas);
 
-                TempData["Mensaje"] = "Producto creado exitosamente";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { mensaje = "Producto creado exitosamente", tipo = "success" });
 
             }
 
