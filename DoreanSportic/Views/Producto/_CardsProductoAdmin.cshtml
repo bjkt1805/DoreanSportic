@@ -1,0 +1,113 @@
+﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
+@using DoreanSportic.Infrastructure.Models
+
+@foreach (var item in Model)
+{
+    <div class="mb-4 mr-2 card bg-base-100 w-75 shadow-lg">
+        <figure class="px-10 pt-5 h-25 flex justify-center items-center">
+            <img style="width:80%; height: 100%"
+                 src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.PrimeraImagen ?? new byte[0])"
+                 alt="Ropa/accesorios deportivos"
+                 class=" h-full object-contain rounded-xl" />
+        </figure>
+        <div class="card-body flex flex-col justify-between h-75">
+            <!-- Título + Badge -->
+            <h2 class="card-title">
+                @Html.DisplayFor(m => item.Nombre)
+            </h2>
+
+            <div class="flex flex-col gap gap-1">
+                <div class="flex flex-row gap gap-1">
+                    <div class="badge bg-[#000000] text-white">@item.IdMarcaNavigation?.Nombre.ToUpper()</div>
+
+                    <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
+                        exista una promoción
+                    -->
+                    @if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
+                                    (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                    {
+                        <div class="badge badge-secondary">OFERTA</div>
+                    }
+                </div>
+            </div>
+
+            @{
+                decimal precioBase = item.PrecioBase;
+                DateTime hoy = DateTime.Today;
+
+                // Obtener promociones activas por producto
+                var promocionesProductoActivas = item.IdPromocion
+                .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+
+                decimal descuentoProducto = promocionesProductoActivas.Sum(p => p.PorcentajeDescuento ?? 0);
+
+                // Obtener promociones activas por categoría (si existen)
+                IEnumerable<Promocion> promocionesCategoriaActivas = Enumerable.Empty<Promocion>();
+
+                if (item.IdCategoriaNavigation?.IdPromocion != null)
+                {
+                    promocionesCategoriaActivas = item.IdCategoriaNavigation.IdPromocion
+                    .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
+                }
+
+                decimal descuentoCategoria = promocionesCategoriaActivas.Sum(p => p.PorcentajeDescuento ?? 0);
+
+                // Sumar ambos descuentos
+                decimal descuentoTotal = descuentoProducto + descuentoCategoria;
+
+                // Límite opcional a 100%
+                if (descuentoTotal > 100) descuentoTotal = 100;
+                var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);
+            }
+
+            @if (descuentoTotal > 0)
+            {
+                <div class="flex flex-col gap gap-1">
+                    <div class="flex flex-row gap gap-1 text-xs text-gray-400">
+                        <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                        <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
+                            - @descuentoTotal.ToString("0")%
+                        </div>
+                    </div>
+                    <div class="flex flex-row gap gap-1">
+                        <b>Precio en oferta: </b>
+                        <div class="badge badge-xl bg-success text-black font-bold">
+                            ₡@precioConDescuento.ToString("N2")
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="flex flex-row gap gap-1">
+                    <b class="mt-1">Precio base: </b>
+                    <div class="badge badge-outline w-fit">
+                        ₡@precioBase.ToString("N2") + I.V.A
+                    </div>
+                </div>
+                <div class="flex flex-row gap gap-1">
+                </div>
+            }
+
+            <!-- Botones alineado abajo con justify-between -->
+            <div class="flex justify-between gap-2">
+
+                <!-- Redirección por medio de AJAX a VER DETALLES -->
+                <a href="javascript:void(0);"
+                   class="btn btn-soft btn-primary text-white"
+                   onclick="cargarDetalleProducto(@item.Id)">
+                    Ver detalles
+                </a>
+
+
+                <!-- Redirección por medio de AJAX a EDITAR -->
+                <a href="javascript:void(0);"
+                   class="btn btn-soft btn-warning text-black"
+                   onclick="cargarDetalleProducto(@item.Id)">
+                    Editar
+                </a>
+
+            </div>
+        </div>
+    </div>
+}

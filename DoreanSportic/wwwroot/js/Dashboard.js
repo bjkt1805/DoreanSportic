@@ -40,7 +40,7 @@ function cargarVista(ruta) {
 function inicializarVistaProductos() {
     const toggle = document.querySelector('input[type="checkbox"]');
     const loader = document.getElementById('loader');
-    const container = document.getElementById('card-productos-body');
+    const container = document.getElementById('card-productos-body-admin');
 
     if (!toggle || !loader || !container) return;
 
@@ -52,7 +52,7 @@ function inicializarVistaProductos() {
     function cargarProductosPorCategoria(idCategoria) {
         loader.classList.remove('hidden');
         container.innerHTML = "";
-        fetch(`/Producto/FiltrarPorCategoria?idCategoria=${idCategoria}`)
+        fetch(`/Producto/FiltrarPorCategoriaAdmin?idCategoria=${idCategoria}`)
             .then(res => res.text())
             .then(html => {
                 setTimeout(() => {
@@ -97,17 +97,6 @@ function cargarDetalleProducto(idProducto) {
 
                 // Cargar reseñas del producto
                 cargarResennasProducto();
-
-                // Inicializar el dropzone si es la vista de crear producto
-                if (typeof inicializarDropzoneImagenes === 'function') {
-                    inicializarDropzoneImagenes();
-                }
-
-                // También llamar a la función de inicializarDropZone 
-                // si el elemento que se carga en el DOM tiene el id de dropzone
-                if (document.getElementById('dropzone')) {
-                    inicializarDropzoneImagenes();
-                }
 
 
             }, 300);

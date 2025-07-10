@@ -5,37 +5,9 @@
 }
 
 
-@{
-    var mensaje = Context.Request.Query["mensaje"].ToString();
-    var tipo = Context.Request.Query["tipo"].ToString();
-}
-
-@if (!string.IsNullOrEmpty(mensaje))
-{
-    <div class="toast toast-top toast-center z-50">
-        <div class="alert alert-@tipo" role="alert">
-            <span class="text-white font-bold">@mensaje</span>
-        </div>
-    </div>
-
-    <script>
-        setTimeout(() => {
-            document.querySelector('.toast')?.remove();
-
-            // Limpiar la URL después de mostrar el toast
-            if (window.history.replaceState) {
-                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
-            }
-        }, 4000);
-    </script>
-}
-
-
-
 <!--Tabs para seleccionar entre "Ropa" y "Accesorios"-->
 
-<div class="tabs tabs-boxed bg-white w-full shadow-lg mb-4 font-bold items-center justify-center" id="tabs-categorias">
+<div class="tabs tabs-boxed bg-white w-auto shadow-lg mb-4 font-bold items-center justify-center" id="tabs-categorias">
     <a class="tab tab-active" data-id="1">
         <!-- Ícono camiseta -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">

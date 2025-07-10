@@ -89,28 +89,22 @@
                 </div>
             }
 
-            <!-- Botón alineado abajo con justify-between -->  
+            <!-- Botones alineados abajo con justify-between -->  
             <div class="flex justify-between gap-2">  
                 
-            <!-- 
+                <!-- Redirección a la vista de detalles -->
                 <a class="btn btn-soft btn-primary text-white"  
                    asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
-            -->
 
-                <!-- Redirección por medio de AJAX a VER DETALLES-->
-                <a href="javascript:void(0);"
-                   class="btn btn-soft btn-primary text-white"
-                   onclick="cargarDetalleProducto(@item.Id)">
-                   Ver detalles
+                <!-- Redirección a la vista de comprar -->
+                <a class="btn btn-soft bg-[#006400] text-white">Comprar</a>
+                
+                <!-- 
+                <a class="btn btn-soft btn-succcess text-white" 
+                    asp-action="Comprar" asp-route-id="@item.Id">Comprar
                 </a>
-
-                <!-- Redirección por medio de AJAX a EDITAR -->
-                <a href="javascript:void(0);"
-                   class="btn btn-soft btn-warning text-black"
-                   onclick="cargarDetalleProducto(@item.Id)">
-                    Editar
-                </a>
-
+                -->
+                   
             </div>
         </div>  
     </div>  

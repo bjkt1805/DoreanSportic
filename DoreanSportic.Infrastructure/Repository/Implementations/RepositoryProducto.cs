@@ -43,6 +43,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                     .Include(p => p.IdCategoriaNavigation)
                     .ThenInclude(c => c.IdPromocion)
                     .Where(p => p.IdCategoria == idCategoria)
+                    // Orden descendente por ID para ayuda visual al crear en el dashboard de admin
+                    .OrderByDescending(p => p.Id) 
                     .ToListAsync();
 
             return collection;

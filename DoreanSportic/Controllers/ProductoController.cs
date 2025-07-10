@@ -59,6 +59,16 @@ namespace DoreanSportic.Controllers
             return PartialView("_CardsProducto", collection);
         }
 
+        // GET: ProductoControllerAdmin
+        [HttpGet]
+        public async Task<ActionResult> FiltrarPorCategoriaAdmin(int idCategoria)
+        {
+            // Listar los productos por categoría
+            var collection = await _serviceProducto.GetProductoByCategoria(idCategoria);
+
+            return PartialView("_CardsProductoAdmin", collection);
+        }
+
 
         // GET: ProductoController/Details/{id}
         public async Task<ActionResult> Details(int id)
