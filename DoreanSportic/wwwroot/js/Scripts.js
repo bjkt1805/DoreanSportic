@@ -90,6 +90,8 @@ function dataFileDnD() {
             //detener el proceso
             if (hasError && !$(form).valid()) {
                 return;
+            } else if (hasError || !$(form).valid()) {
+                return;
             }
 
             // Preparar FormData
@@ -113,6 +115,32 @@ function dataFileDnD() {
                     method: "POST",
                     body: formData
                 });
+
+                // Código para cargar vista parcial en caso de que haya
+                // respuesta exitosa a la hora de crear el producto
+                // en el controlador Create (POST)
+                if (response.ok) {
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Mostrar toast (opcional)
+                        mostrarToast(data.mensaje, "success");
+
+                        // Cargar _IndexAdmin dinámicamente en el contenedor
+                        cargarVista('/Producto/IndexAdmin');
+
+                        // Opcional: eliminar estado anterior
+                        history.replaceState(null, "", "/Producto/IndexAdmin");
+                    } else {
+                        // Manejo si viniera algún error
+                        console.warn("Error inesperado:", data);
+                    }
+
+                } else {
+                    const html = await response.text();
+                    document.getElementById("contenido-dinamico").innerHTML = html;
+                }
+
 
                 if (response.redirected) {
                     window.location.href = response.url;

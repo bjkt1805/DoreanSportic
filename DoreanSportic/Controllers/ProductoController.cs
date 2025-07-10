@@ -161,12 +161,19 @@ namespace DoreanSportic.Controllers
                 // Guardar el producto usando service Producto
                 await _serviceProducto.AddAsync(dto, selectedEtiquetas);
 
-                return RedirectToAction("Index", new { mensaje = "Producto creado exitosamente", tipo = "success" });
+                //return RedirectToAction("Index", new { mensaje = "Producto creado exitosamente", tipo = "success" });
+
+                // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
+                // con vistas parciales
+                return Json(new { success = true, mensaje = "Producto creado exitosamente" });
 
             }
 
-            // Redirigir o confirmar
-            return RedirectToAction("Index");
+            //// Redirigir o confirmar
+            //return RedirectToAction("Index");
+            // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
+            // con vistas parciales
+            return Json(new { success = true, mensaje = "Producto creado exitosamente" });
         }
 
 

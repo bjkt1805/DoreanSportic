@@ -213,23 +213,21 @@ function inicializarDragAndDropEtiquetas() {
     });
 }
 
-function validarFormularioCrearProducto() {
-    const form = document.querySelector("form[asp-action='Create']");
-    if (!form) return;
+// Función para mostrar el toast en las vistas parciales
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.createElement("div");
+    toast.className = `toast toast-top toast-center z-50`;
+    toast.innerHTML = `
+        <div class="alert alert-${tipo}">
+            <span class="text-black font-bold">${mensaje}</span>
+        </div>
+    `;
 
-    if ($.validator && $.validator.unobtrusive) {
-        $.validator.unobtrusive.parse(form);
-    }
-}
+    document.body.appendChild(toast);
 
-
-// Mensaje de error visual (en la Vista)
-function mostrarErrorVisual(mensaje) {
-    const zonaErrores = document.getElementById("zona-errores-validacion");
-    if (zonaErrores) {
-        zonaErrores.innerText = mensaje;
-    }
-
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
 }
 
 
