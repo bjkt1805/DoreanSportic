@@ -1,7 +1,23 @@
-﻿@model DoreanSportic.Application.DTOs.ProductoDTO
+﻿@using System.Text.Json
+@using System.Text
+
+@model DoreanSportic.Application.DTOs.ProductoDTO
+
+@{
+    var imagenesJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.ImagenesProducto.Select(img => new {
+            base64 = Convert.ToBase64String(img.Imagen),
+            nombre = img.Descripcion ?? "imagen.jpg"
+        })
+    );
+
+    var imagenesJsonBase64 = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(imagenesJson));
+}
 
 <form asp-action="Edit" asp-antiforgery="true" method="post" enctype="multipart/form-data"
       x-data="dataFileDnD()"
+      x-init="initialImages = JSON.parse(atob('@imagenesJsonBase64'));init();"
+      data-modo="editar"
       x-on:submit.prevent="submitForm($event)"
       class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
 
@@ -10,50 +26,50 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="flex flex-row gap-4 w-full">
-        <div asp-validation-summary="ModelOnly" class="text-sm italic text-red-600"></div>
+        <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
         <!-- Columna izquierda -->
         <div class="w-2/3 flex flex-col gap-4">
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label asp-for="Nombre" class="label font-bold text-black">Nombre del producto</label>
                 <input asp-for="Nombre" class="input input-bordered w-full" />
-                <span asp-validation-for="Nombre" class="text-sm italic text-red-600"></span>
+                <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
 
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label asp-for="Descripcion" class="label font-bold text-black">Descripción</label>
                 <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full"></textarea>
-                <span asp-validation-for="Descripcion" class="text-sm italic text-red-600"></span>
+                <span asp-validation-for="Descripcion" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
 
-            <div class="flex gap-4">
-                <div class="form-control w-full">
+            <div class="flex justify-between gap-2">
+                <div class="form-control w-25">
                     <label asp-for="PrecioBase" class="label font-bold text-black">Precio base (₡)</label>
                     <input asp-for="PrecioBase" type="number" step="0.01" class="input input-bordered w-full" />
-                    <span asp-validation-for="PrecioBase" class="text-sm italic text-red-600"></span>
+                    <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"> </span>
                 </div>
 
-                <div class="form-control w-full">
+                <div class="form-control w-25">
                     <label asp-for="Stock" class="label font-bold text-black">Cantidad</label>
                     <input asp-for="Stock" type="number" class="input input-bordered w-full" />
-                    <span asp-validation-for="Stock" class="text-sm italic text-red-600"></span>
+                    <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"> </span>
                 </div>
             </div>
 
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label asp-for="IdCategoria" class="label font-bold text-black">Categoría</label>
                 <select asp-for="IdCategoria" asp-items="ViewBag.ListCategorias" class="select select-bordered w-full">
                     <option value="">Seleccione una categoría</option>
                 </select>
-                <span asp-validation-for="IdCategoria" class="text-sm italic text-red-600"></span>
+                <span asp-validation-for="IdCategoria" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
 
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label asp-for="IdMarca" class="label font-bold text-black">Marca</label>
                 <select asp-for="IdMarca" asp-items="ViewBag.ListMarcas" class="select select-bordered w-full">
                     <option value="">Seleccione una marca</option>
                 </select>
-                <span asp-validation-for="IdMarca" class="text-sm italic text-red-600"></span>
+                <span asp-validation-for="IdMarca" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
 
             <input type="hidden" name="Estado" value="true" />
@@ -66,7 +82,9 @@
         <!-- Columna etiquetas -->
         <div class="flex flex-col gap-2">
             <p class="font-bold">Etiquetas del producto</p>
-            <div id="error-etiquetas" class="text-sm italic text-red-600"></div>
+            <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado derecho para asignarlas al producto.</p>
+            <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado izquierdo para desasignarlas.</p>
+            <div id="error-etiquetas" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
             <div class="w-full bg-gray-200 space-x-10 flex border rounded p-2">
                 <div id="dp1" droppable="true" class="w-1/2 drop border rounded p-2">
                     <p class="font-bold text-center text-sm">Etiquetas disponibles</p>
@@ -86,7 +104,7 @@
                     <p class="font-bold text-center text-sm">Etiquetas asignadas</p>
                     @foreach (var etiqueta in etiquetas.Where(e => asignadas.Contains(e.Id)))
                     {
-                        <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-secondary" data-id="@etiqueta.Id">
+                        <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary" data-id="@etiqueta.Id">
                             @etiqueta.Nombre
                         </div>
                     }
@@ -97,17 +115,10 @@
         <!-- Columna imágenes -->
         <div class="bg-white rounded w-9/12 mx-4">
             <p class="font-bold mb-1">Imágenes del producto</p>
-            <div id="zona-errores-validacion" class="text-sm italic text-red-600"></div>
+            <!-- Mostrar error si no se sube ninguna imagen -->
+            <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small"></div>
 
-            <!-- Mostrar imágenes actuales -->
-            <div class="flex flex-wrap gap-2 mb-4">
-                @foreach (var img in Model.ImagenesProducto)
-                {
-                    <img src="data:image/png;base64,@Convert.ToBase64String(img.Imagen)" class="w-20 h-20 object-cover rounded" />
-                }
-            </div>
-
-            <!-- Dropzone de nuevas imágenes -->
+            <!-- Dropzone de imágenes -->
             <div class="relative flex flex-col p-4 border border-gray-100 rounded">
                 <div x-ref="dnd" class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 p-4 transition hover:border-blue-500">
                     <input accept="image/*" type="file" multiple class="drop-zone absolute inset-0 z-50 w-full h-full opacity-0"
@@ -132,7 +143,7 @@
                                  x-on:dragstart="dragstart($event)" x-on:dragend="fileDragging = null"
                                  :class="{'border-blue-600': fileDragging == index}" draggable="true" :data-index="index">
 
-                                <button class="absolute top-0 right-0 z-50 p-1 bg-white rounded-bl hover:bg-gray-200" type="button" x-on:click="remove(index)">
+                                <button class="btn-borrar absolute top-0 right-0 z-50 p-1 bg-white rounded-bl hover:bg-gray-200" type="button" x-on:click="remove(index)">
                                     <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
                                          viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

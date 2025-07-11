@@ -211,7 +211,7 @@ function cargarEditarProducto(idProducto) {
     loader.classList.remove('hidden');
     container.innerHTML = "";
 
-    fetch(`/Producto/EditAdmin/${idProducto}`)
+    fetch(`/Producto/Edit/${idProducto}`)
         .then(res => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.text();

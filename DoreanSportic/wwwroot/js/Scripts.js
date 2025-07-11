@@ -5,6 +5,30 @@ function dataFileDnD() {
         files: [],
         fileDragging: null,
         fileDropping: null,
+        initialImages: [], // Para cargar imágenes desde el backend
+
+        init() {
+
+            //Si no hay imágenes iniciales, no hacer nada
+            if (!this.initialImages) return;
+
+            // Si hay imágenes iniciales, cargarlas en el dropzone
+            this.initialImages.forEach((img, index) => {
+                const byteString = atob(img.base64);
+                const arrayBuffer = new ArrayBuffer(byteString.length);
+                const uint8Array = new Uint8Array(arrayBuffer);
+
+                for (let i = 0; i < byteString.length; i++) {
+                    uint8Array[i] = byteString.charCodeAt(i);
+                }
+
+                const file = new File([uint8Array], img.nombre || `imagen-${index}.jpg`, {
+                    type: "image/jpeg"
+                });
+
+                this.files.push(file);
+            });
+        },
 
         loadFile(file) {
             return URL.createObjectURL(file);
@@ -158,6 +182,7 @@ function dataFileDnD() {
             } catch (err) {
                 console.error("Error al enviar el formulario", err);
             }
-        }
+        }, 
+
     };
 }

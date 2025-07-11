@@ -64,7 +64,7 @@ namespace DoreanSportic.Controllers
         public async Task<ActionResult> FiltrarPorCategoriaAdmin(int idCategoria)
         {
             // Listar los productos por categoría
-            var collection = await _serviceProducto.GetProductoByCategoria(idCategoria);
+            var collection = await _serviceProducto.GetProductoByCategoriaAdmin(idCategoria);
 
             return PartialView("_CardsProductoAdmin", collection);
         }
@@ -191,7 +191,7 @@ namespace DoreanSportic.Controllers
 
 
         // GET: ProductoController/Edit/5
-        public async Task<IActionResult> EditAdmin(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var producto = await _serviceProducto.FindByIdAsync(id);
 
@@ -209,7 +209,6 @@ namespace DoreanSportic.Controllers
             // el servicio de categorías
             var categorias = await _serviceCategoria.ListAsync();
             ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
-
 
             // Viewbag para cargar la lista de etiquetas desde
             // el servicio de etiquetas
@@ -254,7 +253,7 @@ namespace DoreanSportic.Controllers
                         listaImagenes.Add(new ImagenProducto
                         {
                             Imagen = imagenBytes,
-                            Descripcion = file.FileName // Puedes cambiar esto si deseas otro nombre
+                            Descripcion = file.FileName 
                         });
                     }
                 }
@@ -265,7 +264,7 @@ namespace DoreanSportic.Controllers
             dto.IdEtiqueta = selectedEtiquetas.Select(id => new Etiqueta { Id = int.Parse(id) }).ToList();
 
             // Llamar al servicio para actualizar el producto
-            await _serviceProducto.UpdateAsync(id, dto);
+            await _serviceProducto.UpdateAsync(id, dto, selectedEtiquetas);
 
             return Json(new
             {

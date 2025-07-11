@@ -10,7 +10,11 @@
                onclick="cargarVista('/Producto/IndexAdmin')">
                 Volver al listado
             </a>
-            <a class="btn btn-sm btn-outline bg-warning text-black w-50" asp-action="Index">Editar</a>
+            <a href="javascript:void(0);"
+               class="btn btn-sm btn-outline bg-warning text-black w-50"
+               onclick="cargarEditarProducto(@Model.Id)">
+                Editar producto
+            </a>
         </div>
         <h1><b>DETALLE DEL PRODUCTO</b></h1>
 

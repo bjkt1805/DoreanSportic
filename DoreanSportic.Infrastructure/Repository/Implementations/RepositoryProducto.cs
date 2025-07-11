@@ -31,7 +31,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
 
         // Listar los productos por categoria
-        public async Task<ICollection<Producto>> GetProductoByCategoria(int idCategoria)
+        public async Task<ICollection<Producto>> GetProductoByCategoriaAdmin(int idCategoria)
         {
             //Select * from Producto where idCategoria = @idCategoria
             //Consulta LINQ
@@ -50,6 +50,25 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return collection;
         }
 
+        public async Task<ICollection<Producto>> GetProductoByCategoria(int idCategoria)
+        {
+            //Select * from Producto where idCategoria = @idCategoria
+            //Consulta LINQ
+            var collection = await _context.Producto
+                    //.Include(p => p.ImagenesProducto)
+                    .Include(p => p.ImagenesProducto)
+                    .Include(p => p.IdMarcaNavigation)
+                    .Include(p => p.IdPromocion)
+                    .Include(p => p.IdCategoriaNavigation)
+                    .ThenInclude(c => c.IdPromocion)
+                    .Where(p => p.IdCategoria == idCategoria && p.Estado == true)
+                    // Orden descendente por ID para ayuda visual al crear en el dashboard de admin
+                    .OrderByDescending(p => p.Id)
+                    .ToListAsync();
+
+            return collection;
+        }
+
         public async Task<Producto> FindByIdAsync(int id)
         {
             //Obtener un Producto (Eager loading con Imagenes Producto, Categoria y Marca)
@@ -60,6 +79,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                                 .Include(p => p.IdPromocion)
                                 .Include(p => p.IdCategoriaNavigation)
                                     .ThenInclude(c => c.IdPromocion)
+                                .Include(p => p.IdEtiqueta)
                                 .FirstAsync();
             return @object!;
         }
@@ -75,19 +95,34 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             await _context.SaveChangesAsync();
             return entity.Id;
         }
-        public async Task UpdateAsync(Producto entity)
+        public async Task UpdateAsync(Producto entity, string[] selectedEtiquetas)
         {
-            //Las relaciones a actualizar depende de la consulta utilizada en el servicio
+            // Obtener el producto actual desde la base de datos
+            var productoExistente = await _context.Producto
+                .Include(p => p.IdEtiqueta)           // Cargar relación etiquetas
+                .Include(p => p.ImagenesProducto)     // Cargar imágenes actuales
+                .FirstOrDefaultAsync(p => p.Id == entity.Id);
 
-            // Asegurar que la relación con Autor se mantenga
-            //var autor = await _context.Set<Autor>().FindAsync(entity.IdAutor);
-            //entity.IdAutorNavigation = autor!;
+            if (productoExistente == null)
+                throw new Exception("Producto no encontrado.");
 
-            ////Relación de muchos a muchos solo con llave primaria compuesta
-            //var nuevasCategorias = await getCategorias(selectedCategorias);
-            //entity.IdCategoria.Clear();// Eliminar todas las categorías actuales
-            ////Asignar las categorias actualizadas
-            //entity.IdCategoria = nuevasCategorias;
+            // Actualizar propiedades simples
+            productoExistente.Nombre = entity.Nombre;
+            productoExistente.Descripcion = entity.Descripcion;
+            productoExistente.PrecioBase = entity.PrecioBase;
+            productoExistente.Stock = entity.Stock;
+            productoExistente.Estado = entity.Estado;
+            productoExistente.IdCategoria = entity.IdCategoria;
+            productoExistente.IdMarca = entity.IdMarca;
+
+            //Relación de muchos a muchos solo con llave primaria compuesta
+            var nuevasEtiquetas = await getEtiquetas(selectedEtiquetas);
+
+            // Actualizar etiquetas (relación muchos a muchos)
+            productoExistente.IdEtiqueta.Clear(); // Eliminar todas las etiquetas actuales
+
+            //Asignar las etiquetas actualizadas
+            productoExistente.IdEtiqueta = nuevasEtiquetas;
 
             await _context.SaveChangesAsync();
         }
