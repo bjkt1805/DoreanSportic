@@ -21,11 +21,12 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         // Listar todos los productos
         public async Task<ICollection<Producto>> ListAsync()
         {
-            //Select * from Producto
+            //Select * from Producto where Estado == true
             //Consulta LINQ
             var collection = await _context
                 .Set<Producto>()
                 .Include(p => p.IdPromocion)
+                .Where(p=> p.Estado == true)
                 .ToListAsync(); 
             return collection;
         }

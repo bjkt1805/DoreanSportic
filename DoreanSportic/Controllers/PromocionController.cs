@@ -71,28 +71,31 @@ namespace DoreanSportic.Controllers
             // Viewbag para cargar la lista de productos desde
             // el servicio de producto
             var productos = await _serviceProducto.ListAsync();
-            ViewBag.ListMarcas = new SelectList(productos, "Id", "Nombre");
-
-
+            ViewBag.ListProductos = new MultiSelectList(await _serviceProducto.ListAsync(), "Id", "Nombre");
 
             return PartialView("_CreatePromocion");
 
         }
 
         // POST: ProductoController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(PromocionDTO dto, List<int> IdProductoSeleccionado)
+        {
+            if (ModelState.IsValid)
+            {
+                // Lógica para crear promoción con dto.IdCategoria y dto.IdProducto (lista de int)
+                await _servicePromocion.AddAsync(dto);
+
+                return RedirectToAction("IndexAdmin");
+            }
+
+            // Recargar combos
+            ViewBag.ListCategorias = new SelectList(await _serviceCategoria.ListAsync(), "Id", "Nombre");
+            ViewBag.ListProductos = new MultiSelectList(await _serviceProducto.ListAsync(), "Id", "Nombre");
+
+            return PartialView("_CreatePromocion", dto);
+        }
 
         // GET: ProductoController/Edit/5
         //public ActionResult Edit(int id)

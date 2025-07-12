@@ -36,5 +36,28 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var collection = await _context.Set<Promocion>().ToListAsync();
             return collection;
         }
+
+        public async Task<int> AddAsync(Producto entity)
+        {
+            // Relación de muchos a muchos solo con llave primaria compuesta
+            //var etiquetas = await getEtiquetas(selectedEtiquetas);
+            //entity.IdEtiqueta = etiquetas;
+
+            // Añadir el producto a la base de datos
+            await _context.Set<Producto>().AddAsync(entity);
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
     }
 }

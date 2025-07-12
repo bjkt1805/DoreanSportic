@@ -13,6 +13,9 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<ICollection<PromocionDTO>> ListAsync();
         // Listado de promociones por ID (detalle)
         Task<PromocionDTO> FindByIdAsync(int id);
+
+        // Crear la promoción
+        Task<int> AddAsync(PromocionDTO dto);
         // Borrar la promoción (por su ID)
         Task DeleteAsync(int id);
         // Actualizar la promoción

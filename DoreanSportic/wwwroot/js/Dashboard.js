@@ -31,6 +31,11 @@ function cargarVista(ruta) {
                     inicializarDragAndDropEtiquetas();
                 }
 
+                // Cargar la función JavaScript para inicializar el drop down de productos
+                if (typeof inicializarDropdownProductos === 'function') {
+                    inicializarDropdownProductos();
+                }
+
                 // Inicializar función que escucha el input de precioBase (_CreateProducto y _EditProducto)
                 escucharInputPrecioBase();
 
@@ -462,6 +467,68 @@ function escucharCambioSelectTipoPromocion() {
         grupoProducto.classList.remove("hidden");
     }
 }
+
+// Función para inicializar el dropdown de productos
+function inicializarDropdownProductos() {
+    const dropdown = document.querySelector('.dropdown');
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const dropdownContent = document.getElementById('listaProductos');
+    const checks = document.querySelectorAll('.producto-checkbox');
+    const label = document.getElementById('dropdownLabel');
+    const selectAll = document.getElementById('checkboxSelectAll');
+
+    if (!dropdown || !dropdownToggle || !dropdownContent) return;
+
+    // Mostrar u ocultar el dropdown al hacer clic en el botón
+    dropdownToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('hidden');
+    });
+
+    // Evitar que clics en cualquier parte del menú (etiquetas, texto) cierren el dropdown
+    dropdownContent.addEventListener('click', function (e) {
+        e.stopPropagation(); // ✅ ESTA ES LA UBICACIÓN CORRECTA
+    });
+
+    // Cerrar si se hace clic fuera del dropdown
+    document.addEventListener('click', function (e) {
+        if (!dropdown.contains(e.target)) {
+            dropdownContent.classList.add('hidden');
+        }
+    });
+
+    // Resto de tu lógica: actualizar label, manejar checkboxes, etc.
+    function actualizarLabelDropdownProducto() {
+        const seleccionados = Array.from(checks).filter(c => c.checked);
+        if (seleccionados.length === 0) {
+            label.textContent = 'Seleccione uno o más productos';
+        } else if (seleccionados.length === 1) {
+            label.textContent = seleccionados[0].nextElementSibling.textContent;
+        } else {
+            label.textContent = `${seleccionados.length} productos seleccionados`;
+        }
+
+        if (selectAll) {
+            selectAll.checked = seleccionados.length === checks.length;
+        }
+    }
+
+    checks.forEach(cb => {
+        cb.addEventListener("change", actualizarLabelDropdownProducto);
+    });
+
+    if (selectAll) {
+        selectAll.addEventListener("change", () => {
+            const marcado = selectAll.checked;
+            checks.forEach(cb => cb.checked = marcado);
+            actualizarLabelDropdownProducto();
+        });
+    }
+
+    actualizarLabelDropdownProducto();
+}
+
+
 
 
 

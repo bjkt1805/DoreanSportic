@@ -28,4 +28,7 @@ public record PromocionDTO
     public virtual ICollection<Categoria> IdCategoria { get; set; } = new List<Categoria>();
 
     public virtual ICollection<Producto> IdProducto { get; set; } = new List<Producto>();
+
+    // Propiedades auxiliar para idCategoria para poder hacer uso de Select simple en las vistas de Promocion (_CreatePromocion y _EditPromocion)
+    public int? IdCategoriaSeleccionada { get; set; }
 }
