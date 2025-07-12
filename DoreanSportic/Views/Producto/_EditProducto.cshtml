@@ -110,6 +110,29 @@
                     }
                 </div>
             </div>
+
+            <!-- Enviar el estado del producto  (Activo o Inactivo-->
+            <div class="form-control w-fit">
+                <label class="label">
+                    <span class="label-text font-bold text-black mb-1">Estado</span>
+                </label>
+
+                <div class="flex items-center gap-2">
+                    <span>Inactivo</span>
+
+                    <input type="hidden" name="_Estado" value="false" />
+
+                    <input type="checkbox"
+                           name="Estado"
+                           class="toggle border-black bg-white checked:border-primary checked:bg-primary checked:text-white"
+                           value="true" @(Model.Estado ? "checked" : "") />
+                    <span>Activo</span>
+                </div>
+            </div>
+
+
+
+
         </div>
 
         <!-- Columna imágenes -->

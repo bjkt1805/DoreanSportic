@@ -92,10 +92,21 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
             // Añadir el producto a la base de datos
             await _context.Set<Producto>().AddAsync(entity);
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
             await _context.SaveChangesAsync();
             return entity.Id;
         }
-        public async Task UpdateAsync(Producto entity, string[] selectedEtiquetas)
+        public async Task UpdateAsync(Producto entity, string[] selectedEtiquetas, List<ImagenProducto> listaImagenes)
         {
             // Obtener el producto actual desde la base de datos
             var productoExistente = await _context.Producto
@@ -123,6 +134,22 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
             //Asignar las etiquetas actualizadas
             productoExistente.IdEtiqueta = nuevasEtiquetas;
+
+            // Eliminar TODAS las imágenes actuales
+            _context.ImagenProducto.RemoveRange(productoExistente.ImagenesProducto);
+
+            // Agregar las nuevas (incluye las que ya existían y las nuevas)
+            productoExistente.ImagenesProducto = listaImagenes;
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
 
             await _context.SaveChangesAsync();
         }

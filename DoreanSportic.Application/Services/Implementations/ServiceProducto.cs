@@ -104,13 +104,28 @@ namespace DoreanSportic.Application.Services.Implementations
             return await _repository.AddAsync(objectMapped, selectedEtiquetas);
         }
 
-        public async Task UpdateAsync(int id, ProductoDTO dto, string[] selectedEtiquetas)
+        public async Task UpdateAsync(int id, ProductoDTO dto, string[] selectedEtiquetas, List<ImagenProducto> listaImagenes)
         {
             //Obtener el modelo original a actualizar
-            var @object = await _repository.FindByIdAsync(id);
+            //var @object = await _repository.FindByIdAsync(id);
+
+            var productoExistente = await _repository.FindByIdAsync(id);
             //       source, destination
-            var entity = _mapper.Map(dto, @object!);
-            await _repository.UpdateAsync(entity, selectedEtiquetas);
+            //var entity = _mapper.Map(dto, @object!);
+
+
+            //Mapeo manual
+            productoExistente.Nombre = dto.Nombre;
+            productoExistente.Descripcion = dto.Descripcion;
+            productoExistente.PrecioBase = dto.PrecioBase;
+            productoExistente.Stock = dto.Stock;
+            productoExistente.Estado = dto.Estado;
+            productoExistente.IdMarca = dto.IdMarca;
+            productoExistente.IdCategoria = dto.IdCategoria;
+
+            //_mapper.Map(dto, @object!);
+
+            await _repository.UpdateAsync(productoExistente, selectedEtiquetas, listaImagenes);
         }
     }
 }

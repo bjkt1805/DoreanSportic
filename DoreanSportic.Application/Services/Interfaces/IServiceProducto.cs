@@ -28,7 +28,7 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task DeleteAsync(int id);
 
         // Actualizar el producto
-        Task UpdateAsync(int id, ProductoDTO dto, string[] selectedEtiquetas);
+        Task UpdateAsync(int id, ProductoDTO dto, string[] selectedEtiquetas, List<ImagenProducto> listaImagenes);
 
 
     }

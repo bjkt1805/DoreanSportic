@@ -43,7 +43,6 @@ public record ProductoDTO
     public int IdCategoria { get; set; }
 
     [Display(Name = "Estado")]
-    [Required(ErrorMessage = "* {0} es requerido *")]
     public bool Estado { get; set; }
 
     [ValidateNever]

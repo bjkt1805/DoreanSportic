@@ -4141,6 +4141,10 @@ input:is(:checked, :indeterminate) ~ .swap-off, &.swap-active .swap-off {
     border-color: var(--color-white);
 }
 
+.border-black {
+    border-color: var(--color-black);
+}
+
 .bg-\[\#004AAD\] {
     background-color: #004AAD;
 }
@@ -4598,6 +4602,10 @@ input:is(:checked, :indeterminate) ~ .swap-off, &.swap-active .swap-off {
     color: var(--color-white);
 }
 
+.text-black {
+    color: var(--color-black);
+}
+
 .capitalize {
     text-transform: capitalize;
 }
@@ -4809,6 +4817,15 @@ input:is(:checked, :indeterminate) ~ .swap-off, &.swap-active .swap-off {
     --btn-fg: var(--color-warning-content);
 }
 
+.checked\:border-primary {
+    &:checked
+
+{
+    border-color: var(--color-primary);
+}
+
+}
+
 .checked\:border-orange-500 {
     &:checked
 
@@ -4827,11 +4844,38 @@ input:is(:checked, :indeterminate) ~ .swap-off, &.swap-active .swap-off {
 
 }
 
+.checked\:bg-primary {
+    &:checked
+
+{
+    background-color: var(--color-primary);
+}
+
+}
+
 .checked\:text-orange-800 {
     &:checked
 
 {
     color: var(--color-orange-800);
+}
+
+}
+
+.checked\:text-white {
+    &:checked
+
+{
+    color: var(--color-white);
+}
+
+}
+
+.checked\:text-black {
+    &:checked
+
+{
+    color: var(--color-black);
 }
 
 }

@@ -1,14 +1,19 @@
 ﻿//Función de Alpine.js para poder cargar las imágenes en Create Producto (Dashboard Admin) y hacer la validación 
 // client-side a través del formulario de productos
 function dataFileDnD() {
+    const estadoCheckbox = document.querySelector("input[type='checkbox'][name='Estado']");
+
     return {
         files: [],
         fileDragging: null,
         fileDropping: null,
         initialImages: [], // Para cargar imágenes desde el backend
+        imagenesOriginales: [], 
+        
 
         init() {
 
+            console.log("Imágenes cargadas: ", this.initialImages)
             //Si no hay imágenes iniciales, no hacer nada
             if (!this.initialImages) return;
 
@@ -26,8 +31,15 @@ function dataFileDnD() {
                     type: "image/jpeg"
                 });
 
+                file.isOriginal = true; // Bandera para saber si la imagen venía del backend
+                file.nombreOriginal = img.nombre; // Para enviarlo en imagenesConservar
+
                 this.files.push(file);
+                this.imagenesOriginales.push(img.nombre); // Guardar nombre como referencia
             });
+
+            console.log("Valor del toggle:", estadoCheckbox.value);
+
         },
 
         loadFile(file) {
@@ -45,6 +57,16 @@ function dataFileDnD() {
         },
 
         remove(index) {
+            const file = this.files[index];
+
+            // Si es imagen original, eliminar también de imagenesOriginales
+            if (file.isOriginal) {
+                const i = this.imagenesOriginales.indexOf(file.nombreOriginal);
+                if (i !== -1) {
+                    this.imagenesOriginales.splice(i, 1);
+                }
+            }
+
             this.files.splice(index, 1);
         },
 
@@ -84,7 +106,6 @@ function dataFileDnD() {
             const form = e.target;
             // Constante para manejar si se va a crear o editar un producto
             const modo = form.dataset.modo;
-            const isEdicion = modo === "editar";    
 
             // Limpiar mensajes anteriores
             document.getElementById("error-etiquetas").innerText = "";
@@ -109,12 +130,23 @@ function dataFileDnD() {
             }
 
             // Validar que haya al menos una imagen cargada (modo creación)
-            if  (!isEdicion && this.files.length === 0) {
+            if  (this.files.length === 0) {
                 const zonaErrores = document.getElementById("zona-errores-validacion");
                 if (zonaErrores) {
                     zonaErrores.innerText = "* Debe subir al menos una imagen del producto *";
                 }
                 hasError = true;
+            }
+
+            if (!$(form).valid()) {
+                console.warn("Errores de validación en el formulario:");
+                $(form).find("[data-valmsg-for]").each(function () {
+                    const field = $(this).attr("data-valmsg-for");
+                    const errorText = $(this).text().trim();
+                    if (errorText !== "") {
+                        console.warn(`Campo: ${field} → Error: ${errorText}`);
+                    }
+                });
             }
 
             // Si hay errores o el form no es válido por parte del cliente, 
@@ -128,9 +160,9 @@ function dataFileDnD() {
             // Preparar FormData
             const formData = new FormData(form);
 
-            // Agregar imágenes (si hay nuevas imágnes cargadas)
+            // Agregar todas las imágenes (tanto originales como nuevas)
             this.files.forEach(file => {
-                formData.append(isEdicion ? "nuevasImagenes" : "imagenesProducto", file);
+                formData.append("imagenes", file);
             });
 
             // Agregar etiquetas seleccionadas
@@ -140,6 +172,13 @@ function dataFileDnD() {
                     formData.append("selectedEtiquetas", id);
                 }
             });
+
+            // Solo enviar nombres de imágenes originales que aún están presentes
+            this.imagenesOriginales.forEach(nombre => {
+                formData.append("imagenesConservar", nombre);
+            });
+
+            formData.set("Estado", estadoCheckbox?.checked ? "true" : "false");
 
             try {
                 const response = await fetch(form.action, {

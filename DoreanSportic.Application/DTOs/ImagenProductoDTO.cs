@@ -11,6 +11,8 @@ public record ImagenProductoDTO
 
     public byte[] Imagen { get; set; } = null!;
 
+    public string? Descripcion { get; set; }
+
     public bool Estado { get; set; }
 
     public virtual Producto IdProductoNavigation { get; set; } = null!;
