@@ -45,13 +45,14 @@
             <div class="flex justify-between gap-2">
                 <div class="form-control w-25">
                     <label asp-for="PrecioBase" class="label font-bold text-black">Precio base (₡)</label>
-                    <input asp-for="PrecioBase" type="number" step="0.01" class="input input-bordered w-full" />
+                    <input asp-for="PrecioBase" id="inputPrecioBase"  type="number" step="0.01" class="input input-bordered w-full" />
+                    @* oninput="this.value = this.value.match(/^\d*\.?\d{0,2}/)?.[0] || ''" *@
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"> </span>
                 </div>
 
                 <div class="form-control w-25">
                     <label asp-for="Stock" class="label font-bold text-black">Cantidad</label>
-                    <input asp-for="Stock" type="number" class="input input-bordered w-full" />
+                    <input asp-for="Stock" id="inputCantidad" type="number" class="input input-bordered w-full" />
                     <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"> </span>
                 </div>
             </div>
@@ -151,14 +152,10 @@
                            x-on:change="addFiles($event)"
                            x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
                            x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
-                           x-on:drop="$refs.dnd.classList.remove('drag-over')" />
+                           x-on:drop.prevent="addFiles($event); $refs.dnd.classList.remove('drag-over')"
 
                     <div class="flex flex-col items-center justify-center text-center">
-                        <svg class="w-6 h-6 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <p>Arrastre nuevas imágenes o haga clic para seleccionar.</p>
+                        <p>Arrastre las imágenes aquí o haga clic para seleccionarlas.</p>
                     </div>
                 </div>
 

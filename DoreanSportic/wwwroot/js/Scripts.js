@@ -50,10 +50,20 @@ function dataFileDnD() {
             let droppedFiles = event.target.files;
             if (!droppedFiles) return;
 
-            [...droppedFiles].forEach(file => this.files.push(file));
+            [...droppedFiles].forEach(file => {
+                // Validar que el tipo MIME sea de imagen
+                if (!file.type.startsWith("image/")) {
+                    mostrarToast(`Solo se permiten imágenes. Archivo inválido: ${file.name}`, "error");
+                    return;
+                }
 
-            // Resetear el input para permitir volver a cargar el mismo archivo
-            event.target.value = "";
+                this.files.push(file);
+            });
+
+            // Resetear el input para permitir volver a cargar el mismo archivo (si aplica)
+            if (event.target.tagName === "INPUT") {
+                event.target.value = "";
+            }
         },
 
         remove(index) {
@@ -125,7 +135,7 @@ function dataFileDnD() {
             // Validar etiquetas
             const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
             if (etiquetasAsignadas.length === 0) {
-                document.getElementById("error-etiquetas").innerText = "* Debe asignar al menos una etiqueta *";
+                document.getElementById("error-etiquetas").innerText = " Debe asignar al menos una etiqueta ";
                 hasError = true;
             }
 
@@ -133,7 +143,7 @@ function dataFileDnD() {
             if  (this.files.length === 0) {
                 const zonaErrores = document.getElementById("zona-errores-validacion");
                 if (zonaErrores) {
-                    zonaErrores.innerText = "* Debe subir al menos una imagen del producto *";
+                    zonaErrores.innerText = " Debe subir al menos una imagen del producto ";
                 }
                 hasError = true;
             }

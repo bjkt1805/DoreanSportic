@@ -40,7 +40,7 @@
                     <label asp-for="PrecioBase" class="label">
                         <span class="label-text font-bold text-black">Precio base (₡)</span>
                     </label>
-                    <input asp-for="PrecioBase" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" />
+                    <input asp-for="PrecioBase" id="inputPrecioBase" min="5000" max="100000" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" />
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"></span>
                 </div>
 
@@ -49,7 +49,7 @@
                     <label asp-for="Stock" class="label">
                         <span class="label-text font-bold text-black">Cantidad</span>
                     </label>
-                    <input asp-for="Stock" type="number" class="input input-bordered w-full mb-3 mt-1" />
+                    <input asp-for="Stock" id="inputCantidad" min="1" max="100" type="number" step="1" class="input input-bordered w-full mb-3 mt-1" />
                     <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"></span>
                 </div>
             </div>
@@ -148,7 +148,7 @@
                            x-on:change="addFiles($event)"
                            x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
                            x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
-                           x-on:drop="$refs.dnd.classList.remove('drag-over')"
+                           x-on:drop.prevent="addFiles($event); $refs.dnd.classList.remove('drag-over')"
                            title="" />
                     <span asp-validation-for="ImagenesProducto" class="text-sm italic" style="color:red; font-size: small"></span>
 

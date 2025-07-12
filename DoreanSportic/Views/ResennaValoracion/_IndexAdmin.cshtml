@@ -2,71 +2,72 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 
-<h1 class="py-2 font-bold">Listado de reseñas</h1>
-
-<div class="mb-4 overflow-x-auto rounded-box border border-base-content/5 bg-base-100 relative">
-    <table class="table w-full">
-        <!-- head -->
-        <thead class="bg-primary text-white">
-            <tr>
-                <th class="text-center">Usuario</th>
-                <th class="text-center">Producto</th>
-                <th class="text-center">Calificación</th>
-                <th class="text-center">Fecha de la reseña</th>
-                <th class="text-center"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<div class="mb-4 overflow-x-auto bg-base-100 relative">
+    <div id="zona-resennas" class="mb-4 overflow-x-auto bg-base-100 relative">
+        <h1 class="py-2 font-bold">Listado de reseñas</h1>
+        <table class="table w-full rounded-box border border-base-content/5">
+            <!-- head -->
+            <thead class="bg-primary text-white">
                 <tr>
+                    <th class="text-center">Usuario</th>
+                    <th class="text-center">Producto</th>
+                    <th class="text-center">Calificación</th>
+                    <th class="text-center">Fecha de la reseña</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
 
-                    <td class="font-bold text-left">
-                        @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.UserName)
-                    </td>
-                    <td class="text-left">
-                        @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.Calificacion) / 5
-                    </td>
-                    <td class="text-center">
-                        @item.FechaResenna.ToString("dd-MM-yyyy")
-                    </td>
-                    <td>
-                        @*                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        <td class="font-bold text-left">
+                            @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.UserName)
+                        </td>
+                        <td class="text-left">
+                            @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Calificacion) / 5
+                        </td>
+                        <td class="text-center">
+                            @item.FechaResenna.ToString("dd-MM-yyyy")
+                        </td>
+                        <td>
+                            @*                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
  *@@*                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
  *@                        <!-- Botón alineado abajo a la derecha -->
-                        <div class="mt-auto flex justify-end">
-                            <a class="btn btn-soft btn-primary text-white"
-                               asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
-                        </div>
-                        @*                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
- *@                    </td>
-                </tr>
-            }
-        </tbody>
+                            <div class="mt-auto flex justify-end gap-2">
+                                <a class="btn btn-soft btn-primary text-white"
+                                   onclick="cargarDetalleResenna(@item.Id)">Ver detalles</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
-        <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
-            <tr>
-                <td colspan="5">
-                    <div class="flex justify-end my-2">
-                        <div class="join">
-                            @Html.PagedListPager((IPagedList)Model, page =>
-                            Url.Action("Index", new { page }),
-                                                        new PagedListRenderOptions
-                                                        {
-                                                            Display = PagedListDisplayMode.Always,
-                                                            MaximumPageNumbersToDisplay = 5,
-                                                            LiElementClasses = new[] { "join-item" },
-                                                            PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item" },
-                                                            UlElementClasses = new[] { "join" },
-                                                            ContainerDivClasses = new[] { "join" }
-                                                        })
+            <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
+                <tr>
+                    <td colspan="5">
+                        <div class="flex justify-end my-2">
+                            <div class="join">
+                                @Html.PagedListPager((IPagedList)Model, page =>
+                                Url.Action("IndexAdmin", new { page }),
+                                                                new PagedListRenderOptions
+                                                                {
+                                                                    Display = PagedListDisplayMode.Always,
+                                                                    MaximumPageNumbersToDisplay = 5,
+                                                                    LiElementClasses = new[] { "join-item" },
+                                                                    PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item", "pagina-resenna" }, // 👈 clase nueva
+                                                                    UlElementClasses = new[] { "join" },
+                                                                    ContainerDivClasses = new[] { "join" }
+                                                                })
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
 </div>

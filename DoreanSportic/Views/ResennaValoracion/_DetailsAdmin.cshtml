@@ -1,0 +1,47 @@
+﻿@model DoreanSportic.Application.DTOs.ResennaValoracionDTO
+
+<div class ="py-4">
+    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50 mb-1" onclick="cargarVista('/ResennaValoracion/IndexAdmin')">Volver al listado</a>
+    <h1 class="pt-2"><b>DETALLES DE LA RESEÑA</b></h1>
+</div>
+
+<div class="mb-4 card bg-base-100 shadow-lg max-h-96 overflow-y-auto w-100">
+
+    <div class="card-body">
+
+        <div class="border-b border-base-300 pb-2 mb-2">
+            <div class="flex flex-row justify-between gap gap-1">
+                <span class="font-bold underline">@Model.IdUsuarioNavigation.UserName</span>
+                <span class="text-xs">@Model.FechaResenna.ToString("dd-MM-yyyy")</span>
+            </div>
+            <br />
+            <p class="mt-2 font-bold">@Model.IdProductoNavigation.Nombre</p>
+            <br />
+            <figure class="px-10 pt-10 h-48 flex justify-center items-center">
+                <img style="width:70%; height: 80%"
+                    src="data:image/jpeg;base64,@Convert.ToBase64String(Model.IdProductoNavigation.PrimeraImagen ?? Array.Empty<byte>())"
+                     alt="Ropa/accesorios deportivos"
+                     class=" h-full object-contain rounded-xl" />
+            </figure>
+            <p class="mt-2 italic">"@Model.Comentario"</p>
+            <br />
+            <div class="flex gap-1">
+                <!-- Mapeo de calificación con estrellas -->
+                @for (int i = 1; i <= 5; i++)
+                {
+                    var isActive = i <= Model.Calificacion;
+                    var fillColor = isActive ? "text-warning" : "text-gray-300";
+                    var animationClass = isActive ? "animate-bounce" : "";
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="currentColor"
+                         viewBox="0 0 24 24"
+                         stroke="none"
+                         class="@($"w-5 h-5 {fillColor} {animationClass} transition-all duration-300")">
+                        <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.175L12 18.896l-7.336 3.861 1.402-8.175-5.934-5.782 8.2-1.192z" />
+                    </svg>
+                }
+            </div>
+        </div>
+    </div>
+</div>

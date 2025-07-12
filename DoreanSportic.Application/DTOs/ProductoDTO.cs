@@ -14,32 +14,33 @@ public record ProductoDTO
     public int Id { get; set; }
 
     [Display(Name = "Nombre del producto")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = "* {0} es requerido *")]
+    [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerido ")]
     public string Nombre { get; set; } = null!;
 
     [Display(Name = "Descripción del producto")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = "* {0} es requerida *")]
+    [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerida ")]
     public string? Descripcion { get; set; }
 
     [Display(Name = "Precio Base")]
     [DisplayFormat(DataFormatString = "{0:C0}")]
-    [Required(ErrorMessage = "* {0} es requerido *")]
+    [Required(ErrorMessage = " {0} es requerido ")]
     //[RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
-    [Range(5000, 100000, ErrorMessage = " * {0} debe estar en el rango de {1} y {2} *")]
+    [Range(5000, 100000.00, ErrorMessage = "  {0} debe estar en el rango de {1} y {2} (hasta dos decimales) ")]
+    [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Máximo dos decimales")]
     public decimal PrecioBase { get; set; }
 
     [Display(Name = "Cantidad")]
-    [Required(ErrorMessage = "* {0} es requerida *")]
-    [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
-    [Range(1, 100, ErrorMessage = " * {0} debe estar en el rango de {1} y {2} *")]
+    [Required(ErrorMessage = " {0} es requerida ")]
+    [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico ")]
+    [Range(1, 100, ErrorMessage = "  {0} debe estar en el rango de {1} y {2} ")]
     public int Stock { get; set; }
 
     [Display(Name = "Marca")]
-    [Required(ErrorMessage = "* {0} es requerida *")]
+    [Required(ErrorMessage = " {0} es requerida ")]
     public int IdMarca { get; set; }
 
     [Display(Name = "Categoría")]
-    [Required(ErrorMessage = "* {0} es requerida *")]
+    [Required(ErrorMessage = " {0} es requerida ")]
     public int IdCategoria { get; set; }
 
     [Display(Name = "Estado")]

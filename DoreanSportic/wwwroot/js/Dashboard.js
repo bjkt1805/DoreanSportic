@@ -28,6 +28,15 @@ function cargarVista(ruta) {
                     inicializarDragAndDropEtiquetas();
                 }
 
+                // Inicializar función que escucha el input de precioBase
+                escucharInputPrecioBase();
+
+                // Inicializar función que escucha el input de cantidad
+                escucharInputCantidad();
+
+                // Inicializar la función que carga páginas en la tabla
+                cargarPaginasTabla()
+
             }, 300);
         })
         .catch(error => {
@@ -104,6 +113,58 @@ function cargarDetalleProducto(idProducto) {
         .catch(err => {
             console.error("Error al cargar detalles:", err);
             container.innerHTML = `<p class="text-red-500">Error al cargar detalles del producto.</p>`;
+            loader.classList.add('hidden');
+        });
+}
+
+// Función para cargar la vista de detalles de la reseña
+function cargarDetalleResenna(idResenna) {
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('contenido-dinamico');
+
+    loader.classList.remove('hidden');
+    container.innerHTML = "";
+
+    fetch(`/ResennaValoracion/DetailsAdmin/${idResenna}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            setTimeout(() => {
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+            }, 300);
+        })
+        .catch(err => {
+            console.error("Error al cargar detalles:", err);
+            container.innerHTML = `<p class="text-red-500">Error al cargar detalles de la reseña.</p>`;
+            loader.classList.add('hidden');
+        });
+}
+
+// Función para cargar la vista de detalles de la promocion
+function cargarDetallePromocion(idPromocion) {
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('contenido-dinamico');
+
+    loader.classList.remove('hidden');
+    container.innerHTML = "";
+
+    fetch(`/Promocion/DetailsAdmin/${idPromocion}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            setTimeout(() => {
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+            }, 300);
+        })
+        .catch(err => {
+            console.error("Error al cargar detalles:", err);
+            container.innerHTML = `<p class="text-red-500">Error al cargar detalles de la promoción.</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -190,7 +251,7 @@ function inicializarDragAndDropEtiquetas() {
         e.preventDefault();
         if (dragTemp && this !== dragTemp.parentElement) {
             this.appendChild(dragTemp);
-            console.log('Drop en:', this.id); 
+            console.log('Drop en:', this.id);
         }
         dragTemp = null;
 
@@ -225,6 +286,7 @@ function cargarEditarProducto(idProducto) {
                 if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
                     inicializarDragAndDropEtiquetas();
                 }
+
             }, 300);
         })
         .catch(err => {
@@ -233,7 +295,6 @@ function cargarEditarProducto(idProducto) {
             loader.classList.add('hidden');
         });
 }
-
 
 // Función para mostrar el toast en las vistas parciales
 function mostrarToast(mensaje, tipo = "info") {
@@ -251,6 +312,125 @@ function mostrarToast(mensaje, tipo = "info") {
         toast.remove();
     }, 4000);
 }
+
+// Función para "escuchar" mientras el usuario escribe en el campo de "Precio base"
+// en _CreateProducto.cshtml y _Editproducto.cshtml
+
+function escucharInputPrecioBase() {
+    const input = document.getElementById("inputPrecioBase");
+    const mensajeError = document.querySelector("span[data-valmsg-for='PrecioBase']");
+
+    input.addEventListener("input", () => {
+        // Limitar a 2 decimales
+        let valor = input.value;
+
+        if (valor.includes(".")) {
+            const [entero, decimales] = valor.split(".");
+            if (decimales.length > 2) {
+                input.value = `${entero}.${decimales.slice(0, 2)}`;
+                return;
+            }
+        }
+
+        // Validar rango
+        const numero = parseFloat(input.value);
+        if (!isNaN(numero)) {
+            if (numero < 5000 || numero > 100000) {
+                if (mensajeError) {
+                    mensajeError.textContent = "Debe ingresar un valor entre ₡5 000 y ₡100 000";
+                }
+                input.classList.add("border-red-500");
+            } else {
+                if (mensajeError) {
+                    mensajeError.textContent = "";
+                }
+                input.classList.remove("border-red-500");
+            }
+        } else {
+            if (mensajeError) mensajeError.textContent = "";
+            input.classList.remove("border-red-500");
+        }
+    });
+}
+
+// Función para "escuchar" mientras el usuario escribe en el campo de "Cantidad"
+// en _CreateProducto.cshtml y _EditProducto.cshtml
+function escucharInputCantidad() {
+    const input = document.getElementById("inputCantidad");
+    const mensajeError = document.querySelector("span[data-valmsg-for='Stock']");
+
+    if (!input) return;
+
+    input.addEventListener("input", () => {
+        // Eliminar decimales si el usuario los escribe
+        input.value = input.value.replace(/[^\d]/g, ""); // Solo dígitos
+
+        const numero = parseInt(input.value);
+
+        if (!isNaN(numero)) {
+            if (numero < 1 || numero > 100) {
+                if (mensajeError) {
+                    mensajeError.textContent = "Debe ingresar una cantidad válida entre 1 y 100";
+                }
+                input.classList.add("border-red-500");
+            } else {
+                if (mensajeError) mensajeError.textContent = "";
+                input.classList.remove("border-red-500");
+            }
+        } else {
+            if (mensajeError) mensajeError.textContent = "";
+            input.classList.remove("border-red-500");
+        }
+    });
+}
+
+// Función para poder cargar las páginas de la tablas de las vistas parciales
+// sin recargar la página
+
+// Lógica para manejar paginación de reseñas y promociones sin recargar toda la página
+document.addEventListener('click', function (e) {
+    // Paginación de reseñas
+    if (e.target.matches('a.pagina-resenna')) {
+        e.preventDefault();
+        const url = e.target.getAttribute('href');
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error("Error al obtener reseñas");
+                return res.text();
+            })
+            .then(html => {
+                document.getElementById("zona-resennas").innerHTML = html;
+            })
+            .catch(err => {
+                console.error("Error al cargar reseñas:", err);
+                document.getElementById("zona-resennas").innerHTML = "<p class='text-red-500'>Error al cargar reseñas.</p>";
+            });
+    }
+
+    // Paginación de promociones
+    if (e.target.matches('a.pagina-promocion')) {
+        e.preventDefault();
+        const url = e.target.getAttribute('href');
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error("Error al obtener promociones");
+                return res.text();
+            })
+            .then(html => {
+                document.getElementById("zona-promociones").innerHTML = html;
+            })
+            .catch(err => {
+                console.error("Error al cargar promociones:", err);
+                document.getElementById("zona-promociones").innerHTML = "<p class='text-red-500'>Error al cargar promociones.</p>";
+            });
+    }
+});
+
+
+
+
 
 
 

@@ -39,6 +39,13 @@ namespace DoreanSportic.Controllers
             return View(@object);
         }
 
+        // GET: PromocionController/DetailsAdmin/{id}
+        public async Task<ActionResult> DetailsAdmin(int id)
+        {
+            var @object = await _servicePromocion.FindByIdAsync(id);
+            return PartialView("_DetailsAdmin", @object);
+        }
+
         // GET: PromocionController/Create
         //public ActionResult Create()
         //{
