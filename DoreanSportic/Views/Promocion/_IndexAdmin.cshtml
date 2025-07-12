@@ -5,79 +5,84 @@
 <div class="mb-4 overflow-x-auto bg-base-100 relative">
     <div id="zona-promociones" class="mb-4 overflow-x-auto bg-base-100 relative">
         <h1 class="py-2 font-bold">Listado de promociones</h1>
+        <!-- Contenedor del botón de crear producto-->
+        <div class="mb-2 flex flex-row gap-4">
+            <button class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
+                    onclick="cargarVista('/Promocion/Create')">
+                CREAR PROMOCIÓN
+            </button>
+        </div>
         <table class="table w-full rounded-box border border-base-content/5">
-        <!-- head -->
-        <thead class="bg-primary text-white">
-            <tr>
-                <th class="text-center">Nombre</th>
-                <th class="text-center">Porcentaje de descuento (%)</th>
-                <th class="text-center">Fecha inicial</th>
-                <th class="text-center">Estado</th>
-                <th class="text-center"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                //Código para mostrar el estado de la promoción basado en la fecha actual
-                // revisar si está entre la fecha inicial y fecha final de la promoción
-
-                var hoy = DateTime.Today;
-                string estado;
-                string color;
-
-                if (item.FechaInicio <= hoy && hoy <= item.FechaFin)
-                {
-                    estado = "Vigente";
-                    color = "bg-[#FF4D4D] text-white font-bold";
-                }
-
-                else if (item.FechaFin < hoy)
-                {
-                    estado = "Aplicado";
-                    color = "bg-[#D3D3D3] text-black";
-                }
-                else
-                {
-                    estado = "Pendiente";
-                    color = "bg-info text-white font-bold";
-                }
+            <!-- head -->
+            <thead class="bg-primary text-white">
                 <tr>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Porcentaje de descuento (%)</th>
+                    <th class="text-center">Fecha inicial</th>
+                    <th class="text-center">Estado</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    //Código para mostrar el estado de la promoción basado en la fecha actual
+                    // revisar si está entre la fecha inicial y fecha final de la promoción
 
-                    <td class="font-bold text-left">
-                        @Html.DisplayFor(modelItem => item.Nombre)
-                    </td>
-                    <td class="text-center">
+                    var hoy = DateTime.Today;
+                    string estado;
+                    string color;
 
-                        <!-- Código para quitar los decimales del número (porcentajeDescuento)-->
-                        @($"{item.PorcentajeDescuento:0.#}")
-                    </td>
-                    <td class="text-center">
-                        @item.FechaInicio.ToString("dd-MM-yyyy")
-                    </td>
-                    @*                     <td class="text-center">
+                    if (item.FechaInicio <= hoy && hoy <= item.FechaFin)
+                    {
+                        estado = "Vigente";
+                        color = "bg-[#FF4D4D] text-white font-bold";
+                    }
+
+                    else if (item.FechaFin < hoy)
+                    {
+                        estado = "Aplicado";
+                        color = "bg-[#D3D3D3] text-black";
+                    }
+                    else
+                    {
+                        estado = "Pendiente";
+                        color = "bg-info text-white font-bold";
+                    }
+                    <tr>
+
+                        <td class="font-bold text-left">
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td class="text-center">
+
+                            <!-- Código para quitar los decimales del número (porcentajeDescuento)-->
+                            @($"{item.PorcentajeDescuento:0.#}")
+                        </td>
+                        <td class="text-center">
+                            @item.FechaInicio.ToString("dd-MM-yyyy")
+                        </td>
+                        @*                     <td class="text-center">
                         @item.FechaFin.ToString("dd-MM-yyyy")
                     </td> *@
-                    <td class="text-center">
-                        <div class="badge @color">@estado</div>
-                    </td>
-                    <td>
-                        @*                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
- *@@*                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
- *@                        <!-- Botón alineado abajo a la derecha -->
+                        <td class="text-center">
+                            <div class="badge @color">@estado</div>
+                        </td>
+                        <td>
                             <div class="mt-auto flex justify-end gap-2">
                                 <a class="btn btn-soft btn-primary text-white"
                                    onclick="cargarDetallePromocion(@item.Id)">Ver detalles</a>
+                                <a class="btn btn-soft btn-warning text-black"
+                                   onclick="cargarDetallePromocion(@item.Id)">Editar</a>
                             </div>
-                        @*                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
- *@                    </td>
-                </tr>
-            }
-        </tbody>
-        <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
-            <tr>
-                <td colspan="5">
-                    <div class="flex justify-end my-2">
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
+                <tr>
+                    <td colspan="5">
+                        <div class="flex justify-end my-2">
                             <div class="join">
                                 @Html.PagedListPager((IPagedList)Model, page =>
                                 Url.Action("IndexAdmin", new { page }),
@@ -91,11 +96,11 @@
                                                                     ContainerDivClasses = new[] { "join" }
                                                                 })
                             </div>
-                    </div>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
 </div>

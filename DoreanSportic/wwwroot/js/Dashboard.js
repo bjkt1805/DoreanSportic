@@ -18,6 +18,9 @@ function cargarVista(ruta) {
                 container.innerHTML = html;
                 loader.classList.add('hidden');
 
+                // Inicializar la función que escucha el cambio del select de TipoPromoción (_CreatePromocion y _EditPromocion)
+                escucharCambioSelectTipoPromocion();
+
                 // Cargar la función JavaScript si se carga la vista de productos
                 if (typeof inicializarVistaProductos === 'function') {
                     inicializarVistaProductos();
@@ -28,14 +31,15 @@ function cargarVista(ruta) {
                     inicializarDragAndDropEtiquetas();
                 }
 
-                // Inicializar función que escucha el input de precioBase
+                // Inicializar función que escucha el input de precioBase (_CreateProducto y _EditProducto)
                 escucharInputPrecioBase();
 
-                // Inicializar función que escucha el input de cantidad
+                // Inicializar función que escucha el input de cantidad (_CreateProducto y _EditoProducto)
                 escucharInputCantidad();
 
-                // Inicializar la función que carga páginas en la tabla
-                cargarPaginasTabla()
+                // Inicializar la función que carga páginas en la tabla (_IndexAdmin de Promociones y Reseñas)
+                cargarPaginasTabla();
+
 
             }, 300);
         })
@@ -426,6 +430,53 @@ document.addEventListener('click', function (e) {
                 document.getElementById("zona-promociones").innerHTML = "<p class='text-red-500'>Error al cargar promociones.</p>";
             });
     }
+});
+
+// Mostrar el select correcto según el tipo en la vistas _CreatePromocion y _EditPromocion
+function escucharCambioSelectTipoPromocion() {
+    const select = document.getElementById("tipoPromocion");
+    console.log("¿Existe select tipoPromocion?:", !!select);
+    if (!select) return; // Evita error si el select no existe
+
+    const grupoCategoria = document.getElementById("grupoCategoria");
+    const grupoProducto = document.getElementById("grupoProducto");
+
+    if (!grupoCategoria || !grupoProducto) return;
+
+    select.addEventListener("change", function () {
+        const tipo = this.value;
+        grupoCategoria.classList.add("hidden");
+        grupoProducto.classList.add("hidden");
+
+        if (tipo === "Categoria") {
+            grupoCategoria.classList.remove("hidden");
+        } else if (tipo === "Producto") {
+            grupoProducto.classList.remove("hidden");
+        }
+    });
+
+    // Mostrar el grupo correcto si ya viene con valor (modo edición)
+    if (select.value === "Categoria") {
+        grupoCategoria.classList.remove("hidden");
+    } else if (select.value === "Producto") {
+        grupoProducto.classList.remove("hidden");
+    }
+}
+
+
+
+// Validación de fechas en las vistas _CreatePromocion y _EditPromocion
+document.addEventListener("DOMContentLoaded", () => {
+    const hoy = new Date().toISOString().split("T")[0];
+    document.getElementById("fechaInicio").setAttribute("min", hoy);
+
+    document.getElementById("fechaFin").addEventListener("change", function () {
+        const inicio = document.getElementById("fechaInicio").value;
+        if (this.value < inicio) {
+            alert("La fecha de fin no puede ser anterior a la fecha de inicio.");
+            this.value = "";
+        }
+    });
 });
 
 

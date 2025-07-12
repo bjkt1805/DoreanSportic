@@ -4,6 +4,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
@@ -11,11 +12,16 @@ namespace DoreanSportic.Controllers
     public class PromocionController : Controller
     {
         private readonly IServicePromocion _servicePromocion;
+        private readonly IServiceCategoria _serviceCategoria;
+        private readonly IServiceProducto _serviceProducto;
 
-        public PromocionController(IServicePromocion servicePromocion)
+        public PromocionController(IServicePromocion servicePromocion, 
+            IServiceCategoria serviceCategoria, 
+            IServiceProducto serviceProducto)
         {
             _servicePromocion = servicePromocion;
-
+            _serviceCategoria = serviceCategoria;
+            _serviceProducto = serviceProducto;
         }
 
         // GET: PromocionController
@@ -46,11 +52,32 @@ namespace DoreanSportic.Controllers
             return PartialView("_DetailsAdmin", @object);
         }
 
-        // GET: PromocionController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        //GET: PromocionController/Create
+        public async Task<IActionResult> Create()
+        {
+            //// Viewbag para cargar la lista de categorías desde 
+            //// el servicio de categorías
+            //ViewBag.ListCategorias = new SelectList(await _serviceCategoria.ListAsync(), "Id", "Nombre");
+
+            //// Viewbag para cargar la lista de marcas desde 
+            //// el servicio de marcas
+            //ViewBag.ListProductos = new SelectList(await _serviceProducto.ListAsync(), "Id", "Nombre");
+
+            // Viewbag para cargar la lista de categorías desde 
+            // el servicio de categoría
+            var categorias = await _serviceCategoria.ListAsync();
+            ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
+
+            // Viewbag para cargar la lista de productos desde
+            // el servicio de producto
+            var productos = await _serviceProducto.ListAsync();
+            ViewBag.ListMarcas = new SelectList(productos, "Id", "Nombre");
+
+
+
+            return PartialView("_CreatePromocion");
+
+        }
 
         // POST: ProductoController/Create
         //[HttpPost]

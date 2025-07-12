@@ -103,7 +103,6 @@ namespace DoreanSportic.Controllers
             var categorias = await _serviceCategoria.ListAsync();
             ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
 
-
             // Viewbag para cargar la lista de etiquetas desde
             // el servicio de etiquetas
             ViewBag.ListaEtiquetas = await _serviceEtiqueta.ListAsync();
