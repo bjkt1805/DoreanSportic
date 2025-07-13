@@ -37,14 +37,14 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return collection;
         }
 
-        public async Task<int> AddAsync(Producto entity)
+        public async Task<int> AddAsync(Promocion entity, int IdCategoriaSeleccionada, List<int> listaProductosSeleccionados)
         {
             // Relación de muchos a muchos solo con llave primaria compuesta
             //var etiquetas = await getEtiquetas(selectedEtiquetas);
             //entity.IdEtiqueta = etiquetas;
 
             // Añadir el producto a la base de datos
-            await _context.Set<Producto>().AddAsync(entity);
+            await _context.Set<Promocion>().AddAsync(entity);
 
             // Para debuggear los cambios que va a realizar EF
             // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)

@@ -80,12 +80,12 @@ namespace DoreanSportic.Controllers
         // POST: ProductoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PromocionDTO dto, List<int> IdProductoSeleccionado)
+        public async Task<IActionResult> Create(PromocionDTO dto, int IdCategoriaSeleccionada, List<int> IdProductoSeleccionado)
         {
             if (ModelState.IsValid)
             {
                 // Lógica para crear promoción con dto.IdCategoria y dto.IdProducto (lista de int)
-                await _servicePromocion.AddAsync(dto);
+                await _servicePromocion.AddAsync(dto, IdCategoriaSeleccionada, IdProductoSeleccionado);
 
                 return RedirectToAction("IndexAdmin");
             }
