@@ -19,6 +19,6 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Borrar la promoción (por su ID)
         Task DeleteAsync(int id);
         // Actualizar la promoción
-        Task UpdateAsync(int id, PromocionDTO dto);
+        Task UpdateAsync(PromocionDTO dto);
     }
 }

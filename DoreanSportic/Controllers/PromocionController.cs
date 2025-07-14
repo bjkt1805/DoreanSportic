@@ -114,32 +114,52 @@ namespace DoreanSportic.Controllers
             return Json(new { success = true, mensaje = "Promoción creada exitosamente" });
         }
 
-        // GET: ProductoController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        // GET: PromocionController/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            var promocion = await _servicePromocion.FindByIdAsync(id);
 
-        // POST: ProductoController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            if (promocion == null)
+                return NotFound();
 
-        // GET: ProductoController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+            // Obtener categorías y productos
+            var categorias = await _serviceCategoria.ListAsync();
+            var productos = await _serviceProducto.ListAsync();
+
+            ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
+            ViewBag.ListProductos = productos;
+
+            return PartialView("_EditPromocion", promocion);
+        }
+
+        // POST: PromocionController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(PromocionDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Cargar ViewBags por si se reenvía a la vista
+                var categorias = await _serviceCategoria.ListAsync();
+                var productos = await _serviceProducto.ListAsync();
+                ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
+                ViewBag.ListProductos = productos.Select(p =>
+                    new SelectListItem { Value = p.Id.ToString(), Text = p.Nombre }).ToList();
+
+                return PartialView("_EditPromocion", dto);
+            }
+
+            try
+            {
+                await _servicePromocion.UpdateAsync(dto);
+                return Json(new { success = true, mensaje = "Promoción actualizada correctamente" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, mensaje = "Error al actualizar la promoción" });
+            }
+        }
+
 
         // POST: ProductoController/Delete/5
         //[HttpPost]

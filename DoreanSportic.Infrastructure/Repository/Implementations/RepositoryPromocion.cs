@@ -66,5 +66,63 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             await _context.SaveChangesAsync();
             return entity.Id;
         }
+
+        public async Task UpdateAsync(Promocion entity, List<Categoria> nuevasCategorias, List<Producto> nuevosProductos)
+        {
+            //Obtener la promoción actual desde la base de datos con sus relaciones
+            var promocionExistente = await _context.Promocion
+                .Include(p => p.IdCategoria)
+                .Include(p => p.IdProducto)
+                .FirstOrDefaultAsync(p => p.Id == entity.Id);
+
+            if (promocionExistente == null)
+                throw new Exception("Promoción no encontrada.");
+
+            // Actualizar propiedades simples
+            promocionExistente.Nombre = entity.Nombre;
+            promocionExistente.Descripcion = entity.Descripcion;
+            promocionExistente.PorcentajeDescuento = entity.PorcentajeDescuento;
+            promocionExistente.DescuentoFijo = entity.DescuentoFijo;
+            promocionExistente.FechaInicio = entity.FechaInicio;
+            promocionExistente.FechaFin = entity.FechaFin;
+            promocionExistente.Estado = entity.Estado;
+
+            // Actualizar categorías
+            promocionExistente.IdCategoria.Clear();
+            foreach (var categoria in nuevasCategorias)
+            {
+                _context.Attach(categoria);
+                promocionExistente.IdCategoria.Add(categoria);
+            }
+
+            // Actualizar productos
+            promocionExistente.IdProducto.Clear();
+            foreach (var producto in nuevosProductos)
+            {
+                _context.Attach(producto);
+                promocionExistente.IdProducto.Add(producto);
+            }
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
+            await _context.SaveChangesAsync();
+        }
+        public async Task<ICollection<Producto>> ObtenerProductosPorIdsAsync(List<int> ids)
+        {
+            return await _context.Producto.Where(p => ids.Contains(p.Id)).ToListAsync();
+        }
+
+        public async Task<Categoria?> ObtenerCategoriaPorIdAsync(int id)
+        {
+            return await _context.Categoria.FindAsync(id);
+        }
     }
 }

@@ -13,5 +13,9 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<Promocion> FindByIdAsync(int id);
 
         Task<int> AddAsync(Promocion entity, List<int> listaProductosSeleccionados);
+
+        Task UpdateAsync(Promocion entity, List<Categoria> nuevasCategorias, List<Producto> nuevosProductos);
+        Task<ICollection<Producto>> ObtenerProductosPorIdsAsync(List<int> ids);
+        Task<Categoria?> ObtenerCategoriaPorIdAsync(int id);
     }
 }

@@ -48,8 +48,12 @@ public record PromocionDTO
 
     [Display(Name = "Categoría")]
     [Required(ErrorMessage = " {0} es requerida ")]
-    // Propiedades auxiliar para idCategoria para poder hacer uso de Select simple en las vistas de Promocion (_CreatePromocion y _EditPromocion)
+    // Propiedad  auxiliar para idCategoria para poder hacer uso de Select simple en las vistas de Promocion (_CreatePromocion y _EditPromocion)
 
     [ValidateNever]
     public int? IdCategoriaSeleccionada { get; set; }
+
+    // Propiedad auxiliar para idProducto para poder hacer uso de Select multiple en las vistas de Promocion (_CreatePromocion y _EditPromocion)
+    [ValidateNever]
+    public List<int> IdProductosSeleccionados { get; set; } = new();
 }

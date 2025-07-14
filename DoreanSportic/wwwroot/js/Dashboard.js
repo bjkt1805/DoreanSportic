@@ -18,7 +18,7 @@ function cargarVista(ruta) {
                 container.innerHTML = html;
                 loader.classList.add('hidden');
 
-                // Cargar validación AJAX para cuando se cargue la vista de _CreatePromocion
+                // Cargar validación AJAX para cuando se cargue la vista de _CreatePromocion y _EditPromocion
                 $.validator.unobtrusive.parse('#formPromocion');
 
                 // Inicializar la función que escucha el cambio del select de TipoPromoción (_CreatePromocion y _EditPromocion)
@@ -50,6 +50,7 @@ function cargarVista(ruta) {
 
                 // Inicializar función que escucha el input de cantidad (_CreateProducto y _EditoProducto)
                 escucharInputCantidad();
+
 
             }, 300);
         })
@@ -306,6 +307,59 @@ function cargarEditarProducto(idProducto) {
         .catch(err => {
             console.error("Error al cargar la vista de edición:", err);
             container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición del producto.</p>`;
+            loader.classList.add('hidden');
+        });
+}
+
+// Función javascript para cargar la vista de editar promocion (_EditPromocion)
+// Función para cargar la vista parcial de edición de una promoción
+function cargarEditarPromocion(idPromocion) {
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('contenido-dinamico');
+
+    loader.classList.remove('hidden');
+    container.innerHTML = "";
+
+    fetch(`/Promocion/Edit/${idPromocion}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            setTimeout(() => {
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+
+                // Cargar validación AJAX para cuando se cargue la vista de _CreatePromocion y _EditPromocion
+                $.validator.unobtrusive.parse('#formPromocion');
+
+                // Cargar comportamiento de fechas
+                cargaFechas();
+
+                // Inicialiar la función que se encarga de mostrar el select de categoría o el dropdown de productos
+                mostrarGrupoSegunTipoInicial();
+
+                // Inicializar la función para mostrar el select de categoria o drop down de productos 
+                escucharCambioSelectTipoPromocion();
+
+                // Inicializar función para escuchar los cambios de checkboxes en el drop down de productos
+                // seleccionados (en _EditPromocion)
+                escucharCheckboxProductos();
+
+                // Inicializar la función que escucha el input de descuento en las vistas de Promocion (_CreatePromocion y _EditPromocion)
+                revisarInputDescuento();
+
+                // Inicializar la función que controla la visibilidad del select de tipo, categoria y el checkbox de estado
+                // según el estado de la promoción
+                controlarVisibilidadSegunEstado();
+
+
+
+            }, 300);
+        })
+        .catch(err => {
+            console.error("Error al cargar la vista de edición:", err);
+            container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición de la reseña.</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -567,37 +621,8 @@ function validacionFormularioPromocion() {
     }
 }
 
-
-// Mostrar el select correcto según el tipo en la vistas _CreatePromocion y _EditPromocion
-//function escucharCambioSelectTipoPromocion() {
-//    const select = document.getElementById("tipoPromocion");
-//    if (!select) return; // Evita error si el select no existe
-
-//    const grupoCategoria = document.getElementById("grupoCategoria");
-//    const grupoProducto = document.getElementById("grupoProducto");
-
-//    if (!grupoCategoria || !grupoProducto) return;
-
-//    select.addEventListener("change", function () {
-//        const tipo = this.value;
-//        grupoCategoria.classList.add("hidden");
-//        grupoProducto.classList.add("hidden");
-
-//        if (tipo === "Categoria") {
-//            grupoCategoria.classList.remove("hidden");
-//        } else if (tipo === "Producto") {
-//            grupoProducto.classList.remove("hidden");
-//        }
-//    });
-
-//    // Mostrar el grupo correcto si ya viene con valor (modo edición)
-//    if (select.value === "Categoria") {
-//        grupoCategoria.classList.remove("hidden");
-//    } else if (select.value === "Producto") {
-//        grupoProducto.classList.remove("hidden");
-//    }
-//}
-
+// Función que se encarga de escuchar el cambio del select de tipo de 
+// promoción
 function escucharCambioSelectTipoPromocion() {
     const tipoSelect = document.getElementById('tipoPromocion');
     const grupoCategoria = document.getElementById('grupoCategoria');
@@ -608,6 +633,11 @@ function escucharCambioSelectTipoPromocion() {
     const dropdownLabel = document.getElementById('dropdownLabel');
 
     if (!tipoSelect) return;
+
+    //Esta parte se ejecuta una vez al cargar(modo edición) para poder seleccionar los productos
+    // de forma automática cuando se carga la edición de promoción
+
+    const tipoInicial = tipoSelect.value;
 
     tipoSelect.addEventListener('change', function () {
         const tipo = tipoSelect.value;
@@ -627,6 +657,7 @@ function escucharCambioSelectTipoPromocion() {
 
             // Limpiar selección de categoría si se oculta
             if (selectCategoria) selectCategoria.value = "";
+
         } else {
             // Si no se selecciona tipo, ocultar ambos
             grupoCategoria.classList.add('hidden');
@@ -637,7 +668,48 @@ function escucharCambioSelectTipoPromocion() {
             if (selectAllCheckbox) selectAllCheckbox.checked = false;
             if (dropdownLabel) dropdownLabel.textContent = 'Seleccione uno o más productos';
         }
+
     });
+}
+
+// Función que se encarga de mostrar los productos seleccionados 
+// cuando hayan productos seleccionados en la vista precargada de _EditPromocion
+function actualizarLabelProductosSeleccionados() {
+    const label = document.getElementById("dropdownLabel");
+    const seleccionados = document.querySelectorAll(".producto-checkbox:checked").length;
+
+    if (label) {
+        label.textContent = seleccionados > 0
+            ? `${seleccionados} producto(s) seleccionado(s)`
+            : 'Seleccione uno o más productos';
+    }
+}
+
+// Función para marcar automáticamente de mostrar el select de
+// categoria (si la promocion es por categoria) o la lista de 
+// productos (si la promocion es por producto)
+function mostrarGrupoSegunTipoInicial() {
+    const tipoSelect = document.getElementById('tipoPromocion');
+    const grupoCategoria = document.getElementById('grupoCategoria');
+    const grupoProducto = document.getElementById('grupoProducto');
+
+    if (!tipoSelect) return;
+
+    const valorTipo = tipoSelect.value;
+    console.log("Valor actual de tipoPromocion al cargar:", valorTipo);
+
+    if (valorTipo === "Categoria") {
+        grupoCategoria.classList.remove('hidden');
+        grupoProducto.classList.add('hidden');
+    } else if (valorTipo === "Producto") {
+        grupoProducto.classList.remove('hidden');
+        grupoCategoria.classList.add('hidden');
+
+        actualizarLabelProductosSeleccionados();
+    } else {
+        grupoCategoria.classList.add('hidden');
+        grupoProducto.classList.add('hidden');
+    }
 }
 
 
@@ -698,6 +770,28 @@ function inicializarDropdownProductos() {
 
     actualizarLabelDropdownProducto();
 }
+
+// Función para escuchar cuando se seleccionen checkboxes en 
+// el drop down de la vista de _EditPromocion
+function escucharCheckboxProductos() {
+    const checkboxes = document.querySelectorAll('.producto-checkbox');
+    const selectAllCheckbox = document.getElementById('checkboxSelectAll');
+
+    // Escuchar cambios individuales
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', actualizarLabelProductosSeleccionados);
+    });
+
+    // Escuchar "Seleccionar todos"
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', () => {
+            const checked = selectAllCheckbox.checked;
+            checkboxes.forEach(cb => cb.checked = checked);
+            actualizarLabelProductosSeleccionados();
+        });
+    }
+}
+
 
 // Función de Flatpickr para poder bloquear que la fecha de Fin sea menor a fecha de Inicio
 // y también que fecha de inicio tenga como mínimo hoy
@@ -760,8 +854,14 @@ function revisarInputDescuento() {
 // y mostrar el toast correspondiente
 async function revisarRespuestaPostPromocion(formData) {
     try {
-        const response = await fetch("/Promocion/Create", {
-            method: "POST",
+        const id = formData.get("Id"); // null o "" si es nueva
+        const esEdicion = id !== null && id !== "" && !isNaN(parseInt(id));
+
+        const url = esEdicion ? `/Promocion/Edit/${id}` : "/Promocion/Create";
+        const method = "POST";
+
+        const response = await fetch(url, {
+            method: method,
             body: formData
         });
 
@@ -770,21 +870,59 @@ async function revisarRespuestaPostPromocion(formData) {
 
             if (data.success) {
                 mostrarToast(data.mensaje, "success");
-                cargarVista('/Promocion/IndexAdmin');
-                history.replaceState(null, "", "/Promocion/IndexAdmin");
+
+                cargarVista("/Promocion/IndexAdmin"); 
+
             } else {
-                console.warn("Error inesperado:", data);
+                console.warn("Error lógico:", data);
             }
 
         } else {
+            // Cargar vista parcial con errores de validación
             const html = await response.text();
             document.getElementById("contenido-dinamico").innerHTML = html;
         }
 
     } catch (err) {
-        console.error("Error al enviar el formulario", err);
+        console.error("Error en revisarRespuestaPostPromocion:", err);
     }
 }
+
+// Función para controlarVisibilidad de los controles de categoria y producto
+// si la promoción no está activa
+function controlarVisibilidadSegunEstado() {
+    const estadoCheckbox = document.getElementById("estadoPromocion");
+    const tipoPromocion = document.getElementById("grupoTipoPromocion");
+    const grupoCategoria = document.getElementById("grupoCategoria");
+    const grupoProducto = document.getElementById("grupoProducto");
+    //const tipoSelect = document.getElementById("tipoPromocion");
+
+    function actualizarVisibilidad() {
+        const estaActiva = estadoCheckbox.checked;
+
+        if (!estaActiva) {
+            // Si está inactiva, ocultar todo
+            tipoPromocion.classList.add("hidden");
+            grupoCategoria.classList.add("hidden");
+            grupoProducto.classList.add("hidden");
+        } else {
+            // Si está activa, mostrar tipoPromocion
+            tipoPromocion.classList.remove("hidden");
+
+        }
+    }
+
+    estadoCheckbox.addEventListener("change", actualizarVisibilidad);
+    console.log("Estado cambiado a:", estadoCheckbox.checked);
+
+    // Llamada inicial al cargar la vista
+    actualizarVisibilidad();
+}
+
+
+
+
+
 
 
 

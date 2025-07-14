@@ -30,6 +30,15 @@ namespace DoreanSportic.Application.Services.Implementations
         {
             var @object = await _repository.FindByIdAsync(id);
             var objectMapped = _mapper.Map<PromocionDTO>(@object);
+
+            // Mapear productos seleccionados
+            objectMapped.IdProductosSeleccionados = @object.IdProducto
+                .Select(p => p.Id)
+                .ToList();
+
+            // Mapear categoría seleccionada
+            objectMapped.IdCategoriaSeleccionada = @object.IdCategoria.FirstOrDefault()?.Id;
+
             return objectMapped;
         }
 
@@ -47,9 +56,60 @@ namespace DoreanSportic.Application.Services.Implementations
             var objectMapped = _mapper.Map<Promocion>(dto);
             return await _repository.AddAsync(objectMapped, listaProductosSeleccionados);
         }
-        public Task UpdateAsync(int id, PromocionDTO dto)
+        public async Task UpdateAsync(PromocionDTO dto)
         {
-            throw new NotImplementedException();
+            // Obtener la categoría seleccionada (si aplica)
+            var nuevasCategorias = new List<Categoria>();
+
+            // Obtener los productos seleccionados (si hay)
+            var nuevosProductos = new List<Producto>();
+
+            // Obtener la promoción desde la base (opcional, si ya no se usa directamente)
+            var promocionExistente = await _repository.FindByIdAsync(dto.Id);
+            if (promocionExistente == null)
+            {
+                throw new Exception("Promoción no encontrada");
+            }
+
+            // Detectar si el estado cambió de activo (true) a inactivo (false)
+            bool cambioEstadoAInactivo = promocionExistente.Estado && !dto.Estado;
+
+            //Mapeo manual
+            promocionExistente.Nombre = dto.Nombre;
+            promocionExistente.Descripcion = dto.Descripcion;
+            promocionExistente.PorcentajeDescuento = dto.PorcentajeDescuento;
+            promocionExistente.FechaInicio = dto.FechaInicio;
+            promocionExistente.FechaFin = dto.FechaFin;
+            promocionExistente.Estado = dto.Estado;
+
+            if (cambioEstadoAInactivo)
+            {
+                // Si se desactiva la promoción, eliminar relaciones
+                // promocion_producto o promocion_categoria
+                promocionExistente.IdProducto.Clear();
+                promocionExistente.IdCategoria.Clear();
+            }
+
+            else
+            {
+                if (dto.IdCategoriaSeleccionada.HasValue)
+                {
+                    var categoria = await _repository.ObtenerCategoriaPorIdAsync(dto.IdCategoriaSeleccionada.Value);
+                    if (categoria != null)
+                    {
+                        nuevasCategorias.Add(categoria);
+                    }
+                }
+
+                if (dto.IdProductosSeleccionados != null && dto.IdProductosSeleccionados.Any())
+                {
+                    nuevosProductos = (await _repository.ObtenerProductosPorIdsAsync(dto.IdProductosSeleccionados)).ToList();
+                }
+            }
+
+            // Llamar al repositorio con DTO + relaciones listas
+            await _repository.UpdateAsync(promocionExistente, nuevasCategorias, nuevosProductos);
         }
+
     }
 }
