@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "DashboardAdmin";
 }
+<!-- Flatpickr CSS -->
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 
 <div class="flex min-h-screen w-full gap gap-2 pt-0">
     <!-- Sidebar -->
@@ -74,20 +76,17 @@
 
 @section Scripts {
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- Scripts específicos del dashboard-->
     <script src="~/js/dashboard.js"></script>
 
+    <!-- Javascript para Flatpicker (y mostrar dd/mm/yyy) en los datepickers -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
     <!-- Scripts de jquery para validación del lado del cliente-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
-@*     <!-- Código para mostrar el toast en cualquier vista-->
-    <script>
-        setTimeout(() => {
-            document.querySelector('.toast')?.remove();
-        }, 4000);
-    </script> *@
 
 }
 

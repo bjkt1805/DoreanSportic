@@ -18,8 +18,17 @@ function cargarVista(ruta) {
                 container.innerHTML = html;
                 loader.classList.add('hidden');
 
+                // Cargar validación AJAX para cuando se cargue la vista de _CreatePromocion
+                $.validator.unobtrusive.parse('#formPromocion');
+
                 // Inicializar la función que escucha el cambio del select de TipoPromoción (_CreatePromocion y _EditPromocion)
                 escucharCambioSelectTipoPromocion();
+
+                // Inicializar la función que escucha el input de descuento en las vistas de Promocion (_CreatePromocion y _EditPromocion)
+                revisarInputDescuento();
+
+                // Cargar comportamiento de fechas
+                cargaFechas();
 
                 // Cargar la función JavaScript si se carga la vista de productos
                 if (typeof inicializarVistaProductos === 'function') {
@@ -41,10 +50,6 @@ function cargarVista(ruta) {
 
                 // Inicializar función que escucha el input de cantidad (_CreateProducto y _EditoProducto)
                 escucharInputCantidad();
-
-                // Inicializar la función que carga páginas en la tabla (_IndexAdmin de Promociones y Reseñas)
-                cargarPaginasTabla();
-
 
             }, 300);
         })
@@ -437,10 +442,135 @@ document.addEventListener('click', function (e) {
     }
 });
 
+// Función para escuchar el evento submit del formulario de _CreatePromocion para mostrar errores
+// (si los hay)
+// Escuchar el evento submit del formulario de _CreatePromocion y _EditPromocion
+// para realizar validación del lado del cliente
+function validacionFormularioPromocion() {
+    const form = document.getElementById('formPromocion');
+    if (form) {
+
+        const tipoSelect = document.getElementById('tipoPromocion');
+        const errorSpan = document.getElementById('errorTipoPromocion');
+        const fechaInicioInput = document.getElementById('fechaInicio');
+        const fechaFinInput = document.getElementById('fechaFin');
+        const errorInicio = document.getElementById('errorFechaInicio');
+        const errorFin = document.getElementById('errorFechaFin');
+
+        let isValid = true;
+
+        // Validar tipo de promoción
+        if (tipoSelect && tipoSelect.value === "") {
+            isValid = false;
+            if (errorSpan) {
+                errorSpan.textContent = "Debe seleccionar un tipo de promoción.";
+                errorSpan.classList.remove("hidden");
+            }
+            tipoSelect.classList.add("border-red-500");
+        } else {
+            if (errorSpan) {
+                errorSpan.textContent = "";
+                errorSpan.classList.add("hidden");
+            }
+            tipoSelect?.classList.remove("border-red-500");
+        }
+
+        // Validar fechas
+        const fechaInicioStr = fechaInicioInput?.value;
+        const fechaFinStr = fechaFinInput?.value;
+
+        // Convertir dd/mm/yyyy a objeto Date
+        function convertirFecha(fechaStr) {
+            const [dia, mes, anio] = fechaStr.split('/');
+            return new Date(`${anio}-${mes}-${dia}`);
+        }
+
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); // Limpiar hora
+
+        const fechaInicio = convertirFecha(fechaInicioStr);
+        const fechaFin = convertirFecha(fechaFinStr);
+
+        // Validar fecha de inicio
+        if (!fechaInicioStr || isNaN(fechaInicio.getTime())) {
+            isValid = false;
+            errorInicio.textContent = "Seleccione un valor para la fecha de inicio";
+            errorInicio.classList.remove("hidden");
+            fechaInicioInput.classList.add("border-red-500");
+        } else {
+            errorInicio.textContent = "";
+            errorInicio.classList.add("hidden");
+            fechaInicioInput.classList.remove("border-red-500");
+        }
+
+        // Validar fecha de fin
+        if (!fechaFinStr || isNaN(fechaFin.getTime())) {
+            isValid = false;
+            errorFin.textContent = "Seleccione un valor para la fecha de fin";
+            errorFin.classList.remove("hidden");
+            fechaFinInput.classList.add("border-red-500");
+        } else {
+            errorFin.textContent = "";
+            errorFin.classList.add("hidden");
+            fechaFinInput.classList.remove("border-red-500");
+        }
+
+        // Validar selección de productos solo si el grupo está visible
+        const grupoProducto = document.getElementById('grupoProducto');
+        if (!grupoProducto.classList.contains('hidden')) {
+            const productoChecks = document.querySelectorAll('.producto-checkbox');
+            const errorProductos = document.getElementById('errorProductos');
+
+            const algunoSeleccionado = Array.from(productoChecks).some(cb => cb.checked);
+
+            if (!algunoSeleccionado) {
+                isValid = false;
+
+                if (errorProductos) {
+                    errorProductos.classList.remove("hidden");
+                    errorProductos.textContent = "Debe seleccionar al menos un producto.";
+                }
+            } else {
+                if (errorProductos) {
+                    errorProductos.classList.add("hidden");
+                    errorProductos.textContent = "";
+                }
+            }
+        }
+
+
+        // Validaciones unobtrusive de ASP.NET
+        if (!$(form).valid()) {
+            isValid = false;
+        }
+
+        // Convertir fechas antes de enviar si todo es válido
+        if (isValid) {
+            const formatoNET = "Y-m-d"; // yyyy-MM-dd
+            const pickerInicio = flatpickr.parseDate(fechaInicioInput.value, "d/m/Y");
+            const pickerFin = flatpickr.parseDate(fechaFinInput.value, "d/m/Y");
+
+            if (pickerInicio) {
+                fechaInicioInput.value = flatpickr.formatDate(pickerInicio, formatoNET);
+            }
+            if (pickerFin) {
+                fechaFinInput.value = flatpickr.formatDate(pickerFin, formatoNET);
+            }
+
+
+            // Si el formulario es válido
+            // enviar la información a "revisarRespuestaPostPromocion"
+            if (isValid) {
+                revisarRespuestaPostPromocion(new FormData(form));
+            }
+        }
+    }
+}
+
+
 // Mostrar el select correcto según el tipo en la vistas _CreatePromocion y _EditPromocion
 function escucharCambioSelectTipoPromocion() {
     const select = document.getElementById("tipoPromocion");
-    console.log("¿Existe select tipoPromocion?:", !!select);
     if (!select) return; // Evita error si el select no existe
 
     const grupoCategoria = document.getElementById("grupoCategoria");
@@ -487,7 +617,7 @@ function inicializarDropdownProductos() {
 
     // Evitar que clics en cualquier parte del menú (etiquetas, texto) cierren el dropdown
     dropdownContent.addEventListener('click', function (e) {
-        e.stopPropagation(); // ✅ ESTA ES LA UBICACIÓN CORRECTA
+        e.stopPropagation(); //
     });
 
     // Cerrar si se hace clic fuera del dropdown
@@ -496,8 +626,6 @@ function inicializarDropdownProductos() {
             dropdownContent.classList.add('hidden');
         }
     });
-
-    // Resto de tu lógica: actualizar label, manejar checkboxes, etc.
     function actualizarLabelDropdownProducto() {
         const seleccionados = Array.from(checks).filter(c => c.checked);
         if (seleccionados.length === 0) {
@@ -528,23 +656,96 @@ function inicializarDropdownProductos() {
     actualizarLabelDropdownProducto();
 }
 
-
-
-
-
-// Validación de fechas en las vistas _CreatePromocion y _EditPromocion
-document.addEventListener("DOMContentLoaded", () => {
+// Función de Flatpickr para poder bloquear que la fecha de Fin sea menor a fecha de Inicio
+// y también que fecha de inicio tenga como mínimo hoy
+function cargaFechas() {
     const hoy = new Date().toISOString().split("T")[0];
-    document.getElementById("fechaInicio").setAttribute("min", hoy);
 
-    document.getElementById("fechaFin").addEventListener("change", function () {
-        const inicio = document.getElementById("fechaInicio").value;
-        if (this.value < inicio) {
-            alert("La fecha de fin no puede ser anterior a la fecha de inicio.");
-            this.value = "";
+    const pickerInicio = flatpickr("#fechaInicio", {
+        dateFormat: "d/m/Y",
+        locale: "es",
+        minDate: "today",
+        defaultDate: hoy,
+        onChange: function (selectedDates, dateStr, instance) {
+            // Cuando se cambia la fecha de inicio, actualizar minDate en fechaFin
+            if (selectedDates.length > 0) {
+                pickerFin.set('minDate', selectedDates[0]);
+            }
         }
     });
-});
+
+    const pickerFin = flatpickr("#fechaFin", {
+        dateFormat: "d/m/Y",
+        locale: "es",
+        minDate: hoy
+    });
+}
+
+
+// Función para evitar que el usuario digite para el campo descuento (_CreatePromocion y _EditPromocion)
+// más de 3 dígitos y tampoco decimales
+function revisarInputDescuento() {
+    const descuentoInput = document.querySelector('[name="PorcentajeDescuento"]');
+
+    if (descuentoInput) {
+        descuentoInput.addEventListener('input', function (e) {
+            // Remover caracteres no numéricos (excepto números)
+            this.value = this.value.replace(/[^0-9]/g, '');
+
+            // Limitar a 3 dígitos
+            if (this.value.length > 3) {
+                this.value = this.value.slice(0, 3);
+            }
+
+            // Validar valor máximo permitido (100)
+            const valor = parseInt(this.value);
+            if (valor > 100) {
+                this.value = '100';
+            }
+        });
+
+        // Previene que se escriban puntos o comas directamente
+        descuentoInput.addEventListener('keypress', function (e) {
+            if (e.key === '.' || e.key === ',' || e.key === '-') {
+                e.preventDefault();
+            }
+        });
+    }
+}
+
+// Función para revisar respuesta al crear o actualizar Promoción
+// y mostrar el toast correspondiente
+async function revisarRespuestaPostPromocion(formData) {
+    try {
+        const response = await fetch("/Promocion/Create", {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data.success) {
+                mostrarToast(data.mensaje, "success");
+                cargarVista('/Promocion/IndexAdmin');
+                history.replaceState(null, "", "/Promocion/IndexAdmin");
+            } else {
+                console.warn("Error inesperado:", data);
+            }
+
+        } else {
+            const html = await response.text();
+            document.getElementById("contenido-dinamico").innerHTML = html;
+        }
+
+    } catch (err) {
+        console.error("Error al enviar el formulario", err);
+    }
+}
+
+
+
+
 
 
 

@@ -203,7 +203,7 @@ function dataFileDnD() {
                     const data = await response.json();
 
                     if (data.success) {
-                        // Mostrar toast (opcional)
+                        // Mostrar toast
                         mostrarToast(data.mensaje, "success");
 
                         // Cargar _IndexAdmin dinámicamente en el contenedor

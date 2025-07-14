@@ -5,6 +5,7 @@ using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
@@ -80,21 +81,37 @@ namespace DoreanSportic.Controllers
         // POST: ProductoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PromocionDTO dto, int IdCategoriaSeleccionada, List<int> IdProductoSeleccionado)
+        public async Task<IActionResult> Create(PromocionDTO dto,List<int> IdProductoSeleccionado)
         {
             if (ModelState.IsValid)
             {
-                // Lógica para crear promoción con dto.IdCategoria y dto.IdProducto (lista de int)
-                await _servicePromocion.AddAsync(dto, IdCategoriaSeleccionada, IdProductoSeleccionado);
+                // Para poder salvar categoría con promoción en la relación muchos a muchos en la base 
+                // de datos se construye la categoría seleccionada como Categoria (en la lista)
+                if (dto.IdCategoriaSeleccionada.HasValue)
+                {
+                    // Solo almacenar el ID como auxiliar, no instancias completas de Categoria
+                    // EF lo interpretará correctamente si se configura como many-to-many y se usa con Attach
+                    dto.IdCategoria = new List<Categoria>
+                    {
+                        new Categoria { Id = dto.IdCategoriaSeleccionada.Value }
+                    };
+                }
 
-                return RedirectToAction("IndexAdmin");
+                // Lógica para crear promoción con dto.IdCategoria y dto.IdProducto (lista de int)
+                await _servicePromocion.AddAsync(dto, IdProductoSeleccionado);
+
+                // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
+                // con vistas parciales
+                return Json(new { success = true, mensaje = "Promoción creada exitosamente" });
             }
 
-            // Recargar combos
+            // Recargar combos si hay error
             ViewBag.ListCategorias = new SelectList(await _serviceCategoria.ListAsync(), "Id", "Nombre");
             ViewBag.ListProductos = new MultiSelectList(await _serviceProducto.ListAsync(), "Id", "Nombre");
 
-            return PartialView("_CreatePromocion", dto);
+            // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
+            // con vistas parciales
+            return Json(new { success = true, mensaje = "Promoción creada exitosamente" });
         }
 
         // GET: ProductoController/Edit/5

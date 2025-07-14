@@ -37,11 +37,18 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return collection;
         }
 
-        public async Task<int> AddAsync(Promocion entity, int IdCategoriaSeleccionada, List<int> listaProductosSeleccionados)
+        public async Task<int> AddAsync(Promocion entity,List<int> listaProductosSeleccionados)
         {
-            // Relación de muchos a muchos solo con llave primaria compuesta
-            //var etiquetas = await getEtiquetas(selectedEtiquetas);
-            //entity.IdEtiqueta = etiquetas;
+            // Adjuntar manualmente las categorías para evitar que EF intente insertarlas
+            foreach (var categoria in entity.IdCategoria)
+            {
+                _context.Attach(categoria); // Evita error de identidad en inserción
+            }
+
+            // Asociar productos (relación muchos a muchos)
+            entity.IdProducto = await _context.Producto
+                .Where(p => listaProductosSeleccionados.Contains(p.Id))
+                .ToListAsync();
 
             // Añadir el producto a la base de datos
             await _context.Set<Promocion>().AddAsync(entity);

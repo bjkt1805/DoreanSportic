@@ -158,7 +158,6 @@ namespace DoreanSportic.Controllers
                             Imagen = imagenBytes,
                             Descripcion = file.FileName,
                             Estado = true
-                            // Podés agregar otras propiedades como NombreArchivo, MimeType, etc.
                         });
                     }
                 }
@@ -179,9 +178,6 @@ namespace DoreanSportic.Controllers
                 return Json(new { success = true, mensaje = "Producto creado exitosamente" });
 
             }
-
-            //// Redirigir o confirmar
-            //return RedirectToAction("Index");
             // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
             // con vistas parciales
             return Json(new { success = true, mensaje = "Producto creado exitosamente" });

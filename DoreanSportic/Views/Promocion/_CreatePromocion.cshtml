@@ -1,6 +1,6 @@
 ﻿@model DoreanSportic.Application.DTOs.PromocionDTO
 
-<form asp-action="Create" asp-antiforgery="true" method="post" enctype="multipart/form-data" 
+<form id="formPromocion" asp-action="Create" asp-antiforgery="true" method="post" enctype="multipart/form-data" 
     class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
 
     <h2 class="text-left font-bold mb-3">NUEVA PROMOCIÓN</h2>
@@ -10,68 +10,98 @@
         <!-- Columna izquierda-->
         <div class="flex flex-col gap-4 w-2/3">
             <!-- Nombre de la promoción -->
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label asp-for="Nombre" class="label font-bold text-black">Nombre de la promoción</label>
                 <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" />
-                <span asp-validation-for="Nombre" class="text-sm italic text-red-500"></span>
+                <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Descripción de la promoción -->
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label asp-for="Descripcion" class="label font-bold text-black">Descripción de la promoción</label>
-                <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1" style="border-color:black"></textarea>        <span asp-validation-for="Descripcion" class="text-sm italic text-red-500"></span>
+                <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1" style="border-color:black"></textarea>        
+                <span asp-validation-for="Descripcion" class="text-sm italic mt-1" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Descuento -->
-            <div class="form-control w-full">
+            <div class="form-control w-25">
                 <label asp-for="PorcentajeDescuento" class="label font-bold text-black">Descuento (%)</label>
-                <input asp-for="PorcentajeDescuento" type="number" min="1" max="100" step="0.01" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" />
-                <span asp-validation-for="PorcentajeDescuento" class="text-sm italic text-red-500"></span>
+                <input asp-for="PorcentajeDescuento" type="number" min="1" max="100" step="1" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" />
+                <span asp-validation-for="PorcentajeDescuento" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
-            <!-- Fecha inicio -->
-            <div class="form-control w-full">
-                <label asp-for="FechaInicio" class="label font-bold text-black">Fecha de inicio</label>
-                <input asp-for="FechaInicio" type="date" class="input input-bordered w-full mb-3 mt-1 required" id="fechaInicio" style="border-color:black" />
-                <span asp-validation-for="FechaInicio" class="text-sm italic text-red-500"></span>
+            <!-- Fecha de inicio -->
+            <div class="form-control" style="width: 45%">
+                <label for="fechaInicio" class="label font-bold text-black">Fecha de inicio</label>
+
+                <div class="flex items-center border border-black px-2 py-1 rounded">
+                    <input type="text" id="fechaInicio" name="FechaInicio"
+                           placeholder="dd/mm/aaaa"
+                           class="w-full focus:outline-none" />
+                    <svg class="w-5 h-5 text-gray-500 ml-2" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10m-11 4h12M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+
+                <!-- Para mostrar el mensaje de error personalizado-->
+                <span id="errorFechaInicio" class="text-sm italic hidden" style="color:red; font-size: small" "></span>
             </div>
 
-            <!-- Fecha fin -->
-            <div class="form-control w-full">
-                <label asp-for="FechaFin" class="label font-bold text-black">Fecha de fin</label>
-                <input asp-for="FechaFin" type="date" class="input input-bordered w-full mb-3 mt-1 required" id="fechaFin" style="border-color:black" />
-                <span asp-validation-for="FechaFin" class="text-sm italic text-red-500"></span>
+
+            <!-- Fecha de fin -->
+            <div class="form-control" style="width: 45%">
+                <label for="fechaFin" class="label font-bold text-black">Fecha de fin</label>
+
+                <div class="flex items-center border border-black rounded-lg px-2 py-1 rounded">
+                    <input type="text" id="fechaFin" name="FechaFin"
+                           placeholder="dd/mm/aaaa"
+                           class="w-full focus:outline-none" />
+                    <svg class="w-5 h-5 text-gray-500 ml-2" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10m-11 4h12M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+
+                <!-- Para mostrar el mensaje de error personalizado-->
+                <span id="errorFechaFin" class="text-sm italic hidden" style="color:red; font-size: small" "></span>
+
             </div>
 
             <!-- Botón -->
             <div class="form-control mt-4">
-                <input type="submit" value="Crear promoción" class="btn btn-primary w-full" />
+                <input type="button" value="Crear promoción" class="btn btn-primary w-full" onclick="validacionFormularioPromocion()" />
             </div>
         </div>
 
         <!-- Columna derecha-->
         <div class="flex flex-col gap-4 w-1/3">
-            <!-- Select múltiple para productos-->
             <!-- Tipo de promoción -->
-            <div class="form-control w-full">
+            <div class="form-control w-75">
                 <label for="Tipo" class="label font-bold text-black">Tipo de promoción</label>
                 <select class="select select-bordered w-full mb-3 mt-1 required" id="tipoPromocion" style="border-color:black">
                     <option value="">Seleccione un tipo</option>
                     <option value="Categoria">Categoría</option>
                     <option value="Producto">Producto</option>
                 </select>
+
+                <!-- Para mostrar el mensaje de error personalizado-->
+                <span id="errorTipoPromocion" class="text-sm italic hidden" style="color:red; font-size: small" "></span>
             </div>
 
             <!-- Select de categoría (solo una categoría) -->
-            <div id="grupoCategoria" class="form-control w-full hidden">
+            <div id="grupoCategoria" class="form-control w-75 hidden">
                 <label asp-for="IdCategoriaSeleccionada" class="label font-bold text-black">Categoría</label>
                 <select asp-for="IdCategoriaSeleccionada" asp-items="ViewBag.ListCategorias"
                         class="select select-bordered w-full mb-3 mt-1 required" style="border-color:black">
                     <option value="">Seleccione una categoría</option>
                 </select>
-                <span asp-validation-for="IdCategoria" class="text-sm italic text-red-500"></span>
+                <span asp-validation-for="IdCategoriaSeleccionada" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
+            <!-- Select múltiple para productos-->
             <!-- Contenedor personalizado tipo dropdown -->
             <div id="grupoProducto" class="form-control w-75 hidden">
                 <label class="label font-bold text-black">Producto</label>
@@ -100,7 +130,9 @@
                     </ul>
                 </div>
 
-                <span asp-validation-for="IdProducto" class="text-sm italic text-red-500"></span>
+                <!-- Para mostrar el mensaje de error personalizado-->
+                <span id="errorProductos" class="text-sm italic hidden" style="color:red; font-size: small">Debe seleccionar al menos un producto.</span>
+
             </div>
 
 

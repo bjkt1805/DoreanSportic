@@ -4,6 +4,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Infrastructure.Repository.Implementations;
 using DoreanSportic.Infrastructure.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,10 +42,10 @@ namespace DoreanSportic.Application.Services.Implementations
             // Return lista
             return collection;
         }
-        public async Task<int> AddAsync(PromocionDTO dto, int IdCategoriaSeleccionada ,List<int> listaProductosSeleccionados)
+        public async Task<int> AddAsync(PromocionDTO dto,List<int> listaProductosSeleccionados)
         {
             var objectMapped = _mapper.Map<Promocion>(dto);
-            return await _repository.AddAsync(objectMapped, IdCategoriaSeleccionada, listaProductosSeleccionados);
+            return await _repository.AddAsync(objectMapped, listaProductosSeleccionados);
         }
         public Task UpdateAsync(int id, PromocionDTO dto)
         {
