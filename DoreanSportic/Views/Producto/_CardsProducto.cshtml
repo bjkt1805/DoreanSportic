@@ -1,5 +1,13 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>  
-@using DoreanSportic.Infrastructure.Models  
+@using DoreanSportic.Infrastructure.Models
+@using System.Globalization
+
+<!-- Para el separador de miles-->
+@{
+    var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
+}
 
 @foreach (var item in Model)  
 {
@@ -63,8 +71,8 @@
             @if (descuentoTotal > 0)  
             {  
                 <div class="flex flex-col gap gap-1 mb-2">  
-                    <div class="flex flex-row gap gap-1 text-xs text-gray-400">  
-                        <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>  
+                    <div class="flex flex-row gap gap-1 text-xs text-gray-400">
+                        <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                         <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                             - @descuentoTotal.ToString("0")%
                         </div>  
@@ -72,7 +80,7 @@
                     <div class="flex flex-row gap gap-1">  
                         <b>Precio en oferta: </b>  
                         <div class="badge badge-xl bg-success text-black font-bold">
-                            ₡@precioConDescuento.ToString("N2")
+                            ₡@precioConDescuento.ToString("N2", culturaPersonalizada)
                         </div>  
                     </div>  
                 </div>  
@@ -81,8 +89,8 @@
             {  
                 <div class="flex flex-row gap gap-1">  
                     <b class="mt-1">Precio base: </b>  
-                    <div class="badge badge-outline w-fit">  
-                        ₡@precioBase.ToString("N2") + I.V.A  
+                    <div class="badge badge-outline w-fit">
+                        <b>₡@precioBase.ToString("N2", culturaPersonalizada)</b> + I.V.A
                     </div>  
                 </div>
                 <div class="flex flex-row gap gap-1">
@@ -97,7 +105,7 @@
                    asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
 
                 <!-- Redirección a la vista de comprar -->
-                <a class="btn btn-soft bg-[#006400] text-white">Comprar</a>
+                <a class="btn btn-soft bg-[#006400] text-white">Agregar al carrito</a>
                 
                 <!-- 
                 <a class="btn btn-soft btn-succcess text-white" 

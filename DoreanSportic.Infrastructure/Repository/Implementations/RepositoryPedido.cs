@@ -25,6 +25,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                                 .Include(p => p.PedidoDetalle)
                                 .Include(p => p.IdClienteNavigation)
                                 .Include(p => p.PedidoDetalle)
+                                .Include(p => p.IdMetodoPagoNavigation)
                                 .FirstAsync();
             return @object!;
         }
