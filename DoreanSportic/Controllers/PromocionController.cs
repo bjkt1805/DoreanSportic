@@ -122,6 +122,14 @@ namespace DoreanSportic.Controllers
             if (promocion == null)
                 return NotFound();
 
+            // Validar que la fecha de hoy sea igual o menor a la fecha de 
+            // fin de la promoción para habilitar la edición
+            var hoy = DateTime.Today;
+            bool esEditable = hoy <= promocion.FechaFin;
+
+            // Viewbag que se enviará a la vista para determinar si la promoción es editable
+            ViewBag.EsEditable = esEditable;
+
             // Obtener categorías y productos
             var categorias = await _serviceCategoria.ListAsync();
             var productos = await _serviceProducto.ListAsync();

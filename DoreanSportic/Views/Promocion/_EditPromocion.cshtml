@@ -2,6 +2,17 @@
 
 @model DoreanSportic.Application.DTOs.PromocionDTO
 
+
+@{
+    bool esEditable = ViewBag.EsEditable;
+    var disabledAttr = false;
+
+    if (esEditable == false)
+    {
+        disabledAttr = true;
+    }
+}
+
 <form id="formPromocion" asp-action="Edit" asp-antiforgery="true" method="post" enctype="multipart/form-data" 
     class="space-y-4 p-4 bg-base-100 rounded-xl shadow-lg">
 
@@ -16,14 +27,14 @@
             <!-- Nombre de la promoción -->
             <div class="form-control w-75">
                 <label asp-for="Nombre" class="label font-bold text-black">Nombre de la promoción</label>
-                <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" />
+                <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" disabled="@disabledAttr" />
                 <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Descripción de la promoción -->
             <div class="form-control w-75">
                 <label asp-for="Descripcion" class="label font-bold text-black">Descripción de la promoción</label>
-                <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1" style="border-color:black"></textarea>        
+                <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1" style="border-color:black" disabled="@disabledAttr"></textarea>
                 <span asp-validation-for="Descripcion" class="text-sm italic mt-1" style="color:red; font-size: small"></span>
             </div>
 
@@ -31,7 +42,7 @@
             <div class="form-control w-25">
                 <label asp-for="PorcentajeDescuento" class="label font-bold text-black">Descuento (%)</label>
                 <input asp-for="PorcentajeDescuento" type="number" min="1" max="100" value="@(Model.PorcentajeDescuento.HasValue? Model.PorcentajeDescuento.Value.ToString("0") : "")"
-                step="1" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" />
+                       step="1" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" disabled="@disabledAttr" />
                 <span asp-validation-for="PorcentajeDescuento" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
@@ -41,7 +52,7 @@
 
                 <div class="flex items-center border border-black px-2 py-1 rounded">
                     <input type="text" id="fechaInicio" name="FechaInicio" value="@Model.FechaInicio.ToString("dd/MM/yyyy")"
-                           class="w-full focus:outline-none" />
+                           class="w-full focus:outline-none" disabled="@disabledAttr" />
                     <svg class="w-5 h-5 text-gray-500 ml-2" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,7 +68,7 @@
                 <label for="fechaFin" class="label font-bold text-black">Fecha de fin</label>
                 <div class="flex items-center border border-black px-2 py-1 rounded">
                     <input type="text" id="fechaFin" name="FechaFin" value="@Model.FechaFin.ToString("dd/MM/yyyy")"
-                           class="w-full focus:outline-none" />
+                           class="w-full focus:outline-none" disabled="@disabledAttr" />
                     <svg class="w-5 h-5 text-gray-500 ml-2" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -69,7 +80,7 @@
 
             <!-- Botón -->
             <div class="form-control mt-4">
-                <input type="button" value="Actualizar promoción" class="btn btn-primary w-full" onclick="validacionFormularioPromocion()" />
+                <input type="button" value="Actualizar promoción" class="btn btn-primary w-full" onclick="validacionFormularioPromocion()" disabled="@disabledAttr" />
             </div>
         </div>
 
@@ -78,7 +89,7 @@
             <!-- Tipo de promoción -->
             <div class="form-control w-75" id="grupoTipoPromocion">
                 <label for="Tipo" class="label font-bold text-black">Tipo de promoción</label>
-                <select class="select select-bordered w-full mb-3 mt-1 required" id="tipoPromocion" style="border-color:black">
+                <select class="select select-bordered w-full mb-3 mt-1 required" id="tipoPromocion" style="border-color:black" disabled="@disabledAttr">
                     <option value="">Seleccione un tipo</option>
                     <option value="Categoria" selected="@(Model.IdCategoriaSeleccionada.HasValue)">Categoría</option>
                     <option value="Producto" selected="@(Model.IdCategoriaSeleccionada == null)">Producto</option>
@@ -90,7 +101,7 @@
             <div id="grupoCategoria" class="form-control w-75 @(Model.IdCategoriaSeleccionada.HasValue ? "" : "hidden")">
                 <label asp-for="IdCategoriaSeleccionada" class="label font-bold text-black">Categoría</label>
                 <select asp-for="IdCategoriaSeleccionada" asp-items="ViewBag.ListCategorias"
-                        class="select select-bordered w-full mb-3 mt-1 required" style="border-color:black">
+                        class="select select-bordered w-full mb-3 mt-1 required" style="border-color:black" disabled="@disabledAttr">
                     <option value="">Seleccione una categoría</option>
                 </select>
                 <span asp-validation-for="IdCategoriaSeleccionada" class="text-sm italic" style="color:red; font-size: small"></span>
@@ -100,7 +111,7 @@
             <div id="grupoProducto" class="form-control w-75 @(Model.IdCategoriaSeleccionada == null ? "" : "hidden")">
                 <label class="label font-bold text-black">Producto</label>
                 <div class="dropdown dropdown-bottom w-full relative">
-                    <button type="button" id="dropdownToggle" class="btn w-full bg-white border-black text-left justify-start cursor-pointer">
+                    <button type="button" id="dropdownToggle" class="btn w-full bg-white border-black text-left justify-start cursor-pointer" disabled="@disabledAttr">
                         <span id="dropdownLabel">Seleccione uno o más productos</span>
                     </button>
                     <ul id="listaProductos" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-60 overflow-y-auto z-50 border border-black">
@@ -151,7 +162,7 @@
                            name="Estado"
                            id="estadoPromocion"
                            class="toggle border-black bg-white checked:border-primary checked:bg-primary checked:text-white"
-                           value="true" @(Model.Estado ? "checked" : "") />
+                           value="true" @(Model.Estado ? "checked" : "") disabled="@disabledAttr" />
                     <span>Activa</span>
                 </div>
             </div>
