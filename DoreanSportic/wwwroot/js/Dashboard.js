@@ -569,34 +569,77 @@ function validacionFormularioPromocion() {
 
 
 // Mostrar el select correcto según el tipo en la vistas _CreatePromocion y _EditPromocion
+//function escucharCambioSelectTipoPromocion() {
+//    const select = document.getElementById("tipoPromocion");
+//    if (!select) return; // Evita error si el select no existe
+
+//    const grupoCategoria = document.getElementById("grupoCategoria");
+//    const grupoProducto = document.getElementById("grupoProducto");
+
+//    if (!grupoCategoria || !grupoProducto) return;
+
+//    select.addEventListener("change", function () {
+//        const tipo = this.value;
+//        grupoCategoria.classList.add("hidden");
+//        grupoProducto.classList.add("hidden");
+
+//        if (tipo === "Categoria") {
+//            grupoCategoria.classList.remove("hidden");
+//        } else if (tipo === "Producto") {
+//            grupoProducto.classList.remove("hidden");
+//        }
+//    });
+
+//    // Mostrar el grupo correcto si ya viene con valor (modo edición)
+//    if (select.value === "Categoria") {
+//        grupoCategoria.classList.remove("hidden");
+//    } else if (select.value === "Producto") {
+//        grupoProducto.classList.remove("hidden");
+//    }
+//}
+
 function escucharCambioSelectTipoPromocion() {
-    const select = document.getElementById("tipoPromocion");
-    if (!select) return; // Evita error si el select no existe
+    const tipoSelect = document.getElementById('tipoPromocion');
+    const grupoCategoria = document.getElementById('grupoCategoria');
+    const grupoProducto = document.getElementById('grupoProducto');
+    const selectCategoria = document.querySelector('select[name="IdCategoriaSeleccionada"]');
+    const checkboxesProducto = document.querySelectorAll('.producto-checkbox');
+    const selectAllCheckbox = document.getElementById('checkboxSelectAll');
+    const dropdownLabel = document.getElementById('dropdownLabel');
 
-    const grupoCategoria = document.getElementById("grupoCategoria");
-    const grupoProducto = document.getElementById("grupoProducto");
+    if (!tipoSelect) return;
 
-    if (!grupoCategoria || !grupoProducto) return;
-
-    select.addEventListener("change", function () {
-        const tipo = this.value;
-        grupoCategoria.classList.add("hidden");
-        grupoProducto.classList.add("hidden");
+    tipoSelect.addEventListener('change', function () {
+        const tipo = tipoSelect.value;
 
         if (tipo === "Categoria") {
-            grupoCategoria.classList.remove("hidden");
+            grupoCategoria.classList.remove('hidden');
+            grupoProducto.classList.add('hidden');
+
+            // Limpiar selección de productos si se oculta
+            checkboxesProducto.forEach(cb => cb.checked = false);
+            if (selectAllCheckbox) selectAllCheckbox.checked = false;
+            if (dropdownLabel) dropdownLabel.textContent = 'Seleccione uno o más productos';
+
         } else if (tipo === "Producto") {
-            grupoProducto.classList.remove("hidden");
+            grupoProducto.classList.remove('hidden');
+            grupoCategoria.classList.add('hidden');
+
+            // Limpiar selección de categoría si se oculta
+            if (selectCategoria) selectCategoria.value = "";
+        } else {
+            // Si no se selecciona tipo, ocultar ambos
+            grupoCategoria.classList.add('hidden');
+            grupoProducto.classList.add('hidden');
+
+            if (selectCategoria) selectCategoria.value = "";
+            checkboxesProducto.forEach(cb => cb.checked = false);
+            if (selectAllCheckbox) selectAllCheckbox.checked = false;
+            if (dropdownLabel) dropdownLabel.textContent = 'Seleccione uno o más productos';
         }
     });
-
-    // Mostrar el grupo correcto si ya viene con valor (modo edición)
-    if (select.value === "Categoria") {
-        grupoCategoria.classList.remove("hidden");
-    } else if (select.value === "Producto") {
-        grupoProducto.classList.remove("hidden");
-    }
 }
+
 
 // Función para inicializar el dropdown de productos
 function inicializarDropdownProductos() {
