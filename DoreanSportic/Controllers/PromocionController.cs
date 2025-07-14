@@ -56,13 +56,6 @@ namespace DoreanSportic.Controllers
         //GET: PromocionController/Create
         public async Task<IActionResult> Create()
         {
-            //// Viewbag para cargar la lista de categorías desde 
-            //// el servicio de categorías
-            //ViewBag.ListCategorias = new SelectList(await _serviceCategoria.ListAsync(), "Id", "Nombre");
-
-            //// Viewbag para cargar la lista de marcas desde 
-            //// el servicio de marcas
-            //ViewBag.ListProductos = new SelectList(await _serviceProducto.ListAsync(), "Id", "Nombre");
 
             // Viewbag para cargar la lista de categorías desde 
             // el servicio de categoría
