@@ -2,9 +2,9 @@
 
 namespace DoreanSportic.Web.ViewModel
 {
-    public class CrearProductoViewModel
+    public class DetalleProductoViewModel
     {
         public ProductoDTO Producto { get; set; }
-        public List<ResennaValoracionDTO> Resennas { get; set; } = new();
+        public UsuarioDTO UsuarioActual { get; set; }
     }
 }

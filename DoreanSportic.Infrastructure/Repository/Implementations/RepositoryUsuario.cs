@@ -27,5 +27,12 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var collection = await _context.Set<Usuario>().ToListAsync();
             return collection;
         }
+
+        public async Task<Usuario> PrimerUsuario()
+        {
+            //Select top 1 from Usuario
+            var usuario = await _context.Set<Usuario>().FirstOrDefaultAsync();
+            return usuario;
+        }
     }
 }

@@ -18,20 +18,22 @@ namespace DoreanSportic.Controllers
         //private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceEtiqueta _serviceEtiqueta;
         private readonly ILogger<ServiceProducto> _logger;
+        private readonly IServiceUsuario _serviceUsuario;
 
         public ProductoController(IServiceProducto serviceProducto,
             IServiceMarca serviceMarca,
             IServiceCategoria serviceCategoria,
             //IServiceResennaValoracion serviceResennaValoracion,
             IServiceEtiqueta serviceEtiqueta,
-            ILogger<ServiceProducto> logger)
+            ILogger<ServiceProducto> logger,
+            IServiceUsuario serviceServiceUsuario)
         {
             _serviceProducto = serviceProducto;
             _serviceMarca = serviceMarca;
             _serviceCategoria = serviceCategoria;
             _serviceEtiqueta = serviceEtiqueta;
             _logger = logger;
-            _logger = logger;
+            _serviceUsuario = serviceServiceUsuario;
         }
 
         // GET: ProductoController
@@ -72,8 +74,22 @@ namespace DoreanSportic.Controllers
         // GET: ProductoController/Details/{id}
         public async Task<ActionResult> Details(int id)
         {
-            var @object = await _serviceProducto.FindByIdAsync(id);
-            return View(@object);
+            var producto = await _serviceProducto.FindByIdAsync(id);
+            // PARA EFECTOS DEL AVANCE 4, SE VA A CARGAR EL PRIMER USUARIO
+            // DE LA BASE DE DATOS PARA PODER REALIZAR EL EJERCICIO DE 
+            // DEJAR UNA RESEÑA DEL PRODUCTO 
+
+            var usuario = await _serviceUsuario.PrimerUsuario();
+
+            // Crear un objeto de ViewModel para poder traer el objeto (DTO)
+            // de usuario de la base de datos
+            var viewModel = new DetalleProductoViewModel
+            {
+                Producto = producto,
+                UsuarioActual = usuario
+            };
+
+            return View(viewModel);
         }
 
         // GET: ProductoController/Dashboard (Producto/Details/{id})

@@ -11,5 +11,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
     {
         Task<ICollection<Usuario>> ListAsync();
         Task<Usuario> FindByIdAsync(int id);
+
+        // Para efectos del avance 4
+        Task<Usuario> PrimerUsuario();
     }
 }

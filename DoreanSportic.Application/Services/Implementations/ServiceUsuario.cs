@@ -35,5 +35,14 @@ namespace DoreanSportic.Application.Services.Implementations
             // Return lista
             return collection;
         }
+
+        // Para efectos del avance 4
+        public async Task<UsuarioDTO> PrimerUsuario()
+        {
+            var @object = await _repository.PrimerUsuario();
+            var objectMapped = _mapper.Map<UsuarioDTO>(@object);
+            return objectMapped;
+        }
+
     }
 }
