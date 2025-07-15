@@ -13,6 +13,11 @@
     ViewData["Title"] = "Details";
 }
 
+<!-- Mostrar la fecha de hoy (solo lectura) -->
+@{
+    var hoy = DateTime.Today;
+}
+
 
 <div class="p-4 flex flex-row gap-5">
     <div class="flex flex-col gap-2">
@@ -81,7 +86,6 @@
                 </h2>
                 @{
                     decimal precioBase = Model.PrecioBase;
-                    DateTime hoy = DateTime.Today;
 
                     // Obtener promociones activas por producto
                     var promocionesProductoActivas = Model.IdPromocion
@@ -154,13 +158,16 @@
 
 <!-- Modal -->
 <dialog id="modalResenna" class="modal">
-    <div class="p-4 modal-box bg-white rounded">
+    <div class="modal-box bg-white rounded" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
+        <button onclick="modalResenna.close()" class="btn btn-sm btn-circle bg-black text-white" 
+            style="margin-left: 100%; margin-top: -5%;">✕</button>
         <h3 class="text-lg font-bold">Reseña del producto: @(Model.Nombre)</h3>
-        <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic fuera de esta ventana para cerrarla</p>
+        <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic en la X para cerrar esta ventana</p>
         <form id="formResenna" class="space-y-4">
             <!-- Usuario -->
             <div class="form-control mb-3">
-                <label class="label font-bold">Usuario: </label>
+                <label class="label font-bold">Usuario: Juan Pérez</label>
+                <input type="hidden" name="usuario" value="Juan Pérez" />
             </div>
 
             <!-- Comentario -->
@@ -169,19 +176,17 @@
                 <textarea name="comentario" class="textarea textarea-bordered w-full" rows="3" required></textarea>
             </div>
 
-            <!-- Mostrar la fecha de hoy (solo lectura) -->
-            @{
-                var hoy = DateTime.Today;
-            }
+            <!-- Fecha -->
             <div class="form-control mb-3">
-                <label class="label font-bold">Fecha de la reseña: @hoy.ToString("dd-MM-yyyy") </label>
+                <label class="label font-bold">Fecha de la reseña: @hoy.ToString("dd-MM-yyyy")</label>
+                <input type="hidden" name="fecha" value="@hoy.ToString("yyyy-MM-dd")" />
             </div>
 
             <!-- Calificación -->
             <div class="form-control mb-3">
                 <label class="label font-bold">Calificación</label>
                 <div class="rating">
-                    <input type="radio" name="calificacion" value="1" class="mask mask-star-2 bg-yellow-400" />
+                    <input type="radio" name="calificacion" value="1" class="mask mask-star-2 bg-yellow-400" required />
                     <input type="radio" name="calificacion" value="2" class="mask mask-star-2 bg-yellow-400" />
                     <input type="radio" name="calificacion" value="3" class="mask mask-star-2 bg-yellow-400" />
                     <input type="radio" name="calificacion" value="4" class="mask mask-star-2 bg-yellow-400" />
@@ -189,14 +194,15 @@
                 </div>
             </div>
 
-            <!-- Botones -->
+            <!-- Botones "Cancelar" y "Enviar Reseña" -->
             <div class="modal-action justify-between mb-3">
-                <label for="modal-reseña" class="btn btn-outline">Cancelar</label>
+                <button type="button" class="btn btn-outline" onclick="modalResenna.close()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Enviar reseña</button>
             </div>
         </form>
     </div>
 </dialog>
+
 
 
 @section Scripts {
