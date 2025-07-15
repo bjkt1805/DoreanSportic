@@ -1,5 +1,13 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
 @using DoreanSportic.Infrastructure.Models
+@using System.Globalization
+
+<!-- Para el separador de miles-->
+@{
+    var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
+}
 
 @{
     ViewData["Title"] = "Details";
@@ -8,12 +16,19 @@
 
 <div class="p-4 flex flex-row gap-5">
     <div class="flex flex-col gap-2">
-        <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+        <div class="flex flex-row justify-between">
+            <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+
+            <!-- Botón para dejar reseña -->
+            <button class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
+                    onclick="modalResenna.showModal()">
+                Dejar reseña
+            </button>
+
+        </div>
         <h1><b>DETALLE DEL PRODUCTO</b></h1>
         <div class="flex flex-row gap-5">
-            <div class="justify-start">
-                @*     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
- *@    </div>
+            <div class="justify-start"></div>
             <div class="ml-auto">
             </div>
         </div>
@@ -45,14 +60,17 @@
 
             <div class="card-body w-100">
                 <div class="flex flex-row gap gap-1">
+
+                    <!-- Etiquetas-->
                     <div class="badge bg-primary text-white">@(Model.IdCategoriaNavigation.Nombre.ToUpper())</div>
                     <div class="badge bg-[#000000] text-white">@(Model.IdMarcaNavigation.Nombre.ToUpper())</div>
-                    <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                    <div class="badge bg-[#50C878] text-white" style="text-transform: uppercase">Disponible</div>
+
                     <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
                         exista una promoción
                     -->
                     @if ((Model.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
-                    (Model.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                                        (Model.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                     {
                         <div class="badge badge-secondary">OFERTA</div>
                     }
@@ -94,7 +112,7 @@
                 {
                     <div class="p-2 w-75 flex flex-col ml-2 gap gap-1 rounded-lg border border-base-300">
                         <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                            <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                            <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                             <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                                 - @descuentoTotal.ToString("0")%
                             </div>
@@ -102,7 +120,7 @@
                         <div class="flex flex-row gap gap-1">
                             <b>Precio en oferta: </b>
                             <div class="badge badge-xl bg-success text-black font-bold">
-                                ₡@precioConDescuento.ToString("N2") + I.V.A
+                                ₡@precioConDescuento.ToString("N2", culturaPersonalizada) + I.V.A
                             </div>
 
                         </div>
@@ -113,7 +131,7 @@
                     <div class="flex flex-row gap gap-1">
                         <b class="mt-1">Precio base: </b>
                         <div class="badge badge-outline w-fit">
-                            ₡@precioBase.ToString("N2") + I.V.A
+                            <b>₡@precioBase.ToString("N2", culturaPersonalizada)</b> + I.V.A
                         </div>
                     </div>
 
@@ -134,9 +152,55 @@
 
 </div>
 
+<!-- Modal -->
+<dialog id="modalResenna" class="modal">
+    <div class="p-4 modal-box bg-white rounded">
+        <h3 class="text-lg font-bold">Reseña del producto: @(Model.Nombre)</h3>
+        <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic fuera de esta ventana para cerrarla</p>
+        <form id="formResenna" class="space-y-4">
+            <!-- Usuario -->
+            <div class="form-control mb-3">
+                <label class="label font-bold">Usuario: </label>
+            </div>
+
+            <!-- Comentario -->
+            <div class="form-control mb-3">
+                <label class="label font-bold">Comentario</label>
+                <textarea name="comentario" class="textarea textarea-bordered w-full" rows="3" required></textarea>
+            </div>
+
+            <!-- Mostrar la fecha de hoy (solo lectura) -->
+            @{
+                var hoy = DateTime.Today;
+            }
+            <div class="form-control mb-3">
+                <label class="label font-bold">Fecha de la reseña: @hoy.ToString("dd-MM-yyyy") </label>
+            </div>
+
+            <!-- Calificación -->
+            <div class="form-control mb-3">
+                <label class="label font-bold">Calificación</label>
+                <div class="rating">
+                    <input type="radio" name="calificacion" value="1" class="mask mask-star-2 bg-yellow-400" />
+                    <input type="radio" name="calificacion" value="2" class="mask mask-star-2 bg-yellow-400" />
+                    <input type="radio" name="calificacion" value="3" class="mask mask-star-2 bg-yellow-400" />
+                    <input type="radio" name="calificacion" value="4" class="mask mask-star-2 bg-yellow-400" />
+                    <input type="radio" name="calificacion" value="5" class="mask mask-star-2 bg-yellow-400" />
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="modal-action justify-between mb-3">
+                <label for="modal-reseña" class="btn btn-outline">Cancelar</label>
+                <button type="submit" class="btn btn-primary">Enviar reseña</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 
 
 @section Scripts {
+    <!-- Script para manejar el carrusel de imágenes del producto -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const totalSlides = @Model.ImagenesProducto.Count;
@@ -180,11 +244,12 @@
 
             // Mostrar slide inicial
             mostrarSlide(currentSlide);
+
         });
     </script>
 
-@*     Script para cargar las reseñas del producto
- *@    <script>
+    <!-- Script para cargar las reseñas del producto por medio de AJAX-->
+    <script>
         fetch('/ResennaValoracion/GetResennasPorProducto?idProducto=@Model.Id')
             .then(response => response.text())
             .then(html => {

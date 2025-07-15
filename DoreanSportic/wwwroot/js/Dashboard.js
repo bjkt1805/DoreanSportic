@@ -52,7 +52,7 @@ function cargarVista(ruta) {
                 escucharInputCantidad();
 
                 // Cargar reseñas del producto
-                cargarResennasProducto(null);
+                cargarResennasProducto(null, false);
 
 
             }, 300);
@@ -104,6 +104,7 @@ function inicializarVistaProductos() {
 function cargarDetalleProducto(idProducto) {
     const loader = document.getElementById('loader');
     const container = document.getElementById('contenido-dinamico');
+    const esVistaDetalle = true;
 
     loader.classList.remove('hidden');
     container.innerHTML = "";
@@ -123,7 +124,7 @@ function cargarDetalleProducto(idProducto) {
                 }
 
                 // Cargar reseñas del producto
-                cargarResennasProducto();
+                cargarResennasProducto(idProducto, esVistaDetalle);
 
 
             }, 300);
@@ -226,7 +227,7 @@ function inicializarCarrusel() {
 }
 
 // Función para cargar las reseñas del producto den tro de la vista de detalle de producto
-function cargarResennasProducto(_idProducto) {
+function cargarResennasProducto(_idProducto, esVistaDetalle) {
     const zonaDetalle = document.getElementById("detalle-producto");
     //_idProducto = zonaDetalle?.dataset?.id;
 
@@ -254,15 +255,28 @@ function cargarResennasProducto(_idProducto) {
         return;
     }
 
+    if (esVistaDetalle == true) {
+        fetch(`/ResennaValoracion/GetResennasPorProducto?idProducto=${_idProducto}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("zona-resennas").innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById("zona-resennas").innerHTML = "<p>Error cargando promedio de valoraciones ...</p>";
+            });
+    }
+    else {
+        fetch(`/ResennaValoracion/GetResennasPorProductoAdmin?idProducto=${_idProducto}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("contenedor-resennas").innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById("contenedor-resennas").innerHTML = "<p>Error cargando promedio de valoraciones ...</p>";
+            });
+    }
 
-    fetch(`/ResennaValoracion/GetResennasPorProductoAdmin?idProducto=${_idProducto}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById("contenedor-resennas").innerHTML = html;
-        })
-        .catch(error => {
-            document.getElementById("contenedor-resennas").innerHTML = "<p>Error cargando promedio de valoraciones ...</p>";
-        });
+
 }
 
 // Función javascript para manejar el drag and drop de las etiquetas al crear un producto
@@ -309,6 +323,8 @@ function inicializarDragAndDropEtiquetas() {
 function cargarEditarProducto(idProducto) {
     const loader = document.getElementById('loader');
     const container = document.getElementById('contenido-dinamico');
+    const esVistaDetalle = false;
+
 
     loader.classList.remove('hidden');
     container.innerHTML = "";
@@ -329,7 +345,7 @@ function cargarEditarProducto(idProducto) {
                 }
 
                 // Cargar reseñas del producto
-                cargarResennasProducto(idProducto);
+                cargarResennasProducto(idProducto, esVistaDetalle);
 
             }, 300);
         })
