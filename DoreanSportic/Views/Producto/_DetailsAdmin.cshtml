@@ -1,6 +1,15 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
 @using DoreanSportic.Infrastructure.Models
 
+@using System.Globalization
+
+<!-- Para el separador de miles-->
+@{
+    var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
+}
+
 <div class="flex flex-row gap-6 w-full max-w-6xl mx-auto">
     <div class="flex flex-row gap-5" id="detalle-producto" data-id="@Model.Id"></div>
     <div class="flex flex-col gap-4 w-full lg:w-3/4">
@@ -95,7 +104,7 @@
                 {
                     <div class="p-2 w-75 flex flex-col ml-2 gap gap-1 rounded-lg border border-base-300">
                         <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                            <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                            <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                             <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                                 - @descuentoTotal.ToString("0")%
                             </div>
@@ -103,7 +112,7 @@
                         <div class="flex flex-row gap gap-1">
                             <b>Precio en oferta: </b>
                             <div class="badge badge-xl bg-success text-black font-bold">
-                                ₡@precioConDescuento.ToString("N2") + I.V.A
+                                ₡@precioConDescuento.ToString("N2", culturaPersonalizada) + I.V.A
                             </div>
 
                         </div>
@@ -114,7 +123,7 @@
                     <div class="flex flex-row gap gap-1">
                         <b class="mt-1">Precio base: </b>
                         <div class="badge badge-outline w-fit">
-                            ₡@precioBase.ToString("N2") + I.V.A
+                            ₡@precioBase.ToString("N2", culturaPersonalizada) + I.V.A
                         </div>
                     </div>
 

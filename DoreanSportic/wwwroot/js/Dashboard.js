@@ -51,6 +51,9 @@ function cargarVista(ruta) {
                 // Inicializar función que escucha el input de cantidad (_CreateProducto y _EditoProducto)
                 escucharInputCantidad();
 
+                // Cargar reseñas del producto
+                cargarResennasProducto(null);
+
 
             }, 300);
         })
@@ -223,19 +226,42 @@ function inicializarCarrusel() {
 }
 
 // Función para cargar las reseñas del producto den tro de la vista de detalle de producto
-function cargarResennasProducto() {
+function cargarResennasProducto(_idProducto) {
     const zonaDetalle = document.getElementById("detalle-producto");
-    const idProducto = zonaDetalle?.dataset?.id;
+    //_idProducto = zonaDetalle?.dataset?.id;
 
-    if (!idProducto) return;
+    if (_idProducto == null) {
+        const html = `
+        <div class="flex w-full items-start gap-2 mb-4">
+            <span class="font-bold">Promedio de valoraciones: 0.0</span>
+            <div class="flex gap-1">
+                ${[...Array(5)].map(() => `
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="currentColor"
+                         viewBox="0 0 24 24"
+                         stroke="none"
+                         class="w-5 h-5 text-gray-300">
+                        <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                                 1.402 8.175L12 18.896l-7.336 3.861
+                                 1.402-8.175-5.934-5.782 8.2-1.192z" />
+                    </svg>
+                `).join('')}
+            </div>
+        </div>
+        `;
 
-    fetch(`/ResennaValoracion/GetResennasPorProducto?idProducto=${idProducto}`)
+        document.getElementById("contenedor-resennas").innerHTML = html;
+        return;
+    }
+
+
+    fetch(`/ResennaValoracion/GetResennasPorProductoAdmin?idProducto=${_idProducto}`)
         .then(response => response.text())
         .then(html => {
-            document.getElementById("zona-resennas").innerHTML = html;
+            document.getElementById("contenedor-resennas").innerHTML = html;
         })
         .catch(error => {
-            document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
+            document.getElementById("contenedor-resennas").innerHTML = "<p>Error cargando promedio de valoraciones ...</p>";
         });
 }
 
@@ -301,6 +327,9 @@ function cargarEditarProducto(idProducto) {
                 if (document.getElementById('dp1') && typeof inicializarDragAndDropEtiquetas === 'function') {
                     inicializarDragAndDropEtiquetas();
                 }
+
+                // Cargar reseñas del producto
+                cargarResennasProducto(idProducto);
 
             }, 300);
         })

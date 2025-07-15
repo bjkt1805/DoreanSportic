@@ -1,6 +1,15 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
 @using DoreanSportic.Infrastructure.Models
 
+@using System.Globalization
+
+<!-- Para el separador de miles-->
+@{
+    var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
+}
+
 @foreach (var item in Model)
 {
     <div class="mb-4 mr-2 card bg-base-100 w-75 shadow-lg">
@@ -67,7 +76,7 @@
                 // de porcentaje de descuento y el precio con descuento
                 <div class="flex flex-col gap gap-1">
                     <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                        <b>Precio anterior: </b><span class="line-through">₡@precioBase</span>
+                        <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                         <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                             - @descuentoTotal.ToString("0")%
                         </div>
@@ -75,7 +84,7 @@
                     <div class="flex flex-row gap gap-1">
                         <b>Precio en oferta: </b>
                         <div class="badge badge-xl bg-success text-black font-bold">
-                            ₡@precioConDescuento.ToString("N2")
+                            ₡@precioConDescuento.ToString("N2", culturaPersonalizada)
                         </div>
                     </div>
                 </div>
@@ -85,7 +94,7 @@
                 <div class="flex flex-row gap gap-1">
                     <b class="mt-1">Precio base: </b>
                     <div class="badge badge-outline w-fit">
-                        ₡@precioBase.ToString("N2") + I.V.A
+                        <b>₡@precioBase.ToString("N2", culturaPersonalizada)</b> + I.V.A
                     </div>
                 </div>
                 <div class="flex flex-row gap gap-1">

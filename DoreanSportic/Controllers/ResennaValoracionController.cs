@@ -31,7 +31,7 @@ namespace DoreanSportic.Web.Controllers
             return PartialView("_IndexAdmin", collection.ToPagedList(page ?? 1, 5));
         }
 
-        // GET: ResennaValoracionController
+        // GET: ResennaValoracionController 
         [HttpGet]
         public async Task<ActionResult> GetResennasPorProducto(int idProducto)
         {
@@ -39,6 +39,16 @@ namespace DoreanSportic.Web.Controllers
             var collection = await _serviceResennaValoracion.GetResennasPorProducto(idProducto);
 
             return PartialView("_ResennasProducto", collection);
+        }
+
+        // GET: ResennaValoracionController ADMIN
+        [HttpGet]
+        public async Task<ActionResult> GetResennasPorProductoAdmin(int idProducto)
+        {
+            // Listar las reseñas asociadas a un producto
+            var collection = await _serviceResennaValoracion.GetResennasPorProducto(idProducto);
+
+            return PartialView("_ResennasProductoVistaEditProducto", collection);
         }
         public async Task<ActionResult> Details(int id)
         {

@@ -1,4 +1,5 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
+@using DoreanSportic.Infrastructure.Models
 
 <form asp-action="Create" asp-antiforgery="true" method="post" enctype="multipart/form-data"
       x-data="dataFileDnD()"
@@ -124,9 +125,12 @@
                 </div>
             </div>
 
-@*             <div>
-                <p class="font-bold">Promedio de valoraciones y reseñas: </p>
-            </div> *@
+            <div>
+                <!-- Cargar el contenedor de promedio de reseñas -->
+                <div id="contenedor-resennas" class="w-full flex flex-row gap gap-1">
+                    <p class="text-sm">Cargando reseñas...</p>
+                </div>
+            </div>
 
         </div>
 
