@@ -51,5 +51,25 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
             return collection;
         }
+
+        public async Task<int> AddAsync(ResennaValoracion entity)
+        {
+
+            // Añadir el producto a la base de datos
+            await _context.Set<ResennaValoracion>().AddAsync(entity);
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
     }
 }

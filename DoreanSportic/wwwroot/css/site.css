@@ -22,6 +22,36 @@
     cursor: pointer;
 }
 
+/* Para poder rellenar las estrellas a la hora de crear una reseña del producto*/
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    fill: #d1d5db; /* gris claro */
+    transition: fill 0.2s;
+}
+
+/* Pintar todas las estrellas anteriores al hover */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    fill: #facc15; /* amarillo (hover) */
+}
+
+/* Pintar todas las seleccionadas al click */
+.star-rating input:checked ~ label {
+    fill: #facc15; /* amarillo (seleccionado) */
+}
 
 /*@plugin "daisyui" {
     themes: dark --default, dark --prefersdark;

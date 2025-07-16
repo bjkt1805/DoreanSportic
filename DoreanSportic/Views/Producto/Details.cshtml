@@ -158,46 +158,84 @@
 
 </div>
 
-<!-- Modal -->
+<!-- Modal para enviar reseñas -->
 <dialog id="modalResenna" class="modal">
-    <div class="modal-box bg-white rounded" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
+    <div class="modal-box bg-white rounded w-100" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
         <button onclick="modalResenna.close()" class="btn btn-sm btn-circle bg-black text-white" 
             style="margin-left: 100%; margin-top: -5%;">✕</button>
         <h3 class="text-lg font-bold">Reseña del producto: @(Model.Producto.Nombre)</h3>
         <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic en la X para cerrar esta ventana</p>
-        <form id="formResenna" class="space-y-4">
+        <form id="formResenna" class="space-y-4 w-full">
             <!-- Usuario -->
             <div class="form-control mb-3">
                 <label class="label font-bold">Usuario: @(Model.UsuarioActual.UserName)</label>
-                <input type="hidden" name="usuario" value="Juan Pérez" />
+                <input type="hidden" name="IdUsuario" value=@(Model.UsuarioActual.UserName) />
             </div>
 
             <!-- Comentario -->
-            <div class="form-control mb-3">
-                <label class="label font-bold">Comentario</label>
-                <textarea name="comentario" class="textarea textarea-bordered w-full" rows="3" required></textarea>
+            <div class="form-control mb-3 w-full">
+                <label class="label font-bold mb-2">Comentario</label>
+                <textarea name="Comentario" class="textarea textarea-bordered w-full" rows="3" required></textarea>
             </div>
 
             <!-- Fecha -->
             <div class="form-control mb-3">
                 <label class="label font-bold">Fecha de la reseña: @hoy.ToString("dd-MM-yyyy")</label>
-                <input type="hidden" name="fecha" value="@hoy.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="FechaResenna" value="@hoy.ToString("yyyy-MM-dd")" />
             </div>
 
             <!-- Calificación -->
-            <div class="form-control mb-3">
-                <label class="label font-bold">Calificación</label>
-                <div class="rating">
-                    <input type="radio" name="calificacion" value="1" class="mask mask-star-2 bg-yellow-400" required />
-                    <input type="radio" name="calificacion" value="2" class="mask mask-star-2 bg-yellow-400" />
-                    <input type="radio" name="calificacion" value="3" class="mask mask-star-2 bg-yellow-400" />
-                    <input type="radio" name="calificacion" value="4" class="mask mask-star-2 bg-yellow-400" />
-                    <input type="radio" name="calificacion" value="5" class="mask mask-star-2 bg-yellow-400" />
+            <div class="form-control mb-4">
+                <div class="flex flex-row gap gap-2 w-25">
+                    <label class="label font-bold">Calificación</label>
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="Calificacion" value="5" />
+                        <label for="star5">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                         1.402 8.175L12 18.896l-7.336 3.861
+                         1.402-8.175-5.934-5.782 8.2-1.192z" />
+                            </svg>
+                        </label>
+                        <input type="radio" id="star4" name="calificacion" value="4" />
+                        <label for="star4">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                         1.402 8.175L12 18.896l-7.336 3.861
+                         1.402-8.175-5.934-5.782 8.2-1.192z" />
+                            </svg>
+                        </label>
+                        <input type="radio" id="star3" name="calificacion" value="3" />
+                        <label for="star3">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                         1.402 8.175L12 18.896l-7.336 3.861
+                         1.402-8.175-5.934-5.782 8.2-1.192z" />
+                            </svg>
+                        </label>
+                        <input type="radio" id="star2" name="calificacion" value="2" />
+                        <label for="star2">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                         1.402 8.175L12 18.896l-7.336 3.861
+                         1.402-8.175-5.934-5.782 8.2-1.192z" />
+                            </svg>
+                        </label>
+                        <input type="radio" id="star1" name="calificacion" value="1" />
+                        <label for="star1">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6">
+                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                         1.402 8.175L12 18.896l-7.336 3.861
+                         1.402-8.175-5.934-5.782 8.2-1.192z" />
+                            </svg>
+                        </label>
+                    </div>
                 </div>
+
             </div>
 
             <!-- Botones "Cancelar" y "Enviar Reseña" -->
-            <div class="modal-action justify-between mb-3">
+            <div class="flex flex-row gap gap-2 modal-action justify-between mb-3 w-full">
                 <button type="button" class="btn btn-outline" onclick="modalResenna.close()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Enviar reseña</button>
             </div>
@@ -267,5 +305,8 @@
                 document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
             });
     </script>
+
+    <!-- Script para escuchar el evento submit del formulario para crear la Resenna -->
+    <script src="~/js/DetailProducto.js"></script>
 
 }

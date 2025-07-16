@@ -14,5 +14,7 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto);
 
         Task<ResennaValoracionDTO> FindByIdAsync(int id);
+
+        Task<int> AddAsync(ResennaValoracionDTO dto);
     }
 }

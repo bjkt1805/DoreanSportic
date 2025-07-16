@@ -1,8 +1,10 @@
 ﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Web.Controllers
@@ -61,6 +63,18 @@ namespace DoreanSportic.Web.Controllers
         {
             var @object = await _serviceResennaValoracion.FindByIdAsync(id);
             return PartialView("_DetailsAdmin", @object);
+        }
+
+        // POST: ResennaValoracion/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ResennaValoracionDTO dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _serviceResennaValoracion.AddAsync(dto); // Guardar en BD
+            return Ok(new { success = true });
         }
     }
 }
