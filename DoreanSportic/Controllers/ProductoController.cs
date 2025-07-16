@@ -18,6 +18,7 @@ namespace DoreanSportic.Controllers
         //private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceEtiqueta _serviceEtiqueta;
         private readonly ILogger<ServiceProducto> _logger;
+        private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceUsuario _serviceUsuario;
 
         public ProductoController(IServiceProducto serviceProducto,
@@ -26,6 +27,7 @@ namespace DoreanSportic.Controllers
             //IServiceResennaValoracion serviceResennaValoracion,
             IServiceEtiqueta serviceEtiqueta,
             ILogger<ServiceProducto> logger,
+            IServiceResennaValoracion serviceResennaValoracion,
             IServiceUsuario serviceServiceUsuario)
         {
             _serviceProducto = serviceProducto;
@@ -33,6 +35,7 @@ namespace DoreanSportic.Controllers
             _serviceCategoria = serviceCategoria;
             _serviceEtiqueta = serviceEtiqueta;
             _logger = logger;
+            _serviceResennaValoracion = serviceResennaValoracion;
             _serviceUsuario = serviceServiceUsuario;
         }
 
@@ -81,12 +84,16 @@ namespace DoreanSportic.Controllers
 
             var usuario = await _serviceUsuario.PrimerUsuario();
 
+            // Obtener las reseñas del producto
+            var resennas = await _serviceResennaValoracion.GetResennasPorProducto(id);
+
             // Crear un objeto de ViewModel para poder traer el objeto (DTO)
             // de usuario de la base de datos
             var viewModel = new DetalleProductoViewModel
             {
                 Producto = producto,
-                UsuarioActual = usuario
+                UsuarioActual = usuario, 
+                Resennas = resennas,
             };
 
             return View(viewModel);
@@ -95,8 +102,25 @@ namespace DoreanSportic.Controllers
         // GET: ProductoController/Dashboard (Producto/Details/{id})
         public async Task<ActionResult> DetailsAdmin(int id)
         {
-            var @object = await _serviceProducto.FindByIdAsync(id);
-            return PartialView("_DetailsAdmin", @object);
+            var producto = await _serviceProducto.FindByIdAsync(id);
+
+            // PARA EFECTOS DEL AVANCE 4, SE VA A CARGAR EL PRIMER USUARIO
+            // DE LA BASE DE DATOS PARA PODER REALIZAR EL EJERCICIO DE 
+            // DEJAR UNA RESEÑA DEL PRODUCTO 
+
+            var usuario = await _serviceUsuario.PrimerUsuario();
+
+            // Obtener las reseñas del producto
+            var resennas = await _serviceResennaValoracion.GetResennasPorProducto(id);
+
+            var viewModel = new DetalleProductoViewModel
+            {
+                Producto = producto,
+                UsuarioActual = usuario,
+                Resennas = resennas,
+            };
+            return PartialView("_DetailsAdmin", viewModel);
+
         }
 
         // GET: ProductoController/Create

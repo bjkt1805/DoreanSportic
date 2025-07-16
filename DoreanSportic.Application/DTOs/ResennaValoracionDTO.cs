@@ -1,4 +1,5 @@
 ﻿using DoreanSportic.Infrastructure.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,7 +28,9 @@ public partial class ResennaValoracionDTO
 
     public bool Estado { get; set; }
 
+    [ValidateNever]
     public virtual Producto IdProductoNavigation { get; set; } = null!;
 
+    [ValidateNever]
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 }

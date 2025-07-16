@@ -6,5 +6,7 @@ namespace DoreanSportic.Web.ViewModel
     {
         public ProductoDTO Producto { get; set; }
         public UsuarioDTO UsuarioActual { get; set; }
+        public IEnumerable<ResennaValoracionDTO> Resennas { get; set; }
+
     }
 }

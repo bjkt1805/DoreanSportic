@@ -150,10 +150,22 @@
         </div>
     </div>
 
-    <!-- Cargar las reseñas de los usuarios-->
-    <div id="zona-resennas">
-        <p class="text-sm">Cargando reseñas...</p>
+
+
+    <div class="flex flex-col gap gap-4 ">
+        
+        <!-- Para cargar dinámicamente el promedio de los usuarios -->
+        <div id="zona-promedio">
+            <p class="text-sm">Cargando promedio...</p>
+        </div>
+
+        <!-- Cargar las reseñas de los usuarios-->
+        <div id="zona-resennas">
+            <p class="text-sm">Cargando reseñas...</p>
+        </div>
     </div>
+
+
 
 
 </div>
@@ -165,18 +177,30 @@
             style="margin-left: 100%; margin-top: -5%;">✕</button>
         <h3 class="text-lg font-bold">Reseña del producto: @(Model.Producto.Nombre)</h3>
         <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic en la X para cerrar esta ventana</p>
-        <form id="formResenna" class="space-y-4 w-full">
+        
+        <form id="formResenna" class="space-y-4 w-full" method="post" enctype="multipart/form-data">
+            <!-- Generar el token antiforgery -->
+            @Html.AntiForgeryToken()
+
+            <!-- Producto -->
+            <div class="form-control mb-3">
+                <input type="hidden" name="IdProducto" value=@(Model.Producto.Id) />
+            </div>
+
             <!-- Usuario -->
             <div class="form-control mb-3">
                 <label class="label font-bold">Usuario: @(Model.UsuarioActual.UserName)</label>
-                <input type="hidden" name="IdUsuario" value=@(Model.UsuarioActual.UserName) />
+                <input type="hidden" name="IdUsuario" value=@(Model.UsuarioActual.Id) />
+                <input type="hidden" name="Usuario" value=@(Model.UsuarioActual.UserName) />
             </div>
 
             <!-- Comentario -->
             <div class="form-control mb-3 w-full">
                 <label class="label font-bold mb-2">Comentario</label>
-                <textarea name="Comentario" class="textarea textarea-bordered w-full" rows="3" required></textarea>
+                <textarea name="Comentario" class="textarea textarea-bordered w-full" rows="3"></textarea>
             </div>
+            <div id="error-comentario" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
+
 
             <!-- Fecha -->
             <div class="form-control mb-3">
@@ -197,7 +221,7 @@
                          1.402-8.175-5.934-5.782 8.2-1.192z" />
                             </svg>
                         </label>
-                        <input type="radio" id="star4" name="calificacion" value="4" />
+                        <input type="radio" id="star4" name="Calificacion" value="4" />
                         <label for="star4">
                             <svg viewBox="0 0 24 24" class="w-6 h-6">
                                 <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
@@ -205,7 +229,7 @@
                          1.402-8.175-5.934-5.782 8.2-1.192z" />
                             </svg>
                         </label>
-                        <input type="radio" id="star3" name="calificacion" value="3" />
+                        <input type="radio" id="star3" name="Calificacion" value="3" />
                         <label for="star3">
                             <svg viewBox="0 0 24 24" class="w-6 h-6">
                                 <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
@@ -213,7 +237,7 @@
                          1.402-8.175-5.934-5.782 8.2-1.192z" />
                             </svg>
                         </label>
-                        <input type="radio" id="star2" name="calificacion" value="2" />
+                        <input type="radio" id="star2" name="Calificacion" value="2" />
                         <label for="star2">
                             <svg viewBox="0 0 24 24" class="w-6 h-6">
                                 <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
@@ -221,7 +245,7 @@
                          1.402-8.175-5.934-5.782 8.2-1.192z" />
                             </svg>
                         </label>
-                        <input type="radio" id="star1" name="calificacion" value="1" />
+                        <input type="radio" id="star1" name="Calificacion" value="1" />
                         <label for="star1">
                             <svg viewBox="0 0 24 24" class="w-6 h-6">
                                 <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
@@ -232,6 +256,12 @@
                     </div>
                 </div>
 
+            </div>
+            <div id="error-calificacion" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
+
+            <!-- Input oculto para enviar True para el estado de la reseña-->
+            <div class="form-control w-full">
+                <input type="hidden" name="Estado" value="true" />
             </div>
 
             <!-- Botones "Cancelar" y "Enviar Reseña" -->

@@ -65,6 +65,14 @@ namespace DoreanSportic.Web.Controllers
             return PartialView("_DetailsAdmin", @object);
         }
 
+        // GET: ResennaValoracionController/GetPromedioPorProducto/{idProducto}
+        [HttpGet]
+        public async Task<IActionResult> GetPromedioPorProducto(int idProducto)
+        {
+            var resennas = await _serviceResennaValoracion.GetResennasPorProducto(idProducto);
+            return PartialView("_PromedioCalificacion", resennas);
+        }
+
         // POST: ResennaValoracion/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -73,7 +81,8 @@ namespace DoreanSportic.Web.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _serviceResennaValoracion.AddAsync(dto); // Guardar en BD
+                await _serviceResennaValoracion.AddAsync(dto); // Guardar en BD
+
             return Ok(new { success = true });
         }
     }

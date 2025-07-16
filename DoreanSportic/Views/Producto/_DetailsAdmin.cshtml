@@ -1,4 +1,5 @@
-﻿@model DoreanSportic.Application.DTOs.ProductoDTO
+﻿@model DoreanSportic.Web.ViewModel.DetalleProductoViewModel
+
 @using DoreanSportic.Infrastructure.Models
 
 @using System.Globalization
@@ -11,7 +12,7 @@
 }
 
 <div class="flex flex-row gap-6 w-full max-w-6xl mx-auto">
-    <div class="flex flex-row gap-5" id="detalle-producto" data-id="@Model.Id"></div>
+    <div class="flex flex-row gap-5" id="detalle-producto" data-id="@Model.Producto.Id"></div>
     <div class="flex flex-col gap-4 w-full lg:w-3/4">
         <div class="flex flex-row gap-4">
          <a href="javascript:void(0);"
@@ -21,20 +22,19 @@
             </a>
             <a href="javascript:void(0);"
                class="btn btn-sm btn-outline bg-warning text-black w-50"
-               onclick="cargarEditarProducto(@Model.Id)">
+               onclick="cargarEditarProducto(@Model.Producto.Id)">
                 Editar producto
             </a>
         </div>
         <h1><b>DETALLE DEL PRODUCTO</b></h1>
-
         <!-- Cargar los cards de los productos -->
         <div class="card card-side flex-row bg-base rounded-3">
 
             <figure class="w-1/3 p-4 flex flex-col items-start justify-center">
                 <div class="carousel w-75 rounded-xl">
-                    @for (int i = 0; i < Model.ImagenesProducto.Count; i++)
+                    @for (int i = 0; i < Model.Producto.ImagenesProducto.Count; i++)
                     {
-                        var img = Model.ImagenesProducto.ElementAt(i).Imagen;
+                        var img = Model.Producto.ImagenesProducto.ElementAt(i).Imagen;
                         var id = $"slide{i + 1}";
                         <div id="@id" class="carousel-item hidden w-full h-full flex justify-center items-center">
                             <img src="data:image/jpeg;base64,@Convert.ToBase64String(img)"
@@ -45,7 +45,7 @@
 
                 <!-- Navegación del carrusel -->
                 <div class="flex justify-center mt-2 gap-2 mt-2">
-                    @for (int i = 0; i < Model.ImagenesProducto.Count; i++)
+                    @for (int i = 0; i < Model.Producto.ImagenesProducto.Count; i++)
                     {
                         var id = $"slide{i + 1}";
                         <a href="#@id" class="btn btn-xs">@(i + 1)</a>
@@ -55,28 +55,28 @@
 
             <div class="card-body w-100">
                 <div class="flex flex-row gap gap-1">
-                    <div class="badge bg-primary text-white">@(Model.IdCategoriaNavigation.Nombre.ToUpper())</div>
-                    <div class="badge bg-[#000000] text-white">@(Model.IdMarcaNavigation.Nombre.ToUpper())</div>
+                    <div class="badge bg-primary text-white">@(Model.Producto.IdCategoriaNavigation.Nombre.ToUpper())</div>
+                    <div class="badge bg-[#000000] text-white">@(Model.Producto.IdMarcaNavigation.Nombre.ToUpper())</div>
                     <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
                     <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
                         exista una promoción
                     -->
-                    @if ((Model.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
-                                        (Model.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                    @if ((Model.Producto.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
+                                        (Model.Producto.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                     {
                         <div class="badge badge-secondary">OFERTA</div>
                     }
                 </div>
 
                 <h2 class="card-title text-xl font-semibold">
-                    @Html.DisplayFor(model => model.Nombre)
+                    @Html.DisplayFor(model => model.Producto.Nombre)
                 </h2>
                 @{
-                    decimal precioBase = Model.PrecioBase;
+                    decimal precioBase = Model.Producto.PrecioBase;
                     DateTime hoy = DateTime.Today;
 
                     // Obtener promociones activas por producto
-                    var promocionesProductoActivas = Model.IdPromocion
+                    var promocionesProductoActivas = Model.Producto.IdPromocion
                     .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
 
                     decimal descuentoProducto = promocionesProductoActivas.Sum(p => p.PorcentajeDescuento ?? 0);
@@ -84,9 +84,9 @@
                     // Obtener promociones activas por categoría (si existen)
                     IEnumerable<Promocion> promocionesCategoriaActivas = Enumerable.Empty<Promocion>();
 
-                    if (Model.IdCategoriaNavigation?.IdPromocion != null)
+                    if (Model.Producto.IdCategoriaNavigation?.IdPromocion != null)
                     {
-                        promocionesCategoriaActivas = Model.IdCategoriaNavigation.IdPromocion
+                        promocionesCategoriaActivas = Model.Producto.IdCategoriaNavigation.IdPromocion
                         .Where(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
                     }
 
@@ -129,16 +129,44 @@
 
                 }
                 <p class="text-base bg-base w-auto" style="text-align: justify">
-                    @Html.DisplayFor(model => model.Descripcion)
+                    @Html.DisplayFor(model => model.Producto.Descripcion)
                 </p>
 
             </div>
+
         </div>
+
     </div>
 
-    <!-- Cargar las reseñas de los usuarios-->
-    <div id="zona-resennas" class="w-25">
-        <p class="text-sm">Cargando reseñas...</p>
+    <div class="flex flex-col gap gap-4 ">
+        @{
+            var promedio = Model.Resennas.Any() ? Model.Resennas.Average(r => r.Calificacion) : 0;
+            var promedioEntero = (int)Math.Floor(promedio); // para estrellas completas
+        }
+        <div class="flex w-75 items-center gap-2 mb-4">
+            <span class="font-bold">PROMEDIO DE CALIFICACIÓN: @promedio.ToString("0.0")</span>
+            <div class="flex gap-1">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    var fillColor = i <= promedioEntero ? "text-warning" : "text-gray-300";
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="currentColor"
+                         viewBox="0 0 24 24"
+                         stroke="none"
+                         class="w-5 h-5 @fillColor">
+                        <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
+                                             1.402 8.175L12 18.896l-7.336 3.861
+                                             1.402-8.175-5.934-5.782 8.2-1.192z" />
+                    </svg>
+                }
+            </div>
+        </div>
+
+        <!-- Cargar las reseñas de los usuarios-->
+        <div id="zona-resennas" class="w-full">
+            <p class="text-sm">Cargando reseñas...</p>
+        </div>
     </div>
 
 

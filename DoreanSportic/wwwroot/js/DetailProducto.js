@@ -4,57 +4,73 @@ function manejarEnvioResenna(e) {
     e.preventDefault();
 
     const form = e.target;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
 
-    // Activar validación unobtrusive
+    // Parsear validaciones unobtrusive (si el formulario fue cargado dinámicamente)
     $.validator.unobtrusive.parse('#formResenna');
+
+    // Validación client-side con jQuery Unobtrusive
+    if (!$(form).valid()) {
+        return; //No se envía si no es válido
+    }
 
     fetch("/ResennaValoracion/Create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
+        body: formData
     })
         .then(resp => {
-            if (!resp.ok) throw new Error("Error al enviar reseña");
+            if (!resp.ok) {
+                // Si es error de validación (400), extraer los mensajes
+                if (resp.status === 400) {
+                    return resp.json().then(errors => {
+                        if (errors.Calificacion) {
+                            document.getElementById("error-calificacion").innerText = errors.Calificacion[0];
+                        }
+                        if (errors.Comentario) {
+                            document.getElementById("error-comentario").innerText = errors.Calificacion[0];
+                        }
+                        // Agregar excepción customizado con "Validación fallida"
+                        throw new Error("Validación fallida");
+                    });
+                } else {
+                    throw new Error("Error al enviar reseña");
+                }
+            }
             return resp.json();
         })
         .then(result => {
+
             mostrarToast("Reseña agregada exitosamente", "success");
             modalResenna.close();
             form.reset();
+            $("#formResenna").validate().resetForm(); // limpia mensajes
 
-            // Agregar reseña sin recargar
-            const contenedor = document.getElementById("zona-resennas");
-            const nuevaResenna = document.createElement("div");
-            nuevaResenna.classList.add("p-4", "mb-2", "border", "rounded", "bg-base-100", "shadow");
+            // Obtener el ID del producto desde el formulario
+            const idProducto = formData.get("IdProducto");
 
-            nuevaResenna.innerHTML = `
-                <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-[#004AAD]">${data.Usuario}</span>
-                    <span class="text-xs text-gray-500">${new Date(data.Fecha).toLocaleDateString()}</span>
-                </div>
-                <div class="mb-1">${renderEstrellas(data.Calificacion)}</div>
-                <p class="text-sm text-justify">${data.Comentario}</p>
-            `;
-            contenedor.prepend(nuevaResenna);
+            // Llamar a la función para recargar reseñas y promedio
+            recargarZonaResennasYPromedio(idProducto);
+
         })
         .catch(err => {
             console.error(err);
-            mostrarToast("Error al enviar reseña", "error");
         });
 }
 
-function renderEstrellas(valor) {
-    let estrellas = '';
-    for (let i = 1; i <= 5; i++) {
-        estrellas += `<svg class="inline w-5 h-5 ${i <= valor ? 'text-yellow-400' : 'text-gray-300'}" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782
-                         1.402 8.175L12 18.896l-7.336 3.861
-                         1.402-8.175-5.934-5.782 8.2-1.192z"/>
-            </svg>`;
-    }
-    return estrellas;
+
+function recargarZonaResennasYPromedio(idProducto) {
+    // Recargar reseñas
+    fetch(`/ResennaValoracion/GetResennasPorProducto?idProducto=${idProducto}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("zona-resennas").innerHTML = html;
+        });
+
+    // Recargar promedio
+    fetch(`/ResennaValoracion/GetPromedioPorProducto?idProducto=${idProducto}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("zona-promedio").innerHTML = html;
+        });
 }
 
 function mostrarToast(mensaje, tipo = "info") {
@@ -77,5 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("formResenna");
     if (form) {
         form.addEventListener("submit", manejarEnvioResenna);
+    }
+});
+
+// Cuando el DOM esté listo, cargar el promedio de valoraciones
+document.addEventListener("DOMContentLoaded", function () {
+    const idProducto = document.querySelector("input[name='IdProducto']")?.value;
+
+    if (idProducto) {
+        recargarZonaResennasYPromedio(idProducto);
     }
 });
