@@ -20,6 +20,7 @@
                     <th class="text-center">Porcentaje de descuento (%)</th>
                     <th class="text-center">Fecha inicial</th>
                     <th class="text-center">Estado</th>
+                    <th class="text-center">Activa/Inactiva</th>
                     <th class="text-center"></th>
                 </tr>
             </thead>
@@ -62,12 +63,32 @@
                         <td class="text-center">
                             @item.FechaInicio.ToString("dd-MM-yyyy")
                         </td>
-                        @*                     <td class="text-center">
-                        @item.FechaFin.ToString("dd-MM-yyyy")
-                    </td> *@
+
                         <td class="text-center">
                             <div class="badge @color">@estado</div>
                         </td>
+
+                        <!-- Mostrar el estado de la promoción a nivel administrador (activa/inactiva) -->
+                        <td class="text-center">
+                        <div class="flex flex-row gap gap-1">
+                            @{
+                                if (item.Estado == true)
+                                {
+                                    <div class="badge bg-[#50C878] text-white">
+                                        Activa
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="badge bg-[#FF0000] text-white">
+                                        Inactiva
+                                    </div>
+                                }
+                            }
+                        </div>
+                        </td>
+
+                        <!-- Botones de "Ver detalles" y "Editar"-->
                         <td>
                             <div class="mt-auto flex justify-end gap-2">
                                 <a class="btn btn-soft btn-primary text-white"

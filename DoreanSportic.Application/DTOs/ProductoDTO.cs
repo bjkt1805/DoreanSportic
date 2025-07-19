@@ -33,7 +33,7 @@ public record ProductoDTO
     [Display(Name = "Cantidad")]
     [Required(ErrorMessage = " {0} es requerida ")]
     [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico ")]
-    [Range(1, 100, ErrorMessage = "  {0} debe estar en el rango de {1} y {2} ")]
+    [Range(0, 100, ErrorMessage = "  {0} debe ser menor a {2} ")]
     public int Stock { get; set; }
 
     [Display(Name = "Marca")]

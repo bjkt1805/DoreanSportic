@@ -38,6 +38,18 @@
                         <div class="badge badge-secondary">OFERTA</div>
                     }
                 </div>
+
+                <!-- Para mostrar las etiquetas del producto (Envio, Original, Garantia, etc.)-->
+                <div class="flex flex-wrap gap-1 mt-1">
+                    @if (item.IdEtiqueta != null && item.IdEtiqueta.Count > 0)
+                    {
+                        foreach (var etiqueta in item.IdEtiqueta)
+                        {
+                            <div class="badge badge-soft badge-secondary" style="font-size: 10px">@etiqueta.Nombre.ToUpper()</div>
+                        }
+                    }
+                </div>
+
             </div>
 
             @{
@@ -100,6 +112,40 @@
                 <div class="flex flex-row gap gap-1">
                 </div>
             }
+
+            <!-- Contenedor en línea para cantidad (stock) y estado del producto -->
+            <div class= "flex flex-row gap gap-2">
+                <!-- Mostrar la cantidad de producto disponible -->
+                <div class="flex flex-row gap gap-1">
+                    <b>Cantidad: </b>
+                    <div class="badge badge-outline w-fit">
+                        @Html.DisplayFor(m => item.Stock)
+                    </div>
+                </div>
+                <div class="flex flex-row gap gap-1">
+                </div>
+
+                <!-- Mostrar el estado del producto -->
+                <div class="flex flex-row gap gap-1">
+                    <b>Estado: </b>
+                    @{
+                        if (item.Estado == true)
+                        {
+                            <div class="badge bg-[#50C878] text-white">
+                                Activo
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="badge bg-[#FF0000] text-white">
+                                Inactivo
+                            </div>
+                        }
+                    }
+                </div>
+            
+            </div>
+
 
             <!-- Botones alineado abajo con justify-between -->
             <div class="flex justify-between gap-2">

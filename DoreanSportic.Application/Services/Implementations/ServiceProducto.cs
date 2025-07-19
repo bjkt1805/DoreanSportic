@@ -62,6 +62,7 @@ namespace DoreanSportic.Application.Services.Implementations
                 IdMarcaNavigation = p.IdMarcaNavigation,
                 IdCategoriaNavigation = p.IdCategoriaNavigation,
                 IdCategoria = p.IdCategoria,
+                IdEtiqueta = p.IdEtiqueta,
                 Estado = p.Estado,
                 // Traer la primera imagen del producto
                 PrimeraImagen = p.PrimeraImagen,
@@ -89,6 +90,7 @@ namespace DoreanSportic.Application.Services.Implementations
                 IdMarcaNavigation = p.IdMarcaNavigation,
                 IdCategoriaNavigation = p.IdCategoriaNavigation,
                 IdCategoria = p.IdCategoria,
+                IdEtiqueta = p.IdEtiqueta,
                 Estado = p.Estado,
                 // Traer la primera imagen del producto
                 PrimeraImagen = p.PrimeraImagen,

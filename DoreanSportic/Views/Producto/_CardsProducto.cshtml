@@ -18,26 +18,51 @@
                  alt="Ropa/accesorios deportivos"  
                  class=" h-full object-contain rounded-xl" />  
         </figure>  
-        <div class="card-body flex flex-col justify-between h-75">  
+        <div class="card-body flex flex-col justify-between h-100">  
             <!-- Título + Badge -->  
             <h2 class="card-title">  
                 @Html.DisplayFor(m => item.Nombre)  
             </h2>  
 
-            <div class="flex flex-col gap gap-1 mb-3">  
-                <div class="flex flex-row gap gap-1">  
+            <div class="flex flex-col gap gap-1 mb-3">
+                <div class="flex flex-row gap gap-1">                
                     <div class="badge bg-[#000000] text-white">@item.IdMarcaNavigation?.Nombre.ToUpper()</div>  
 
+                   <!-- Para mostrar disponibilidad del producto dependiendo de la cantidad en stock-->
+                   @{
+                        if (item.Stock == 0)
+                        {
+                            <div class="badge bg-[#FF0000] text-white">AGOTADO</div>
+                        }
+                        else
+                        {
+                            <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                        }
+                    }
                     <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que  
                         exista una promoción  
-                    -->  
-                    @if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||  
-                    (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))  
-                    {  
-                        <div class="badge badge-secondary">OFERTA</div>  
-                    }  
-                </div>  
-            </div>  
+                    --> 
+
+                    @{
+                        if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||  
+                        (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))  
+                        {  
+                            <div class="badge badge-secondary">OFERTA</div>
+                        }
+                    }
+                </div> 
+                <!-- Para mostrar las etiquetas del producto (Envio, Original, Garantia, etc.)-->
+                <div class="flex flex-wrap gap-1 mt-2">
+                        @if (item.IdEtiqueta != null && item.IdEtiqueta.Count > 0)
+                        {
+                            foreach (var etiqueta in item.IdEtiqueta)
+                            {
+                                <div class="badge badge-soft badge-secondary">@etiqueta.Nombre.ToUpper()</div>
+                            }
+                        }
+                </div>
+
+            </div>   
 
             @{  
                 decimal precioBase = item.PrecioBase;  
@@ -104,15 +129,19 @@
                 <a class="btn btn-soft btn-primary text-white"  
                    asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
 
-                <!-- Redirección a la vista de comprar -->
-                <a class="btn btn-soft bg-[#006400] text-white">Agregar al carrito</a>
-                
-                <!-- 
-                <a class="btn btn-soft btn-succcess text-white" 
-                    asp-action="Comprar" asp-route-id="@item.Id">Comprar
-                </a>
-                -->
-                   
+                <!-- Botón para agregar al carrito -->
+                @{
+                    if (item.Stock == 0)
+                    {
+                        <button class="btn btn-soft text-white cursor-not-allowed" style="background-color: #808080" disabled>
+                            Agregar al carrito
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-soft bg-[#006400] text-white">Agregar al carrito</button>
+                    }
+                }
             </div>
         </div>  
     </div>  

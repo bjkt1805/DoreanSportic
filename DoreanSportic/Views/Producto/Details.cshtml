@@ -66,22 +66,49 @@
             </figure>
 
             <div class="card-body w-100">
-                <div class="flex flex-row gap gap-1">
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-row gap gap-1">
 
-                    <!-- Etiquetas-->
-                    <div class="badge bg-primary text-white">@(Model.Producto.IdCategoriaNavigation.Nombre.ToUpper())</div>
-                    <div class="badge bg-[#000000] text-white">@(Model.Producto.IdMarcaNavigation.Nombre.ToUpper())</div>
-                    <div class="badge bg-[#50C878] text-white" style="text-transform: uppercase">Disponible</div>
+                        <!-- Etiquetas-->
+                        <div class="badge bg-primary text-white">@(Model.Producto.IdCategoriaNavigation.Nombre.ToUpper())</div>
+                        <div class="badge bg-[#000000] text-white">@(Model.Producto.IdMarcaNavigation.Nombre.ToUpper())</div>
+                        <!-- Revisar si hay cantidad disponible del producto. Si no hay stock/cantidad, poner AGOTADO
+                            caso contrario poner DISPONIBLE
+                        -->
+                        @{
+                            if (Model.Producto.Stock == 0)
+                            {
+                                <div class="badge bg-[#FF0000] text-white">AGOTADO</div>
+                            }
+                            else
+                            {
+                                <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                            }
+                        }
+                        <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
+                            exista una promoción
+                        -->
+                        @if ((Model.Producto.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
+                                                (Model.Producto.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                        {
+                            <div class="badge badge-secondary">OFERTA</div>
+                        }
 
-                    <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
-                        exista una promoción
-                    -->
-                    @if ((Model.Producto.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
-                                        (Model.Producto.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
-                    {
-                        <div class="badge badge-secondary">OFERTA</div>
-                    }
+                    </div>
+
+                    <!-- Para mostrar las etiquetas del producto (Envio, Original, Garantia, etc.)-->
+                    <div class="flex flex-wrap gap-1 mt-2">
+                        @if (Model.Producto.IdEtiqueta != null && Model.Producto.IdEtiqueta.Count > 0)
+                        {
+                            foreach (var etiqueta in Model.Producto.IdEtiqueta)
+                            {
+                                <div class="badge badge-soft badge-secondary">@etiqueta.Nombre.ToUpper()</div>
+                            }
+                        }
+                    </div>
+
                 </div>
+
 
                 <h2 class="card-title text-xl font-semibold">
                     @Html.DisplayFor(model => model.Producto.Nombre)
