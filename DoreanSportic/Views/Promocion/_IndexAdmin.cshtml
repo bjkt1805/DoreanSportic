@@ -70,22 +70,20 @@
 
                         <!-- Mostrar el estado de la promoción a nivel administrador (activa/inactiva) -->
                         <td class="text-center">
-                        <div class="flex flex-row gap gap-1">
                             @{
                                 if (item.Estado == true)
                                 {
-                                    <div class="badge bg-[#50C878] text-white">
+                                    <div class="badge bg-[#50C878] text-white text-center">
                                         Activa
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="badge bg-[#FF0000] text-white">
+                                        <div class="badge bg-[#FF0000] text-white text-center">
                                         Inactiva
                                     </div>
                                 }
                             }
-                        </div>
                         </td>
 
                         <!-- Botones de "Ver detalles" y "Editar"-->
