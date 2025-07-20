@@ -15,11 +15,12 @@ public record ProductoDTO
 
     [Display(Name = "Nombre del producto")]
     [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerido ")]
-    [StringLength(500, ErrorMessage = "El nombre no puede exceder los 200 caracteres.")]
+    [StringLength(200, ErrorMessage = "El nombre no puede exceder los 200 caracteres.")]
     public string Nombre { get; set; } = null!;
 
     [Display(Name = "Descripción del producto")]
     [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerida ")]
+    [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres.")]
     public string? Descripcion { get; set; }
 
     [Display(Name = "Precio Base")]
