@@ -347,6 +347,13 @@ function cargarEditarProducto(idProducto) {
                 // Cargar reseñas del producto
                 cargarResennasProducto(idProducto, esVistaDetalle);
 
+                // Inicializar función que escucha el input de precioBase (_CreateProducto y _EditProducto)
+                escucharInputPrecioBase();
+
+                // Inicializar función que escucha el input de cantidad (_CreateProducto y _EditoProducto)
+                escucharInputCantidad();
+
+
             }, 300);
         })
         .catch(err => {

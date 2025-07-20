@@ -139,7 +139,7 @@ function dataFileDnD() {
                 hasError = true;
             }
 
-            // Validar que haya al menos una imagen cargada (modo creación)
+            // Validar que haya al menos una imagen cargada
             if  (this.files.length === 0) {
                 const zonaErrores = document.getElementById("zona-errores-validacion");
                 if (zonaErrores) {

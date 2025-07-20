@@ -1,5 +1,5 @@
 ﻿
-<div class="navbar bg-[#004AAD] text-white">
+<div class="navbar bg-[#004AAD] text-white w-screen">
 
     <!--Navbar responsivo-->
     <div class="navbar-start">
@@ -55,7 +55,7 @@
         </ul>
     </div>
 
-    <div class="navbar-end">
+    <div class="navbar-end" style="margin-right: 2%">
 
         <!-- Código para insertar un toggle del tema claro/oscuro -->
 @*          <label class="swap swap-rotate btn btn-ghost" style="margin-right: 10px">
@@ -73,8 +73,10 @@
             </svg>
         </label> *@
 
-        <!-- Contenedor del buscador del sitio-->
+        <!-- Input del buscador del sitio-->
         <input type="text" placeholder="Buscar" class="input input-bordered w-24 md:w-auto" style="margin-right: 10px" />
+
+        <!-- Contenedor del carrito de compras -->
         <div class="dropdown dropdown-end" style="padding-right: 10px">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                 <div class="indicator">
@@ -82,6 +84,7 @@
                     <span class="badge badge-sm indicator-item">8</span>
                 </div>
             </div>
+
             <div tabindex="0"
                  class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
                 <div class="card-body">
