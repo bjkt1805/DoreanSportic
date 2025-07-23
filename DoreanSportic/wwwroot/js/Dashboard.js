@@ -45,11 +45,15 @@ function cargarVista(ruta) {
                     inicializarDropdownProductos();
                 }
 
-                // Inicializar función que escucha el input de precioBase (_CreateProducto y _EditProducto)
-                escucharInputPrecioBase();
+                // Inicializar función que escucha el input de precioBase (_CreateProducto)
+                if (ruta == "/Producto/Create") {
+                    escucharInputPrecioBase();
+                }
 
-                // Inicializar función que escucha el input de cantidad (_CreateProducto y _EditoProducto)
-                escucharInputCantidad();
+                // Inicializar función que escucha el input de cantidad (_CreateProducto)
+                if (ruta == "/Producto/Create") {
+                    escucharInputCantidad();
+                }
 
                 // Cargar reseñas del producto
                 cargarResennasProducto(null, false);
@@ -440,6 +444,28 @@ function escucharInputPrecioBase() {
     const input = document.getElementById("inputPrecioBase");
     const mensajeError = document.querySelector("span[data-valmsg-for='PrecioBase']");
 
+
+    // Prevenir ingreso de "e", "+", "-" y otros caracteres no deseados
+    input.addEventListener("keydown", (event) => {
+        const teclasNoPermitidas = ["e", "E", "+", "-"];
+        if (teclasNoPermitidas.includes(event.key)) {
+            event.preventDefault();
+        }
+    });
+
+    // Bloquear pegado de caracteres no permitidos
+    input.addEventListener("paste", (event) => {
+        const textoPegado = (event.clipboardData || window.clipboardData).getData("text");
+        if (/[eE+\-]/.test(textoPegado)) {
+            event.preventDefault();
+        }
+    });
+
+
+    // Evento para escuchar el evento "input" de
+    // precioBase y realizar las validacines necesarias
+    // como insertar solo 2 decimales, revisar que el precio 
+    // esté en el rango deseado (5000 y 100000)
     input.addEventListener("input", () => {
         // Limitar a 2 decimales
         let valor = input.value;
@@ -459,15 +485,19 @@ function escucharInputPrecioBase() {
                 if (mensajeError) {
                     mensajeError.textContent = "Debe ingresar un valor entre ₡5 000 y ₡100 000";
                 }
-                input.classList.add("border-red-500");
+
             } else {
                 if (mensajeError) {
                     mensajeError.textContent = "";
                 }
+                // Esta clase no se está borrando en el
+                // código
                 input.classList.remove("border-red-500");
             }
         } else {
             if (mensajeError) mensajeError.textContent = "";
+            // Esta clase no se está borrando en el
+            // código
             input.classList.remove("border-red-500");
         }
     });
