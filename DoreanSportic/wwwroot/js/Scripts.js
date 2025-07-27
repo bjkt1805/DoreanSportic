@@ -1,8 +1,6 @@
 ﻿//Función de Alpine.js para poder cargar las imágenes en Create Producto (Dashboard Admin) y hacer la validación 
 // client-side a través del formulario de productos
 function dataFileDnD() {
-    const estadoCheckbox = document.querySelector("input[type='checkbox'][name='Estado']");
-
     return {
         files: [],
         fileDragging: null,
@@ -38,8 +36,6 @@ function dataFileDnD() {
                 this.imagenesOriginales.push(img.nombre); // Guardar nombre como referencia
             });
 
-            console.log("Valor del toggle:", estadoCheckbox.value);
-
         },
 
         loadFile(file) {
@@ -47,8 +43,11 @@ function dataFileDnD() {
         },
 
         addFiles(event) {
-            let droppedFiles = event.target.files;
-            if (!droppedFiles) return;
+            let droppedFiles = event.dataTransfer?.files || event.target.files;
+            console.log("Target files:", event.target.files);
+            console.log("DataTransfer files:", event.dataTransfer?.files);
+
+            if (!droppedFiles || droppedFiles.length === 0) return;
 
             [...droppedFiles].forEach(file => {
                 // Validar que el tipo MIME sea de imagen
@@ -111,6 +110,7 @@ function dataFileDnD() {
 
         // Función para manejar el evento de envío del formulario
         async submitForm(e) {
+            const estadoCheckbox = document.querySelector("input[type='checkbox'][name='Estado']");
             e.preventDefault();
 
             const form = e.target;
@@ -188,6 +188,7 @@ function dataFileDnD() {
                 formData.append("imagenesConservar", nombre);
             });
 
+            
             formData.set("Estado", estadoCheckbox?.checked ? "true" : "false");
 
             try {

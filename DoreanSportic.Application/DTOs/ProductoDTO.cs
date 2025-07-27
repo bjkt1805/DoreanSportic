@@ -27,7 +27,7 @@ public record ProductoDTO
     [DisplayFormat(DataFormatString = "{0:C0}")]
     [Required(ErrorMessage = " {0} es requerido ")]
     //[RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
-    [Range(5000, 100000.00, ErrorMessage = "  {0} debe estar en el rango de {1} y {2} (hasta dos decimales) ")]
+    [Range(5000, 100000.00, ErrorMessage = "  {0} debe estar en el rango de ₡{1} y ₡{2} (hasta dos decimales) ")]
     [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Máximo dos decimales")]
     public decimal PrecioBase { get; set; }
 

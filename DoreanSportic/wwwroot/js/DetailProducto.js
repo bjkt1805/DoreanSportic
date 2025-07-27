@@ -5,6 +5,8 @@ function manejarEnvioResenna(e) {
 
     const form = e.target;
 
+    const formData = new FormData(form);
+
     // Parsear validaciones unobtrusive (si el formulario fue cargado dinámicamente)
     $.validator.unobtrusive.parse('#formResenna');
 
@@ -26,7 +28,7 @@ function manejarEnvioResenna(e) {
                             document.getElementById("error-calificacion").innerText = errors.Calificacion[0];
                         }
                         if (errors.Comentario) {
-                            document.getElementById("error-comentario").innerText = errors.Calificacion[0];
+                            document.getElementById("error-comentario").innerText = errors.Comentario[0];
                         }
                         // Agregar excepción customizado con "Validación fallida"
                         throw new Error("Validación fallida");

@@ -3,6 +3,7 @@
 
 @model DoreanSportic.Application.DTOs.ProductoDTO
 
+@* Para cargar las imágenes desde la base de datos  *@
 @{
     var imagenesJson = System.Text.Json.JsonSerializer.Serialize(
         Model.ImagenesProducto.Select(img => new {
@@ -11,6 +12,7 @@
         })
     );
 
+    // Convertir las imágenes a base 64 a partir del JSON
     var imagenesJsonBase64 = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(imagenesJson));
 }
 
@@ -167,7 +169,7 @@
                            x-on:change="addFiles($event)"
                            x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
                            x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
-                           x-on:drop.prevent="addFiles($event); $refs.dnd.classList.remove('drag-over')"
+                           x-on:drop.prevent="addFiles($event); $refs.dnd.classList.remove('drag-over')"/>
 
                     <div class="flex flex-col items-center justify-center text-center">
                         <p>Arrastre las imágenes aquí o haga clic para seleccionarlas.</p>
