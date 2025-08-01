@@ -79,3 +79,20 @@ html {
 body {
   margin-bottom: 60px;
 }*/
+
+/*Animación para el acordeón de reseñas de usuario*/
+/*.fade-slide {
+    animation: fadeSlideDown 0.3s ease-in-out;
+}
+
+@keyframes fadeSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-0.5rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}*/

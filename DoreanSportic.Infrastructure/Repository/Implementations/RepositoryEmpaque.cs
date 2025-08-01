@@ -23,8 +23,11 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
         public async Task<ICollection<Empaque>> ListAsync()
         {
-            //Select * from Empaque
-            var collection = await _context.Set<Empaque>().ToListAsync();
+            //Select * from Empaque where Estado = true;
+            var collection = await _context
+                .Set<Empaque>()
+                .Where(e => e.Estado == true)
+                .ToListAsync();
             return collection;
         }
     }

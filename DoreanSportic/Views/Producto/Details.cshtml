@@ -97,14 +97,19 @@
                     </div>
 
                     <!-- Para mostrar las etiquetas del producto (Envio, Original, Garantia, etc.)-->
-                    <div class="flex flex-wrap gap-1 mt-2">
-                        @if (Model.Producto.IdEtiqueta != null && Model.Producto.IdEtiqueta.Count > 0)
+                    <div class="flex flex-wrap gap-1 mt-2">                       
+                    @{
+                            // Verificar si el producto es personalizable
+                            var esPersonalizable = Model.Producto.IdEtiqueta?.Any(e => e.Nombre.ToLower().Contains("personalizable")) ?? false;
+
+                        if (Model.Producto.IdEtiqueta != null && Model.Producto.IdEtiqueta.Count > 0)
                         {
                             foreach (var etiqueta in Model.Producto.IdEtiqueta)
                             {
                                 <div class="badge badge-soft badge-secondary">@etiqueta.Nombre.ToUpper()</div>
                             }
                         }
+                    }
                     </div>
 
                 </div>
@@ -172,28 +177,76 @@
                 <p class="text-base bg-base w-auto" style="text-align: justify">
                     @Html.DisplayFor(model => model.Producto.Descripcion)
                 </p>
-
             </div>
         </div>
-    </div>
 
-
-
-    <div class="flex flex-col gap gap-4 ">
+        <div class="flex flex-col gap gap-4 w-200">
         
-        <!-- Para cargar dinámicamente el promedio de los usuarios -->
-        <div id="zona-promedio">
-            <p class="text-sm">Cargando promedio...</p>
+            <!-- Para cargar dinámicamente el promedio de los usuarios -->
+            <div id="zona-promedio">
+                <p class="text-sm">Cargando promedio...</p>
+            </div>
+
+            <!-- Cargar las reseñas de los usuarios -->
+            <div id="zona-resennas">
+                <p class="text-sm">Cargando reseñas...</p>
+            </div>
+
         </div>
 
-        <!-- Cargar las reseñas de los usuarios-->
-        <div id="zona-resennas">
-            <p class="text-sm">Cargando reseñas...</p>
-        </div>
+
     </div>
 
+    <!-- Formulario para agregar el producto al carrito de compras -->
+    <div>
+      @if (Model.Producto.Stock > 0)
+    {
+    <form asp-controller="Carrito" asp-action="Agregar" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
+        @Html.AntiForgeryToken()
 
+        <input type="hidden" name="IdProducto" value="@Model.Producto.Id" />
+        <input type="hidden" name="PrecioProducto" value="@precioConDescuento" />
 
+        <!-- Cantidad -->
+        <div class="form-control">
+            <label class="label font-bold">Cantidad</label>
+            <input type="number" name="Cantidad" value="1" min="1" max="@Model.Producto.Stock" class="input input-bordered w-20" required />
+        </div>
+
+        <!-- Personalización -->
+        @if (esPersonalizable)
+        {
+            <div class="form-control mt-2">
+                <label class="label font-bold">Tipo de empaque</label>
+                <select name="IdEmpaque" class="select select-bordered w-full" required>
+                    <option value="">Seleccione un tipo</option>
+                    @foreach (var empaque in Model.EmpaquesDisponibles)
+                    {
+                        <option value="@empaque.Id">
+                            @empaque.TipoEmpaque - ₡@empaque.PrecioBase;
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-control mt-2">
+                <label class="label font-bold">Observaciones</label>
+                <textarea name="Observaciones" class="textarea textarea-bordered" rows="3"></textarea>
+            </div>
+
+            <div class="form-control mt-2">
+                <label class="label font-bold">Foto de referencia</label>
+                <input type="file" name="Foto" accept="image/*" class="file-input file-input-bordered w-full max-w-xs" />
+            </div>
+        }
+
+        <button type="submit" class="btn btn-success mt-2 w-full">
+            Agregar al carrito
+        </button>
+    </form>
+}
+
+    </div>
 
 </div>
 

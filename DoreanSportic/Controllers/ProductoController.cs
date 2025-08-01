@@ -15,20 +15,20 @@ namespace DoreanSportic.Controllers
         private readonly IServiceProducto _serviceProducto;
         private readonly IServiceMarca _serviceMarca;
         private readonly IServiceCategoria _serviceCategoria;
-        //private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceEtiqueta _serviceEtiqueta;
         private readonly ILogger<ServiceProducto> _logger;
         private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceUsuario _serviceUsuario;
+        private readonly IServiceEmpaque _serviceEmpaque;
 
         public ProductoController(IServiceProducto serviceProducto,
             IServiceMarca serviceMarca,
             IServiceCategoria serviceCategoria,
-            //IServiceResennaValoracion serviceResennaValoracion,
             IServiceEtiqueta serviceEtiqueta,
             ILogger<ServiceProducto> logger,
             IServiceResennaValoracion serviceResennaValoracion,
-            IServiceUsuario serviceServiceUsuario)
+            IServiceUsuario serviceUsuario,
+            IServiceEmpaque serviceEmpaque)
         {
             _serviceProducto = serviceProducto;
             _serviceMarca = serviceMarca;
@@ -36,7 +36,8 @@ namespace DoreanSportic.Controllers
             _serviceEtiqueta = serviceEtiqueta;
             _logger = logger;
             _serviceResennaValoracion = serviceResennaValoracion;
-            _serviceUsuario = serviceServiceUsuario;
+            _serviceUsuario = serviceUsuario;
+            _serviceEmpaque = serviceEmpaque;
         }
 
         // GET: ProductoController
@@ -84,6 +85,9 @@ namespace DoreanSportic.Controllers
 
             var usuario = await _serviceUsuario.PrimerUsuario();
 
+            // Obtener los empaques disponibles para la personalización del producto
+            var empaques = await _serviceEmpaque.ListAsync();
+
             // Obtener las reseñas del producto
             var resennas = await _serviceResennaValoracion.GetResennasPorProducto(id);
 
@@ -94,6 +98,7 @@ namespace DoreanSportic.Controllers
                 Producto = producto,
                 UsuarioActual = usuario, 
                 Resennas = resennas,
+                EmpaquesDisponibles = empaques,
             };
 
             return View(viewModel);

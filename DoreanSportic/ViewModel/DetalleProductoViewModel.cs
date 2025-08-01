@@ -1,4 +1,5 @@
 ﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Infrastructure.Models;
 
 namespace DoreanSportic.Web.ViewModel
 {
@@ -7,6 +8,6 @@ namespace DoreanSportic.Web.ViewModel
         public ProductoDTO Producto { get; set; }
         public UsuarioDTO UsuarioActual { get; set; }
         public IEnumerable<ResennaValoracionDTO> Resennas { get; set; }
-
+        public IEnumerable<EmpaqueDTO> EmpaquesDisponibles { get; set; }
     }
 }
