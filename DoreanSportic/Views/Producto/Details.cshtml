@@ -97,19 +97,19 @@
                     </div>
 
                     <!-- Para mostrar las etiquetas del producto (Envio, Original, Garantia, etc.)-->
-                    <div class="flex flex-wrap gap-1 mt-2">                       
-                    @{
+                    <div class="flex flex-wrap gap-1 mt-2">
+                        @{
                             // Verificar si el producto es personalizable
                             var esPersonalizable = Model.Producto.IdEtiqueta?.Any(e => e.Nombre.ToLower().Contains("personalizable")) ?? false;
 
-                        if (Model.Producto.IdEtiqueta != null && Model.Producto.IdEtiqueta.Count > 0)
-                        {
-                            foreach (var etiqueta in Model.Producto.IdEtiqueta)
+                            if (Model.Producto.IdEtiqueta != null && Model.Producto.IdEtiqueta.Count > 0)
                             {
-                                <div class="badge badge-soft badge-secondary">@etiqueta.Nombre.ToUpper()</div>
+                                foreach (var etiqueta in Model.Producto.IdEtiqueta)
+                                {
+                                    <div class="badge badge-soft badge-secondary">@etiqueta.Nombre.ToUpper()</div>
+                                }
                             }
                         }
-                    }
                     </div>
 
                 </div>
@@ -181,7 +181,7 @@
         </div>
 
         <div class="flex flex-col gap gap-4 w-200">
-        
+
             <!-- Para cargar dinámicamente el promedio de los usuarios -->
             <div id="zona-promedio">
                 <p class="text-sm">Cargando promedio...</p>
@@ -198,53 +198,127 @@
     </div>
 
     <!-- Formulario para agregar el producto al carrito de compras -->
-    <div>
-      @if (Model.Producto.Stock > 0)
-    {
-    <form asp-controller="Carrito" asp-action="Agregar" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
-        @Html.AntiForgeryToken()
-
-        <input type="hidden" name="IdProducto" value="@Model.Producto.Id" />
-        <input type="hidden" name="PrecioProducto" value="@precioConDescuento" />
-
-        <!-- Cantidad -->
-        <div class="form-control">
-            <label class="label font-bold">Cantidad</label>
-            <input type="number" name="Cantidad" value="1" min="1" max="@Model.Producto.Stock" class="input input-bordered w-20" required />
-        </div>
-
-        <!-- Personalización -->
-        @if (esPersonalizable)
+    <div class="w-100">
+        @if (Model.Producto.Stock > 0)
         {
-            <div class="form-control mt-2">
-                <label class="label font-bold">Tipo de empaque</label>
-                <select name="IdEmpaque" class="select select-bordered w-full" required>
-                    <option value="">Seleccione un tipo</option>
-                    @foreach (var empaque in Model.EmpaquesDisponibles)
-                    {
-                        <option value="@empaque.Id">
-                            @empaque.TipoEmpaque - ₡@empaque.PrecioBase;
-                        </option>
-                    }
-                </select>
+
+            <form asp-controller="Carrito" asp-action="Agregar" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
+                @Html.AntiForgeryToken()
+                
+                <!-- Cantidad -->
+                <div class="form-control flex flex-col gap-1">
+                    <label for="CantidadInput" class="label font-bold">Cantidad</label>
+                    <input id="CantidadInput" type="number" name="Cantidad" value="1" min="1" max="@Model.Producto.Stock"
+                           class="input input-bordered mb-3" required style="border-color:black; width:15%" />
+                </div>
+
+
+                <!-- Personalización del producto (si es personalizable) -->
+                @if (esPersonalizable)
+                {
+                    <h2 class="font-bold">Personalización del producto</h2>
+
+                    <div class="bordered">
+                        <div class="form-control mt-2" style="border-color:black;">
+                            @*Seleccionar el tipo de empaque *@
+                            <label class="label font-bold mb-1 flex items-center gap-2">
+                                <!-- Icono caja -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M20 12V6a2 2 0 00-2-2h-4.5l-1.5 2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4" />
+                                </svg>
+                            Tipo de empaque
+                            </label>
+                            <select name="IdEmpaque" class="select select-bordered w-full" required style="border-color:black;">
+                                <option value="">Seleccione un tipo</option>
+                                @foreach (var empaque in Model.EmpaquesDisponibles)
+                                {
+                                    <option value="@empaque.Id">
+                                        @empaque.TipoEmpaque - ₡@empaque.PrecioBase?.ToString("N2", culturaPersonalizada);
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        @*Mensaje de personalización*@
+                        <div class="form-control mt-2 flex flex-col">
+                            <label class="label font-bold mb-1 flex items-center gap-2">
+                                <!-- Icono comentario -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                </svg>
+                            Mensaje personalizado del empaque</label>
+                            <textarea name="Observaciones" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
+                        </div>
+
+                        @*Foto del empaque*@
+                        
+                        <!-- Icono cámara -->
+                        <div class="label font-bold flex items-center gap-2 mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 7h2l1-2h10l1 2h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                <circle cx="12" cy="13" r="4" />
+                            </svg>
+                            Foto de referencia
+                        
+                        </div>
+
+                        <!-- Drag and Drop para foto personalizada -->
+                        <div x-data="dataSingleFileDnD()" class="relative flex flex-col p-4 border border-gray-100 rounded mt-2 h-75">
+                            <div x-ref="dnd"
+                                 x-on:drop.prevent="handleFileDrop($event); $refs.dnd.classList.remove('drag-over')"
+                                 x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
+                                 x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
+                                 class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
+
+                        <!-- Para manejar la inserción de la imagen-->
+                        <input accept="image/*" type="file"
+                               class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
+                               x-on:change="handleFileChange($event)"
+                               name="Foto"                               
+                               title="" />
+                            <!-- 
+                            <span asp-validation-for="ImagenesProducto" class="text-sm italic" style="color:red; font-size: small"></span>
+                            -->
+
+                            <div class="flex flex-col items-center justify-center py-10 text-center rounded">
+                                <svg class="w-6 h-6 mr-1 text-current-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <p class="m-0">Arrastre la imagen aquí o haga clic para seleccionarla.</p>
+                            </div>
+
+                </div>
+
+                    <!-- Para manejar la vista previa de la imagen -->
+                    <template x-if="file">
+                        <div class="w-25 h-25 relative mt-4">
+                            <img :src="previewUrl" class="w-full h-full object-cover rounded" alt="Vista previa" />
+
+                            <button type="button" x-on:click="removeFile()"
+                                    class="absolute top-1 right-1 bg-white text-red-500 hover:bg-red-100 rounded-full p-1 shadow">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </template>
             </div>
 
-            <div class="form-control mt-2">
-                <label class="label font-bold">Observaciones</label>
-                <textarea name="Observaciones" class="textarea textarea-bordered" rows="3"></textarea>
-            </div>
+                    </div>
+                }
 
-            <div class="form-control mt-2">
-                <label class="label font-bold">Foto de referencia</label>
-                <input type="file" name="Foto" accept="image/*" class="file-input file-input-bordered w-full max-w-xs" />
-            </div>
+                <!-- Botón para agregar producto al carrito -->
+                <button type="submit" class="btn btn-success mt-2 w-full">
+                    Agregar al carrito
+                </button>
+            </form>
         }
-
-        <button type="submit" class="btn btn-success mt-2 w-full">
-            Agregar al carrito
-        </button>
-    </form>
-}
 
     </div>
 
@@ -253,11 +327,13 @@
 <!-- Modal para enviar reseñas -->
 <dialog id="modalResenna" class="modal">
     <div class="modal-box bg-white rounded w-100" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
-        <button onclick="modalResenna.close()" class="btn btn-sm btn-circle bg-black text-white" 
-            style="margin-left: 100%; margin-top: -5%;">✕</button>
+        <button onclick="modalResenna.close()" class="btn btn-sm btn-circle bg-black text-white"
+                style="margin-left: 100%; margin-top: -5%;">
+            ✕
+        </button>
         <h3 class="text-lg font-bold">Reseña del producto: @(Model.Producto.Nombre)</h3>
         <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic en la X para cerrar esta ventana</p>
-        
+
         <form id="formResenna" class="space-y-4 w-full" method="post" enctype="multipart/form-data">
             <!-- Generar el token antiforgery -->
             @Html.AntiForgeryToken()
@@ -416,7 +492,7 @@
             });
     </script>
 
-    <!-- Script para escuchar el evento submit del formulario para crear la Resenna -->
+    <!-- Script para manejar diferentes eventos sobre la vista de Details del producto -->
     <script src="~/js/DetailProducto.js"></script>
 
 }

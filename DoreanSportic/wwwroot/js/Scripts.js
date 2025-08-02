@@ -42,13 +42,18 @@ function dataFileDnD() {
             return URL.createObjectURL(file);
         },
 
+        // Función para agregar las imágenes (ya sea por drag and drop o al dar clic al dropzone)
         addFiles(event) {
-            let droppedFiles = event.dataTransfer?.files || event.target.files;
-            console.log("Target files:", event.target.files);
-            console.log("DataTransfer files:", event.dataTransfer?.files);
 
+            // asignar los eventos de dataTransfer (drag and drop) o de subir mediante clic
+            // a la variable
+            let droppedFiles = event.dataTransfer?.files || event.target.files;
+
+            // Si no hay imágenes cargadas en el array (droppedFiles) simplemente no hacer nada
             if (!droppedFiles || droppedFiles.length === 0) return;
 
+            // Recorrer todo el array de imágenes (droppedFiles) para insertar cada imagen 
+            // en el array que se va a enviar para crear el producto
             [...droppedFiles].forEach(file => {
                 // Validar que el tipo MIME sea de imagen
                 if (!file.type.startsWith("image/")) {
@@ -79,15 +84,18 @@ function dataFileDnD() {
             this.files.splice(index, 1);
         },
 
+        // Evento para escuchar el inicio del drag de la imagen
         dragstart(event) {
             this.fileDragging = event.target.dataset.index;
             event.dataTransfer.effectAllowed = 'move';
         },
 
+        // Evento para escuchar el drag hacia al dropzone
         dragenter(event) {
             this.fileDropping = event.target.dataset.index;
         },
 
+        // Evento para escuchar el drop de la imagen en el dropzone
         drop(event) {
             event.preventDefault();
             const from = this.fileDragging;
@@ -103,6 +111,8 @@ function dataFileDnD() {
             this.fileDropping = null;
         },
 
+        // Función para retornar el valor del tamaño de la imagen
+        // en términos entendibles para humanos
         humanFileSize(size) {
             const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
             return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];

@@ -9,10 +9,6 @@ public partial class Empaque
 
     public string TipoEmpaque { get; set; } = null!;
 
-    public string? Observaciones { get; set; }
-
-    public byte[]? Foto { get; set; }
-
     public decimal? PrecioBase { get; set; }
 
     public bool Estado { get; set; }

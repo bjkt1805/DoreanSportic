@@ -79,9 +79,11 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.Estado).HasColumnName("estado");
+            entity.Property(e => e.Foto).HasColumnName("foto");
             entity.Property(e => e.IdCarrito).HasColumnName("idCarrito");
             entity.Property(e => e.IdEmpaque).HasColumnName("idEmpaque");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            entity.Property(e => e.MensajePersonalizado).HasColumnName("mensajePersonalizado");
 
             entity.HasOne(d => d.IdCarritoNavigation).WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdCarrito)
@@ -147,8 +149,6 @@ public partial class DoreanSporticContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.Foto).HasColumnName("foto");
-            entity.Property(e => e.Observaciones).HasColumnName("observaciones");
             entity.Property(e => e.PrecioBase)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("precioBase");
@@ -356,11 +356,9 @@ public partial class DoreanSporticContext : DbContext
                     "PromocionCategoria",
                     r => r.HasOne<Categoria>().WithMany()
                         .HasForeignKey("IdCategoria")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_Promocion_Categoria_Categoría"),
                     l => l.HasOne<Promocion>().WithMany()
                         .HasForeignKey("IdPromocion")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_Promocion_Categoria_Promocion"),
                     j =>
                     {

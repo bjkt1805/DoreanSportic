@@ -1,5 +1,4 @@
 ﻿// Script para escuchar el evento submit del formulario para crear la Resenna
-
 function manejarEnvioResenna(e) {
     e.preventDefault();
 
@@ -58,7 +57,7 @@ function manejarEnvioResenna(e) {
         });
 }
 
-
+//Función para recargar los divs de Zona de Reseñas y Promedio de Calificaciones
 function recargarZonaResennasYPromedio(idProducto) {
     // Recargar reseñas
     fetch(`/ResennaValoracion/GetResennasPorProducto?idProducto=${idProducto}`)
@@ -75,6 +74,8 @@ function recargarZonaResennasYPromedio(idProducto) {
         });
 }
 
+// Función para mostrar el toast a la hora de dejar la reseña del producto 
+// ya sea exitoso o error
 function mostrarToast(mensaje, tipo = "info") {
     const toast = document.createElement("div");
     toast.className = `toast toast-top toast-center z-50`;
@@ -88,6 +89,39 @@ function mostrarToast(mensaje, tipo = "info") {
     setTimeout(() => {
         toast.remove();
     }, 4000);
+}
+
+// Función para manejar el dropzone de la imagen del empaque personalizado
+function dataSingleFileDnD() {
+    return {
+        file: null,
+        previewUrl: '',
+
+        // Evento/función para menejar el cambio de archivo
+        handleFileChange(event) {
+            const selectedFile = event.target.files[0];
+            if (selectedFile && selectedFile.type.startsWith("image/")) {
+                this.file = selectedFile;
+                this.previewUrl = URL.createObjectURL(selectedFile);
+            }
+        },
+
+        // Evento/función para manejar el drop del archivo/imagen
+        handleFileDrop(event) {
+            const droppedFile = event.dataTransfer.files[0];
+            if (droppedFile && droppedFile.type.startsWith("image/")) {
+                this.file = droppedFile;
+                this.previewUrl = URL.createObjectURL(droppedFile);
+            }
+            this.$refs.dnd.classList.remove('drag-over');
+        },
+
+        // Evento/función para manejar el borrado del archivo/imagen
+        removeFile() {
+            this.file = null;
+            this.previewUrl = '';
+        }
+    };
 }
 
 // Asignar función al evento submit solo cuando el DOM esté listo
