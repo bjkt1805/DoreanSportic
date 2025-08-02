@@ -1,5 +1,5 @@
 ﻿
-<div class="navbar bg-[#004AAD] text-white w-screen">
+<div class="navbar bg-[#004AAD] text-white w-full">
 
     <!--Navbar responsivo-->
     <div class="navbar-start">
@@ -74,11 +74,13 @@
         </label> *@
 
         <!-- Input del buscador del sitio-->
-        <input type="text" placeholder="Buscar" class="input input-bordered w-24 md:w-auto" style="margin-right: 10px" />
+        <div style="padding-right: 10px">
+            <input type="text" placeholder="Buscar productos" class="input input-bordered w-24 md:w-auto text-black" />
+        </div>
 
         <!-- Contenedor del carrito de compras -->
-        <div class="dropdown dropdown-end" style="padding-right: 10px">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <div class="dropdown dropdown-end p-1" style="padding-right: 30px">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle" style="padding-left: 20px">
                 <div class="indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
                     <span class="badge badge-sm indicator-item">0</span>
@@ -100,9 +102,12 @@
         <!-- Contenedor del perfil de usuario-->
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                <div class="w-10 rounded-full">
-                    <img alt="Tailwind CSS Navbar component"
-                         src="" />
+                <div class="w-25 rounded-full flex items-center justify-center" style="background-color:gray">
+                    <!-- SVG de usuario -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M5.121 17.804A9.969 9.969 0 0012 20c2.21 0 4.252-.715 5.879-1.926M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 2a10 10 0 00-9.878 8.12" />
+                    </svg>
                 </div>
             </div>
             <ul tabindex="0"
@@ -113,8 +118,8 @@
                         <span class="badge">New</span>
                     </a>
                 </li>
-                <li><a>Settings</a></li>
-                <li><a>Logout</a></li>
+                <li><a>Configuración</a></li>
+                <li><a>Cerrar sesión</a></li>
             </ul>
         </div>
     </div>

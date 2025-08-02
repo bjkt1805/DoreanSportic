@@ -33,6 +33,8 @@ namespace DoreanSportic.Web.Controllers
 
             return PartialView("_DetallesPedido", collection);
         }
+
+        // GET: PedidoDetalle/Details/{id}
         public async Task<ActionResult> Details(int id)
         {
             var @object = await _servicePedidoDetalle.FindByIdAsync(id);

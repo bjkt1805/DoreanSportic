@@ -18,21 +18,21 @@
 
 </head>
 
-<body class="bg-base-100 text-base-content min-h-screen flex flex-col w-screen">
+<body class="bg-base-100 text-base-content min-h-screen flex flex-col w-full">
     <header>
         <!--Cargar de forma asíncrona el partial view (Menú = navbar)-->
         @await Html.PartialAsync("_Menu")
     </header>
 
     <!--Cargar el body-->
-    <div class="container w-screen">
-        <main role="main" class="flex-grow py-0 w-screen">
+    <div class="container w-full">
+        <main role="main" class="flex-grow py-0 w-full">
             @RenderBody()
         </main>
     </div>
 
     <!--Cargar el footer-->
-    <footer class="footer footer-center p-4 bg-[#004AAD] text-white w-screen">
+    <footer class="footer footer-center p-4 bg-[#004AAD] text-white w-full">
         <div class="container mx-auto px-4">
             <div class="flex flex-wrap flex-row gap gap-4 justify-between items-center">
 

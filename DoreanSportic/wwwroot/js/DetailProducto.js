@@ -140,3 +140,40 @@ document.addEventListener("DOMContentLoaded", function () {
         recargarZonaResennasYPromedio(idProducto);
     }
 });
+
+// Cuando el DOM esté listo, realizar las validaciones de los inputs para
+// añadir el producto al carrito
+document.addEventListener("DOMContentLoaded", function () {
+    escucharInputCantidad();
+});
+
+
+// Función para "escuchar" mientras el usuario escribe en el campo de "Cantidad"
+function escucharInputCantidad() {
+    const input = document.getElementById("inputCantidad");
+    const mensajeError = document.querySelector("span[data-valmsg-for='Stock']");
+
+    if (!input) return;
+
+    input.addEventListener("input", () => {
+        // Eliminar decimales si el usuario los escribe
+        input.value = input.value.replace(/[^\d]/g, ""); // Solo dígitos
+
+        const numero = parseInt(input.value);
+
+        if (!isNaN(numero)) {
+            if (numero < 1 || numero > 100) {
+                if (mensajeError) {
+                    mensajeError.textContent = "Debe ingresar una cantidad válida entre 1 y 100";
+                }
+                input.classList.add("border-red-500");
+            } else {
+                if (mensajeError) mensajeError.textContent = "";
+                input.classList.remove("border-red-500");
+            }
+        } else {
+            if (mensajeError) mensajeError.textContent = "";
+            input.classList.remove("border-red-500");
+        }
+    });
+}

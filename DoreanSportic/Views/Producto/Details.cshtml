@@ -4,6 +4,11 @@
 @using DoreanSportic.Infrastructure.Models
 @using System.Globalization
 
+<!-- Para poder hacer validaciones de modelo para CarritoDetalle -->
+@{
+    var detalleCarrito = new DoreanSportic.Infrastructure.Models.CarritoDetalle();
+}
+
 <!-- Para el separador de miles-->
 @{
     var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
@@ -198,18 +203,20 @@
     </div>
 
     <!-- Formulario para agregar el producto al carrito de compras -->
-    <div class="w-100">
+    <div class="w-100 shadow-lg p-2">
         @if (Model.Producto.Stock > 0)
         {
 
-            <form asp-controller="Carrito" asp-action="Agregar" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
+            <form asp-controller="CarritoDetalle" asp-action="Create" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
                 @Html.AntiForgeryToken()
                 
                 <!-- Cantidad -->
                 <div class="form-control flex flex-col gap-1">
-                    <label for="CantidadInput" class="label font-bold">Cantidad</label>
-                    <input id="CantidadInput" type="number" name="Cantidad" value="1" min="1" max="@Model.Producto.Stock"
+                    <label for="inputCantidad" class="label font-bold">Cantidad</label>
+                    <input asp-for="@detalleCarrito.Cantidad" id="inputCantidad" type="number" name="Cantidad" value="1" min="1" max="@Model.Producto.Stock"
                            class="input input-bordered mb-3" required style="border-color:black; width:15%" />
+                    <span asp-validation-for="@detalleCarrito.Cantidad"></span>
+                    <div id="error-cantidad" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
                 </div>
 
 
@@ -250,6 +257,7 @@
                                 </svg>
                             Mensaje personalizado del empaque</label>
                             <textarea name="Observaciones" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
+                            <div id="error-mensaje" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
                         </div>
 
                         @*Foto del empaque*@
@@ -261,7 +269,7 @@
                                       d="M3 7h2l1-2h10l1 2h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
                                 <circle cx="12" cy="13" r="4" />
                             </svg>
-                            Foto de referencia
+                            Foto del empaque
                         
                         </div>
 
@@ -273,15 +281,13 @@
                                  x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
                                  class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
 
-                        <!-- Para manejar la inserción de la imagen-->
-                        <input accept="image/*" type="file"
-                               class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
-                               x-on:change="handleFileChange($event)"
-                               name="Foto"                               
-                               title="" />
-                            <!-- 
-                            <span asp-validation-for="ImagenesProducto" class="text-sm italic" style="color:red; font-size: small"></span>
-                            -->
+                            <!-- Para manejar la inserción de la imagen-->
+                            <input accept="image/*" type="file"
+                                   class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
+                                   x-on:change="handleFileChange($event)"
+                                   name="Foto"                               
+                                   title="" />
+
 
                             <div class="flex flex-col items-center justify-center py-10 text-center rounded">
                                 <svg class="w-6 h-6 mr-1 text-current-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -292,23 +298,23 @@
                                 <p class="m-0">Arrastre la imagen aquí o haga clic para seleccionarla.</p>
                             </div>
 
-                </div>
+                            </div>
 
-                    <!-- Para manejar la vista previa de la imagen -->
-                    <template x-if="file">
-                        <div class="w-25 h-25 relative mt-4">
-                            <img :src="previewUrl" class="w-full h-full object-cover rounded" alt="Vista previa" />
-
-                            <button type="button" x-on:click="removeFile()"
-                                    class="absolute top-1 right-1 bg-white text-red-500 hover:bg-red-100 rounded-full p-1 shadow">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                    </template>
-            </div>
+                        <!-- Para manejar la vista previa de la imagen -->
+                        <template x-if="file">
+                            <div class="w-25 h-25 relative mt-4">
+                                <img :src="previewUrl" class="w-full h-full object-cover rounded" alt="Vista previa" />
+                                <!-- Botón para quitar la imagen -->
+                                <button class="btn-borrar absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none cursor-pointer hover:bg-gray-200" type="button" x-on:click="removeFile()">
+                                    <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                 </button>
+                            </div>
+                        </template>
+                    </div>
 
                     </div>
                 }
