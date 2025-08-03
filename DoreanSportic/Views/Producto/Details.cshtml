@@ -277,11 +277,12 @@
                                         <div class="form-control mt-2 flex flex-col">
                                             <label asp-for= "@Model.DetalleCarrito.MensajePersonalizado"class="label font-bold mb-1 flex items-center gap-2">
                                                 <!-- Icono comentario -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-700" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                           d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                                 </svg>
-                                            Mensaje personalizado del empaque</label>
+                                            Mensaje personalizado del empaque (₡ 2 000.00)</label>
                                             <textarea asp-for="@Model.DetalleCarrito.MensajePersonalizado" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
                                             <span asp-validation-for="@Model.DetalleCarrito.MensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></span>
                                             <!-- Mostrar errores de mensaje personalizado -->
@@ -297,7 +298,7 @@
                                                       d="M3 7h2l1-2h10l1 2h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
                                                 <circle cx="12" cy="13" r="4" />
                                             </svg>
-                                            Foto del empaque
+                                            Foto del empaque (₡ 3 000.00)
                         
                                         </div>
 

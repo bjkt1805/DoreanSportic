@@ -95,35 +95,28 @@ function manejarEnvioDetalleCarrito(e) {
 
     // Validar tipo de empaque
     if (!empaqueSelect || empaqueSelect.value === "") {
-        document.getElementById("error-mensaje").innerText = "El tipo de empaque es requerido.";
+        document.getElementById("error-tipoEmpaque").innerText = "El tipo de empaque es requerido.";
         valido = false;
     }
 
     // Validar mensaje
     if (!mensajeInput || mensajeInput.value.trim() === "") {
-        document.getElementById("error-mensaje").innerText = "El mensaje personalizado es requerido.";
+        document.getElementById("error-mensajePersonalizado").innerText = "El mensaje personalizado es requerido.";
         valido = false;
     }
 
 
     // Validar si hay imagen en el dropzone de imágenes
-    const tieneArchivo = componenteDropzone && componenteDropzone.__x && componenteDropzone.__x.$data.file != null;
+    const tieneArchivo = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
 
-    // Si el formulario no es válido o no tiene imagen, mostrar errores correspondientes
-    if (!esValido || !tieneArchivo) {
+    // Si el formulario no tiene imagen, mostrar error de imagen
+    if (!tieneArchivo) {
 
-        // Forzar validación manual para los campos de personalización (ya que hay Alpine JS de por medio)
-
-        // Validación manual de tipoEmpaque
-
-
-        // Validación manual de mensajePersonalizado
-
-        // Validación manual de foto
         if (!tieneArchivo) {
             const erroresFoto = document.getElementById("error-foto");
             if (erroresFoto) {
                 erroresFoto.innerText = "Debe insertar al menos una imagen";
+                valido = false;
             }
         }
 
