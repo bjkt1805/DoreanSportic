@@ -206,7 +206,7 @@
                 asp-action="Create" method="post" enctype="multipart/form-data" 
                 class="mt-4 space-y-3"
                 data-precio-base="@Model.Producto.PrecioBase"
-                @* data-precio-descuento="@Model.Producto.PrecioConDescuento" *@
+                data-precio-descuento="@precioConDescuento"
                 data-precio-mensaje="2000"
                 data-precio-foto="3000">
                 @Html.AntiForgeryToken()
@@ -217,7 +217,7 @@
                     <!-- Cantidad -->
                     <div class="form-control flex flex-col gap-1">
                         <label for="inputCantidad" class="label font-bold">Cantidad</label>
-                        <input asp-for="@Model.DetalleCarrito.Cantidad" id="inputCantidad" type="number" value="1" min="1" max="@Model.Producto.Stock"
+                        <input asp-for="@Model.DetalleCarrito.Cantidad" id="inputCantidad" type="number" value="0" min="0" max="@Model.Producto.Stock"
                                class="input input-bordered mb-1" required style="border-color:black;"/>
                         <span asp-validation-for="@Model.DetalleCarrito.Cantidad" style="color:red; font-size: small; font-style:italic"></span>
                     </div>
@@ -366,7 +366,7 @@
                 }
 
                 <!-- Botón para agregar producto al carrito -->
-                <button type="submit" class="btn btn-success mt-2 w-full justify-end">
+                <button id="btnAgregarCarrito" type="submit" class="btn btn-success mt-2 w-full justify-end">
                     Agregar al carrito
                 </button>
             </form>

@@ -212,6 +212,10 @@ function dataSingleFileDnD() {
                 this.file = selectedFile;
                 this.previewUrl = URL.createObjectURL(selectedFile);
             }
+
+            // Para notificar a la función de calcular subTotal
+            // que se ha agregado o removido una imagen en el dropzone
+            window.dispatchEvent(new Event("imagen-personalizada-cambiada"));
         },
 
         // Evento/función para manejar el drop del archivo/imagen
@@ -228,6 +232,10 @@ function dataSingleFileDnD() {
         removeFile() {
             this.file = null;
             this.previewUrl = '';
+
+            // Para notificar a la función de calcular subTotal
+            // que se ha agregado o removido una imagen en el dropzone
+            window.dispatchEvent(new Event("imagen-personalizada-cambiada"));
         }
     };
 }
@@ -295,6 +303,65 @@ function bloquearBorradoInputCantidad() {
     input.addEventListener("cut", (e) => e.preventDefault());
 }
 
+// Función para cargar el campo SubTotal de manera dinámica en el frontend
+function calcularSubtotal() {
+
+    // Obtener los valores de los inputs del formulario para 
+    // calcular dinámicamente el subTotal
+    const form = document.getElementById("formCarritoDetalle");
+    const inputCantidad = document.getElementById("inputCantidad");
+    const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+    const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
+    const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
+    const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
+    const subtotalSpan = document.getElementById("subTotalValor");
+
+    // Obtener el valor del input de cantidad
+    const cantidad = parseInt(inputCantidad.value) || 0;
+
+    // Obtener el valor del radio Button de personalizar
+    const deseaPersonalizar = [...radioPersonalizar].find(r => r.checked)?.value === "si";
+
+    // Obtener el valor del precio del producto
+    const precioProducto = parseFloat(form.dataset.precioDescuento || form.dataset.precioBase || 0);
+
+    //Asignar inicialmente el valor de subproducto (precioProducto * cantidad)
+    let subtotal = precioProducto * cantidad;
+
+    // Si el usuario quiere personalizar (deseaPersonalizar = true)
+    if (deseaPersonalizar) {
+
+        // Obtener el precio del empaque
+        const precioEmpaque = parseFloat(selectEmpaque.selectedOptions[0]?.dataset.precio || 0);
+
+        // Agregarle a subtotal precioEmpaque * cantidad Producto
+        subtotal += precioEmpaque * cantidad;
+
+        // Verificar si hay algún mensaje personalizado 
+        const mensajeActivo = mensajeTextarea?.value?.trim() !== "";
+
+        // Si hay mensaje personalizado, sumarle al subtotal el precio 
+        // del mensaje
+        if (mensajeActivo) {
+            subtotal += parseFloat(form.dataset.precioMensaje || 0);
+        }
+
+        // Si hay foto cargada, sumarle al subtotal el precio
+        // de la foto
+        const tieneFoto = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
+        if (tieneFoto) {
+            subtotal += parseFloat(form.dataset.precioFoto || 0);
+        }
+    }
+
+    // Darle formato al campo de SubTotal
+    subtotalSpan.textContent = subtotal.toLocaleString("es-CR", {
+        style: "decimal",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
 // INCIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
 // Asignar función al evento submit solo cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
@@ -328,45 +395,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Cuando se cargue el DOM, cargar los datos de los inputs para poder calcular
+// dinámicamente el subTotal
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("formCarritoDetalle");
-    const inputCantidad = document.getElementById("inputCantidad");
-    const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
-    const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
-    const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
-    const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
-    const subtotalSpan = document.getElementById("subTotalValor");
 
-    function calcularSubtotal() {
-        const cantidad = parseInt(inputCantidad.value) || 0;
-        const deseaPersonalizar = [...radioPersonalizar].find(r => r.checked)?.value === "si";
-
-    const precioProducto = parseFloat(form.dataset.precioDescuento || form.dataset.precioBase || 0);
-    let subtotal = precioProducto * cantidad;
-
-    if (deseaPersonalizar) {
-            const precioEmpaque = parseFloat(selectEmpaque.selectedOptions[0]?.dataset.precio || 0);
-    subtotal += precioEmpaque * cantidad;
-
-    const mensajeActivo = mensajeTextarea?.value?.trim() !== "";
-    if (mensajeActivo) {
-        subtotal += parseFloat(form.dataset.precioMensaje || 0);
-            }
-
-    const tieneFoto = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
-    if (tieneFoto) {
-        subtotal += parseFloat(form.dataset.precioFoto || 0);
-            }
-        }
-
-    subtotalSpan.textContent = subtotal.toLocaleString("es-CR", {
-        style: "decimal",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-        });
-    }
-
-    // Escuchar cambios
+    // Escuchar cambios en los inputs
     inputCantidad.addEventListener("input", calcularSubtotal);
     selectEmpaque?.addEventListener("change", calcularSubtotal);
     mensajeTextarea?.addEventListener("input", calcularSubtotal);
@@ -375,8 +408,37 @@ document.addEventListener("DOMContentLoaded", () => {
     // En Alpine: emitir evento desde dropzone cuando cambie imagen
     window.addEventListener("imagen-personalizada-cambiada", calcularSubtotal);
 
-    // Inicial
+    // Iniciar la función de calcular subTotal
     calcularSubtotal();
+});
+
+// Cuando se cargue el DOM, habilitar o deshabilitar el botón "Agregar al carrito"
+// si el input de cantidad es 0
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Obtener los elementos del DOM por id (inputCantidad y btnAgregarCarrito)
+    const inputCantidad = document.getElementById("inputCantidad");
+    const btnAgregarCarrito = document.getElementById("btnAgregarCarrito");
+
+    // Función para actualizar el estado del Botón de "Agregar al carrito"
+    function actualizarEstadoBoton() {
+        const cantidad = parseInt(inputCantidad.value);
+        if (isNaN(cantidad) || cantidad <= 0) {
+            btnAgregarCarrito.disabled = true;
+            btnAgregarCarrito.classList.add("btn-disabled", "btn btn-soft", "text-white", "cursor-not-allowed");
+            btnAgregarCarrito.style.backgroundColor('#808080')
+        } else {
+            btnAgregarCarrito.disabled = false;
+            btnAgregarCarrito.classList.remove("btn-disabled", "btn btn-soft", "text-white", "cursor-not-allowed");
+        }
+    }
+
+    // Agregar un listener activo para cuando cambie el valor del
+    // input cantidad para habilitar o deshabilitar el botón
+    inputCantidad.addEventListener("input", actualizarEstadoBoton);
+
+    // Ejecutar una vez al cargar la página
+    actualizarEstadoBoton();
 });
 
 
