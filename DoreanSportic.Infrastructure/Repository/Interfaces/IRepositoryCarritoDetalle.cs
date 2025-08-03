@@ -11,6 +11,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
     {
         Task<ICollection<CarritoDetalle>> ListAsync();
         Task<CarritoDetalle> FindByIdAsync(int id);
+        Task<int> AddAsync(CarritoDetalle entity);
+
 
     }
 }

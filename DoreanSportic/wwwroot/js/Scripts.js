@@ -198,7 +198,8 @@ function dataFileDnD() {
                 formData.append("imagenesConservar", nombre);
             });
 
-            
+            // Configurar el estado del producto (toggle) dependiendo de cuál
+            // sea el estado del producto
             formData.set("Estado", estadoCheckbox?.checked ? "true" : "false");
 
             try {

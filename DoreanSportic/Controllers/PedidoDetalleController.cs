@@ -1,6 +1,7 @@
 ﻿using DoreanSportic.Application.DTOs;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
+using DoreanSportic.Web.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 //using X.PagedList.Extensions;
@@ -40,5 +41,6 @@ namespace DoreanSportic.Web.Controllers
             var @object = await _servicePedidoDetalle.FindByIdAsync(id);
             return View(@object);
         }
+
     }
 }
