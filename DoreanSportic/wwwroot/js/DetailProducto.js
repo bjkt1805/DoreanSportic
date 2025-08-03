@@ -74,8 +74,8 @@ function manejarEnvioDetalleCarrito(e) {
     const deseaPersonalizar = componentePersonalizacion?.__x?.$data?.deseaPersonalizar === "si";
 
     // Obtener los valores de campos personalizados
-    const mensajeInput = document.querySelector("textarea[name='MensajePersonalizado']");
-    const empaqueSelect = document.querySelector("select[name='IdEmpaque']");
+    const mensajeInput = document.querySelector("textarea[name='DetalleCarrito.MensajePersonalizado']");
+    const empaqueSelect = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
     const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
 
 
@@ -304,7 +304,7 @@ function bloquearBorradoInputCantidad() {
 }
 
 // Función para cargar el campo SubTotal de manera dinámica en el frontend
-function calcularSubtotal() {
+async function calcularSubtotal() {
 
     // Obtener los valores de los inputs del formulario para 
     // calcular dinámicamente el subTotal
