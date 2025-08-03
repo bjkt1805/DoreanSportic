@@ -311,8 +311,6 @@ function calcularSubtotal() {
     const form = document.getElementById("formCarritoDetalle");
     const inputCantidad = document.getElementById("inputCantidad");
     const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
-    const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
-    const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
     const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
     const subtotalSpan = document.getElementById("subTotalValor");
 
@@ -331,30 +329,36 @@ function calcularSubtotal() {
     // Si el usuario quiere personalizar (deseaPersonalizar = true)
     if (deseaPersonalizar) {
 
+        // Obtener la referencia ACTUAL al select insertado dinámicamente
+        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+
+        // Inicializar el precio del empaque en 0
+        let precioEmpaque = 0;
         // Obtener el precio del empaque
-        const precioEmpaque = parseFloat(selectEmpaque.selectedOptions[0]?.dataset.precio || 0);
+
+        //Validar que se seleccione algo en el select de Empaque
+        if (selectEmpaque && selectEmpaque.value !== "") {
+
+            // asignar la opción seleccionada del empaque
+            const opcionSeleccionada = selectEmpaque.selectedOptions[0];
+
+            // obtener el precio del empaque de la opción seleccionada 
+            // a través del dataset
+            precioEmpaque = parseFloat(opcionSeleccionada?.dataset.precio || 0);
+            console.log("Precio empaque seleccionado:", precioEmpaque);
+        }
 
         // Agregarle a subtotal precioEmpaque * cantidad Producto
         subtotal += precioEmpaque * cantidad;
 
-        // Verificar si hay algún mensaje personalizado 
-        const mensajeActivo = mensajeTextarea?.value?.trim() !== "";
+        // Sumarle al subTotal el precio por defecto del mensaje personalizado
+        subtotal += parseFloat(form.dataset.precioMensaje || 0);
 
-        // Si hay mensaje personalizado, sumarle al subtotal el precio 
-        // del mensaje
-        if (mensajeActivo) {
-            subtotal += parseFloat(form.dataset.precioMensaje || 0);
-        }
-
-        // Si hay foto cargada, sumarle al subtotal el precio
-        // de la foto
-        const tieneFoto = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
-        if (tieneFoto) {
-            subtotal += parseFloat(form.dataset.precioFoto || 0);
-        }
+        // Sumarle al subTotal el precio por defecto de la foto
+        subtotal += parseFloat(form.dataset.precioFoto || 0);
     }
 
-    // Darle formato al campo de SubTotal
+    // Darle formato al campo de SubTotal (separador de miles y 2 decimales)
     subtotalSpan.textContent = subtotal.toLocaleString("es-CR", {
         style: "decimal",
         minimumFractionDigits: 2,
@@ -363,7 +367,9 @@ function calcularSubtotal() {
 }
 
 // INCIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
-// Asignar función al evento submit solo cuando el DOM esté listo
+
+// Asignar función que maneja el envio de la reseña 
+// al evento submit solo cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("formResenna");
     if (form) {
@@ -399,9 +405,17 @@ document.addEventListener("DOMContentLoaded", function () {
 // dinámicamente el subTotal
 document.addEventListener("DOMContentLoaded", () => {
 
+    // Obtener los valores de los inputs del formulario para 
+    // calcular dinámicamente el subTotal
+    const form = document.getElementById("formCarritoDetalle");
+    const inputCantidad = document.getElementById("inputCantidad");
+    const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
+    const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
+    const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
+    const subtotalSpan = document.getElementById("subTotalValor");
+
     // Escuchar cambios en los inputs
     inputCantidad.addEventListener("input", calcularSubtotal);
-    selectEmpaque?.addEventListener("change", calcularSubtotal);
     mensajeTextarea?.addEventListener("input", calcularSubtotal);
     radioPersonalizar.forEach(r => r.addEventListener("change", calcularSubtotal));
 
@@ -410,6 +424,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Iniciar la función de calcular subTotal
     calcularSubtotal();
+
+    // Alpine.js tiene envuelto el select de tipoEmpaque en una etiqueta template (x-if)
+    // lo cual está ocasionando problemas con registrar el eventListener del cambio
+    // del select de TipoEmpaque en el DOM.
+    // Para que la función "calcularSubtotal" pueda escuchar los cambios del select
+    // de tipo de empaque hay que crear una función MutationObserver lo cual hace 
+    // que el eventListener del select TipoEmpaque se agregue cuando se requiera, 
+    // o sea, cuando el select se cargue correctamente en el DOM.
+    window.addEventListener("select-empaque-listo", () => {
+        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+
+        if (selectEmpaque && !selectEmpaque.dataset.listenerAttached) {
+            selectEmpaque.addEventListener("change", () => {
+                const valorSeleccionado = selectEmpaque.selectedOptions[0];
+                const precio = valorSeleccionado?.dataset.precio || 0;
+                console.log("🔁 Cambio detectado en select:", selectEmpaque.value, "→ Precio:", precio);
+                calcularSubtotal();
+            });
+
+            selectEmpaque.dataset.listenerAttached = "true";
+        }
+
+        // Llamar una vez al iniciar si ya hay una opción seleccionada
+        calcularSubtotal();
+    });
 });
 
 // Cuando se cargue el DOM, habilitar o deshabilitar el botón "Agregar al carrito"
@@ -425,11 +464,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidad = parseInt(inputCantidad.value);
         if (isNaN(cantidad) || cantidad <= 0) {
             btnAgregarCarrito.disabled = true;
-            btnAgregarCarrito.classList.add("btn-disabled", "btn btn-soft", "text-white", "cursor-not-allowed");
-            btnAgregarCarrito.style.backgroundColor('#808080')
+            btnAgregarCarrito.classList.add("btn-disabled", "btn", "btn-soft", "text-black", "cursor-not-allowed");
         } else {
             btnAgregarCarrito.disabled = false;
-            btnAgregarCarrito.classList.remove("btn-disabled", "btn btn-soft", "text-white", "cursor-not-allowed");
+            btnAgregarCarrito.classList.remove("btn-disabled", "text-white", "cursor-not-allowed");
         }
     }
 

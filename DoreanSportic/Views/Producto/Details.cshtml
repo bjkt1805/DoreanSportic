@@ -198,7 +198,7 @@
     </div>
 
     <!-- Formulario para agregar el producto al carrito de compras -->
-    <div class="w-100 p-2 h-auto">
+    <div class="p-2 h-auto" style="width: 100%">
         @if (Model.Producto.Stock > 0)
         {
 
@@ -268,7 +268,12 @@
                                                 </svg>
                                             Tipo de empaque
                                             </label asp-for>
-                                            <select asp-for="@Model.DetalleCarrito.IdEmpaque" class="select select-bordered w-full" style="border-color:black;">
+                                            <select 
+                                                asp-for="@Model.DetalleCarrito.IdEmpaque" 
+                                                class="select select-bordered w-full" 
+                                                style="border-color:black;"
+                                                x-init="$nextTick(() => $dispatch('select-empaque-listo'))">
+
                                                 <option value="">Seleccione un tipo</option>
                                                 @foreach (var empaque in Model.EmpaquesDisponibles)
                                                 {
@@ -287,7 +292,7 @@
                                         <div class="form-control mt-2 flex flex-col">
                                             <label asp-for= "@Model.DetalleCarrito.MensajePersonalizado"class="label font-bold mb-1 flex items-center gap-2">
                                                 <!-- Icono comentario -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-700" fill="none" viewBox="0 0 24 24"
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                           d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
