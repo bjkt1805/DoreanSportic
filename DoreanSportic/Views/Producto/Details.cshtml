@@ -205,128 +205,153 @@
             <form asp-controller="CarritoDetalle" id="formCarritoDetalle" asp-action="Create" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
                 @Html.AntiForgeryToken()
                 
-                <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
+                @* <div asp-validation-summary="All" class="text-sm italic" style="color:red; font-size: small"></div> *@
 
-                <!-- Cantidad -->
-                <div class="form-control flex flex-col gap-1">
-                    <label for="inputCantidad" class="label font-bold">Cantidad</label>
-                    <input asp-for="@Model.DetalleCarrito.Cantidad" id="inputCantidad" name="Cantidad" type="number" value="1" min="1" max="@Model.Producto.Stock"
-                           class="input input-bordered mb-3" required style="border-color:black; width:15%" />
-                    <span asp-validation-for="@Model.DetalleCarrito.Cantidad"></span>
-                    <div id="error-cantidad" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
+                <div class="flex flex-row gap gap-1 w-full justify-between">
+                    <!-- Cantidad -->
+                    <div class="form-control flex flex-col gap-1">
+                        <label for="inputCantidad" class="label font-bold">Cantidad</label>
+                        <input asp-for="@Model.DetalleCarrito.Cantidad" id="inputCantidad" type="number" value="1" min="1" max="@Model.Producto.Stock"
+                               class="input input-bordered mb-1" required style="border-color:black;"/>
+                        <span asp-validation-for="@Model.DetalleCarrito.Cantidad" style="color:red; font-size: small; font-style:italic"></span>
+                    </div>
+                    <div><p class="font-bold" style="font-size: 20px">Total: ₡</p></div>
                 </div>
+
 
 
                 <!-- Personalización del producto (si es personalizable) -->
                 @if (esPersonalizable)
                 {
-                    <h2 class="font-bold">Personalización del producto</h2>
+                    <!-- Mostrar las opciones de personalización (TipoEmpaque, MensajePersonalizado, Foto) solo
+                    si el usuario quiere personalizar el producto (radioButton) Para esto se va a utilizar lógica de
+                    Alpine.js -->
 
-                    <div class="bordered">
-                        <div class="form-control mt-2" style="border-color:black;">
+                        <div x-data="{ deseaPersonalizar: 'no' }" class="mb-2">
+                            <div class="form-control">
+                                <label class="label font-bold mb-2">¿Desea personalizar el producto?</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2">
+                                    <input type="radio" name="DeseaPersonalizar" value="si" x-model="deseaPersonalizar" class="radio" />
+                                    Sí
+                                    </label>
+                                    <label class="flex items-center gap-2">
+                                    <input type="radio" name="DeseaPersonalizar" value="no" x-model="deseaPersonalizar" class="radio" />
+                                    No
+                                    </label>
+                            </div>
+                        </div>
 
-                            @*Seleccionar el tipo de empaque *@
-                            <label asp-for= "@Model.DetalleCarrito.IdEmpaque" class="label font-bold mb-1 flex items-center gap-2">
+                            <template x-if="deseaPersonalizar === 'si'">
+                                <div class="bordered mt-4">
+                                    <div class="bordered">
+                                        <h2 class="font-bold">Personalización del producto</h2>
+
+                                        @*Seleccionar el tipo de empaque *@
+                                        <div class="form-control mt-2" style="border-color:black;">
+                                            <label asp-for= "@Model.DetalleCarrito.IdEmpaque" class="label font-bold mb-1 flex items-center gap-2">
                                 
-                                <!-- Icono caja -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M20 12V6a2 2 0 00-2-2h-4.5l-1.5 2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4" />
-                                </svg>
-                            Tipo de empaque
-                            </label asp-for>
-                            <select asp-for="@Model.DetalleCarrito.IdEmpaque" name="IdEmpaque" class="select select-bordered w-full" style="border-color:black;">
-                                <option value="">Seleccione un tipo</option>
-                                @foreach (var empaque in Model.EmpaquesDisponibles)
-                                {
-                                    <option value="@empaque.Id">
-                                        @empaque.TipoEmpaque - ₡@empaque.PrecioBase?.ToString("N2", culturaPersonalizada);
-                                    </option>
-                                }
-                            </select>
-                            <span asp-validation-for="@Model.DetalleCarrito.IdEmpaque" class="text-sm italic" style="color:red; font-size: small"></span>
+                                                <!-- Icono caja -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                          d="M20 12V6a2 2 0 00-2-2h-4.5l-1.5 2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4" />
+                                                </svg>
+                                            Tipo de empaque
+                                            </label asp-for>
+                                            <select asp-for="@Model.DetalleCarrito.IdEmpaque" class="select select-bordered w-full" style="border-color:black;">
+                                                <option value="">Seleccione un tipo</option>
+                                                @foreach (var empaque in Model.EmpaquesDisponibles)
+                                                {
+                                                    <option value="@empaque.Id">
+                                                        @empaque.TipoEmpaque - ₡@empaque.PrecioBase?.ToString("N2", culturaPersonalizada);
+                                                    </option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="@Model.DetalleCarrito.IdEmpaque" class="text-sm italic" style="color:red; font-size: small"></span>
+                                            <!-- Mostrar errores de tipo Empaque -->
+                                            <div id="error-tipoEmpaque" class="text-sm italic" style="color:red; font-size: small"></div>
 
-                        </div>
+                                        </div>
 
-                        @*Mensaje de personalización*@
-                        <div class="form-control mt-2 flex flex-col">
-                            <label asp-for= "@Model.DetalleCarrito.MensajePersonalizado"class="label font-bold mb-1 flex items-center gap-2">
-                                <!-- Icono comentario -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                </svg>
-                            Mensaje personalizado del empaque</label>
-                            <textarea asp-for="@Model.DetalleCarrito.MensajePersonalizado" name="MensajePersonalizado" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
-                            <span asp-validation-for="@Model.DetalleCarrito.MensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></span>
+                                        @*Mensaje de personalización*@
+                                        <div class="form-control mt-2 flex flex-col">
+                                            <label asp-for= "@Model.DetalleCarrito.MensajePersonalizado"class="label font-bold mb-1 flex items-center gap-2">
+                                                <!-- Icono comentario -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                          d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                </svg>
+                                            Mensaje personalizado del empaque</label>
+                                            <textarea asp-for="@Model.DetalleCarrito.MensajePersonalizado" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
+                                            <span asp-validation-for="@Model.DetalleCarrito.MensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></span>
+                                            <!-- Mostrar errores de mensaje personalizado -->
+                                            <div id="error-mensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></div>
+                                        </div>
 
-                            <div id="error-mensaje" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
-                        </div>
-
-                        @*Foto del empaque*@
+                                        @*Foto del empaque*@
                         
-                        <!-- Icono cámara -->
-                        <div class="label font-bold flex items-center gap-2 mt-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M3 7h2l1-2h10l1 2h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
-                                <circle cx="12" cy="13" r="4" />
-                            </svg>
-                            Foto del empaque
+                                        <!-- Icono cámara -->
+                                        <div class="label font-bold flex items-center gap-2 mt-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M3 7h2l1-2h10l1 2h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                                <circle cx="12" cy="13" r="4" />
+                                            </svg>
+                                            Foto del empaque
                         
+                                        </div>
+
+
+                                        <!-- Drag and Drop para foto personalizada -->
+                                        <div x-data="dataSingleFileDnD()" class="relative flex flex-col p-4 border border-gray-100 rounded mt-2 h-75">
+                                            <div x-ref="dnd"
+                                                 x-on:drop.prevent="handleFileDrop($event); $refs.dnd.classList.remove('drag-over')"
+                                                 x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
+                                                 x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
+                                                 class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
+
+                                            <!-- Para manejar la inserción de la imagen-->
+                                            <input asp-for="@Model.DetalleCarrito.Foto"
+                                                   accept="image/*" 
+                                                   type="file"
+                                                   class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
+                                                   x-on:change="handleFileChange($event)"                               
+                                                   title="" />
+
+                                            <div class="flex flex-col items-center justify-center py-10 text-center rounded">
+                                                <svg class="w-6 h-6 mr-1 text-current-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                <p class="m-0">Arrastre la imagen aquí o haga clic para seleccionarla.</p>
+                                            </div>
+
+                                            </div>
+
+                                            <!-- Mostrar error si no se sube ninguna imagen -->
+                                            <div id="error-foto" class="text-sm italic" style="color:red; font-size: small"></div>
+
+                                        <!-- Para manejar la vista previa de la imagen -->
+                                        <template x-if="file">
+                                            <div class="w-25 h-25 relative mt-4">
+                                                <img :src="previewUrl" class="w-full h-full object-cover rounded" alt="Vista previa" />
+                                                <!-- Botón para quitar la imagen -->
+                                                <button class="btn-borrar absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none cursor-pointer hover:bg-gray-200" type="button" x-on:click="removeFile()">
+                                                    <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                 </button>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    </div>
+                                </div>
+                            </template>
                         </div>
-
-                        <!-- Mostrar error si no se sube ninguna imagen -->
-                        <div id="error-foto" class="text-sm italic" style="color:red; font-size: small"></div>
-
-                        <!-- Drag and Drop para foto personalizada -->
-                        <div x-data="dataSingleFileDnD()" class="relative flex flex-col p-4 border border-gray-100 rounded mt-2 h-75">
-                            <div x-ref="dnd"
-                                 x-on:drop.prevent="handleFileDrop($event); $refs.dnd.classList.remove('drag-over')"
-                                 x-on:dragover.prevent="$refs.dnd.classList.add('drag-over')"
-                                 x-on:dragleave="$refs.dnd.classList.remove('drag-over')"
-                                 class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
-
-                            <!-- Para manejar la inserción de la imagen-->
-                            <input asp-for="@Model.DetalleCarrito.Foto"
-                                   name="Foto"
-                                   accept="image/*" 
-                                   type="file"
-                                   class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
-                                   x-on:change="handleFileChange($event)"                               
-                                   title="" />
-
-                            <!-- Mensaje de error para imagen -->
-                            <span asp-validation-for="@Model.DetalleCarrito.Foto" class="text-sm italic text-red-500 mt-1 block"></span>
-
-                            <div class="flex flex-col items-center justify-center py-10 text-center rounded">
-                                <svg class="w-6 h-6 mr-1 text-current-50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <p class="m-0">Arrastre la imagen aquí o haga clic para seleccionarla.</p>
-                            </div>
-
-                            </div>
-
-                        <!-- Para manejar la vista previa de la imagen -->
-                        <template x-if="file">
-                            <div class="w-25 h-25 relative mt-4">
-                                <img :src="previewUrl" class="w-full h-full object-cover rounded" alt="Vista previa" />
-                                <!-- Botón para quitar la imagen -->
-                                <button class="btn-borrar absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none cursor-pointer hover:bg-gray-200" type="button" x-on:click="removeFile()">
-                                    <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                 </button>
-                            </div>
-                        </template>
-                    </div>
-
-                    </div>
                 }
 
                 <!-- Botón para agregar producto al carrito -->

@@ -61,11 +61,30 @@ function manejarEnvioResenna(e) {
 function manejarEnvioDetalleCarrito(e) {
     e.preventDefault();
 
+    // Para validar el estado del formulario
+    let valido = true;
+
     const form = e.target;
     const formData = new FormData(form);
 
-    // Limpiar mensajes anteriores
-    //document.getElementById("error-etiquetas").innerText = "";
+    // Obtener los valores de campos personalizados
+    const mensajeInput = document.querySelector("textarea[name='MensajePersonalizado']");
+    const empaqueSelect = document.querySelector("select[name='IdEmpaque']");
+    const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
+
+
+    // Limpiar mensajes anteriores de campos personalizables (tipoEmpaque, mensajePersonaliado y foto)
+
+    const erroresTipoEmpaque = document.getElementById("error-tipoEmpaque");
+    if (erroresTipoEmpaque) {
+        erroresTipoEmpaque.innerText = "";
+    }
+
+    const erroresMensajePersonalizado = document.getElementById("error-mensajePersonalizado");
+    if (erroresMensajePersonalizado) {
+        erroresMensajePersonalizado.innerText = "";
+    }
+
     const erroresFoto = document.getElementById("error-foto");
     if (erroresFoto) {
         erroresFoto.innerText = "";
@@ -74,28 +93,37 @@ function manejarEnvioDetalleCarrito(e) {
     // Activar validación unobstrusive
     $.validator.unobtrusive.parse(form);
 
-    // Validación manual de imagen (Foto)
-    //const archivoInput = document.querySelector("#formCarritoDetalle input[name='Foto']");
-    const componenteDropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
-    //const tieneArchivo = archivoInput && archivoInput.files && archivoInput.files.length > 0;
-    const tieneArchivo = componenteDropzone && componenteDropzone.__x && componenteDropzone.__x.$data.file != null;
+    // Validar tipo de empaque
+    if (!empaqueSelect || empaqueSelect.value === "") {
+        document.getElementById("error-mensaje").innerText = "El tipo de empaque es requerido.";
+        valido = false;
+    }
 
-    // Validación general del formulario
-    const esValido = $(form).valid();
+    // Validar mensaje
+    if (!mensajeInput || mensajeInput.value.trim() === "") {
+        document.getElementById("error-mensaje").innerText = "El mensaje personalizado es requerido.";
+        valido = false;
+    }
+
+
+    // Validar si hay imagen en el dropzone de imágenes
+    const tieneArchivo = componenteDropzone && componenteDropzone.__x && componenteDropzone.__x.$data.file != null;
 
     // Si el formulario no es válido o no tiene imagen, mostrar errores correspondientes
     if (!esValido || !tieneArchivo) {
 
-        // Forzar validación campo por campo
-        $(form).find("input, select, textarea").each(function () {
-            $(this).valid();
-        });
+        // Forzar validación manual para los campos de personalización (ya que hay Alpine JS de por medio)
 
-        // Mostrar error de forma manual si falta la imagen
+        // Validación manual de tipoEmpaque
+
+
+        // Validación manual de mensajePersonalizado
+
+        // Validación manual de foto
         if (!tieneArchivo) {
             const erroresFoto = document.getElementById("error-foto");
             if (erroresFoto) {
-                erroresFoto.innerText = "* Debe insertar al menos una imagen *";
+                erroresFoto.innerText = "Debe insertar al menos una imagen";
             }
         }
 

@@ -25,7 +25,7 @@ public record CarritoDetalleDTO
     [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerica ")]
     public int Cantidad { get; set; }
     
-    [Required(ErrorMessage = "* Debe insertar al menos una imagen *")]
+    [Required(ErrorMessage = "Debe insertar al menos una imagen")]
     public byte[]? Foto { get; set; }
 
     [Display(Name = "Mensaje personalizado")]
