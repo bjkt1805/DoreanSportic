@@ -310,7 +310,7 @@ function calcularSubtotal() {
     // calcular dinámicamente el subTotal
     const form = document.getElementById("formCarritoDetalle");
     const inputCantidad = document.getElementById("inputCantidad");
-    const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+    const selectEmpaque = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
     const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
     const subtotalSpan = document.getElementById("subTotalValor");
 
@@ -330,7 +330,7 @@ function calcularSubtotal() {
     if (deseaPersonalizar) {
 
         // Obtener la referencia ACTUAL al select insertado dinámicamente
-        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+        const selectEmpaque = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
 
         // Inicializar el precio del empaque en 0
         let precioEmpaque = 0;
@@ -351,11 +351,11 @@ function calcularSubtotal() {
         // Agregarle a subtotal precioEmpaque * cantidad Producto
         subtotal += precioEmpaque * cantidad;
 
-        // Sumarle al subTotal el precio por defecto del mensaje personalizado
-        subtotal += parseFloat(form.dataset.precioMensaje || 0);
+        // Sumarle al subTotal el precio por defecto del mensaje personalizado * cantidad Producto
+        subtotal += parseFloat(form.dataset.precioMensaje || 0) * cantidad;
 
-        // Sumarle al subTotal el precio por defecto de la foto
-        subtotal += parseFloat(form.dataset.precioFoto || 0);
+        // Sumarle al subTotal el precio por defecto de la foto * cantidad Producto
+        subtotal += parseFloat(form.dataset.precioFoto || 0) * cantidad;
     }
 
     // Darle formato al campo de SubTotal (separador de miles y 2 decimales)
@@ -430,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // disparar el evento manual de select de 
             // tipo de empaque listo
             if (r.value === "si" && r.checked) {
-                console.log("Radio sí seleccionado → disparando evento manual");
+                console.log("Radio sí seleccionado, disparando evento manual");
                 window.dispatchEvent(new Event("select-empaque-listo"));
             }
         });
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("select-empaque-listo", () => {
     // Esperar al siguiente "tick" para que el DOM esté completamente actualizado
     setTimeout(() => {
-        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+        const selectEmpaque = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
         if (selectEmpaque && !selectEmpaque.dataset.listenerAttached) {
             console.log("Select encontrado y listener agregado");
             selectEmpaque.addEventListener("change", () => {
