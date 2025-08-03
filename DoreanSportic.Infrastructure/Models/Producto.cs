@@ -38,7 +38,6 @@ public partial class Producto
 
     // Aplicar data notation NotMapped para hacerle entender a EF Core que esta propiedad no es mapeada de la base de datos.
     //[NotMapped]
-    //public byte[]? PrimeraImagen { get; set; }
 
     [NotMapped]
     public byte[]? PrimeraImagen => ImagenesProducto?.FirstOrDefault()?.Imagen;

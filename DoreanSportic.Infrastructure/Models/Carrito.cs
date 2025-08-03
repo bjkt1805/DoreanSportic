@@ -7,7 +7,7 @@ public partial class Carrito
 {
     public int Id { get; set; }
 
-    public int IdCliente { get; set; }
+    public int? IdCliente { get; set; }
 
     public DateTime FechaCreacion { get; set; }
 
@@ -17,5 +17,5 @@ public partial class Carrito
 
     public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
 
-    public virtual Cliente IdClienteNavigation { get; set; } = null!;
+    public virtual Cliente? IdClienteNavigation { get; set; }
 }

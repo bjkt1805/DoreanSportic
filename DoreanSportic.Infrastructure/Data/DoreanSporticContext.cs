@@ -67,6 +67,7 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Carrito)
                 .HasForeignKey(d => d.IdCliente)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Carrito_Cliente");
         });
 

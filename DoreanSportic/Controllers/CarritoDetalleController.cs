@@ -12,10 +12,12 @@ namespace DoreanSportic.Web.Controllers
     public class CarritoDetalleController : Controller
     {
         private readonly IServiceCarritoDetalle _serviceCarritoDetalle;
+        private readonly IServiceCarrito _serviceCarrito
 
-        public CarritoDetalleController(IServiceCarritoDetalle serviceCarritoDetalle)
+        public CarritoDetalleController(IServiceCarritoDetalle serviceCarritoDetalle, IServiceCarrito serviceCarrito)
         {
             _serviceCarritoDetalle = serviceCarritoDetalle;
+            _serviceCarrito = serviceCarrito;
 
         }
 
@@ -38,6 +40,29 @@ namespace DoreanSportic.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CarritoDetalleDTO dto, IFormFile? foto)
         {
+            // Antes de crear la entrada de detalle carrito, hay que revisar si existe
+            // carrito en la sesión del navegador
+
+            // Intentar obtener el id del carrito en sesión (puede ser null, por eso "int?")
+            int? idCarrito = HttpContext.Session.GetInt32("IdCarrito");
+
+            // Si no existe el carrito, crear uno
+            if (idCarrito == null)
+            {
+                // variable para crear un nuevo objeto carrito
+                var nuevoCarrito = new Carrito
+                {
+                    // Si no hay cliente registrado/con sesión inicada (visita anónima) 
+                    // no asignar un IdCliente al carrito todavía
+                    FechaCreacion = DateTime.Now,
+                    EstadoPago = "Pendiente",
+                    Estado = true
+                };
+
+                // Como carrito no existe, hay que enviar el objeto Carrito al servicio de Carrito 
+                // para agregarlo a la base de datos 
+                idCarrito = await _serviceCarrito.CrearCarritoYObtenerIdAsync(nuevoCarrito);
+            }
 
             // Validar el estado del modelo 
             if (!ModelState.IsValid)
@@ -47,7 +72,7 @@ namespace DoreanSportic.Web.Controllers
             }
 
             // Si el estado del modelo es correcto, proceder con la creación
-            // del producto-
+            // del detalle del carrito-
             if (ModelState.IsValid)
             {
                 // Como la foto es nullable entonces solo 

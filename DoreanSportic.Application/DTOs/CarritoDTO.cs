@@ -11,7 +11,7 @@ public record CarritoDTO
 {
     public int Id { get; set; }
 
-    public int IdCliente { get; set; }
+    public int? IdCliente { get; set; }
 
     public DateTime FechaCreacion { get; set; }
 
