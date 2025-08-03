@@ -366,7 +366,7 @@ function calcularSubtotal() {
     });
 }
 
-// INCIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
+// INICIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
 
 // Asignar función que maneja el envio de la reseña 
 // al evento submit solo cuando el DOM esté listo
@@ -393,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
     bloquearBorradoInputCantidad();
 });
 
-// Asignar el evento de submit del formulario de detalle de carrito cuando el DOM esté listo
+// Cuando el DOM esté listo ,asignar el evento de submit del formulario de detalle de carrito 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("formCarritoDetalle");
     if (form) {
@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Cuando se cargue el DOM, cargar los datos de los inputs para poder calcular
+// Cuando el DOM esté listo, cargar los datos de los inputs para poder calcular
 // dinámicamente el subTotal
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -414,10 +414,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
     const subtotalSpan = document.getElementById("subTotalValor");
 
-    // Escuchar cambios en los inputs
+    // Escuchar cambio en el input de Cantidad para llamar a la función de calcularSubTotal
     inputCantidad.addEventListener("input", calcularSubtotal);
+
+    // Escuchar cambio en el input de mensajePersonalizado para llamar a la función de calcularSubTotal
     mensajeTextarea?.addEventListener("input", calcularSubtotal);
-    radioPersonalizar.forEach(r => r.addEventListener("change", calcularSubtotal));
+
+    // Escuchar cambio en el radioButton de personalizar
+    radioPersonalizar.forEach(r => {
+        r.addEventListener("change", () => {
+            calcularSubtotal(); // recalcular subtotal al cambiar opción
+
+            // Si hay un radioButton chequeado y
+            // la opción Sí está seleccionada,
+            // disparar el evento manual de select de 
+            // tipo de empaque listo
+            if (r.value === "si" && r.checked) {
+                console.log("Radio sí seleccionado → disparando evento manual");
+                window.dispatchEvent(new Event("select-empaque-listo"));
+            }
+        });
+    });
 
     // En Alpine: emitir evento desde dropzone cuando cambie imagen
     window.addEventListener("imagen-personalizada-cambiada", calcularSubtotal);
@@ -426,32 +443,59 @@ document.addEventListener("DOMContentLoaded", () => {
     calcularSubtotal();
 
     // Alpine.js tiene envuelto el select de tipoEmpaque en una etiqueta template (x-if)
-    // lo cual está ocasionando problemas con registrar el eventListener del cambio
-    // del select de TipoEmpaque en el DOM.
+    // lo cual está ocasionando problemas con cargar el select en el DOM
+    // correctamente.
     // Para que la función "calcularSubtotal" pueda escuchar los cambios del select
-    // de tipo de empaque hay que crear una función MutationObserver lo cual hace 
-    // que el eventListener del select TipoEmpaque se agregue cuando se requiera, 
-    // o sea, cuando el select se cargue correctamente en el DOM.
-    window.addEventListener("select-empaque-listo", () => {
-        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+    // de tipo de empaque hay que manualmente registrar un evento listener manual
+    // para poder manejar el cambio del select dinámico. 
+    //window.addEventListener("select-empaque-listo", () => {
+    //    // Esperar al siguiente "tick" para que el DOM esté completamente actualizado
+    //    setTimeout(() => {
+    //        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+    //        if (selectEmpaque && !selectEmpaque.dataset.listenerAttached) {
+    //            console.log("Select encontrado y listener agregado");
+    //            selectEmpaque.addEventListener("change", () => {
+    //                const opcion = selectEmpaque.selectedOptions[0];
+    //                const precio = opcion?.dataset.precio || 0;
+    //                console.log("Cambio en select:", selectEmpaque.value, "→ Precio:", precio);
+    //                calcularSubtotal();
+    //            });
 
+    //            selectEmpaque.dataset.listenerAttached = "true";
+    //        } else {
+    //            console.log("Select no encontrado al hacer dispatch del evento");
+    //        }
+
+    //        calcularSubtotal();
+    //    }, 0); // usar 0 para que espere al siguiente ciclo de render
+    //});
+
+
+});
+
+window.addEventListener("select-empaque-listo", () => {
+    // Esperar al siguiente "tick" para que el DOM esté completamente actualizado
+    setTimeout(() => {
+        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
         if (selectEmpaque && !selectEmpaque.dataset.listenerAttached) {
+            console.log("Select encontrado y listener agregado");
             selectEmpaque.addEventListener("change", () => {
-                const valorSeleccionado = selectEmpaque.selectedOptions[0];
-                const precio = valorSeleccionado?.dataset.precio || 0;
-                console.log("🔁 Cambio detectado en select:", selectEmpaque.value, "→ Precio:", precio);
+                const opcion = selectEmpaque.selectedOptions[0];
+                const precio = opcion?.dataset.precio || 0;
+                console.log("Cambio en select:", selectEmpaque.value, "→ Precio:", precio);
                 calcularSubtotal();
             });
 
             selectEmpaque.dataset.listenerAttached = "true";
+        } else {
+            console.log("Select no encontrado o listener ya agregado");
         }
 
-        // Llamar una vez al iniciar si ya hay una opción seleccionada
         calcularSubtotal();
-    });
+    }, 0);
 });
 
-// Cuando se cargue el DOM, habilitar o deshabilitar el botón "Agregar al carrito"
+// Cuando el DOM esté listo, habilitar o deshabilitar el botón "Agregar al carrito"
 // si el input de cantidad es 0
 document.addEventListener("DOMContentLoaded", () => {
 

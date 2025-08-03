@@ -237,7 +237,8 @@
                     si el usuario quiere personalizar el producto (radioButton) Para esto se va a utilizar lógica de
                     Alpine.js -->
 
-                        <div x-data="{ deseaPersonalizar: 'no' }" class="mb-2">
+                        <div x-data="{ deseaPersonalizar: 'no' }" class="mb-2"
+                             x-effect="if (deseaPersonalizar === 'si') { console.log('Personalización activada'); $nextTick(() => window.dispatchEvent(new Event('select-empaque-listo'))) }">
                             <div class="form-control">
                                 <label class="label font-bold mb-2">¿Desea personalizar el producto?</label>
                                 <div class="flex gap-4">
@@ -271,8 +272,7 @@
                                             <select 
                                                 asp-for="@Model.DetalleCarrito.IdEmpaque" 
                                                 class="select select-bordered w-full" 
-                                                style="border-color:black;"
-                                                x-init="$nextTick(() => $dispatch('select-empaque-listo'))">
+                                                style="border-color:black;">
 
                                                 <option value="">Seleccione un tipo</option>
                                                 @foreach (var empaque in Model.EmpaquesDisponibles)
