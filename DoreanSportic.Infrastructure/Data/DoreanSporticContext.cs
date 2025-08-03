@@ -84,6 +84,9 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.IdEmpaque).HasColumnName("idEmpaque");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
             entity.Property(e => e.MensajePersonalizado).HasColumnName("mensajePersonalizado");
+            entity.Property(e => e.SubTotal)
+                .HasColumnType("decimal(12, 2)")
+                .HasColumnName("subTotal");
 
             entity.HasOne(d => d.IdCarritoNavigation).WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdCarrito)
@@ -91,6 +94,7 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.CarritoDetalle)
                 .HasForeignKey(d => d.IdEmpaque)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_CarritoDetalle_Empaque");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.CarritoDetalle)

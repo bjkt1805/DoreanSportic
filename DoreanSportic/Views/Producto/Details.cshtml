@@ -202,7 +202,13 @@
         @if (Model.Producto.Stock > 0)
         {
 
-            <form asp-controller="CarritoDetalle" id="formCarritoDetalle" asp-action="Create" method="post" enctype="multipart/form-data" class="mt-4 space-y-3">
+            <form asp-controller="CarritoDetalle" id="formCarritoDetalle" 
+                asp-action="Create" method="post" enctype="multipart/form-data" 
+                class="mt-4 space-y-3"
+                data-precio-base="@Model.Producto.PrecioBase"
+                @* data-precio-descuento="@Model.Producto.PrecioConDescuento" *@
+                data-precio-mensaje="2000"
+                data-precio-foto="3000">
                 @Html.AntiForgeryToken()
                 
                 @* <div asp-validation-summary="All" class="text-sm italic" style="color:red; font-size: small"></div> *@
@@ -215,8 +221,12 @@
                                class="input input-bordered mb-1" required style="border-color:black;"/>
                         <span asp-validation-for="@Model.DetalleCarrito.Cantidad" style="color:red; font-size: small; font-style:italic"></span>
                     </div>
-                    <div><p class="font-bold" style="font-size: 20px">Total: ₡</p></div>
-                </div>
+                        <div class="flex items-end">
+                            <p class="font-bold" style="font-size: 20px">
+                                Subtotal: ₡<span id="subTotalValor">0.00</span>
+                            </p>
+                        </div>                
+                    </div>
 
 
 
@@ -262,7 +272,7 @@
                                                 <option value="">Seleccione un tipo</option>
                                                 @foreach (var empaque in Model.EmpaquesDisponibles)
                                                 {
-                                                    <option value="@empaque.Id">
+                                                    <option value="@empaque.Id" data-precio="@empaque.PrecioBase">
                                                         @empaque.TipoEmpaque - ₡@empaque.PrecioBase?.ToString("N2", culturaPersonalizada);
                                                     </option>
                                                 }

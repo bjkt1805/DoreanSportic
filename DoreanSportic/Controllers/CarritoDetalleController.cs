@@ -39,12 +39,6 @@ namespace DoreanSportic.Web.Controllers
         public async Task<IActionResult> Create(CarritoDetalleDTO dto, IFormFile? foto)
         {
 
-            // Validar que haya al menos una imagen
-            if (foto == null)
-            {
-                ModelState.AddModelError("Foto", "Debe insertar al menos una imagen.");
-            }
-
             // Validar el estado del modelo 
             if (!ModelState.IsValid)
             {
@@ -56,11 +50,16 @@ namespace DoreanSportic.Web.Controllers
             // del producto-
             if (ModelState.IsValid)
             {
-                // Procesar la imagen como byte[]
-                using (var ms = new MemoryStream())
+                // Como la foto es nullable entonces solo 
+                // se agrega cuando se agrega en el frontend
+                if (foto != null)
                 {
-                    await foto.CopyToAsync(ms);
-                    dto.Foto = ms.ToArray();
+                    // Procesar la imagen como byte[]
+                    using (var ms = new MemoryStream())
+                    {
+                        await foto.CopyToAsync(ms);
+                        dto.Foto = ms.ToArray();
+                    }
                 }
 
                 // Guardar el detalle del carrito usando service Carrito Detalle

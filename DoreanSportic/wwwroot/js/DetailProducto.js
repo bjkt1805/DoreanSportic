@@ -64,8 +64,14 @@ function manejarEnvioDetalleCarrito(e) {
     // Para validar el estado del formulario
     let valido = true;
 
+    //Obtener los datos del formulario
     const form = e.target;
+    //Crear el formulario (FormData) con los valores recibidos (form)
     const formData = new FormData(form);
+
+    //Acceder al componente Alpine de personalización
+    const componentePersonalizacion = document.querySelector('[x-data="{ deseaPersonalizar: \'no\' }"]');
+    const deseaPersonalizar = componentePersonalizacion?.__x?.$data?.deseaPersonalizar === "si";
 
     // Obtener los valores de campos personalizados
     const mensajeInput = document.querySelector("textarea[name='MensajePersonalizado']");
@@ -93,33 +99,44 @@ function manejarEnvioDetalleCarrito(e) {
     // Activar validación unobstrusive
     $.validator.unobtrusive.parse(form);
 
-    // Validar tipo de empaque
-    if (!empaqueSelect || empaqueSelect.value === "") {
-        document.getElementById("error-tipoEmpaque").innerText = "El tipo de empaque es requerido.";
-        valido = false;
-    }
+    // Validaciones condicionales  de los atributos personalizables (solo si se quiere personalizar)
+    if (deseaPersonalizar) {
 
-    // Validar mensaje
-    if (!mensajeInput || mensajeInput.value.trim() === "") {
-        document.getElementById("error-mensajePersonalizado").innerText = "El mensaje personalizado es requerido.";
-        valido = false;
-    }
-
-
-    // Validar si hay imagen en el dropzone de imágenes
-    const tieneArchivo = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
-
-    // Si el formulario no tiene imagen, mostrar error de imagen
-    if (!tieneArchivo) {
-
-        if (!tieneArchivo) {
-            const erroresFoto = document.getElementById("error-foto");
-            if (erroresFoto) {
-                erroresFoto.innerText = "Debe insertar al menos una imagen";
-                valido = false;
-            }
+        // Validar tipo de empaque
+        if (!empaqueSelect || empaqueSelect.value === "") {
+            document.getElementById("error-tipoEmpaque").innerText = "El tipo de empaque es requerido.";
+            valido = false;
         }
 
+        // Validar mensaje
+        if (!mensajeInput || mensajeInput.value.trim() === "") {
+            document.getElementById("error-mensajePersonalizado").innerText = "El mensaje personalizado es requerido.";
+            valido = false;
+        }
+
+
+        // Validar si hay imagen en el dropzone de imágenes
+        const tieneArchivo = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
+
+        // Si el formulario no tiene imagen, mostrar error de imagen
+        if (!tieneArchivo) {
+
+            if (!tieneArchivo) {
+                const erroresFoto = document.getElementById("error-foto");
+                if (erroresFoto) {
+                    erroresFoto.innerText = "Debe insertar al menos una imagen";
+                    valido = false;
+                }
+            }
+        }
+    }
+
+    // Validación general del formulario (HTML = Cliente + Data Annotations = Modelo)
+    const esValido = $(form).valid();
+    if (!esValido || !valido) {
+        $(form).find("input, select, textarea").each(function () {
+            $(this).valid();
+        });
         return;
     }
 
@@ -223,8 +240,14 @@ function escucharInputCantidad() {
     if (!input) return;
 
     input.addEventListener("input", () => {
-        // Eliminar decimales si el usuario los escribe
-        input.value = input.value.replace(/[^\d]/g, ""); // Solo dígitos
+        // Eliminar decimales si el usuario los escribe 
+        // y mantener solo digitos
+        input.value = input.value.replace(/[^\d]/g, ""); 
+
+        // Limitar el input solo a 3 dígitos
+        if (input.value.length > 3) {
+            input.value = input.value.slice(0, 3);
+        }
 
         const numero = parseInt(input.value);
 
@@ -245,6 +268,34 @@ function escucharInputCantidad() {
     });
 }
 
+// Función para bloquear el borrado en el input de cantidad
+function bloquearBorradoInputCantidad() {
+    const input = document.getElementById("inputCantidad");
+
+    if (!input) return;
+
+    // Escuchar el evento de key down cuando se 
+    // inserta valor en el input de cantidad
+    input.addEventListener("keydown", (e) => {
+        // Bloquear teclas de borrado
+        const teclasBloqueadas = ["Backspace", "Delete"];
+
+        if (teclasBloqueadas.includes(e.key)) {
+            e.preventDefault();
+        }
+
+        // También bloquear CTRL + X
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
+            e.preventDefault();
+        }
+    });
+
+    // Bloquear pegar
+    input.addEventListener("paste", (e) => e.preventDefault());
+    input.addEventListener("cut", (e) => e.preventDefault());
+}
+
+// INCIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
 // Asignar función al evento submit solo cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("formResenna");
@@ -262,10 +313,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Cuando el DOM esté listo, realizar las validaciones de los inputs para
+// Cuando el DOM esté listo, realizar la validación del input de cantidad para
 // añadir el producto al carrito
 document.addEventListener("DOMContentLoaded", function () {
     escucharInputCantidad();
+    bloquearBorradoInputCantidad();
 });
 
 // Asignar el evento de submit del formulario de detalle de carrito cuando el DOM esté listo
@@ -275,3 +327,59 @@ document.addEventListener("DOMContentLoaded", function () {
         form.addEventListener("submit", manejarEnvioDetalleCarrito);
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formCarritoDetalle");
+    const inputCantidad = document.getElementById("inputCantidad");
+    const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
+    const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
+    const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
+    const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
+    const subtotalSpan = document.getElementById("subTotalValor");
+
+    function calcularSubtotal() {
+        const cantidad = parseInt(inputCantidad.value) || 0;
+        const deseaPersonalizar = [...radioPersonalizar].find(r => r.checked)?.value === "si";
+
+    const precioProducto = parseFloat(form.dataset.precioDescuento || form.dataset.precioBase || 0);
+    let subtotal = precioProducto * cantidad;
+
+    if (deseaPersonalizar) {
+            const precioEmpaque = parseFloat(selectEmpaque.selectedOptions[0]?.dataset.precio || 0);
+    subtotal += precioEmpaque * cantidad;
+
+    const mensajeActivo = mensajeTextarea?.value?.trim() !== "";
+    if (mensajeActivo) {
+        subtotal += parseFloat(form.dataset.precioMensaje || 0);
+            }
+
+    const tieneFoto = dropzone && dropzone.__x && dropzone.__x.$data.file != null;
+    if (tieneFoto) {
+        subtotal += parseFloat(form.dataset.precioFoto || 0);
+            }
+        }
+
+    subtotalSpan.textContent = subtotal.toLocaleString("es-CR", {
+        style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+        });
+    }
+
+    // Escuchar cambios
+    inputCantidad.addEventListener("input", calcularSubtotal);
+    selectEmpaque?.addEventListener("change", calcularSubtotal);
+    mensajeTextarea?.addEventListener("input", calcularSubtotal);
+    radioPersonalizar.forEach(r => r.addEventListener("change", calcularSubtotal));
+
+    // En Alpine: emitir evento desde dropzone cuando cambie imagen
+    window.addEventListener("imagen-personalizada-cambiada", calcularSubtotal);
+
+    // Inicial
+    calcularSubtotal();
+});
+
+
+
+
+

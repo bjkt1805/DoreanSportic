@@ -11,7 +11,7 @@ public partial class CarritoDetalle
 
     public int IdProducto { get; set; }
 
-    public int IdEmpaque { get; set; }
+    public int? IdEmpaque { get; set; }
 
     public int Cantidad { get; set; }
 
@@ -19,11 +19,13 @@ public partial class CarritoDetalle
 
     public string? MensajePersonalizado { get; set; }
 
+    public decimal SubTotal { get; set; }
+
     public bool Estado { get; set; }
 
     public virtual Carrito IdCarritoNavigation { get; set; } = null!;
 
-    public virtual Empaque IdEmpaqueNavigation { get; set; } = null!;
+    public virtual Empaque? IdEmpaqueNavigation { get; set; }
 
     public virtual Producto IdProductoNavigation { get; set; } = null!;
 }
