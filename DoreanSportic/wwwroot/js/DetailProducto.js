@@ -73,9 +73,11 @@ function manejarEnvioDetalleCarrito(e) {
     const componentePersonalizacion = document.querySelector('[x-data="{ deseaPersonalizar: \'no\' }"]');
     const deseaPersonalizar = componentePersonalizacion?.__x?.$data?.deseaPersonalizar === "si";
 
-    // Obtener los valores de campos personalizados
+    // Obtener los valores de campos personalizados (mensaje personalizado y tipo de empaque)
     const mensajeInput = document.querySelector("textarea[name='DetalleCarrito.MensajePersonalizado']");
     const empaqueSelect = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
+
+    // Llamar a la función de Alpine que maneja la inserción de la imagen
     const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
 
 
@@ -139,6 +141,20 @@ function manejarEnvioDetalleCarrito(e) {
         });
         return;
     }
+
+    // Añadir el archivo del dropzone de Alpine.js (imagen) al
+    // formulario si existe
+
+    // Obtener el archivo que Alpine.js cargó en el dropzone
+    const archivoAlpine = dropzone?.__x?.$data?.file;
+
+    // Si el archivo existe, añadirlo al formulario
+    if (archivoAlpine) {
+        formData.set("DetalleCarrito.FotoArchivo", archivoAlpine);
+    }
+
+    // Enviar en segundo plano el estado de detalleCarrito como "true"
+    formData.set("DetalleCarrito.Estado","true");
 
     // enviar el formulario al controlador si todo está correcto
     fetch("/CarritoDetalle/Create", {

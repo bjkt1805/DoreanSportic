@@ -1,8 +1,10 @@
 ﻿using DoreanSportic.Infrastructure.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +34,15 @@ public record CarritoDetalleDTO
     [Required(ErrorMessage = " {0} es requerida ")]
     [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerica ")]
     public int Cantidad { get; set; }
-    
+
+    // Como el controlador no acepta archivos byte directamente, 
+    // Hay que incluir un atributo de tipo IFormFile para recibir la imagen
+    // Este atributo se convierte a byte[] en el controlador 
+    // y no se mapea a la base de datos
+
+    [NotMapped]
+    public IFormFile? FotoArchivo { get; set; }
+
     [Required(ErrorMessage = "Debe insertar al menos una imagen")]
     [ValidateNever]
     public byte[]? Foto { get; set; }

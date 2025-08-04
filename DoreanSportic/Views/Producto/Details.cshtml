@@ -327,7 +327,7 @@
                                                  class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
 
                                             <!-- Para manejar la inserción de la imagen-->
-                                            <input asp-for="@Model.DetalleCarrito.Foto"
+                                            <input asp-for="@Model.DetalleCarrito.FotoArchivo"
                                                    accept="image/*" 
                                                    type="file"
                                                    class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
@@ -369,6 +369,11 @@
                             </template>
                         </div>
                 }
+
+                <!-- Input oculto para enviar True para el estado del detalle de producto -->
+                <div class="form-control w-full hidden">
+                    <input type="checkbox" name="DetalleCarrito.Estado" checked />
+                </div>
 
                 <!-- Botón para agregar producto al carrito -->
                 <button id="btnAgregarCarrito" type="submit" class="btn btn-success mt-2 w-full justify-end">

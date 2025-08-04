@@ -39,8 +39,12 @@ namespace DoreanSportic.Web.Controllers
         // POST: CarritoDetalleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarritoDetalleDTO dto, IFormFile? foto)
+        // Como carritoDetalle está ligado a un view model, las propiedades se acceden como 
+        // DetalleCarrito.[atributo] entonces hay que utilizar la propiedad [Bind(Prefix = "DetalleCarrito")] 
+        // en el parámetro del método
+        public async Task<IActionResult> Create([Bind(Prefix = "DetalleCarrito")] CarritoDetalleDTO dto)
         {
+
             // Antes de crear la entrada de detalle carrito, hay que revisar si existe
             // carrito en la sesión del navegador
 
@@ -81,12 +85,12 @@ namespace DoreanSportic.Web.Controllers
             {
                 // Como la foto es nullable entonces solo 
                 // se agrega cuando se agrega en el frontend
-                if (foto != null)
+                if (dto.FotoArchivo != null && dto.FotoArchivo.Length > 0)
                 {
                     // Procesar la imagen como byte[]
                     using (var ms = new MemoryStream())
                     {
-                        await foto.CopyToAsync(ms);
+                        await dto.FotoArchivo.CopyToAsync(ms);
                         dto.Foto = ms.ToArray();
                     }
                 }
