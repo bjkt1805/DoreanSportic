@@ -74,28 +74,28 @@
         </label> *@
 
         <!-- Input del buscador del sitio-->
-        <div style="padding-right: 10px">
+        <div style="padding-right: 40px">
             <input type="text" placeholder="Buscar productos" class="input input-bordered w-24 md:w-auto text-black" />
         </div>
 
         <!-- Contenedor del carrito de compras -->
-        <div class="dropdown dropdown-end p-1" style="padding-right: 30px">
+        <div class="dropdown relative" style="padding-right: 30px">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle" style="padding-left: 20px">
                 <div class="indicator">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
                     <span class="badge badge-sm indicator-item" id="carrito-navbar-badge">0</span>
-                </div>
+                </div> 
             </div>
 
             <div tabindex="0"
-                 class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+                 class="card card-compact dropdown-content bg-[#004AAD] z-1 mt-3 w-52 shadow" style="right: 10%">
                 <div class="card-body" id="carrito-navbar-body">
                 </div>
             </div>
         </div>
 
         <!-- Contenedor del perfil de usuario-->
-        <div class="dropdown dropdown-end">
+        <div class="dropdown relative">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-25 rounded-full flex items-center justify-center" style="background-color:gray">
                     <!-- SVG de usuario -->
@@ -106,15 +106,10 @@
                 </div>
             </div>
             <ul tabindex="0"
-                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                <li>
-                    <a class="justify-between">
-                        Profile
-                        <span class="badge">New</span>
-                    </a>
-                </li>
-                <li><a>Configuración</a></li>
-                <li><a>Cerrar sesión</a></li>
+                class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow" style="right: 10%">
+                <li><a class="btn btn-ghost">Perfil</a></li>
+                <li><a class="btn btn-ghost">Configuración</a></li>
+                <li><a class="btn btn-ghost">Cerrar sesión</a></li>
             </ul>
         </div>
     </div>
