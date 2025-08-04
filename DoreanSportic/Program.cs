@@ -15,7 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSession(); // Para poder utilizar TempData
+
+// Configurar Session (para carrito de compras)
+builder.Services.AddSession(
+        options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        }
+);
 //***********************
 // Configurar D.I.
 //Repository
@@ -132,7 +141,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();//Para utilizar TempData
+app.UseSession();
 
 app.UseAuthorization();
 

@@ -187,11 +187,20 @@ function recargarZonaResennasYPromedio(idProducto) {
 function mostrarToast(mensaje, tipo = "info") {
     const toast = document.createElement("div");
     toast.className = `toast toast-top toast-center z-50`;
-    toast.innerHTML = `
+    if (tipo === "error") {
+        toast.innerHTML = `
+            <div class="alert alert-${tipo}" style="background-color:#FF0000">
+                <span class="text-white font-bold">${mensaje}</span>
+            </div>
+        `;
+    }
+    else {
+        toast.innerHTML = `
             <div class="alert alert-${tipo}">
                 <span class="text-black font-bold">${mensaje}</span>
             </div>
         `;
+    }
     document.body.appendChild(toast);
 
     setTimeout(() => {
@@ -208,6 +217,13 @@ function dataSingleFileDnD() {
         // Evento/función para menejar el cambio de archivo
         handleFileChange(event) {
             const selectedFile = event.target.files[0];
+
+            // Validar que el tipo MIME sea de imagen
+            if (!selectedFile.type.startsWith("image/")) {
+                mostrarToast(`Solo se permiten imágenes. Archivo inválido: ${selectedFile.name}`, "error");
+                return;
+            }
+
             if (selectedFile && selectedFile.type.startsWith("image/")) {
                 this.file = selectedFile;
                 this.previewUrl = URL.createObjectURL(selectedFile);
@@ -221,6 +237,13 @@ function dataSingleFileDnD() {
         // Evento/función para manejar el drop del archivo/imagen
         handleFileDrop(event) {
             const droppedFile = event.dataTransfer.files[0];
+
+            // Validar que el tipo MIME sea de imagen
+            if (!droppedFile.type.startsWith("image/")) {
+                mostrarToast(`Solo se permiten imágenes. Archivo inválido: ${droppedFile.name}`, "error");
+                return;
+            }
+
             if (droppedFile && droppedFile.type.startsWith("image/")) {
                 this.file = droppedFile;
                 this.previewUrl = URL.createObjectURL(droppedFile);
@@ -240,7 +263,7 @@ function dataSingleFileDnD() {
     };
 }
 
-// Función para "escuchar" mientras el usuario escribe en el campo de "Cantidad"
+// Función para escuchar mientras el usuario escribe en el campo de "Cantidad"
 function escucharInputCantidad() {
     const input = document.getElementById("inputCantidad");
     const mensajeError = document.querySelector("span[data-valmsg-for='Stock']");
@@ -302,6 +325,28 @@ function bloquearBorradoInputCantidad() {
     input.addEventListener("paste", (e) => e.preventDefault());
     input.addEventListener("cut", (e) => e.preventDefault());
 }
+
+// Función para escuchar mientras el usuario escribe en el campo de mensaje personalizado
+function escucharInputMensajePersonalizado() {
+    const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
+    const errorDiv = document.getElementById("error-mensajePersonalizado");
+
+    if (mensajeTextarea) {
+        mensajeTextarea.addEventListener("input", function () {
+            if (this.value.length > 500) {
+                this.value = this.value.slice(0, 500);
+                if (errorDiv) {
+                    errorDiv.textContent = "El mensaje no puede superar los 500 caracteres.";
+                }
+            } else {
+                if (errorDiv) {
+                    errorDiv.textContent = "";
+                }
+            }
+        });
+    }
+}
+
 
 // Función para cargar el campo SubTotal de manera dinámica en el frontend
 async function calcularSubtotal() {
@@ -442,37 +487,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Iniciar la función de calcular subTotal
     calcularSubtotal();
 
-    // Alpine.js tiene envuelto el select de tipoEmpaque en una etiqueta template (x-if)
-    // lo cual está ocasionando problemas con cargar el select en el DOM
-    // correctamente.
-    // Para que la función "calcularSubtotal" pueda escuchar los cambios del select
-    // de tipo de empaque hay que manualmente registrar un evento listener manual
-    // para poder manejar el cambio del select dinámico. 
-    //window.addEventListener("select-empaque-listo", () => {
-    //    // Esperar al siguiente "tick" para que el DOM esté completamente actualizado
-    //    setTimeout(() => {
-    //        const selectEmpaque = document.querySelector("select[name='IdEmpaque']");
-    //        if (selectEmpaque && !selectEmpaque.dataset.listenerAttached) {
-    //            console.log("Select encontrado y listener agregado");
-    //            selectEmpaque.addEventListener("change", () => {
-    //                const opcion = selectEmpaque.selectedOptions[0];
-    //                const precio = opcion?.dataset.precio || 0;
-    //                console.log("Cambio en select:", selectEmpaque.value, "→ Precio:", precio);
-    //                calcularSubtotal();
-    //            });
-
-    //            selectEmpaque.dataset.listenerAttached = "true";
-    //        } else {
-    //            console.log("Select no encontrado al hacer dispatch del evento");
-    //        }
-
-    //        calcularSubtotal();
-    //    }, 0); // usar 0 para que espere al siguiente ciclo de render
-    //});
-
 
 });
 
+// Alpine.js tiene envuelto el select de tipoEmpaque en una etiqueta template (x-if)
+// lo cual está ocasionando problemas con cargar el select en el DOM
+// correctamente.
+// Para que la función "calcularSubtotal" pueda escuchar los cambios del select
+// de tipo de empaque hay que manualmente registrar un evento listener en la ventana
+// para poder manejar el cambio de cálculo de subTotal cuando se cambie dinámicamente el select. 
 window.addEventListener("select-empaque-listo", () => {
     // Esperar al siguiente "tick" para que el DOM esté completamente actualizado
     setTimeout(() => {
@@ -522,6 +545,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ejecutar una vez al cargar la página
     actualizarEstadoBoton();
 });
+
+// Cuando el DOM esté listo, escuchar el input en el mensajePersonalizado
+// para determinar si excede los 500 caracteres
+
+document.addEventListener("DOMContentLoaded", () => {
+    escucharInputMensajePersonalizado();
+});
+
 
 
 

@@ -424,11 +424,20 @@ function cargarEditarPromocion(idPromocion) {
 function mostrarToast(mensaje, tipo = "info") {
     const toast = document.createElement("div");
     toast.className = `toast toast-top toast-center z-50`;
-    toast.innerHTML = `
-        <div class="alert alert-${tipo}">
-            <span class="text-black font-bold">${mensaje}</span>
-        </div>
-    `;
+    if (tipo === "error") {
+        toast.innerHTML = `
+            <div class="alert alert-${tipo}" style="background-color:#FF0000">
+                <span class="text-white font-bold">${mensaje}</span>
+            </div>
+        `;
+    }
+    else {
+        toast.innerHTML = `
+            <div class="alert alert-${tipo}">
+                <span class="text-black font-bold">${mensaje}</span>
+            </div>
+        `;
+    }
 
     document.body.appendChild(toast);
 
