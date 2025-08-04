@@ -43,7 +43,21 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                 Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
             }
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                // Para loggear la excepció al enviar
+                // datos a la base de datos
+                var inner = ex.InnerException;
+                var innerMessage = inner?.Message ?? ex.Message;
+
+                // Imprimir en consola el error
+                Console.WriteLine("Error al guardar en base de datos: " + innerMessage);
+            }
             return entity.Id;
         }
     }

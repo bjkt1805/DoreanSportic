@@ -164,14 +164,17 @@ function manejarEnvioDetalleCarrito(e) {
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                mostrarToast("", "success");
+                mostrarToast("¡Producto agregado al carrito!", "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
+
+                // Redirigir al usuario a la vista de productos
+                window.location.href = "/Producto/Index";
                 
             } else if (result.errores) {
                 // Mostrar errores manualmente si vienen en el JSON
                 result.errores.forEach(mensaje => {
-                    mostrarToast(mensaje, "error");
+                    mostrarToast("¡Error al insertar producto al carrito!", "error");
                 });
             }
         })
@@ -425,6 +428,13 @@ async function calcularSubtotal() {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+
+    // Actualizar el input hidden con el valor numérico (sin formato)
+    const inputSubTotal = document.getElementById("inputSubTotal");
+    if (inputSubTotal) {
+        // Sin formato, solo el valor numérico
+        inputSubTotal.value = subtotal; 
+    }
 }
 
 // INICIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM

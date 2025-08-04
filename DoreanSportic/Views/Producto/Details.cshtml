@@ -370,10 +370,16 @@
                         </div>
                 }
 
-                <!-- Input oculto para enviar True para el estado del detalle de producto -->
+                <!-- Input oculto para enviar True para el estado del detalle de carrito -->
                 <div class="form-control w-full hidden">
                     <input type="checkbox" name="DetalleCarrito.Estado" checked />
                 </div>
+
+                <!-- Input oculto para enviar el Id del producto a la hora de insertarlo -->
+                <input type="hidden" name="DetalleCarrito.IdProducto" value="@Model.Producto.Id" />
+
+                <!-- Input oculto para enviar el subTotal calculado por JavaScript (calcularSubtotal) al formulario -->
+                <input type="hidden" name="DetalleCarrito.SubTotal" id="inputSubTotal" value="0.00" />
 
                 <!-- Botón para agregar producto al carrito -->
                 <button id="btnAgregarCarrito" type="submit" class="btn btn-success mt-2 w-full justify-end">

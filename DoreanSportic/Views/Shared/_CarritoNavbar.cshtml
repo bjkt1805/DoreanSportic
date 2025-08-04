@@ -1,0 +1,24 @@
+﻿@model IEnumerable<DoreanSportic.Application.DTOs.CarritoDetalleDTO>
+
+@using System.Globalization
+
+<!-- Para el separador de miles-->
+@{
+    var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
+}
+
+@{
+    // Obtener el subtotal de todos los detalles (productos) del carrito
+    var subtotal = Model.Sum(x => x.SubTotal);
+
+    // Obtener la cantidad total de productos en el carrito
+    var cantidad = Model.Count();
+}
+
+<span class="text-lg font-bold">@cantidad Items</span>
+<span class="text-info">Subtotal: ₡@subtotal.ToString("N2")</span>
+<div class="card-actions">
+    <a href="/Carrito/Index" class="btn btn-primary btn-block">Ver carrito</a>
+</div>
