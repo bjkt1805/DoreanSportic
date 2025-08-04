@@ -61,5 +61,13 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             }
             return entity.Id;
         }
+
+        public async Task<List<CarritoDetalle>> GetByCarritoIdAsync(int idCarrito)
+        {
+            return await _context.Set<CarritoDetalle>()
+                .Where(cd => cd.IdCarrito == idCarrito)
+                .ToListAsync();
+        }
+
     }
 }

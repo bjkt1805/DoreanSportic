@@ -40,5 +40,12 @@ namespace DoreanSportic.Application.Services.Implementations
             var objectMapped = _mapper.Map<CarritoDetalle>(dto);
             return await _repository.AddAsync(objectMapped);
         }
+
+        public async Task<List<CarritoDetalleDTO>> GetByCarritoIdAsync(int idCarrito)
+        {
+            var detalles = await _repository.GetByCarritoIdAsync(idCarrito);
+            return _mapper.Map<List<CarritoDetalleDTO>>(detalles);
+        }
+
     }
 }

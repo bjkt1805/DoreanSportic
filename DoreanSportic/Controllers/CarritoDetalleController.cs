@@ -110,7 +110,7 @@ namespace DoreanSportic.Web.Controllers
             return Json(new { success = true, mensaje = "¡Producto agregado al carrito!"});
         }
 
-        // Método para cargar la vista parcial de los detalles del carrito
+        // GET: Método para cargar la vista parcial de los detalles del carrito
         public async Task<IActionResult> NavbarCarrito()
         {
             // Obtener el ID del carrito de la sesión
@@ -124,7 +124,7 @@ namespace DoreanSportic.Web.Controllers
             {
                 detalles = await _serviceCarritoDetalle.GetByCarritoIdAsync(idCarrito.Value);
             }
-            return PartialView("_CarritoNavbarPartial", detalles);
+            return PartialView("_CarritoNavbar", detalles);
         }
     }
 }

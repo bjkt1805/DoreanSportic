@@ -1,4 +1,5 @@
 ﻿using DoreanSportic.Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<CarritoDetalle> FindByIdAsync(int id);
         Task<int> AddAsync(CarritoDetalle entity);
 
-
+        Task<List<CarritoDetalle>> GetByCarritoIdAsync(int idCarrito);
     }
 }

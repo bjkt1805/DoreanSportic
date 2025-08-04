@@ -441,7 +441,7 @@ async function calcularSubtotal() {
 //de compras
 
 function recargarResumenCarritoNavbar() {
-    fetch("/Carrito/NavbarCarrito")
+    fetch("/CarritoDetalle/NavbarCarrito")
         .then(response => response.text())
         .then(html => {
             document.getElementById("carrito-navbar-body").innerHTML = html;
@@ -454,8 +454,8 @@ function recargarResumenCarritoNavbar() {
                 // document.getElementById("carrito-navbar-badge").innerText = cantidad;
             }
         });
-    }
 }
+
 
 
 // INICIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
