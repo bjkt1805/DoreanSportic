@@ -247,3 +247,27 @@ function dataFileDnD() {
 
     };
 }
+
+function recargarResumenCarritoNavbar() {
+    fetch("/CarritoDetalle/NavbarCarrito")
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("carrito-navbar-body").innerHTML = html;
+            // Si el badge de cantidad está dentro de la parcial, no necesitas nada extra.
+            // Si está fuera, actualiza aquí también:
+            const badgeInPartial = document.getElementById("carrito-navbar-badge");
+            if (badgeInPartial) {
+                // Si la parcial incluye el badge, ya está actualizado.
+                // Si NO, obtén la cantidad y ponla aquí.
+                // document.getElementById("carrito-navbar-badge").innerText = cantidad;
+            }
+        });
+}
+
+// Cuando el DOM esté listo, cargar la función que recarga el carrito de compras
+// en el navbar cuando se agregan o quitan detalles/productos del carrito de compras
+document.addEventListener("DOMContentLoaded", () => {
+    recargarResumenCarritoNavbar();
+});
+
+

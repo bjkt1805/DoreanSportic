@@ -17,8 +17,10 @@
     var cantidad = Model.Count();
 }
 
-<span class="text-lg font-bold">@cantidad Ítemes</span>
+<span class="text-lg font-bold">Productos en el carrito: @cantidad</span>
 <span class="text-white">Subtotal: ₡@subtotal.ToString("N2", culturaPersonalizada)</span>
 <div class="card-actions">
-    <a href="/Carrito/Index" class="btn btn-success btn-block">Ver carrito</a>
+    <a href="/Carrito/Index" class="btn btn-block">Ver carrito</a>
+    <a href="/Carrito/Index" class="btn btn-success btn-block">Completar compra</a>
+
 </div>
