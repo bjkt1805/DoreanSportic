@@ -10,11 +10,20 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using System.Text;
+// Para implementar (I18N) internacionalización y localización de la aplicación
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// Agregar servicios al contenedor.
+builder.Services.AddControllersWithViews()
+// Habilitar la localización en vistas y anotaciones
+    .AddDataAnnotationsLocalization()
+    .AddViewLocalization();
+
+// Agregar servicios de internacionalización y localización
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 // Configurar Session (para carrito de compras)
 builder.Services.AddSession(
@@ -142,6 +151,33 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+// Para soportar diferentes idiomas y culturas (I18N)
+var supportedCultures = new[]
+{
+    // Soporte para inglés y español
+    new CultureInfo("en-US"),
+    new CultureInfo("es-CR"),
+};
+
+// Configurar la localización de la aplicación
+var localizationOptions = new RequestLocalizationOptions
+{
+    // Establecer el idioma por defecto a Español de Costa Rica (es-CR)
+    DefaultRequestCulture = new RequestCulture("es-CR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures,
+    RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        // Para persistir la cultura del usuario en la sesión (por medio de cookie)
+        new CookieRequestCultureProvider(),
+        // Proveedor de cultura por defecto
+        new AcceptLanguageHeaderRequestCultureProvider()
+    }
+};
+
+// Utilizar la localización en la aplicación (valores de localizationOptions)
+app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
 

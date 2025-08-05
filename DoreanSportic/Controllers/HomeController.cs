@@ -4,6 +4,8 @@ using DoreanSportic.Models;
 using DoreanSportic.Web.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+// importar librería de localización
+using Microsoft.Extensions.Localization;
 
 namespace DoreanSportic.Controllers
 {
@@ -11,12 +13,13 @@ namespace DoreanSportic.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IServiceUsuario _serviceUsuario;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-
-        public HomeController(ILogger<HomeController> logger, IServiceUsuario serviceUsuario)
+        public HomeController(ILogger<HomeController> logger, IServiceUsuario serviceUsuario, IStringLocalizer<HomeController> localizer)
         {
             _logger = logger;
             _serviceUsuario = serviceUsuario;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
