@@ -150,8 +150,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession();
-
 // Para soportar diferentes idiomas y culturas (I18N)
 var supportedCultures = new[]
 {
@@ -178,6 +176,10 @@ var localizationOptions = new RequestLocalizationOptions
 
 // Utilizar la localización en la aplicación (valores de localizationOptions)
 app.UseRequestLocalization(localizationOptions);
+
+app.UseSession();
+
+
 
 app.UseAuthorization();
 

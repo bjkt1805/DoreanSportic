@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -19,11 +22,15 @@
             <!--Texto a mostrar en el slide-->
             <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center text-white text-center z-20 px-4">
                 <h1 class="italic" style="font-weight: 800; font-size: 250%; -webkit-text-stroke: 2px black; -webkit-text-fill-color: white;">
-                    VE MÁS ALLÁ
-                        <br />ENTRENA COMO NUNCA
+@*                     VE MÁS ALLÁ
+                        <br />ENTRENA COMO NUNCA *@
+                    @(Localizer["Slide1Title"])
                     </h1>
                 <br />
-                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">VER PRODUCTOS</a>
+                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">
+@*                     VER PRODUCTOS
+ *@                    @Localizer["Slide1Button"]
+                    </a>
             </div>
         </div>
         <div id="slide2" class="carousel-item relative w-screen">
@@ -36,21 +43,21 @@
             <!--Texto a mostrar en el slide-->
             <div class="absolute top-0 left-0 w-full h-full overflow-visible flex flex-col items-center justify-center text-white text-center z-20 px-4">
                 <h1 class="italic" style="font-weight: 800; font-size: 250%; -webkit-text-stroke: 2px black; -webkit-text-fill-color: white;">
-                    TODO COMIENZA CON UN PASO<br />HAZLO TUYO
+                    @* TODO COMIENZA CON UN PASO<br />HAZLO TUYO *@
+                    @(Localizer["Slide2Title"])
                 </h1>
                 <br />
-                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">VER PRODUCTOS</a>
+                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">
+                    @*VER PRODUCTOS*@
+                    @Localizer["Slide2Button"]
+                </a>
             </div>
 
-@*             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                <a href="#slide1" class="btn btn-circle">❮</a>
-                <a href="#slide3" class="btn btn-circle">❯</a>
-            </div> *@
         </div>
         <div id="slide3" class="carousel-item relative w-screen">
             <video class="w-full h-full object-cover" autoplay muted loop>
                 <source src="./Assets/video2.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
+                Su navegador no soporta la etiqueta video.
             </video>
 
             <!-- Degradado oscuro vertical -->
@@ -59,16 +66,15 @@
             <!--Texto a mostrar en el slide-->
             <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center text-white text-center z-20 px-4">
                 <h1 class="italic" style="font-weight: 800; font-size: 250%; -webkit-text-stroke: 2px black; -webkit-text-fill-color: white;">
-                    DOMINA LA CANCHA<br />CON CADA MOVIMIENTO
+                    @*DOMINA LA CANCHA<br />CON CADA MOVIMIENTO *@
+                    @(Localizer["Slide3Title"])
                 </h1>
                 <br />
-                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">VER PRODUCTOS</a>
+                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">
+                    @*VER PRODUCTOS*@
+                    @Localizer["Slide3Button"]
+                </a>
             </div>
-
-@*             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                <a href="#slide2" class="btn btn-circle">❮</a>
-                <a href="#slide4" class="btn btn-circle">❯</a>
-            </div> *@
         </div>
         <div id="slide4" class="carousel-item relative w-screen">
             <img src="~/Assets/football.jpg"
@@ -81,36 +87,19 @@
             <!--Texto a mostrar en el slide-->
             <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center text-center z-20 px-4">
                 <h1 class="italic" style="font-weight: 800; font-size: 250%; -webkit-text-stroke: 2px black; -webkit-text-fill-color: white;">
-                    DONDE NACE LA PASIÓN<br />COMIENZA EL JUEGO
+                    @* DONDE NACE LA PASIÓN<br />COMIENZA EL JUEGO *@
+                    @(Localizer["Slide4Title"])
                 </h1>
                 <br />
-                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">VER PRODUCTOS</a>
+                <a class="bg-[#004AAD] btn text-white" asp-area="" asp-controller="Producto" asp-action="Index">
+                    @* VER PRODUCTOS *@
+                    @Localizer["Slide4Button"]
+                </a>
             </div>
-
-@*             <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                <a href="#slide3" class="btn btn-circle">❮</a>
-                <a href="#slide1" class="btn btn-circle">❯</a>
-            </div> *@
         </div>
     </div>
 
 </div>
-
-@* @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const totalSlides = 4;
-            let currentSlide = 1;
-
-            setInterval(() => {
-             const nextSlide = currentSlide >= totalSlides ? 1 : currentSlide + 1;
-             const nextLink = document.querySelector(`a[href="#slide${nextSlide}"]`);
-             if (nextLink) nextLink.click();
-             currentSlide = nextSlide;
-            }, 5000); // cambia cada 5 segundos
-            });
-    </script>
-} *@
 
 @section Scripts {
     <script>
