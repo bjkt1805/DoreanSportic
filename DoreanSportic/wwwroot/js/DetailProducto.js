@@ -423,11 +423,29 @@ async function calcularSubtotal() {
     }
 
     // Darle formato al campo de SubTotal (separador de miles y 2 decimales)
-    subtotalSpan.textContent = subtotal.toLocaleString("es-CR", {
+    subtotalSpan.textContent = subtotal.toLocaleString("fr-FR", {
         style: "decimal",
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+
+    // Función para dar formato con separador de miles y "."
+    // para separador de decimales
+    function formatoCustomNumero (number) {
+
+        // Usar el locale francés para que el separador de miles sea espacio
+        let formatted = number.toLocaleString('fr-FR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        // Asegurar el punto como decimal
+        formatted = formatted.replace(',', '.');
+        return formatted;
+    }
+
+    // Aplicar el formato al subtotal
+    subtotalSpan.textContent = formatoCustomNumero(subtotal);
 
     // Actualizar el input hidden con el valor numérico (sin formato)
     const inputSubTotal = document.getElementById("inputSubTotal");

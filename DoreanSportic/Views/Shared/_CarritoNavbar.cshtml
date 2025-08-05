@@ -1,26 +1,57 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.CarritoDetalleDTO>
-
 @using System.Globalization
 
-<!-- Para el separador de miles-->
 @{
+    // Para el separador de miles
     var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
-    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
-    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
-}
-
-@{
-    // Obtener el subtotal de todos los detalles (productos) del carrito
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " ";
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = ".";
+    
+    // Obtener el subtotal a pagar
     var subtotal = Model.Sum(x => x.SubTotal);
 
-    // Obtener la cantidad total de productos en el carrito
+    // Obtener la cantidad de detalles
     var cantidad = Model.Count();
 }
 
 <span class="text-lg font-bold">Productos en el carrito: @cantidad</span>
-<span class="text-white">Subtotal: ₡@subtotal.ToString("N2", culturaPersonalizada)</span>
-<div class="card-actions">
-    <a href="/Carrito/Index" class="btn btn-block">Ver carrito</a>
-    <a href="/Carrito/Index" class="btn btn-success btn-block">Completar compra</a>
 
+<hr stlye="color: white"/>
+
+<!-- Lista de productos -->
+<ul class="divide-y gap-2">
+    @foreach (var item in Model)
+    {
+        @* Cargar los productos en cada detalle del carrito *@
+        <li class="flex items-center py-2">
+            @if (item.IdProductoNavigation.PrimeraImagen != null)
+            {
+                var base64 = @Convert.ToBase64String(item.IdProductoNavigation.PrimeraImagen ?? new byte[0]);
+                <img src="data:image/png;base64,@base64" alt="Imagen del producto" class="w-10 h-10 rounded object-cover mr-2" />
+            }
+            else
+            {
+                <img src="/ruta/imagen-generica.png" alt="Imagen del producto" class="w-10 h-10 rounded object-cover mr-2" />
+            }
+
+            <div class="flex-1" style="margin-left: 5%">
+                <div class="font-bold text-sm">@item.IdProductoNavigation.Nombre</div>
+                <div class="text-xs text-gray-300"><b>Cantidad: </b>@item.Cantidad</div>
+                <div class="text-xs text-gray-200"><b>Subtotal: </b>₡@item.SubTotal.ToString("N2", culturaPersonalizada)</div>
+            </div>
+        </li>
+        <hr stlye="color: white" />
+    }
+</ul>
+
+<!-- Subtotal y acciones (redirecciones de los botones) -->
+<div class="pt-2">
+    <div class="text-white">Subtotal: ₡@subtotal.ToString("N2", culturaPersonalizada)</div>
+    <div class="card-actions mt-2">
+        <a href="/Carrito/Index" class="btn btn-block">Ver carrito</a>
+        <a href="/Carrito/Index" class="btn btn-success btn-block">Completar compra</a>
+    </div>
 </div>
+
+<!-- Badge oculto solo para el JS, es caso de ser necesario -->
+<span id="carrito-navbar-badge-partial" style="display:none;">@cantidad</span>

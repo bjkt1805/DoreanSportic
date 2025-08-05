@@ -248,18 +248,27 @@ function dataFileDnD() {
     };
 }
 
+// Función para recargar el resumen del carrito 
+// en el navbar
 function recargarResumenCarritoNavbar() {
     fetch("/CarritoDetalle/NavbarCarrito")
         .then(response => response.text())
         .then(html => {
+            // renderizar la vista parcial del carito en el dropdown
             document.getElementById("carrito-navbar-body").innerHTML = html;
-            // Si el badge de cantidad está dentro de la parcial, no necesitas nada extra.
-            // Si está fuera, actualiza aquí también:
-            const badgeInPartial = document.getElementById("carrito-navbar-badge");
-            if (badgeInPartial) {
-                // Si la parcial incluye el badge, ya está actualizado.
-                // Si NO, obtén la cantidad y ponla aquí.
-                // document.getElementById("carrito-navbar-badge").innerText = cantidad;
+
+            // leer la cantidad del badge oculto que está en la vista parcial
+            const badgeVistaParcial = document.getElementById("carrito-navbar-badge-partial");
+
+            // Si el badge está disponible en el DOM
+            if (badgeVistaParcial) {
+
+                // Obtener el valor de cantidad del badge
+                const cantidad = badgeVistaParcial.innerText || "0";
+
+                // Actualizar el badge visible del navbar (arriba del carrito de compras)
+                // con la cantidad correcta
+                document.getElementById("carrito-navbar-badge").innerText = cantidad;
             }
         });
 }

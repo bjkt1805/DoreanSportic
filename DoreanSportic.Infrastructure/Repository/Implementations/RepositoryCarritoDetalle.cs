@@ -65,6 +65,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         public async Task<List<CarritoDetalle>> GetByCarritoIdAsync(int idCarrito)
         {
             return await _context.Set<CarritoDetalle>()
+                .Include(cd => cd.IdProductoNavigation)
+                    .ThenInclude(p => p.ImagenesProducto)
                 .Where(cd => cd.IdCarrito == idCarrito)
                 .ToListAsync();
         }
