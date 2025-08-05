@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>  
 @using DoreanSportic.Infrastructure.Models
 @using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 <!-- Para el separador de miles-->
 @{
@@ -32,11 +34,15 @@
                    @{
                         if (item.Stock == 0)
                         {
-                            <div class="badge bg-[#FF0000] text-white">AGOTADO</div>
+                            <div class="badge bg-[#FF0000] text-white">
+                                @(Localizer["AGOTADO"])
+                            </div>
                         }
                         else
                         {
-                            <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                            <div class="badge bg-[#50C878] text-white">
+                                @(Localizer["DISPONIBLE"])
+                            </div>
                         }
                     }
                     <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que  
@@ -44,10 +50,12 @@
                     --> 
 
                     @{
-                        if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||  
-                        (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))  
-                        {  
-                            <div class="badge badge-secondary">OFERTA</div>
+                        if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
+                        (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
+                        {
+                            <div class="badge badge-secondary">
+                                @(Localizer["OFERTA"])
+                            </div>
                         }
                     }
                 </div> 
@@ -97,13 +105,17 @@
             {  
                 <div class="flex flex-col gap gap-1 mb-2">  
                     <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                        <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
+                        <b>
+                            @(Localizer["Precio anterior"]):
+                        </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                         <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                             - @descuentoTotal.ToString("0")%
                         </div>  
                     </div>  
-                    <div class="flex flex-row gap gap-1">  
-                        <b>Precio en oferta: </b>  
+                    <div class="flex flex-row gap gap-1">
+                        <b>
+                            @(Localizer["Precio en oferta"])
+                        </b>
                         <div class="badge badge-xl bg-success text-black font-bold">
                             ₡@precioConDescuento.ToString("N2", culturaPersonalizada)
                         </div>  
@@ -112,8 +124,11 @@
             }  
             else  
             {  
-                <div class="flex flex-row gap gap-1">  
-                    <b class="mt-1">Precio base: </b>  
+                <div class="flex flex-row gap gap-1">
+                    <b class="mt-1">
+                        @(Localizer["Precio base"])
+                        :
+                    </b>
                     <div class="badge badge-outline w-fit">
                         <b>₡@precioBase.ToString("N2", culturaPersonalizada)</b> + I.V.A
                     </div>  
@@ -126,8 +141,10 @@
             <div class="flex justify-between gap-2">  
                 
                 <!-- Redirección a la vista de detalles -->
-                <a class="btn btn-soft btn-primary text-white"  
-                   asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
+                <a class="btn btn-soft btn-primary text-white"
+                   asp-action="Details" asp-route-id="@item.Id">
+                    @(Localizer["Ver detalles"])
+                </a>
 
                 <!-- Botón para agregar al carrito -->
                 @{
@@ -135,14 +152,14 @@
                     {
                         <button class="btn btn-soft text-white cursor-not-allowed" style="background-color: #808080" disabled>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
-                            Agregar
+                            @(Localizer["Agregar"])
                         </button>
                     }
                     else
                     {
                         <button class="btn btn-soft bg-[#006400] text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
-                            Agregar
+                            @(Localizer["Agregar"])
                         </button>
                     }
                 }

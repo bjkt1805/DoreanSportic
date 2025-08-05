@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -39,9 +42,11 @@
                 <!-- Información del negocio -->
                 <div class="mb-4">
                     <h6 class="text-lg font-bold">Dorean Sportic</h6>
-                    <p>Dirección: San Juan, Santa Bárbara, Heredia, Costa Rica</p>
                     <p>
-                        Teléfono:
+                        @(Localizer["Dirección"]): San Juan, Santa Bárbara, Heredia, Costa Rica
+                    </p>
+                    <p>
+                        @(Localizer["Teléfono"]):
                         <a href="tel:+50672969719" class="font-bold underline hover:text-gray-300">
                             +506 72969719
                         </a>
@@ -50,7 +55,9 @@
 
                 <!-- Redes sociales -->
                 <div class="mb-4">
-                    <h6 class="text-md mb-2 font-semibold">Síguenos</h6>
+                    <h6 class="text-md mb-2 font-semibold">
+                        @(Localizer["Síguenos"])
+                    </h6>
                     <div class="flex gap-4">
                         <a href="https://www.facebook.com" target="_blank" class="text-white hover:text-blue-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -83,10 +90,16 @@
 
                 <!-- Créditos y enlaces -->
                 <div class="text-right">
-                    <p class="text-sm">© 2025, Dorean Sportic. Todos los derechos reservados.</p>
+                    <p class="text-sm">
+                        © 2025, Dorean Sportic. @(Localizer["Todos los derechos reservados"]).
+                    </p>
                     <p>
-                        <a href="#" class="underline hover:text-gray-300">Contacto</a> |
-                        <a href="#" class="underline hover:text-gray-300">Política de Compras y Devoluciones</a>
+                        <a href="#" class="underline hover:text-gray-300">
+                            @(Localizer["Contacto"])
+                        </a> |
+                        <a href="#" class="underline hover:text-gray-300">
+                            @(Localizer["Política de Compras y Devoluciones"])
+                        </a>
                     </p>
                     <p class="text-sm">Brian Kellerman</p>
                 </div>

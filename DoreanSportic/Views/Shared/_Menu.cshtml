@@ -13,20 +13,20 @@
             <ul tabindex="0"
                 class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow ">
 
-                <li class="bg-[#004AAD]"><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
+                <li class="bg-[#004AAD]"><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">@(Localizer["Inicio"])</a></li>
                 <!--Administrador-->
                 <li>
-                    <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">Administrador</a>
+                    <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">@(Localizer["Administrador"])</a>
                 </li>
 
                 <!--Productos-->
                 <li>
-                    <a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">Nuestros productos</a>
+                    <a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">@(Localizer["Nuestros productos"])</a>
                 </li>
 
                 <!--Pedidos-->
                 <li>
-                    <a class="btn btn-ghost" asp-area="" asp-controller="Pedido" asp-action="Index">Pedidos</a>
+                    <a class="btn btn-ghost" asp-area="" asp-controller="Pedido" asp-action="Index">@(Localizer["Pedidos"])</a>
                 </li>
 
             </ul>
@@ -42,17 +42,17 @@
     <!--Navbar en pantalla extendida-->
     <div class="navbar-center hidden lg:flex z-50 relative">
         <ul class="menu menu-horizontal px-1">
-            <li><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">Inicio </a></li>
+            <li><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">@(Localizer["Inicio"])</a></li>
             <!--Administrador-->
             <li>
-                <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">Administrador</a>
+                <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">@(Localizer["Administrador"])</a>
             </li>
 
             <!--Productos-->
-            <li><a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">Nuestros productos </a></li>
+            <li><a class="btn btn-ghost" asp-area="" asp-controller="Producto" asp-action="Index">@(Localizer["Nuestros productos"]) </a></li>
 
             <!--Pedidos-->
-            <li><a class="btn btn-ghost" asp-area="" asp-controller="Pedido" asp-action="Index">Pedidos </a></li>
+            <li><a class="btn btn-ghost" asp-area="" asp-controller="Pedido" asp-action="Index">@(Localizer["Pedidos"]) </a></li>
 
         </ul>
     </div>
@@ -77,7 +77,7 @@
 
         <!-- Input del buscador del sitio-->
         <div style="padding-right: 15px">
-            <input type="text" placeholder="Buscar productos" class="input input-bordered w-24 md:w-auto text-black" />
+            <input type="text" placeholder=@(Localizer["Buscar productos"]) class="input input-bordered w-24 md:w-auto text-black" />
         </div>
 
         <!-- Para seleccionar el idioma de la aplicación -->
@@ -147,9 +147,9 @@
             </div>
             <ul tabindex="0"
                 class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow" style="right: 10%">
-                <li><a class="btn btn-ghost">Perfil</a></li>
-                <li><a class="btn btn-ghost">Configuración</a></li>
-                <li><a class="btn btn-ghost">Cerrar sesión</a></li>
+                <li><a class="btn btn-ghost">@(Localizer["Perfil"])</a></li>
+                <li><a class="btn btn-ghost">@(Localizer["Configuración"])</a></li>
+                <li><a class="btn btn-ghost">@(Localizer["Cerrar sesión"])</a></li>
             </ul>
         </div>
     </div>

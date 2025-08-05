@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="BD\" />
     <Folder Include="Logs\" />
-    <Folder Include="Resources\Views\Shared\" />
     <Folder Include="wwwroot\Assets\" />
   </ItemGroup>
 

@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
     ViewData["Title"] = "DashboardAdmin";
 }
 <!-- Flatpickr CSS -->
@@ -13,7 +16,8 @@
             </svg>
 
 
-            Administrador
+            @(Localizer["Administrador"])
+
         </h2>
 
         <!-- Menú -->
@@ -24,7 +28,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M6 2c-.552 0-1 .448-1 1v4h2V4h2v6H5v13h14V10h-4V4h2v3h2V3c0-.552-.448-1-1-1h-2a1 1 0 0 0-.894.553L14 5.118V9h-4V5.118L8.894 2.553A1 1 0 0 0 8 2H6z" />
                     </svg>
-                    Productos
+                    @(Localizer["Productos"])
+
                 </a>
                 <hr class="bg-white">
             </li>
@@ -34,7 +39,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 17.27l6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
-                    Reseñas
+                    @(Localizer["Reseñas"])
+
                 </a>
                 <hr class="bg-white">
             </li>
@@ -44,7 +50,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 4.81V19.2c0 .45.54.67.85.35l4.79-4.8c.2-.2.2-.51 0-.71l-4.79-4.8a.5.5 0 0 0-.85.36zm-2-2a.5.5 0 0 0-.85-.36l-4.79 4.8a.5.5 0 0 0 0 .71l4.79 4.8a.5.5 0 0 0 .85-.35V2.81z" />
                     </svg>
-                    Promociones
+                    @(Localizer["Promociones"])
+
                 </a>
                 <hr class="bg-white">
             </li>
@@ -58,15 +65,21 @@
 
             <!-- Mensaje por defecto -->
             <div id="contenido-vista">
-                <h1 class="text-2xl font-bold mb-4">Bienvenido al panel de administrador.</h1>
-                <p>Selecciona una opción del menú lateral para empezar.</p>
+                <h1 class="text-2xl font-bold mb-4">
+                    @(Localizer["Bienvenido al panel de administrador"]).
+                </h1>
+                <p>
+                    @(Localizer["Selecciona una opción del menú lateral para empezar"]).
+                </p>
             </div>
 
         </div>
 
         <!-- Spinner -->
         <div id="loader" class="hidden flex flex-col items-center justify-center gap-2">
-            <p class="text-gray-600 font-bold">Cargando</p>
+            <p class="text-gray-600 font-bold">
+                @(Localizer["Cargando"])
+            </p>
             <span class="loading loading-ring loading-xl"></span>
         </div>
 
