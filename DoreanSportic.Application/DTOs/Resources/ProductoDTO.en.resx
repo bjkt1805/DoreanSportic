@@ -121,7 +121,7 @@
     <value>Description cannot exceed 500 characters</value>
   </data>
   <data name="DescripcionRequerida" xml:space="preserve">
-    <value> Description is required</value>
+    <value>Description is required</value>
   </data>
   <data name="IdCategoriaRequerido " xml:space="preserve">
     <value>Category is required</value>

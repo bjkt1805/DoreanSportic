@@ -400,8 +400,8 @@
                 style="margin-left: 100%; margin-top: -5%;">
             ✕
         </button>
-        <h3 class="text-lg font-bold">Reseña del producto: @(Model.Producto.Nombre)</h3>
-        <p class="py-1 italic" style="font-size: 10px;">Presione "ESC" en el teclado o haga clic en la X para cerrar esta ventana</p>
+        <h3 class="text-lg font-bold">@(Localizer["Reseña del producto"]): @(Model.Producto.Nombre)</h3>
+        <p class="py-1 italic" style="font-size: 10px;">@(Localizer["Presione \"ESC\" en el teclado o haga clic en la X para cerrar esta ventana"])</p>
 
         <form id="formResenna" class="space-y-4 w-full" method="post" enctype="multipart/form-data">
             <!-- Generar el token antiforgery -->
@@ -414,14 +414,14 @@
 
             <!-- Usuario -->
             <div class="form-control mb-3">
-                <label class="label font-bold">Usuario: @(Model.UsuarioActual.UserName)</label>
+                <label class="label font-bold">@(Localizer["Usuario"]): @(Model.UsuarioActual.UserName)</label>
                 <input type="hidden" name="IdUsuario" value=@(Model.UsuarioActual.Id) />
                 <input type="hidden" name="Usuario" value=@(Model.UsuarioActual.UserName) />
             </div>
 
             <!-- Comentario -->
             <div class="form-control mb-3 w-full">
-                <label class="label font-bold mb-2">Comentario</label>
+                <label class="label font-bold mb-2">@(Localizer["Comentario"])</label>
                 <textarea name="Comentario" class="textarea textarea-bordered w-full" rows="3"></textarea>
             </div>
             <div id="error-comentario" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
@@ -429,14 +429,14 @@
 
             <!-- Fecha -->
             <div class="form-control mb-3">
-                <label class="label font-bold">Fecha de la reseña: @hoy.ToString("dd-MM-yyyy")</label>
+                <label class="label font-bold">@(Localizer["Fecha de la reseña"]): @hoy.ToString("dd-MM-yyyy")</label>
                 <input type="hidden" name="FechaResenna" value="@hoy.ToString("yyyy-MM-dd")" />
             </div>
 
             <!-- Calificación -->
             <div class="form-control mb-4">
                 <div class="flex flex-row gap gap-2 w-25">
-                    <label class="label font-bold">Calificación</label>
+                    <label class="label font-bold">@(Localizer["Calificación"])</label>
                     <div class="star-rating">
                         <input type="radio" id="star5" name="Calificacion" value="5" />
                         <label for="star5">
@@ -491,8 +491,8 @@
 
             <!-- Botones "Cancelar" y "Enviar Reseña" -->
             <div class="flex flex-row gap gap-2 modal-action justify-between mb-3 w-full">
-                <button type="button" class="btn btn-outline" onclick="modalResenna.close()">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Enviar reseña</button>
+                <button type="button" class="btn btn-outline" onclick="modalResenna.close()">@(Localizer["Cancelar"])</button>
+                <button type="submit" class="btn btn-primary">@(Localizer["Enviar reseña"])</button>
             </div>
         </form>
     </div>

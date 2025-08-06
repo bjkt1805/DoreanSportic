@@ -17,11 +17,18 @@ public partial class ResennaValoracionDTO
 
     public int IdProducto { get; set; }
 
-    [Required(ErrorMessage = "La calificación es obligatoria.")]
-    [Range(1, 5, ErrorMessage = "La calificación debe estar entre 1 y 5.")]
+    [Required(
+    AllowEmptyStrings = false,
+    ErrorMessageResourceType = typeof(Resources.ResennaValoracionDTO),
+    ErrorMessageResourceName = "CalificacionRequired")]
+    [Range(1, 5,
+        ErrorMessageResourceType = typeof(Resources.ResennaValoracionDTO),
+        ErrorMessageResourceName = "CalificacionRango")]
     public int Calificacion { get; set; }
 
-    [StringLength(500, ErrorMessage = "El comentario no puede exceder los 500 caracteres.")]
+    [StringLength(500,
+        ErrorMessageResourceType = typeof(Resources.ResennaValoracionDTO),
+        ErrorMessageResourceName = "ComentarioRango")]
     public string? Comentario { get; set; }
 
     public DateTime FechaResenna { get; set; }

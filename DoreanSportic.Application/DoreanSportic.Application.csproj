@@ -21,12 +21,43 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ProductoDTO.resx</DependentUpon>
     </Compile>
+    <Compile Update="DTOs\Resources\PromocionDTO.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PromocionDTO.resx</DependentUpon>
+    </Compile>
+    <Compile Update="DTOs\Resources\ResennaValoracionDTO.es.Designer.cs">
+      <DependentUpon>ResennaValoracionDTO.es.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="DTOs\Resources\ResennaValoracionDTO.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResennaValoracionDTO.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="DTOs\Resources\ProductoDTO.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProductoDTO.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DTOs\Resources\PromocionDTO.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PromocionDTO.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DTOs\Resources\ResennaValoracionDTO.en.resx">
+      <LastGenOutput>ResennaValoracionDTO.en.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DTOs\Resources\ResennaValoracionDTO.es.resx">
+      <LastGenOutput>ResennaValoracionDTO.es.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DTOs\Resources\ResennaValoracionDTO.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResennaValoracionDTO.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

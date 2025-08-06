@@ -14,28 +14,47 @@ public record PromocionDTO
     public int Id { get; set; }
 
     [Display(Name = "Nombre de la promoción")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerido ")]
-    [StringLength(200, ErrorMessage = "El nombre no puede exceder los 200 caracteres.")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "NombreRequerido")]
+    [StringLength(200,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "NombreLongitud")]
     public string Nombre { get; set; } = null!;
 
     [Display(Name = "Descripción de la promoción")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerida ")]
-    [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres.")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "DescripcionRequerida")]
+    [StringLength(500,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "DescripcionLongitud")]
     public string? Descripcion { get; set; }
 
     [Display(Name = "Porcentaje de descuento")]
-    [Required(ErrorMessage = " {0} es requerido")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "PorcentajeDescuentoRequerido")]
     [Range(1, 100, ErrorMessage = "  {0} debe estar en el rango de {1} y {2} ")]
     public decimal? PorcentajeDescuento { get; set; }
 
     public decimal? DescuentoFijo { get; set; }
 
     [Display(Name = "Fecha de inicio")]
-    [Required(ErrorMessage = " {0} es requerida ")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "FechaInicioRequerida")]
     public DateTime FechaInicio { get; set; }
 
     [Display(Name = "Fecha final")]
-    [Required(ErrorMessage = " {0} es requerida ")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "FechaFinRequerida")]
     public DateTime FechaFin { get; set; }
 
     public bool Estado { get; set; }
