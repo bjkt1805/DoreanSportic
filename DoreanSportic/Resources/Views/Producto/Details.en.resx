@@ -118,39 +118,93 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Volver al listado" xml:space="preserve">
-    <value>Volver al listado</value>
+    <value>Back to list</value>
   </data>
-  <data name="Promedio de valoraciones" xml:space="preserve">
-    <value>Promedio de valoraciones</value>
+  <data name="¿Desea personalizar el producto?" xml:space="preserve">
+    <value>Do you want to customize the product?</value>
   </data>
-  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
-    <value>DETALLE DEL PRODUCTO</value>
+  <data name="Calificación" xml:space="preserve">
+    <value>Rating</value>
   </data>
-  <data name="Cargando reseñas..." xml:space="preserve">
-    <value>Cargando reseñas...</value>
+  <data name="Comentario" xml:space="preserve">
+    <value>Comment</value>
   </data>
-  <data name="PROMEDIO DE CALIFICACIÓN" xml:space="preserve">
-    <value>PROMEDIO DE CALIFICACIÓN</value>
+  <data name="Usuario" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Presione &quot;ESC&quot; en el teclado o haga clic en la X para cerrar esta ventana" xml:space="preserve">
+    <value>Press "ESC" on the keyboard or click on the x to close this window</value>
+  </data>
+  <data name="Agregar al carrito" xml:space="preserve">
+    <value>Add to the cart</value>
+  </data>
+  <data name="Vista previa" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Arrastre la imagen aquí o haga clic para seleccionarla" xml:space="preserve">
+    <value>Drag the image here or click to select it</value>
+  </data>
+  <data name="Foto del empaque (₡ 3 000.00)" xml:space="preserve">
+    <value>Packaging photo (₡ 3 000.00)</value>
+  </data>
+  <data name="Mensaje personalizado del empaque (₡ 2 000.00)" xml:space="preserve">
+    <value>Personalized packaging message (₡ 2 000.00)</value>
+  </data>
+  <data name="Seleccione un tipo" xml:space="preserve">
+    <value>Select a type</value>
+  </data>
+  <data name="Tipo de empaque" xml:space="preserve">
+    <value>Type of packaging</value>
+  </data>
+  <data name="Sí" xml:space="preserve">
+    <value>Yes</value>
   </data>
   <data name="Precio base" xml:space="preserve">
-    <value>Precio base</value>
-  </data>
-  <data name="Precio en oferta" xml:space="preserve">
-    <value>Precio en oferta</value>
+    <value>Base price</value>
   </data>
   <data name="Precio anterior" xml:space="preserve">
-    <value>Precio anterior</value>
+    <value>Previous price</value>
+  </data>
+  <data name="Precio en oferta" xml:space="preserve">
+    <value>Offer price</value>
+  </data>
+  <data name="Cargando promedio..." xml:space="preserve">
+    <value>Loading average rating...</value>
+  </data>
+  <data name="Cancelar" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Enviar reseña" xml:space="preserve">
+    <value>Send review</value>
   </data>
   <data name="OFERTA" xml:space="preserve">
-    <value>OFERTA</value>
+    <value>DISCOUNT</value>
   </data>
-  <data name="AGOTADO" xml:space="preserve">
-    <value>AGOTADO</value>
+  <data name="Personalización del producto" xml:space="preserve">
+    <value>Product customization</value>
   </data>
   <data name="DISPONIBLE" xml:space="preserve">
-    <value>DISPONIBLE</value>
+    <value>AVAILABLE</value>
   </data>
-  <data name="Editar producto" xml:space="preserve">
-    <value>Editar producto</value>
+  <data name="AGOTADO" xml:space="preserve">
+    <value>OUT OF STOCK</value>
+  </data>
+  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
+    <value>PRODUCT DETAIL</value>
+  </data>
+  <data name="Cantidad" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Fecha de la reseña" xml:space="preserve">
+    <value>Review date</value>
+  </data>
+  <data name="Dejar reseña" xml:space="preserve">
+    <value>Leave review</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="Cargando reseñas..." xml:space="preserve">
+    <value>Loading reviews...</value>
   </data>
 </root>

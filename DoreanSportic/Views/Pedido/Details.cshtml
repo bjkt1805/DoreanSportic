@@ -1,4 +1,6 @@
 ﻿@model DoreanSportic.Application.DTOs.PedidoDTO
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{  
     ViewData["Title"] = "Details";  
@@ -6,7 +8,9 @@
 
 <div style="margin-left:10%; margin-right:15%">
     <div class="py-4">
-        <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+        <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">
+            @(Localizer["Volver al listado"])
+</a>
     </div>
     <div class="mb-4 max-w-4xl mx-auto p-6 bg-white text-slate-500 shadow-md rounded mt-10 border rounded font-sans">
         <!-- Header -->
@@ -15,9 +19,9 @@
                 <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
                      alt="Company Logo" class="h-10 w-25 mr-4">
                 <p class="text-sm text-slate-500"><b>Dorean Sportic S.A.</b></p>
-                <p class="text-sm text-slate-500"><b>Dirección: </b>San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
-                <p class="text-sm text-slate-500"><b>Teléfono: </b>72969719</p>
-                <p class="text-sm text-slate-500"><b>Email:</b> doreansportic@gmail.com</p>
+                <p class="text-sm text-slate-500"><b>@(Localizer["Dirección"]): </b>San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
+                <p class="text-sm text-slate-500"><b>@(Localizer["Teléfono"]): </b>72969719</p>
+                <p class="text-sm text-slate-500"><b>@(Localizer["Correo electrónico"]):</b> doreansportic@gmail.com</p>
             </div>
             @*         <h1 class="pb-2 text-4xl font-bold text-slate-400 uppercase flex-1 text-right">Factura</h1>  
  *@    </div>
@@ -26,18 +30,18 @@
             <!-- Información del cliente -->
             <div class="mb-4">
                 <p class="text-sm text-slate-500">
-                    <b>Pedido #: </b><u>@Html.DisplayFor(model => model.Id)</u>
+                    <b>@(Localizer["Pedido"]) #: </b><u>@Html.DisplayFor(model => model.Id)</u>
                 </p>
                 <br /> <br />
-                <h2 class="font-bold text-slate-700">Información del cliente</h2>
+                <h2 class="font-bold text-slate-700">@(Localizer["Información del cliente"])</h2>
                 <div class="p-1">
                     <p class="text-slate-600">
-                        <b>Nombre: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Nombre)
+                        <b>@(Localizer["Nombre"]): </b>@Html.DisplayFor(model => model.IdClienteNavigation.Nombre)
                         @Html.DisplayFor(model => model.IdClienteNavigation.Apellido)
                     </p>
-                    <p class="text-sm text-slate-500"><b>Dirección: </b>@Html.DisplayFor(model => model.IdClienteNavigation.DireccionEnvio)</p>
-                    <p class="text-sm text-slate-500"><b>Teléfono: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Telefono)</p>
-                    <p class="text-sm text-slate-500"><b>Correo electrónico: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Email)</p>
+                    <p class="text-sm text-slate-500"><b>@(Localizer["Dirección"]): </b>@Html.DisplayFor(model => model.IdClienteNavigation.DireccionEnvio)</p>
+                    <p class="text-sm text-slate-500"><b>@(Localizer["Teléfono"]): </b>@Html.DisplayFor(model => model.IdClienteNavigation.Telefono)</p>
+                    <p class="text-sm text-slate-500"><b>@(Localizer["Correo electrónico"]): </b>@Html.DisplayFor(model => model.IdClienteNavigation.Email)</p>
                     <br />
                 </div>
 
@@ -52,10 +56,10 @@
                     var fechaFormateada = Model.FechaPedido.ToString("dd/MM/yyyy");
                     var horaFormateada = Model.FechaPedido.ToString("HH:mm:ss");
                 }
-                <p class="text-sm text-slate-500"><b>Fecha del pedido: </b>@fechaFormateada</p>
-                <p class="text-sm text-slate-500"><b>Hora de emisión: </b>@horaFormateada</p>
-                <p class="text-slate-500" style="font-size: 10px"><i>* Formato de 24 horas *</i></p>
-                <p><b>Método de pago:</b> @Model.IdMetodoPagoNavigation?.Nombre</p>
+                <p class="text-sm text-slate-500"><b>@(Localizer["Fecha del pedido"]): </b>@fechaFormateada</p>
+                <p class="text-sm text-slate-500"><b>@(Localizer["Hora de emisión"]): </b>@horaFormateada</p>
+                <p class="text-slate-500" style="font-size: 10px"><i>* @(Localizer["Formato de 24 horas"]): *</i></p>
+                <p><b>@(Localizer["Método de pago"]):</b> @Model.IdMetodoPagoNavigation?.Nombre</p>
 
 
             </div>
@@ -63,7 +67,7 @@
 
         <!-- Cargar los detalles del pedido-->
         <div id="tabla-detalles">
-            <p class="text-sm">Cargando detalles del pedido...</p>
+            <p class="text-sm">@(Localizer["Cargando detalles del pedido"])</p>
         </div>
     </div>
 </div>

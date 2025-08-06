@@ -120,6 +120,9 @@
   <data name="Volver al listado" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="Promedio de valoraciones" xml:space="preserve">
+    <value>Average rating</value>
+  </data>
   <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
     <value>PRODUCT DETAIL</value>
   </data>

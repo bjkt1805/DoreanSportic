@@ -117,40 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Volver al listado" xml:space="preserve">
-    <value>Volver al listado</value>
+  <data name="Listado de pedidos" xml:space="preserve">
+    <value>List of orders</value>
   </data>
-  <data name="Promedio de valoraciones" xml:space="preserve">
-    <value>Promedio de valoraciones</value>
+  <data name="Ver detalles" xml:space="preserve">
+    <value>See details</value>
   </data>
-  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
-    <value>DETALLE DEL PRODUCTO</value>
+  <data name="Estado de pago" xml:space="preserve">
+    <value>Payment status</value>
   </data>
-  <data name="Cargando reseñas..." xml:space="preserve">
-    <value>Cargando reseñas...</value>
-  </data>
-  <data name="PROMEDIO DE CALIFICACIÓN" xml:space="preserve">
-    <value>PROMEDIO DE CALIFICACIÓN</value>
-  </data>
-  <data name="Precio base" xml:space="preserve">
-    <value>Precio base</value>
-  </data>
-  <data name="Precio en oferta" xml:space="preserve">
-    <value>Precio en oferta</value>
-  </data>
-  <data name="Precio anterior" xml:space="preserve">
-    <value>Precio anterior</value>
-  </data>
-  <data name="OFERTA" xml:space="preserve">
-    <value>OFERTA</value>
-  </data>
-  <data name="AGOTADO" xml:space="preserve">
-    <value>AGOTADO</value>
-  </data>
-  <data name="DISPONIBLE" xml:space="preserve">
-    <value>DISPONIBLE</value>
-  </data>
-  <data name="Editar producto" xml:space="preserve">
-    <value>Editar producto</value>
+  <data name="Fecha del pedido" xml:space="preserve">
+    <value>Order date</value>
   </data>
 </root>

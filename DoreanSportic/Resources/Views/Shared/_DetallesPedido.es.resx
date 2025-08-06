@@ -117,40 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Volver al listado" xml:space="preserve">
-    <value>Volver al listado</value>
+  <data name="Nombre" xml:space="preserve">
+    <value>Nombre</value>
   </data>
-  <data name="Promedio de valoraciones" xml:space="preserve">
-    <value>Promedio de valoraciones</value>
+  <data name="Precio unitario" xml:space="preserve">
+    <value>Precio unitario</value>
   </data>
-  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
-    <value>DETALLE DEL PRODUCTO</value>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Subtotal</value>
   </data>
-  <data name="Cargando reseñas..." xml:space="preserve">
-    <value>Cargando reseñas...</value>
+  <data name="Tipo de empaque" xml:space="preserve">
+    <value>Tipo de empaque</value>
   </data>
-  <data name="PROMEDIO DE CALIFICACIÓN" xml:space="preserve">
-    <value>PROMEDIO DE CALIFICACIÓN</value>
+  <data name="Total a pagar" xml:space="preserve">
+    <value>Total a pagar</value>
   </data>
-  <data name="Precio base" xml:space="preserve">
-    <value>Precio base</value>
+  <data name="Impuesto (IVA 13%)" xml:space="preserve">
+    <value>Impuesto (IVA 13%)</value>
   </data>
-  <data name="Precio en oferta" xml:space="preserve">
-    <value>Precio en oferta</value>
+  <data name="Foto" xml:space="preserve">
+    <value>Foto</value>
   </data>
-  <data name="Precio anterior" xml:space="preserve">
-    <value>Precio anterior</value>
+  <data name="Base price" xml:space="preserve">
+    <value>Base price</value>
   </data>
-  <data name="OFERTA" xml:space="preserve">
-    <value>OFERTA</value>
+  <data name="Criterios de personalización" xml:space="preserve">
+    <value>Criterios de personalización</value>
   </data>
-  <data name="AGOTADO" xml:space="preserve">
-    <value>AGOTADO</value>
+  <data name="Detalle de personalizaciones" xml:space="preserve">
+    <value>Detalle de personalizaciones</value>
   </data>
-  <data name="DISPONIBLE" xml:space="preserve">
-    <value>DISPONIBLE</value>
+  <data name="Producto" xml:space="preserve">
+    <value>Producto</value>
   </data>
-  <data name="Editar producto" xml:space="preserve">
-    <value>Editar producto</value>
+  <data name="Cantidad" xml:space="preserve">
+    <value>Cantidad</value>
+  </data>
+  <data name="Detalle de productos" xml:space="preserve">
+    <value>Detalle de productos</value>
+  </data>
+  <data name="Mensaje personalizado" xml:space="preserve">
+    <value>Mensaje personalizado</value>
   </data>
 </root>

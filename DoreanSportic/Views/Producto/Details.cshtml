@@ -1,5 +1,6 @@
 ﻿@model DoreanSportic.Web.ViewModel.DetalleProductoViewModel
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @using DoreanSportic.Infrastructure.Models
 @using System.Globalization
@@ -24,16 +25,16 @@
 <div class="p-4 flex flex-row gap-5">
     <div class="flex flex-col gap-2">
         <div class="flex flex-row justify-between">
-            <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+            <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">@(Localizer["Volver al listado"])</a>
 
             <!-- Botón para dejar reseña -->
             <button class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
                     onclick="modalResenna.showModal()">
-                Dejar reseña
+                @(Localizer["Dejar reseña"])
             </button>
 
         </div>
-        <h1><b>DETALLE DEL PRODUCTO</b></h1>
+        <h1><b>@(Localizer["DETALLE DEL PRODUCTO"])</b></h1>
         <div class="flex flex-row gap-5">
             <div class="justify-start"></div>
             <div class="ml-auto">
@@ -78,11 +79,11 @@
                         @{
                             if (Model.Producto.Stock == 0)
                             {
-                                <div class="badge bg-[#FF0000] text-white">AGOTADO</div>
+                                <div class="badge bg-[#FF0000] text-white">@(Localizer["AGOTADO"])</div>
                             }
                             else
                             {
-                                <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                                <div class="badge bg-[#50C878] text-white">@(Localizer["DISPONIBLE"])</div>
                             }
                         }
                         <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
@@ -91,7 +92,7 @@
                         @if ((Model.Producto.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
                                                 (Model.Producto.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                         {
-                            <div class="badge badge-secondary">OFERTA</div>
+                            <div class="badge badge-secondary">@(Localizer["OFERTA"])</div>
                         }
 
                     </div>
@@ -150,13 +151,13 @@
                 {
                     <div class="p-2 w-75 flex flex-col ml-2 gap gap-1 rounded-lg border border-base-300">
                         <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                            <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
+                            <b>@(Localizer["Precio anterior"]): </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                             <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                                 - @descuentoTotal.ToString("0")%
                             </div>
                         </div>
                         <div class="flex flex-row gap gap-1">
-                            <b>Precio en oferta: </b>
+                            <b>@(Localizer["Precio en oferta"]): </b>
                             <div class="badge badge-xl bg-success text-black font-bold">
                                 ₡@precioConDescuento.ToString("N2", culturaPersonalizada) + I.V.A
                             </div>
@@ -167,7 +168,7 @@
                 else
                 {
                     <div class="flex flex-row gap gap-1">
-                        <b class="mt-1">Precio base: </b>
+                        <b class="mt-1">@(Localizer["Precio base"]): </b>
                         <div class="badge badge-outline w-fit">
                             <b>₡@precioBase.ToString("N2", culturaPersonalizada)</b> + I.V.A
                         </div>
@@ -184,12 +185,12 @@
 
             <!-- Para cargar dinámicamente el promedio de los usuarios -->
             <div id="zona-promedio">
-                <p class="text-sm">Cargando promedio...</p>
+                <p class="text-sm">@(Localizer["Cargando promedio..."])</p>
             </div>
 
             <!-- Cargar las reseñas de los usuarios -->
             <div id="zona-resennas">
-                <p class="text-sm">Cargando reseñas...</p>
+                <p class="text-sm">@(Localizer["Cargando reseñas..."])</p>
             </div>
 
         </div>
@@ -216,7 +217,7 @@
                 <div class="flex flex-row gap gap-1 w-full justify-between">
                     <!-- Cantidad -->
                     <div class="form-control flex flex-col gap-1">
-                        <label for="inputCantidad" class="label font-bold">Cantidad</label>
+                        <label for="inputCantidad" class="label font-bold">@(Localizer["Cantidad"])</label>
                         <input asp-for="@Model.DetalleCarrito.Cantidad" id="inputCantidad" type="number" value="0" min="0" max="@Model.Producto.Stock"
                                class="input input-bordered mb-1" required style="border-color:black;"/>
                         <span asp-validation-for="@Model.DetalleCarrito.Cantidad" style="color:red; font-size: small; font-style:italic"></span>
@@ -240,11 +241,11 @@
                         <div x-data="{ deseaPersonalizar: 'no' }" class="mb-2"
                              x-effect="if (deseaPersonalizar === 'si') { console.log('Personalización activada'); $nextTick(() => window.dispatchEvent(new Event('select-empaque-listo'))) }">
                             <div class="form-control">
-                                <label class="label font-bold mb-2">¿Desea personalizar el producto?</label>
+                                <label class="label font-bold mb-2">@(Localizer["¿Desea personalizar el producto?"])</label>
                                 <div class="flex gap-4">
                                     <label class="flex items-center gap-2">
                                     <input type="radio" name="DeseaPersonalizar" value="si" x-model="deseaPersonalizar" class="radio" />
-                                    Sí
+                                    @(Localizer["Sí"])
                                     </label>
                                     <label class="flex items-center gap-2">
                                     <input type="radio" name="DeseaPersonalizar" value="no" x-model="deseaPersonalizar" class="radio" />
@@ -256,7 +257,7 @@
                             <template x-if="deseaPersonalizar === 'si'">
                                 <div class="bordered mt-4">
                                     <div class="bordered">
-                                        <h2 class="font-bold">Personalización del producto</h2>
+                                        <h2 class="font-bold">@(Localizer["Personalización del producto"])</h2>
 
                                         @*Seleccionar el tipo de empaque *@
                                         <div class="form-control mt-2" style="border-color:black;">
@@ -267,7 +268,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                           d="M20 12V6a2 2 0 00-2-2h-4.5l-1.5 2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4" />
                                                 </svg>
-                                            Tipo de empaque
+                                            @(Localizer["Tipo de empaque"])
                                             </label asp-for>
                                             <select 
                                                 asp-for="@Model.DetalleCarrito.IdEmpaque" 
@@ -297,7 +298,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                           d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                                 </svg>
-                                            Mensaje personalizado del empaque (₡ 2 000.00)</label>
+                                            @(Localizer["Mensaje personalizado del empaque (₡ 2 000.00)"])</label>
                                             <textarea asp-for="@Model.DetalleCarrito.MensajePersonalizado" maxlength="500" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
                                             <span asp-validation-for="@Model.DetalleCarrito.MensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></span>
                                             <!-- Mostrar errores de mensaje personalizado -->
@@ -313,7 +314,7 @@
                                                       d="M3 7h2l1-2h10l1 2h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2z" />
                                                 <circle cx="12" cy="13" r="4" />
                                             </svg>
-                                            Foto del empaque (₡ 3 000.00)
+                                            @(Localizer["Foto del empaque (₡ 3 000.00)"])
                         
                                         </div>
 
@@ -340,7 +341,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                           d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
-                                                <p class="m-0">Arrastre la imagen aquí o haga clic para seleccionarla.</p>
+                                                <p class="m-0">@(Localizer["Arrastre la imagen aquí o haga clic para seleccionarla"]).</p>
                                             </div>
 
                                             </div>
@@ -351,7 +352,7 @@
                                         <!-- Para manejar la vista previa de la imagen -->
                                         <template x-if="file">
                                             <div class="w-25 h-25 relative mt-4">
-                                                <img :src="previewUrl" class="w-full h-full object-cover rounded" alt="Vista previa" />
+                                                <img :src="previewUrl" class="w-full h-full object-cover rounded" alt=@(Localizer["Vista Preview"]) />
                                                 <!-- Botón para quitar la imagen -->
                                                 <button class="btn-borrar absolute top-0 right-0 z-50 p-1 bg-white rounded-bl focus:outline-none cursor-pointer hover:bg-gray-200" type="button" x-on:click="removeFile()">
                                                     <svg class="w-5 h-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -383,7 +384,7 @@
 
                 <!-- Botón para agregar producto al carrito -->
                 <button id="btnAgregarCarrito" type="submit" class="btn btn-success mt-2 w-full justify-end">
-                    Agregar al carrito
+                    @(Localizer["Agregar al carrito"])
                 </button>
             </form>
         }

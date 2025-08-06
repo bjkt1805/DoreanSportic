@@ -1,21 +1,26 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.PedidoDTO>
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
     ViewData["Title"] = "Index";
 }
 
 
 <div style="margin-left:20%; margin-right:25%">
-    <h1 class="py-2 font-bold">Listado de pedidos</h1>
+    <h1 class="py-2 font-bold">@(Localizer["Listado de pedidos"])</h1>
     <div class="mb-4 overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
         <table class="table">
             <!-- head -->
             <thead class="bg-primary text-white">
                 <tr>
                     <th class="text-center">ID</th>
-                    <th class="text-center">Fecha del pedido</th>
-                    <th class="text-center">Estado de pago</th>
+                    <th class="text-center">
+                        @(Localizer["Fecha del pedido"])
+                    </th>
+                    <th class="text-center">@(Localizer["Estado de pago"])</th>
                     <th class="text-center"></th>
                 </tr>
             </thead>
@@ -42,7 +47,7 @@
  *@                        <!-- Botón alineado abajo a la derecha -->
                             <div class="mt-auto flex justify-center">
                                 <a class="btn btn-soft btn-primary text-white"
-                                   asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
+                                   asp-action="Details" asp-route-id="@item.Id">@(Localizer["Ver detalles"])</a>
                             </div>
                             @*                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
  *@                    </td>

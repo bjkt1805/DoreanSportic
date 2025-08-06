@@ -118,39 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Volver al listado" xml:space="preserve">
-    <value>Volver al listado</value>
+    <value>Back to list</value>
   </data>
-  <data name="Promedio de valoraciones" xml:space="preserve">
-    <value>Promedio de valoraciones</value>
+  <data name="Información del cliente" xml:space="preserve">
+    <value>Customer information</value>
   </data>
-  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
-    <value>DETALLE DEL PRODUCTO</value>
+  <data name="Cargando detalles del pedido..." xml:space="preserve">
+    <value>Loading order details...</value>
   </data>
-  <data name="Cargando reseñas..." xml:space="preserve">
-    <value>Cargando reseñas...</value>
+  <data name="Hora de emisión" xml:space="preserve">
+    <value>Creation time</value>
   </data>
-  <data name="PROMEDIO DE CALIFICACIÓN" xml:space="preserve">
-    <value>PROMEDIO DE CALIFICACIÓN</value>
+  <data name="Método de pago" xml:space="preserve">
+    <value>Payment method</value>
   </data>
-  <data name="Precio base" xml:space="preserve">
-    <value>Precio base</value>
+  <data name="Fecha del pedido" xml:space="preserve">
+    <value>Order date</value>
   </data>
-  <data name="Precio en oferta" xml:space="preserve">
-    <value>Precio en oferta</value>
+  <data name="Correo electrónico" xml:space="preserve">
+    <value>Email address</value>
   </data>
-  <data name="Precio anterior" xml:space="preserve">
-    <value>Precio anterior</value>
+  <data name="Teléfono" xml:space="preserve">
+    <value>Phone</value>
   </data>
-  <data name="OFERTA" xml:space="preserve">
-    <value>OFERTA</value>
+  <data name="Nombre" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="AGOTADO" xml:space="preserve">
-    <value>AGOTADO</value>
+  <data name="Dirección" xml:space="preserve">
+    <value>Address</value>
   </data>
-  <data name="DISPONIBLE" xml:space="preserve">
-    <value>DISPONIBLE</value>
+  <data name="Pedido" xml:space="preserve">
+    <value>Order</value>
   </data>
-  <data name="Editar producto" xml:space="preserve">
-    <value>Editar producto</value>
+  <data name="Formato de 24 horas" xml:space="preserve">
+    <value>24 hour format</value>
   </data>
 </root>

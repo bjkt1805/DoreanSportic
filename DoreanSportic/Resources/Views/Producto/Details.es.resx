@@ -120,37 +120,91 @@
   <data name="Volver al listado" xml:space="preserve">
     <value>Volver al listado</value>
   </data>
-  <data name="Promedio de valoraciones" xml:space="preserve">
-    <value>Promedio de valoraciones</value>
+  <data name="¿Desea personalizar el producto?" xml:space="preserve">
+    <value>¿Desea personalizar el producto?</value>
   </data>
-  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
-    <value>DETALLE DEL PRODUCTO</value>
+  <data name="Calificación" xml:space="preserve">
+    <value>Calificación</value>
   </data>
-  <data name="Cargando reseñas..." xml:space="preserve">
-    <value>Cargando reseñas...</value>
+  <data name="Comentario" xml:space="preserve">
+    <value>Comentario</value>
   </data>
-  <data name="PROMEDIO DE CALIFICACIÓN" xml:space="preserve">
-    <value>PROMEDIO DE CALIFICACIÓN</value>
+  <data name="Usuario" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="Presione &quot;ESC&quot; en el teclado o haga clic en la X para cerrar esta ventana" xml:space="preserve">
+    <value>Presione "ESC" en el teclado o haga clic en la X para cerrar esta ventana</value>
+  </data>
+  <data name="Agregar al carrito" xml:space="preserve">
+    <value>Agregar al carrito</value>
+  </data>
+  <data name="Vista previa" xml:space="preserve">
+    <value>Vista previa</value>
+  </data>
+  <data name="Arrastre la imagen aquí o haga clic para seleccionarla" xml:space="preserve">
+    <value>Arrastre la imagen aquí o haga clic para seleccionarla</value>
+  </data>
+  <data name="Foto del empaque (₡ 3 000.00)" xml:space="preserve">
+    <value>Foto del empaque (₡ 3 000.00)</value>
+  </data>
+  <data name="Mensaje personalizado del empaque (₡ 2 000.00)" xml:space="preserve">
+    <value>Mensaje personalizado del empaque (₡ 2 000.00)</value>
+  </data>
+  <data name="Seleccione un tipo" xml:space="preserve">
+    <value>Seleccione un tipo</value>
+  </data>
+  <data name="Tipo de empaque" xml:space="preserve">
+    <value>Tipo de empaque</value>
+  </data>
+  <data name="Sí" xml:space="preserve">
+    <value>Sí</value>
   </data>
   <data name="Precio base" xml:space="preserve">
     <value>Precio base</value>
   </data>
+  <data name="Precio anterior" xml:space="preserve">
+    <value>Precio anterior</value>
+  </data>
   <data name="Precio en oferta" xml:space="preserve">
     <value>Precio en oferta</value>
   </data>
-  <data name="Precio anterior" xml:space="preserve">
-    <value>Precio anterior</value>
+  <data name="Cargando promedio..." xml:space="preserve">
+    <value>Cargando promedio...</value>
+  </data>
+  <data name="Cancelar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Enviar reseña" xml:space="preserve">
+    <value>Enviar reseña</value>
   </data>
   <data name="OFERTA" xml:space="preserve">
     <value>OFERTA</value>
   </data>
-  <data name="AGOTADO" xml:space="preserve">
-    <value>AGOTADO</value>
+  <data name="Personalización del producto" xml:space="preserve">
+    <value>Personalización del producto</value>
   </data>
   <data name="DISPONIBLE" xml:space="preserve">
     <value>DISPONIBLE</value>
   </data>
-  <data name="Editar producto" xml:space="preserve">
-    <value>Editar producto</value>
+  <data name="AGOTADO" xml:space="preserve">
+    <value>AGOTADO</value>
+  </data>
+  <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
+    <value>DETALLE DEL PRODUCTO</value>
+  </data>
+  <data name="Cantidad" xml:space="preserve">
+    <value>Cantidad</value>
+  </data>
+  <data name="Fecha de la reseña" xml:space="preserve">
+    <value>Fecha de la reseña</value>
+  </data>
+  <data name="Dejar reseña" xml:space="preserve">
+    <value>Dejar reseña</value>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="Cargando reseñas..." xml:space="preserve">
+    <value>Cargando reseñas...</value>
   </data>
 </root>
