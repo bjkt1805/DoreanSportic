@@ -9,7 +9,7 @@ function cargarVista(ruta) {
     fetch(ruta)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error ${response.status}`);
+                return response.text().then(txt => { throw new Error(txt); });
             }
             return response.text();
         })
@@ -63,7 +63,7 @@ function cargarVista(ruta) {
         })
         .catch(error => {
             console.error("Error al cargar la vista:", error);
-            container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar la vista.</p>`;
+            container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar la vista. <br> ${error.message}</p>`;
         });
 }
 
@@ -421,7 +421,7 @@ function cargarEditarPromocion(idPromocion) {
         })
         .catch(err => {
             console.error("Error al cargar la vista de edición:", err);
-            container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición de la reseña.</p>`;
+            container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición de la promoción.</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -746,7 +746,11 @@ function escucharCambioSelectTipoPromocion() {
             // Limpiar selección de productos si se oculta
             checkboxesProducto.forEach(cb => cb.checked = false);
             if (selectAllCheckbox) selectAllCheckbox.checked = false;
-            if (dropdownLabel) dropdownLabel.textContent = 'Seleccione uno o más productos';
+            if (dropdownLabel) {
+                // Obtener el texto traducido del atributo data-text-none (desde la vista)
+                const textNone = dropdownLabel.dataset.textNone || "Select one or more products";
+                dropdownLabel.textContent = textNone;
+            }
 
         } else if (tipo === "Producto") {
             grupoProducto.classList.remove('hidden');
@@ -763,7 +767,11 @@ function escucharCambioSelectTipoPromocion() {
             if (selectCategoria) selectCategoria.value = "";
             checkboxesProducto.forEach(cb => cb.checked = false);
             if (selectAllCheckbox) selectAllCheckbox.checked = false;
-            if (dropdownLabel) dropdownLabel.textContent = 'Seleccione uno o más productos';
+            if (dropdownLabel) {
+                // Obtener el texto traducido del atributo data-text-none (desde la vista)
+                const textNone = dropdownLabel.dataset.textNone || "Select one or more products";
+                dropdownLabel.textContent = textNone;
+            }
         }
 
     });
@@ -776,9 +784,13 @@ function actualizarLabelProductosSeleccionados() {
     const seleccionados = document.querySelectorAll(".producto-checkbox:checked").length;
 
     if (label) {
+        // Lee los textos traducidos desde data-attributes
+        const textN = label.dataset.textN || "{0} product(s) selected";
+        const textNone = label.dataset.textNone || "Select one or more products";
+
         label.textContent = seleccionados > 0
-            ? `${seleccionados} producto(s) seleccionado(s)`
-            : 'Seleccione uno o más productos';
+            ? textN.replace("{0}", seleccionados)
+            : textNone;
     }
 }
 
@@ -839,13 +851,22 @@ function inicializarDropdownProductos() {
         }
     });
     function actualizarLabelDropdownProducto() {
+        const label = document.getElementById("dropdownLabel");
         const seleccionados = Array.from(checks).filter(c => c.checked);
+
+        // Si noa hay label, devolverse
+        if (!label) return;
+
+        // Tomar los textos traducidos de los data-attributes desde el frontend
+        const textNone = label.dataset.textNone || "Select one or more products";
+        const textN = label.dataset.textN || "{0} products selected";
+
         if (seleccionados.length === 0) {
-            label.textContent = 'Seleccione uno o más productos';
+            label.textContent = textNone;
         } else if (seleccionados.length === 1) {
             label.textContent = seleccionados[0].nextElementSibling.textContent;
         } else {
-            label.textContent = `${seleccionados.length} productos seleccionados`;
+            label.textContent = textN.replace("{0}", seleccionados.length);
         }
 
         if (selectAll) {

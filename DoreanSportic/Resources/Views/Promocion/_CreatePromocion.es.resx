@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Volver al listado" xml:space="preserve">
-    <value>NUEVA PROMOCIÓN</value>
+    <value>Volver al listado</value>
+  </data>
+  <data name="{0} producto(s) seleccionado(s)" xml:space="preserve">
+    <value>{0} producto(s) seleccionado(s)</value>
   </data>
   <data name="Seleccione un tipo" xml:space="preserve">
     <value>Seleccione un tipo</value>
@@ -163,6 +166,6 @@
     <value>Nombre de la promoción</value>
   </data>
   <data name="NUEVA PROMOCIÓN" xml:space="preserve">
-    <value>Volver al listado</value>
+    <value>NUEVA PROMOCIÓN</value>
   </data>
 </root>

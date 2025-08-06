@@ -1,5 +1,6 @@
 ﻿@using DoreanSportic.Application.DTOs
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model DoreanSportic.Application.DTOs.PromocionDTO
 
 
@@ -20,9 +21,12 @@
         <a href="javascript:void(0);"
            class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
            onclick="cargarVista('/Producto/IndexAdmin')">
-            Volver al listado
+            @(Localizer["Volver al listado"])
+
         </a>
-        <h2 class="text-left font-bold mb-3">EDITAR PROMOCIÓN</h2>
+        <h2 class="text-left font-bold mb-3">
+            @(Localizer["EDITAR PROMOCIÓN"])
+        </h2>
     </div>
 
     <div class="flex flex-row gap-4 w-full">
@@ -33,21 +37,27 @@
 
             <!-- Nombre de la promoción -->
             <div class="form-control w-75">
-                <label asp-for="Nombre" class="label font-bold text-black">Nombre de la promoción</label>
+                <label asp-for="Nombre" class="label font-bold text-black">
+                    @(Localizer["Nombre de la promoción"])
+                </label>
                 <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" disabled="@disabledAttr" />
                 <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Descripción de la promoción -->
             <div class="form-control w-75">
-                <label asp-for="Descripcion" class="label font-bold text-black">Descripción de la promoción</label>
+                <label asp-for="Descripcion" class="label font-bold text-black">
+                    @(Localizer["Descripción de la promoción"])
+                </label>
                 <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1" style="border-color:black" disabled="@disabledAttr"></textarea>
                 <span asp-validation-for="Descripcion" class="text-sm italic mt-1" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Descuento -->
             <div class="form-control w-25">
-                <label asp-for="PorcentajeDescuento" class="label font-bold text-black">Descuento (%)</label>
+                <label asp-for="PorcentajeDescuento" class="label font-bold text-black">
+                    @(Localizer["Descuento (%)"])
+                </label>
                 <input asp-for="PorcentajeDescuento" type="number" min="1" max="100" value="@(Model.PorcentajeDescuento.HasValue? Model.PorcentajeDescuento.Value.ToString("0") : "")"
                        step="1" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" disabled="@disabledAttr" />
                 <span asp-validation-for="PorcentajeDescuento" class="text-sm italic" style="color:red; font-size: small"></span>
@@ -55,7 +65,9 @@
 
             <!-- Fecha de inicio -->
             <div class="form-control" style="width: 45%">
-                <label for="fechaInicio" class="label font-bold text-black">Fecha de inicio</label>
+                <label for="fechaInicio" class="label font-bold text-black">
+                    @(Localizer["Fecha de inicio"])
+                </label>
 
                 <div class="flex items-center border border-black px-2 py-1 rounded">
                     <input type="text" id="fechaInicio" name="FechaInicio" value="@Model.FechaInicio.ToString("dd/MM/yyyy")"
@@ -95,37 +107,62 @@
         <div class="flex flex-col gap-4 w-1/3">
             <!-- Tipo de promoción -->
             <div class="form-control w-75" id="grupoTipoPromocion">
-                <label for="Tipo" class="label font-bold text-black">Tipo de promoción</label>
+                <label for="Tipo" class="label font-bold text-black">
+                    @(Localizer["Tipo de promoción"])
+                </label>
                 <select class="select select-bordered w-full mb-3 mt-1 required" id="tipoPromocion" style="border-color:black" disabled="@disabledAttr">
-                    <option value="">Seleccione un tipo</option>
-                    <option value="Categoria" selected="@(Model.IdCategoriaSeleccionada.HasValue)">Categoría</option>
-                    <option value="Producto" selected="@(Model.IdCategoriaSeleccionada == null)">Producto</option>
+                    <option value="">
+                        @(Localizer["Seleccione un tipo"])
+                    </option>
+                    <option value="Categoria" selected="@(Model.IdCategoriaSeleccionada.HasValue)">
+                        @(Localizer["Categoría"])
+                    </option>
+                    <option value="Producto" selected="@(Model.IdCategoriaSeleccionada == null)">
+                        @(Localizer["Producto"])
+                    </option>
                 </select>
                 <span id="errorTipoPromocion" class="text-sm italic hidden" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Select de categoría -->
             <div id="grupoCategoria" class="form-control w-75 @(Model.IdCategoriaSeleccionada.HasValue ? "" : "hidden")">
-                <label asp-for="IdCategoriaSeleccionada" class="label font-bold text-black">Categoría</label>
+                <label asp-for="IdCategoriaSeleccionada" class="label font-bold text-black">
+                    @(Localizer["Categoría"])
+                </label>
                 <select asp-for="IdCategoriaSeleccionada" asp-items="ViewBag.ListCategorias"
                         class="select select-bordered w-full mb-3 mt-1 required" style="border-color:black" disabled="@disabledAttr">
-                    <option value="">Seleccione una categoría</option>
+                    <option value="">
+                        @(Localizer["Seleccione una categoría"])
+                    </option>
                 </select>
                 <span asp-validation-for="IdCategoriaSeleccionada" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
+            
             <!-- Dropdown de productos -->
+            <!-- Al haber manipulación directa de JavaScript sobre el texto del contenedor (el cual no se traduce automáticamente) 
+                hay que enviar las claves de Localizer a través de los atributos data-text-n (cuando hayan productos seleccionados)
+                y data-text-none (cuando no hayan productos seleccionados)
+            -->
             <div id="grupoProducto" class="form-control w-75 @(Model.IdCategoriaSeleccionada == null ? "" : "hidden")">
-                <label class="label font-bold text-black">Producto</label>
+                <label class="label font-bold text-black">
+                    @(Localizer["Producto"])
+                </label>
                 <div class="dropdown dropdown-bottom w-full relative">
                     <button type="button" id="dropdownToggle" class="btn w-full bg-white border-black text-left justify-start cursor-pointer" disabled="@disabledAttr">
-                        <span id="dropdownLabel">Seleccione uno o más productos</span>
+                        <span id="dropdownLabel"
+                              data-text-n="@Html.Raw(Localizer["{0} producto(s) seleccionado(s)"].Value)"
+                              data-text-none="@Html.Raw(Localizer["Seleccione uno o más productos"].Value)">
+                            @Localizer["Seleccione uno o más productos"]
+                        </span>
                     </button>
                     <ul id="listaProductos" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full max-h-60 overflow-y-auto z-50 border border-black">
                         <li>
                             <label class="cursor-pointer flex items-center gap-2 px-2 py-1">
                                 <input type="checkbox" id="checkboxSelectAll" class="checkbox checkbox-sm" />
-                                <span class="text-sm">Seleccionar todos</span>
+                                <span class="text-sm">
+                                    @(Localizer["Seleccionar todos"])
+                                </span>
                             </label>
                         </li>
                         <li><hr class="my-1"></li>
@@ -147,21 +184,25 @@
                             </li>
 
                         }
-
-
                     </ul>
                 </div>
-                <span id="errorProductos" class="text-sm italic hidden" style="color:red; font-size: small">Debe seleccionar al menos un producto.</span>
+                <span id="errorProductos" class="text-sm italic hidden" style="color:red; font-size: small">
+                    @(Localizer["Debe seleccionar al menos un producto"]).
+                </span>
             </div>
 
             <!-- Enviar el estado del producto  (Activo o Inactivo-->
             <div class="form-control w-fit">
                 <label class="label">
-                    <span class="label-text font-bold text-black mb-1">Estado</span>
+                    <span class="label-text font-bold text-black mb-1">
+                        @(Localizer["Estado"]).
+                    </span>
                 </label>
 
                 <div class="flex items-center gap-2">
-                    <span>Inactiva</span>
+                    <span>
+                        @(Localizer["Inactiva"]).
+                    </span>
 
                     <input type="hidden" name="_Estado" value="false" />
 
@@ -170,7 +211,9 @@
                            id="estadoPromocion"
                            class="toggle border-black bg-white checked:border-primary checked:bg-primary checked:text-white"
                            value="true" @(Model.Estado ? "checked" : "") disabled="@disabledAttr" />
-                    <span>Activa</span>
+                    <span>
+                        @(Localizer["Activa"]).
+                    </span>
                 </div>
             </div>
 

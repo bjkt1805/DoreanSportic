@@ -149,8 +149,10 @@
 
                 <div class="dropdown dropdown-bottom w-full relative">
                     <button type="button" id="dropdownToggle" class="btn w-full bg-white border-black text-left justify-start cursor-pointer">
-                        <span id="dropdownLabel">
-                            @(Localizer["Seleccione uno o más productos"])
+                        <span id="dropdownLabel"
+                              data-text-n="@Html.Raw(Localizer["{0} producto(s) seleccionado(s)"].Value)"
+                              data-text-none="@Html.Raw(Localizer["Seleccione uno o más productos"].Value)">
+                            @Localizer["Seleccione uno o más productos"]
                         </span>
                     </button>
                     <ul id="listaProductos" class="dropdown-content hidden menu p-2 shadow bg-base-100 rounded-box w-full max-h-60 overflow-y-auto z-50 border border-black">
@@ -176,7 +178,9 @@
                 </div>
 
                 <!-- Para mostrar el mensaje de error personalizado-->
-                <span id="errorProductos" class="text-sm italic hidden" style="color:red; font-size: small">Debe seleccionar al menos un producto.</span>
+                <span id="errorProductos" class="text-sm italic hidden" style="color:red; font-size: small">
+                    @(Localizer["Debe seleccionar al menos un producto"]).
+                </span>
 
             </div>
 

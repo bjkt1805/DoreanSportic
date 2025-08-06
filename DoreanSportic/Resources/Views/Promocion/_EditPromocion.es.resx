@@ -118,54 +118,63 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Volver al listado" xml:space="preserve">
-    <value>Back to list</value>
+    <value>Volver al listado</value>
   </data>
   <data name="{0} producto(s) seleccionado(s)" xml:space="preserve">
-    <value>{0} selected product(s)</value>
+    <value>{0} producto(s) seleccionado(s)</value>
   </data>
-  <data name="Seleccione un tipo" xml:space="preserve">
-    <value>Select a type</value>
+  <data name="Inactiva" xml:space="preserve">
+    <value>Inactiva</value>
+  </data>
+  <data name="Estado" xml:space="preserve">
+    <value>Estado</value>
   </data>
   <data name="Debe seleccionar al menos un producto" xml:space="preserve">
-    <value>You must select at least one product</value>
+    <value>Debe seleccionar al menos un producto</value>
   </data>
   <data name="Seleccionar todos" xml:space="preserve">
-    <value>Select all</value>
+    <value>Seleccionar todos</value>
   </data>
   <data name="Seleccione uno o más productos" xml:space="preserve">
-    <value>Select one or more products</value>
-  </data>
-  <data name="Producto" xml:space="preserve">
-    <value>Product</value>
+    <value>Seleccione uno o más productos</value>
   </data>
   <data name="Seleccione una categoría" xml:space="preserve">
-    <value>Select a category</value>
+    <value>Seleccione una categoría</value>
   </data>
   <data name="Categoría" xml:space="preserve">
-    <value>Category</value>
+    <value>Categoría</value>
   </data>
-  <data name="Tipo de promoción" xml:space="preserve">
-    <value>Promotion type</value>
-  </data>
-  <data name="Crear promoción" xml:space="preserve">
-    <value>Create promotion</value>
+  <data name="Seleccione un tipo" xml:space="preserve">
+    <value>Seleccione un tipo</value>
   </data>
   <data name="Fecha de inicio" xml:space="preserve">
-    <value>Initial date</value>
+    <value>Fecha de inicio</value>
+  </data>
+  <data name="Actualizar promoción" xml:space="preserve">
+    <value>Actualizar promoción</value>
+  </data>
+  <data name="Tipo de promoción" xml:space="preserve">
+    <value>Tipo de promoción</value>
   </data>
   <data name="Fecha de fin" xml:space="preserve">
-    <value>Final date</value>
+    <value>Fecha de fin</value>
   </data>
   <data name="Descuento (%)" xml:space="preserve">
-    <value>Discount (%)</value>
+    <value>Descuento (%)</value>
+  </data>
+  <data name="Producto" xml:space="preserve">
+    <value>Producto</value>
   </data>
   <data name="Descripción de la promoción" xml:space="preserve">
-    <value>Promotion description</value>
+    <value>Descripción de la promoción</value>
+  </data>
+  <data name="Activa" xml:space="preserve">
+    <value>Activa</value>
   </data>
   <data name="Nombre de la promoción" xml:space="preserve">
-    <value>Promotion name</value>
+    <value>Nombre de la promoción</value>
   </data>
-  <data name="NUEVA PROMOCIÓN" xml:space="preserve">
-    <value>NEW PROMOTION</value>
+  <data name="EDITAR PROMOCIÓN" xml:space="preserve">
+    <value>EDITAR PROMOCIÓN</value>
   </data>
 </root>
