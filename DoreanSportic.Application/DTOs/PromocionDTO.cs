@@ -64,11 +64,17 @@ public record PromocionDTO
     public virtual ICollection<Categoria> IdCategoria { get; set; } = new List<Categoria>();
 
     [Display(Name = "Producto")]
-    [Required(ErrorMessage = " {0} es requerido")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "ProductoRequerido")]
     public virtual ICollection<Producto> IdProducto { get; set; } = new List<Producto>();
 
     [Display(Name = "Categoría")]
-    [Required(ErrorMessage = " {0} es requerida ")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.PromocionDTO),
+        ErrorMessageResourceName = "CategoriaRequerida")]
     // Propiedad  auxiliar para idCategoria para poder hacer uso de Select simple en las vistas de Promocion (_CreatePromocion y _EditPromocion)
 
     [ValidateNever]

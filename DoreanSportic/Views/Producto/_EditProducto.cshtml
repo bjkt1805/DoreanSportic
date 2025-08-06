@@ -69,6 +69,7 @@
                     <input asp-for="PrecioBase" id="inputPrecioBase" type="number" step="0.01" class="input input-bordered w-full" style="border-color:black" />
                     @* oninput="this.value = this.value.match(/^\d*\.?\d{0,2}/)?.[0] || ''" *@
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"> </span>
+                    <span id="msj-precio-base" data-msj-rango="@Localizer["Debe ingresar un valor entre ₡5 000 y ₡100 000"]" style="display:none;"></span>
                 </div>
 
                 <div class="form-control w-25">
@@ -77,6 +78,7 @@
                     </label>
                     <input asp-for="Stock" id="inputCantidad" type="number" class="input input-bordered w-full" style="border-color:black" />
                     <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"> </span>
+                    <span id="msj-cantidad" data-msj-cantidad="@Localizer["Debe ingresar una cantidad válida entre 1 y 100"]" style="display:none"></span>
                 </div>
             </div>
 
@@ -202,7 +204,10 @@
                 @(Localizer["Imágenes del producto"])
             </p>
             <!-- Mostrar error si no se sube ninguna imagen -->
-            <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small" data-msj-imagen="@Localizer["Debe asignar al menos una imagen"]"></div>
+            <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small" 
+                    data-msj-imagen="@Localizer["Debe asignar al menos una imagen"]"
+                    data-msj-solo-imagen="@Localizer["Solo se permiten imágenes"]"
+            ></div>
 
             <!-- Dropzone de imágenes -->
             <div class="relative flex flex-col p-4 border border-gray-100 rounded">

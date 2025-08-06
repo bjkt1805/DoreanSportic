@@ -138,4 +138,10 @@
   <data name="DescripcionLongitud" xml:space="preserve">
     <value>La descripción no puede exceder 500 caracteres.</value>
   </data>
+  <data name="CategoriaRequerida" xml:space="preserve">
+    <value>La categoría es requerida</value>
+  </data>
+  <data name="ProductoRequired" xml:space="preserve">
+    <value>El producto es requerido</value>
+  </data>
 </root>

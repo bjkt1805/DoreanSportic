@@ -132,11 +132,20 @@
   <data name="Comentario" xml:space="preserve">
     <value>Comment</value>
   </data>
-  <data name="Usuario" xml:space="preserve">
-    <value>User</value>
+  <data name="Debe ingresar una cantidad válida entre 1 y 100" xml:space="preserve">
+    <value>You must enter a valid amount between 1 and 100</value>
+  </data>
+  <data name="Debe insertar al menos una imagen" xml:space="preserve">
+    <value>You must insert at least one image</value>
   </data>
   <data name="Presione &quot;ESC&quot; en el teclado o haga clic en la X para cerrar esta ventana" xml:space="preserve">
     <value>Press "ESC" on the keyboard or click on the x to close this window</value>
+  </data>
+  <data name="¡Producto agregado al carrito!" xml:space="preserve">
+    <value>Press "ESC" on the keyboard or click on the x to close this window</value>
+  </data>
+  <data name="Reseña agregada exitosamente" xml:space="preserve">
+    <value>Review added successfully</value>
   </data>
   <data name="Agregar al carrito" xml:space="preserve">
     <value>Add to cart</value>
@@ -155,6 +164,9 @@
   </data>
   <data name="Seleccione un tipo" xml:space="preserve">
     <value>Select a type</value>
+  </data>
+  <data name="Solo se permiten imágenes" xml:space="preserve">
+    <value>Only images are allowed</value>
   </data>
   <data name="Tipo de empaque" xml:space="preserve">
     <value>Type of packaging</value>
@@ -180,6 +192,15 @@
   <data name="Enviar reseña" xml:space="preserve">
     <value>Send review</value>
   </data>
+  <data name="Error al enviar reseña" xml:space="preserve">
+    <value>Error submitting review</value>
+  </data>
+  <data name="Error inesperado" xml:space="preserve">
+    <value>Unexpected error</value>
+  </data>
+  <data name="¡Error al insertar producto al carrito!" xml:space="preserve">
+    <value>Error inserting product into cart!</value>
+  </data>
   <data name="OFERTA" xml:space="preserve">
     <value>DISCOUNT</value>
   </data>
@@ -188,6 +209,15 @@
   </data>
   <data name="DISPONIBLE" xml:space="preserve">
     <value>AVAILABLE</value>
+  </data>
+  <data name="El mensaje personalizado es requerido" xml:space="preserve">
+    <value>Personalized message is required</value>
+  </data>
+  <data name="El mensaje no puede superar los 500 caracteres" xml:space="preserve">
+    <value>The message cannot exceed 500 characters.</value>
+  </data>
+  <data name="El tipo de empaque es requerido" xml:space="preserve">
+    <value>The type of packaging is required</value>
   </data>
   <data name="AGOTADO" xml:space="preserve">
     <value>OUT OF STOCK</value>
@@ -209,5 +239,11 @@
   </data>
   <data name="Cargando reseñas..." xml:space="preserve">
     <value>Loading reviews...</value>
+  </data>
+  <data name="Usuario" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Validación fallida" xml:space="preserve">
+    <value>Validation failed</value>
   </data>
 </root>

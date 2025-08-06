@@ -62,6 +62,7 @@
                     </label>
                     <input asp-for="PrecioBase" id="inputPrecioBase" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" style="border-color:black" />
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"></span>
+                    <span id="msj-precio-base" data-msj-rango="@Localizer["Debe ingresar un valor entre ₡5 000 y ₡100 000"]" style="display:none;"></span>
                 </div>
 
                  <!-- Para controlar la inserción del stock (cantidad) del producto-->
@@ -73,6 +74,7 @@
                     </label>
                     <input asp-for="Stock" id="inputCantidad" type="number" step="1" class="input input-bordered w-full mb-3 mt-1" style="border-color:black" />
                     <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"></span>
+                    <span id="msj-cantidad" data-msj-cantidad="@Localizer["Debe ingresar una cantidad válida entre 1 y 100"]" style="display:none"></span>
                 </div>
             </div>
 
@@ -185,7 +187,10 @@
             </p>
 
             <!-- Mostrar error si no se sube ninguna imagen -->
-            <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small" data-msj-imagen="@Localizer["Debe asignar al menos una imagen"]"></div>
+            <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small" 
+                    data-msj-imagen="@Localizer["Debe asignar al menos una imagen"]"
+                    data-msj-solo-imagen="@Localizer["Solo se permiten imágenes"]">
+             </div>
 
             <div class="relative flex flex-col p-4 border border-gray-100 rounded">
                 <div x-ref="dnd"
@@ -208,7 +213,8 @@
                                   d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <p class="m-0">
-                            @(Localizer["Arrastre las imágenes aquí o haga clic para seleccionarlas"]).
+                            @(Localizer["Arrastre las imágenes aquí o haga clic para seleccionarlas"])
+
                         </p>
                     </div>
                 </div>

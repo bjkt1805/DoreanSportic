@@ -176,6 +176,9 @@
   <data name="Seleccione una marca" xml:space="preserve">
     <value>Choose a brand</value>
   </data>
+  <data name="Solo se permiten imágenes" xml:space="preserve">
+    <value>Only images are allowed</value>
+  </data>
   <data name="Volver al listado" xml:space="preserve">
     <value>Back to list</value>
   </data>
@@ -190,6 +193,12 @@
   </data>
   <data name="Debe asignar al menos una imagen" xml:space="preserve">
     <value>You must assign at least one image</value>
+  </data>
+  <data name="Debe ingresar un valor entre ₡5 000 y ₡100 000" xml:space="preserve">
+    <value>You must enter a value between ₡5 000 and ₡100 000</value>
+  </data>
+  <data name="Debe ingresar una cantidad válida entre 1 y 100" xml:space="preserve">
+    <value>You must enter a valid amount between 1 and 100</value>
   </data>
   <data name="Inactivo" xml:space="preserve">
     <value>Inactive</value>

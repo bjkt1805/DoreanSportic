@@ -1,4 +1,17 @@
-﻿// Script para escuchar el evento submit del formulario para crear la Resenna
+﻿// Función utilitaria para obtener todos los mensajes internacionalizados (data-)
+// del contenedor utilitario para mostrarlos en pantalla
+function getMensaje(key, ...params) {
+    // Llamar al contenedor que tiene los mensajes internacionalizados
+    const div = document.getElementById("mensajes-internacionalizados");
+    let mensaje = div?.dataset[key] || "";
+    // Si el mensaje tiene parámetros tipo {0}, {1}, etc.
+    params.forEach((param, i) => {
+        mensaje = mensaje.replace(`{${i}}`, param);
+    });
+    return mensaje;
+}
+
+// Script para escuchar el evento submit del formulario para crear la Resenna
 function manejarEnvioResenna(e) {
     e.preventDefault();
 
@@ -40,7 +53,7 @@ function manejarEnvioResenna(e) {
         })
         .then(result => {
 
-            mostrarToast("Reseña agregada exitosamente", "success");
+            mostrarToast(getMensaje("msjResennaExito"), "success");
             modalResenna.close();
             form.reset();
             $("#formResenna").validate().resetForm(); // limpia mensajes
@@ -106,13 +119,13 @@ function manejarEnvioDetalleCarrito(e) {
 
         // Validar tipo de empaque
         if (!empaqueSelect || empaqueSelect.value === "") {
-            document.getElementById("error-tipoEmpaque").innerText = "El tipo de empaque es requerido.";
+            document.getElementById("error-tipoEmpaque").innerText = getMensaje("msjTipoEmpaque");
             valido = false;
         }
 
         // Validar mensaje
         if (!mensajeInput || mensajeInput.value.trim() === "") {
-            document.getElementById("error-mensajePersonalizado").innerText = "El mensaje personalizado es requerido.";
+            document.getElementById("error-mensajePersonalizado").innerText = getMensaje("msjMensajePersonalizado");
             valido = false;
         }
 
@@ -126,7 +139,7 @@ function manejarEnvioDetalleCarrito(e) {
             if (!tieneArchivo) {
                 const erroresFoto = document.getElementById("error-foto");
                 if (erroresFoto) {
-                    erroresFoto.innerText = "Debe insertar al menos una imagen";
+                    erroresFoto.innerText = getMensaje("msjInserteImagen");
                     valido = false;
                 }
             }
@@ -164,7 +177,7 @@ function manejarEnvioDetalleCarrito(e) {
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                mostrarToast("¡Producto agregado al carrito!", "success");
+                mostrarToast(getMensaje("msjProductoAgregado"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
 
@@ -174,13 +187,13 @@ function manejarEnvioDetalleCarrito(e) {
             } else if (result.errores) {
                 // Mostrar errores manualmente si vienen en el JSON
                 result.errores.forEach(mensaje => {
-                    mostrarToast("¡Error al insertar producto al carrito!", "error");
+                    mostrarToast(getMensaje("msjProductoError"), "error");
                 });
             }
         })
         .catch(error => {
             console.error("Error al enviar detalle:", error);
-            mostrarToast("Error inesperado", "error");
+            mostrarToast(getMensaje("msjErrorInesperado"), "error");
         });
 }
 
@@ -239,7 +252,7 @@ function dataSingleFileDnD() {
 
             // Validar que el tipo MIME sea de imagen
             if (!selectedFile.type.startsWith("image/")) {
-                mostrarToast(`Solo se permiten imágenes. Archivo inválido: ${selectedFile.name}`, "error");
+                mostrarToast(getMensaje("msjSoloImagen"), "error");
                 return;
             }
 
@@ -259,7 +272,7 @@ function dataSingleFileDnD() {
 
             // Validar que el tipo MIME sea de imagen
             if (!droppedFile.type.startsWith("image/")) {
-                mostrarToast(`Solo se permiten imágenes. Archivo inválido: ${droppedFile.name}`, "error");
+                mostrarToast(getMensaje("msjSoloImagen"), "error");
                 return;
             }
 
@@ -285,7 +298,8 @@ function dataSingleFileDnD() {
 // Función para escuchar mientras el usuario escribe en el campo de "Cantidad"
 function escucharInputCantidad() {
     const input = document.getElementById("inputCantidad");
-    const mensajeError = document.querySelector("span[data-valmsg-for='Stock']");
+    // Para leer el valor "data del input de cantidad para mostrar en el div de error internacionalizado"
+    const mensajeError = document.querySelector("span[data-valmsg-for='Stock'], span[data-msj-cantidad]");
 
     if (!input) return;
 
@@ -301,10 +315,14 @@ function escucharInputCantidad() {
 
         const numero = parseInt(input.value);
 
+        // Obtener el mensaje internacionalizado 
+        // para mostrar de error
+        const msjCantidad = mensajeError.dataset.msjCantidad
+
         if (!isNaN(numero)) {
             if (numero < 1 || numero > 100) {
                 if (mensajeError) {
-                    mensajeError.textContent = "Debe ingresar una cantidad válida entre 1 y 100";
+                    mensajeError.textContent = msjCantidad;
                 }
                 input.classList.add("border-red-500");
             } else {
@@ -355,7 +373,7 @@ function escucharInputMensajePersonalizado() {
             if (this.value.length > 500) {
                 this.value = this.value.slice(0, 500);
                 if (errorDiv) {
-                    errorDiv.textContent = "El mensaje no puede superar los 500 caracteres.";
+                    errorDiv.textContent = getMensaje("msjMax500");
                 }
             } else {
                 if (errorDiv) {
@@ -454,7 +472,6 @@ async function calcularSubtotal() {
         inputSubTotal.value = subtotal; 
     }
 }
-
 
 // INICIALIZACIÓN DE FUNCIONES NECESARIAS CUANDO SE CARGA EL DOM
 

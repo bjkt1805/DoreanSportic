@@ -132,6 +132,9 @@
   <data name="Debe seleccionar al menos un producto" xml:space="preserve">
     <value>Debe seleccionar al menos un producto</value>
   </data>
+  <data name="Debe seleccionar un tipo de promoción" xml:space="preserve">
+    <value>Debe seleccionar un tipo de promoción</value>
+  </data>
   <data name="Seleccionar todos" xml:space="preserve">
     <value>Seleccionar todos</value>
   </data>

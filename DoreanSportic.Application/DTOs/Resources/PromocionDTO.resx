@@ -138,4 +138,10 @@
   <data name="DescripcionLongitud" xml:space="preserve">
     <value>NombreRequerido</value>
   </data>
+  <data name="CategoriaRequerida" xml:space="preserve">
+    <value>NombreRequerido</value>
+  </data>
+  <data name="ProductoRequired" xml:space="preserve">
+    <value>NombreRequerido</value>
+  </data>
 </root>

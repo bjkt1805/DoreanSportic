@@ -126,8 +126,14 @@
   <data name="Debe asignar al menos una etiqueta" xml:space="preserve">
     <value>You must assign at least one tag</value>
   </data>
-  <data name="Debe asignar al menos una imagen" xml:space="preserve">
-    <value>You must assign at least one image</value>
+  <data name="Debe ingresar una cantidad válida entre 1 y 100" xml:space="preserve">
+    <value>You must enter a valid amount between 1 and 100</value>
+  </data>
+  <data name="Debe ingresar un valor entre ₡5 000 y ₡100 000" xml:space="preserve">
+    <value>You must enter a value between ₡5 000 and ₡100 000</value>
+  </data>
+  <data name="Solo se permiten imágenes" xml:space="preserve">
+    <value>Only images are allowed</value>
   </data>
   <data name="Promedio de valoraciones" xml:space="preserve">
     <value>Average Rating</value>
@@ -188,5 +194,8 @@
   </data>
   <data name="Arrastre las imágenes aquí o haga clic para seleccionarlas" xml:space="preserve">
     <value>Drag images here or click to select them</value>
+  </data>
+  <data name="Debe asignar al menos una imagen" xml:space="preserve">
+    <value>You must assign at least one image</value>
   </data>
 </root>

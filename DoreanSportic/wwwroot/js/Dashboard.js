@@ -476,6 +476,8 @@ function escucharInputPrecioBase() {
         }
     });
 
+    // Para mostrar error internacionalizado
+    const msjPrecioBase = document.getElementById("msj-precio-base").dataset.msjRango;
 
     // Evento para escuchar el evento "input" de
     // precioBase y realizar las validacines necesarias
@@ -495,10 +497,11 @@ function escucharInputPrecioBase() {
 
         // Validar rango
         const numero = parseFloat(input.value);
+
         if (!isNaN(numero)) {
             if (numero < 5000 || numero > 100000) {
                 if (mensajeError) {
-                    mensajeError.textContent = "Debe ingresar un valor entre ₡5 000 y ₡100 000";
+                    mensajeError.textContent = msjPrecioBase;
                 }
 
             } else {
@@ -523,6 +526,7 @@ function escucharInputPrecioBase() {
 function escucharInputCantidad() {
     const input = document.getElementById("inputCantidad");
     const mensajeError = document.querySelector("span[data-valmsg-for='Stock']");
+    const msjCantidad = document.getElementById("msj-cantidad")?.dataset.msjCantidad;
 
     if (!input) return;
 
@@ -535,7 +539,7 @@ function escucharInputCantidad() {
         if (!isNaN(numero)) {
             if (numero < 1 || numero > 100) {
                 if (mensajeError) {
-                    mensajeError.textContent = "Debe ingresar una cantidad válida entre 1 y 100";
+                    mensajeError.textContent = msjCantidad;
                 }
                 input.classList.add("border-red-500");
             } else {
@@ -610,11 +614,14 @@ function validacionFormularioPromocion() {
 
         let isValid = true;
 
+        // Para mostrar mensaje de error internacionalizado
+        const msjTipoPromocion = document.getElementById("msj-tipo-promocion").dataset.msjTipo;
+
         // Validar tipo de promoción
         if (tipoSelect && tipoSelect.value === "") {
             isValid = false;
             if (errorSpan) {
-                errorSpan.textContent = "Debe seleccionar un tipo de promoción.";
+                errorSpan.textContent = msjTipoPromocion;
                 errorSpan.classList.remove("hidden");
             }
             tipoSelect.classList.add("border-red-500");
@@ -679,12 +686,10 @@ function validacionFormularioPromocion() {
 
                 if (errorProductos) {
                     errorProductos.classList.remove("hidden");
-                    errorProductos.textContent = "Debe seleccionar al menos un producto.";
                 }
             } else {
                 if (errorProductos) {
                     errorProductos.classList.add("hidden");
-                    errorProductos.textContent = "";
                 }
             }
         }

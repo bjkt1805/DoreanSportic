@@ -63,6 +63,15 @@ namespace DoreanSportic.Application.DTOs.Resources {
         /// <summary>
         ///   Looks up a localized string similar to NombreRequerido.
         /// </summary>
+        public static string CategoriaRequerida {
+            get {
+                return ResourceManager.GetString("CategoriaRequerida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NombreRequerido.
+        /// </summary>
         public static string DescripcionLongitud {
             get {
                 return ResourceManager.GetString("DescripcionLongitud", resourceCulture);
@@ -120,6 +129,15 @@ namespace DoreanSportic.Application.DTOs.Resources {
         public static string PorcentajeDescuentoRequerido {
             get {
                 return ResourceManager.GetString("PorcentajeDescuentoRequerido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NombreRequerido.
+        /// </summary>
+        public static string ProductoRequired {
+            get {
+                return ResourceManager.GetString("ProductoRequired", resourceCulture);
             }
         }
     }

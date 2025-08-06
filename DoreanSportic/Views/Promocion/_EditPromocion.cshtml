@@ -121,6 +121,7 @@
                         @(Localizer["Producto"])
                     </option>
                 </select>
+                <span id="msj-tipo-promocion" data-msj-tipo="@Localizer["Debe seleccionar un tipo de promoción"]" style="display:none;"></span>
                 <span id="errorTipoPromocion" class="text-sm italic hidden" style="color:red; font-size: small"></span>
             </div>
 
@@ -135,6 +136,7 @@
                         @(Localizer["Seleccione una categoría"])
                     </option>
                 </select>
+                <!-- Para mostrar el mensaje de error personalizado-->
                 <span asp-validation-for="IdCategoriaSeleccionada" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
@@ -195,13 +197,13 @@
             <div class="form-control w-fit">
                 <label class="label">
                     <span class="label-text font-bold text-black mb-1">
-                        @(Localizer["Estado"]).
+                        @(Localizer["Estado"])
                     </span>
                 </label>
 
                 <div class="flex items-center gap-2">
                     <span>
-                        @(Localizer["Inactiva"]).
+                        @(Localizer["Inactiva"])
                     </span>
 
                     <input type="hidden" name="_Estado" value="false" />
@@ -212,7 +214,7 @@
                            class="toggle border-black bg-white checked:border-primary checked:bg-primary checked:text-white"
                            value="true" @(Model.Estado ? "checked" : "") disabled="@disabledAttr" />
                     <span>
-                        @(Localizer["Activa"]).
+                        @(Localizer["Activa"])
                     </span>
                 </div>
             </div>

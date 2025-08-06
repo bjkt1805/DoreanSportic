@@ -52,12 +52,20 @@ function dataFileDnD() {
             // Si no hay imágenes cargadas en el array (droppedFiles) simplemente no hacer nada
             if (!droppedFiles || droppedFiles.length === 0) return;
 
+            // Para internalización hay que traerse el error del atributo "data-msj-solo-imagen"
+            // que solo acepta archivos tipo de imagen y mostrar el mensaje en el idioma requerido
+            // español o inglés
+            const errorFotosDiv = document.getElementById("zona-errores-validacion");
+            const msjSoloImagen = errorFotosDiv.dataset.msjSoloImagen;
+
             // Recorrer todo el array de imágenes (droppedFiles) para insertar cada imagen 
             // en el array que se va a enviar para crear el producto
             [...droppedFiles].forEach(file => {
                 // Validar que el tipo MIME sea de imagen
                 if (!file.type.startsWith("image/")) {
-                    mostrarToast(`Solo se permiten imágenes. Archivo inválido: ${file.name}`, "error");
+
+                    // Mostrar en el toast el error de archivo no válido (inglés o español)
+                    mostrarToast(msjSoloImagen,"error");
                     return;
                 }
 
