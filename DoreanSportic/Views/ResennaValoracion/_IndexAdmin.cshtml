@@ -1,18 +1,20 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 <div class="mb-4 overflow-x-auto bg-base-100 relative">
     <div id="zona-resennas" class="mb-4 overflow-x-auto bg-base-100 relative">
-        <h1 class="py-2 font-bold">Listado de reseñas</h1>
+        <h1 class="py-2 font-bold">@(Localizer["Listado de reseñas"])</h1>
         <table class="table w-full rounded-box border border-base-content/5">
             <!-- head -->
             <thead class="bg-primary text-white">
                 <tr>
-                    <th class="text-center">Usuario</th>
-                    <th class="text-center">Producto</th>
-                    <th class="text-center">Calificación</th>
-                    <th class="text-center">Fecha de la reseña</th>
+                    <th class="text-center">@(Localizer["Usuario"])</th>
+                    <th class="text-center">@(Localizer["Producto"])</th>
+                    <th class="text-center">@(Localizer["Calificación"])</th>
+                    <th class="text-center">@(Localizer["Fecha de la reseña"])</th>
                     <th class="text-center"></th>
                 </tr>
             </thead>
@@ -39,7 +41,7 @@
  *@                        <!-- Botón alineado abajo a la derecha -->
                             <div class="mt-auto flex justify-end gap-2">
                                 <a class="btn btn-soft btn-primary text-white"
-                                   onclick="cargarDetalleResenna(@item.Id)">Ver detalles</a>
+                                   onclick="cargarDetalleResenna(@item.Id)">@(Localizer["Ver detalles"])</a>
                             </div>
                         </td>
                     </tr>

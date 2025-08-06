@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
     var promedio = Model.Any() ? Model.Average(r => r.Calificacion) : 0;
     var promedioEntero = (int)Math.Floor(promedio); // para estrellas completas
 }
 <div class="flex w-full items-center gap-2 mb-1">
-    <span class="font-bold">Promedio de valoraciones: @promedio.ToString("0.0")</span>
+    <span class="font-bold">
+        @(Localizer["Promedio de valoraciones"]): @promedio.ToString("0.0")
+    </span>
     <div class="flex gap-1">
         @for (int i = 1; i <= 5; i++)
         {

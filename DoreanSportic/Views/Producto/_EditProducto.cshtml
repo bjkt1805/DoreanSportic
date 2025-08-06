@@ -153,7 +153,12 @@
 
             <div>
                 <!-- Cargar el contenedor de promedio de reseñas -->
-                <div id="contenedor-resennas" class="w-full flex flex-row gap gap-1">
+                <!-- Como el contenedor de promedios y reseñas se carga por AJAX (vista parcial)
+                        hay que enviar la data a traducir por medio del atributo "data-[...]" para poder
+                        traducir el texto dentro
+                -->
+                <div id="contenedor-resennas" class="w-full flex flex-row gap gap-1"
+                     data-promedio="@Localizer["Promedio de valoraciones"]">
                     <p class="text-sm">
                         @(Localizer["Cargando reseñas..."])
                     </p>
@@ -193,7 +198,9 @@
 
         <!-- Columna imágenes -->
         <div class="bg-white rounded w-9/12 mx-4">
-            <p class="font-bold mb-1">Imágenes del producto</p>
+            <p class="font-bold mb-1">
+                @(Localizer["Imágenes del producto"])
+            </p>
             <!-- Mostrar error si no se sube ninguna imagen -->
             <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small"></div>
 
