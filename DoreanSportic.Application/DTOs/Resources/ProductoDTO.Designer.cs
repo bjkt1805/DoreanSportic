@@ -81,9 +81,9 @@ namespace DoreanSportic.Application.DTOs.Resources {
         /// <summary>
         ///   Looks up a localized string similar to DescripcionLongitud.
         /// </summary>
-        public static string IdCategoriaRequerido_ {
+        public static string IdCategoriaRequerido {
             get {
-                return ResourceManager.GetString("IdCategoriaRequerido ", resourceCulture);
+                return ResourceManager.GetString("IdCategoriaRequerido", resourceCulture);
             }
         }
         

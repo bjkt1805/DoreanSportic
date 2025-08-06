@@ -56,10 +56,14 @@ public record ProductoDTO
          ErrorMessageResourceName = "StockRango")]
     public int Stock { get; set; }
 
-    [Required(ErrorMessage = " {0} es requerida ")]
+    [Required(
+         ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+         ErrorMessageResourceName = "IdMarcaRequerido")]
     public int IdMarca { get; set; }
 
-    [Required(ErrorMessage = " {0} es requerida ")]
+    [Required(
+         ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+         ErrorMessageResourceName = "IdCategoriaRequerido")]
     public int IdCategoria { get; set; }
 
     public bool Estado { get; set; }

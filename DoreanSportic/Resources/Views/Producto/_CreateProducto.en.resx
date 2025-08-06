@@ -123,6 +123,12 @@
   <data name="Volver al listado" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="Debe asignar al menos una etiqueta" xml:space="preserve">
+    <value>You must assign at least one tag</value>
+  </data>
+  <data name="Debe asignar al menos una imagen" xml:space="preserve">
+    <value>You must assign at least one image</value>
+  </data>
   <data name="Promedio de valoraciones" xml:space="preserve">
     <value>Average Rating</value>
   </data>
@@ -136,10 +142,10 @@
 </value>
   </data>
   <data name="Arrastre las etiquetas al lado derecho para asignarlas al producto" xml:space="preserve">
-    <value>Drag the labels to the right side to assign them to the product</value>
+    <value>Drag tags to the right side to assign them to the product</value>
   </data>
   <data name="Arrastre las etiquetas al lado izquierdo para desasignarlas" xml:space="preserve">
-    <value>Drag labels to the left side to unassign them</value>
+    <value>Drag tags to the left side to unassign them</value>
   </data>
   <data name="Etiquetas del producto" xml:space="preserve">
     <value>Product tags</value>

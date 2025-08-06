@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Arrastre las etiquetas al lado derecho para asignarlas al producto" xml:space="preserve">
-    <value>Drag the labels to the right side to assign them to the product</value>
+    <value>Drag tags to the right side to assign them to the product</value>
   </data>
   <data name="Arrastre las etiquetas al lado izquierdo para desasignarlas" xml:space="preserve">
-    <value>Drag labels to the left side to unassign them</value>
+    <value>Drag tags to the left side to unassign them</value>
   </data>
   <data name="Arrastre las imágenes aquí o haga clic para seleccionarlas" xml:space="preserve">
     <value>Drag images here or click to select them</value>
@@ -184,6 +184,12 @@
   </data>
   <data name="Activo" xml:space="preserve">
     <value>Active</value>
+  </data>
+  <data name="Debe asignar al menos una etiqueta" xml:space="preserve">
+    <value>You must assign at least one tag</value>
+  </data>
+  <data name="Debe asignar al menos una imagen" xml:space="preserve">
+    <value>You must assign at least one image</value>
   </data>
   <data name="Inactivo" xml:space="preserve">
     <value>Inactive</value>

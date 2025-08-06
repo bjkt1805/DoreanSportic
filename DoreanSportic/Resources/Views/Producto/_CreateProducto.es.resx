@@ -123,6 +123,12 @@
   <data name="Volver al listado" xml:space="preserve">
     <value>Volver al listado</value>
   </data>
+  <data name="Debe asignar al menos una etiqueta" xml:space="preserve">
+    <value>Debe asignar al menos una etiqueta</value>
+  </data>
+  <data name="Debe asignar al menos una imagen" xml:space="preserve">
+    <value>Debe asignar al menos una imagen</value>
+  </data>
   <data name="Promedio de valoraciones" xml:space="preserve">
     <value>Promedio de valoraciones</value>
   </data>

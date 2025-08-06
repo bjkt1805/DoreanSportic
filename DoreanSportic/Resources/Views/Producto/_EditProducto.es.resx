@@ -185,6 +185,12 @@
   <data name="Activo" xml:space="preserve">
     <value>Activo</value>
   </data>
+  <data name="Debe asignar al menos una etiqueta" xml:space="preserve">
+    <value>Debe asignar al menos una etiqueta</value>
+  </data>
+  <data name="Debe asignar al menos una imagen" xml:space="preserve">
+    <value>Debe asignar al menos una imagen</value>
+  </data>
   <data name="Inactivo" xml:space="preserve">
     <value>Inactivo</value>
   </data>

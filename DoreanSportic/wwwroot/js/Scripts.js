@@ -144,16 +144,23 @@ function dataFileDnD() {
 
             // Validar etiquetas
             const etiquetasAsignadas = document.querySelectorAll("#dp2 .drag");
+            // Obtener el mensaje de error de etiquetas desde el div de errorEtiquetasDiv (internacionalizado))
+            const errorEtiquetasDiv = document.getElementById("error-etiquetas");
+            const msjEtiqueta = errorEtiquetasDiv.dataset.msjEtiqueta;
+
             if (etiquetasAsignadas.length === 0) {
-                document.getElementById("error-etiquetas").innerText = " Debe asignar al menos una etiqueta ";
+                document.getElementById("error-etiquetas").innerText = msjEtiqueta;
                 hasError = true;
             }
 
             // Validar que haya al menos una imagen cargada
+            // Obtener el mensaje de error de imagenes desde el div de errorEtiquetasDiv (internacionalizado))
+            const errorFotosDiv = document.getElementById("zona-errores-validacion");
+            const msjImagen = errorFotosDiv.dataset.msjImagen;
+
             if  (this.files.length === 0) {
-                const zonaErrores = document.getElementById("zona-errores-validacion");
-                if (zonaErrores) {
-                    zonaErrores.innerText = " Debe subir al menos una imagen del producto ";
+                if (errorFotosDiv) {
+                    errorFotosDiv.innerText = msjImagen;
                 }
                 hasError = true;
             }
