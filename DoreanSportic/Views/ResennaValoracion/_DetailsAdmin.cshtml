@@ -1,8 +1,17 @@
 ﻿@model DoreanSportic.Application.DTOs.ResennaValoracionDTO
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 <div class ="py-4">
-    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50 mb-1" onclick="cargarVista('/ResennaValoracion/IndexAdmin')">Volver al listado</a>
-    <h1 class="pt-2"><b>DETALLES DE LA RESEÑA</b></h1>
+    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50 mb-1" onclick="cargarVista('/ResennaValoracion/IndexAdmin')">
+        @(Localizer["Volver al listado"])
+    </a>
+    <h1 class="pt-2">
+        <b>
+            @(Localizer["DETALLES DE LA RESEÑA"])
+            
+        </b>
+    </h1>
 </div>
 
 <div class="mb-4 card bg-base-100 shadow-lg max-h-96 overflow-y-auto w-100">
@@ -20,7 +29,7 @@
             <figure class="px-10 pt-10 h-48 flex justify-center items-center">
                 <img style="width:70%; height: 80%"
                     src="data:image/jpeg;base64,@Convert.ToBase64String(Model.IdProductoNavigation.PrimeraImagen ?? Array.Empty<byte>())"
-                     alt="Ropa/accesorios deportivos"
+                     alt=@(Localizer["Ropa/accesorios deportivos"])
                      class=" h-full object-contain rounded-xl" />
             </figure>
             <p class="mt-2 italic">"@Model.Comentario"</p>

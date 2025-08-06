@@ -3,6 +3,8 @@
 @using DoreanSportic.Infrastructure.Models
 
 @using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 <!-- Para el separador de miles-->
 @{
@@ -18,15 +20,19 @@
          <a href="javascript:void(0);"
                class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
                onclick="cargarVista('/Producto/IndexAdmin')">
-                Volver al listado
+                @(Localizer["Volver al listado"])
             </a>
             <a href="javascript:void(0);"
                class="btn btn-sm btn-outline bg-warning text-black w-50"
                onclick="cargarEditarProducto(@Model.Producto.Id)">
-                Editar producto
+                @(Localizer["Editar producto"])
             </a>
         </div>
-        <h1><b>DETALLE DEL PRODUCTO</b></h1>
+        <h1>
+            <b>
+                @(Localizer["DETALLE DEL PRODUCTO"])
+            </b>
+        </h1>
         <!-- Cargar los cards de los productos -->
         <div class="card card-side flex-row bg-base rounded-3">
 
@@ -64,11 +70,15 @@
                         @{
                             if (Model.Producto.Stock == 0)
                             {
-                                <div class="badge bg-[#FF0000] text-white">AGOTADO</div>
+                                <div class="badge bg-[#FF0000] text-white">
+                                    @(Localizer["AGOTADO"])
+                                </div>
                             }
                             else
                             {
-                                <div class="badge bg-[#50C878] text-white">DISPONIBLE</div>
+                                <div class="badge bg-[#50C878] text-white">
+                                    @(Localizer["DISPONIBLE"])
+                                </div>
                             }
                         }
                         <!-- Código Razor para mostrar el badge de "EN OFERTA" en caso de que
@@ -77,7 +87,9 @@
                         @if ((Model.Producto.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
                                                 (Model.Producto.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                         {
-                            <div class="badge badge-secondary">OFERTA</div>
+                            <div class="badge badge-secondary">
+                                @(Localizer["OFERTA"])
+                            </div>
                         }
                     </div>
 
@@ -129,13 +141,17 @@
                 {
                     <div class="p-2 w-75 flex flex-col ml-2 gap gap-1 rounded-lg border border-base-300">
                         <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                            <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
+                            <b>
+                                @(Localizer["Precio anterior"]):
+                            </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                             <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                                 - @descuentoTotal.ToString("0")%
                             </div>
                         </div>
                         <div class="flex flex-row gap gap-1">
-                            <b>Precio en oferta: </b>
+                            <b>
+                                @(Localizer["Precio en oferta"]):
+                            </b>
                             <div class="badge badge-xl bg-success text-black font-bold">
                                 ₡@precioConDescuento.ToString("N2", culturaPersonalizada) + I.V.A
                             </div>
@@ -146,7 +162,9 @@
                 else
                 {
                     <div class="flex flex-row gap gap-1">
-                        <b class="mt-1">Precio base: </b>
+                        <b class="mt-1">
+                            @(Localizer["Precio base"]):
+                        </b>
                         <div class="badge badge-outline w-fit">
                             ₡@precioBase.ToString("N2", culturaPersonalizada) + I.V.A
                         </div>
@@ -169,7 +187,9 @@
             var promedioEntero = (int)Math.Floor(promedio); // para estrellas completas
         }
         <div class="flex w-75 items-center gap-2 mb-4">
-            <span class="font-bold">PROMEDIO DE CALIFICACIÓN: @promedio.ToString("0.0")</span>
+            <span class="font-bold">
+                @(Localizer["PROMEDIO DE CALIFICACIÓN"]): @promedio.ToString("0.0")
+            </span>
             <div class="flex gap-1">
                 @for (int i = 1; i <= 5; i++)
                 {
@@ -190,7 +210,9 @@
 
         <!-- Cargar las reseñas de los usuarios-->
         <div id="zona-resennas" class="w-full">
-            <p class="text-sm">Cargando reseñas...</p>
+            <p class="text-sm">
+                @(Localizer["Cargando reseñas..."])
+            </p>
         </div>
     </div>
 

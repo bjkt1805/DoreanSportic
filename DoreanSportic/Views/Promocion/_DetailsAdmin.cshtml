@@ -1,8 +1,16 @@
-﻿@model DoreanSportic.Application.DTOs.PromocionDTO  
+﻿@model DoreanSportic.Application.DTOs.PromocionDTO 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 <div class="py-4">  
-    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50 mb-1" onclick="cargarVista('/Promocion/IndexAdmin')">Volver al listado</a>
-    <h1><b>DETALLES DE LA PROMOCIÓN</b></h1>
+    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50 mb-1" onclick="cargarVista('/Promocion/IndexAdmin')">
+        @(Localizer["Volver al listado"])
+    </a>
+    <h1>
+        <b>
+            @(Localizer["DETALLES DE LA PROMOCIÓN"])
+        </b>
+    </h1>
 </div>  
 
 <div class="mb-4 flex flex-row gap gap-2">  
@@ -19,16 +27,21 @@
 
                     <p class="pb-2 text-xs opacity-60 tracking-wide">@Model.Descripcion</p>  
                     <p class="pb-2 text-xs opacity-60 tracking-wide">  
-                        <b>Tipo de promoción: </b>  
-                        @{  
-                            var tipoPromocion = Model.IdProducto.Any() ? "Por producto" :  
-                            Model.IdCategoria.Any() ? "Por categoría" :  
-                            "Sin tipo definido";  
+                        <b>
+                            @(Localizer["Tipo de promoción"]):
+                        </b>
+                        @{
+                            var tipoPromocion = Model.IdProducto.Any() ? Localizer["Por producto"].Value :
+                            Model.IdCategoria.Any() ? Localizer["Por categoría"].Value :
+                            Localizer["Sin tipo definido"].Value;
                         }  
                         @tipoPromocion  
                     </p>  
                     <p class="pb-2 text-xs opacity-60 tracking-wide">  
-                        <b>Porcentaje de descuento: </b>@($"{Model.PorcentajeDescuento:0.#}")%  
+                        <b>
+                            @(Localizer["Porcentaje de descuento"]):
+                            :
+                        </b>@($"{Model.PorcentajeDescuento:0.#}")%
                     </p>  
                     <p class="pb-2 text-xs opacity-60 tracking-wide">  
                         <b>Fecha de inicio: </b>@Model.FechaInicio.ToString("dd-MM-yyyy")  
@@ -59,9 +72,9 @@
                     <div class="flex flex-row justify-between items-center px-5 py-0">  
                         <h2 class="p-5 font-semibold">@item.Nombre</h2>  
                         <img style="width:10%; height: 80%"  
-                             src="data:image/jpeg;base64,@Convert.ToBase64String(item.PrimeraImagen ?? Array.Empty<byte>())"  
-                             alt="Ropa/accesorios deportivos"  
-                             class="items-end h-full object-contain rounded-xl pt-3" />  
+                             src="data:image/jpeg;base64,@Convert.ToBase64String(item.PrimeraImagen ?? Array.Empty<byte>())"
+                             alt=@(Localizer["Ropa/accesorios deportivos"])
+                             class="items-end h-full object-contain rounded-xl pt-3" />
                     </div>  
                 </div>  
             }  
@@ -79,17 +92,17 @@
                         <div class="flex flex-row justify-between items-center px-5 py-0">  
                             <h2 class="p-5 font-semibold">@producto.Nombre</h2>  
                             <img style="width:10%; height: 80%"  
-                                 src="data:image/jpeg;base64,@Convert.ToBase64String(producto.PrimeraImagen ?? Array.Empty<byte>())"  
-                                 alt="Ropa/accesorios deportivos"  
-                                 class="items-end h-full object-contain rounded-xl pt-3" />  
+                                 src="data:image/jpeg;base64,@Convert.ToBase64String(producto.PrimeraImagen ?? Array.Empty<byte>())"
+                                 alt=@(Localizer["Ropa/accesorios deportivos"])
+                                 class="items-end h-full object-contain rounded-xl pt-3" />
                         </div>  
                     </div>  
                 }  
             }  
         }  
         else  
-        {  
-            <p class="text-xs text-gray-500">No hay productos asociados a esta promoción.</p>  
+        {
+            <p class="text-xs text-gray-500">@(Localizer["No hay productos asociados a esta promoción"]).</p>
         }  
     </div>  
 
