@@ -1,5 +1,7 @@
 ﻿@using System.Text.Json
 @using System.Text
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @model DoreanSportic.Application.DTOs.ProductoDTO
 
@@ -27,9 +29,11 @@
         <a href="javascript:void(0);"
            class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
            onclick="cargarVista('/Producto/IndexAdmin')">
-            Volver al listado
+            @(Localizer["Volver al listado"])
         </a>
-        <h2 class="text-left font-bold mb-3">EDITAR PRODUCTO</h2>
+        <h2 class="text-left font-bold mb-3">
+            @(Localizer["EDITAR PRODUCTO"])
+        </h2>
     </div>
 
     <input type="hidden" asp-for="Id" />
@@ -40,34 +44,46 @@
         <!-- Columna izquierda -->
         <div class="w-2/3 flex flex-col gap-4">
             <div class="form-control w-75">
-                <label asp-for="Nombre" class="label font-bold text-black">Nombre del producto</label>
+                <label asp-for="Nombre" class="label">
+                    <span class="label-text font-bold text-black">
+                        @(Localizer["Nombre del producto"])
+                    </span>
+                </label>
                 <input asp-for="Nombre" class="input input-bordered w-full" style="border-color:black" />
                 <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
 
             <div class="form-control w-75">
-                <label asp-for="Descripcion" class="label font-bold text-black">Descripción</label>
+                <label asp-for="Descripcion" class="label font-bold text-black">
+                    @(Localizer["Descripción"])
+                </label>
                 <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full" style="border-color:black"></textarea>
                 <span asp-validation-for="Descripcion" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
 
             <div class="flex justify-between gap-2">
                 <div class="form-control w-25">
-                    <label asp-for="PrecioBase" class="label font-bold text-black">Precio base (₡)</label>
+                    <label asp-for="PrecioBase" class="label font-bold text-black">
+                        @(Localizer["Precio base (₡)"])
+                    </label>
                     <input asp-for="PrecioBase" id="inputPrecioBase" type="number" step="0.01" class="input input-bordered w-full" style="border-color:black" />
                     @* oninput="this.value = this.value.match(/^\d*\.?\d{0,2}/)?.[0] || ''" *@
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"> </span>
                 </div>
 
                 <div class="form-control w-25">
-                    <label asp-for="Stock" class="label font-bold text-black">Cantidad</label>
+                    <label asp-for="Stock" class="label font-bold text-black">
+                        @(Localizer["Cantidad"])
+                    </label>
                     <input asp-for="Stock" id="inputCantidad" type="number" class="input input-bordered w-full" style="border-color:black" />
                     <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"> </span>
                 </div>
             </div>
 
             <div class="form-control w-75">
-                <label asp-for="IdCategoria" class="label font-bold text-black">Categoría</label>
+                <label asp-for="IdCategoria" class="label font-bold text-black">
+                    @(Localizer["Categoría"])
+                </label>
                 <select asp-for="IdCategoria" asp-items="ViewBag.ListCategorias" class="select select-bordered w-full" style="border-color:black">
                     <option value="">Seleccione una categoría</option>
                 </select>
@@ -75,9 +91,13 @@
             </div>
 
             <div class="form-control w-75">
-                <label asp-for="IdMarca" class="label font-bold text-black">Marca</label>
+                <label asp-for="IdMarca" class="label font-bold text-black">
+                    @(Localizer["Marca"])
+                </label>
                 <select asp-for="IdMarca" asp-items="ViewBag.ListMarcas" class="select select-bordered w-full" style="border-color:black">
-                    <option value="">Seleccione una marca</option>
+                    <option value="">
+                        @(Localizer["Seleccione una marca"])
+                    </option>
                 </select>
                 <span asp-validation-for="IdMarca" class="text-sm italic" style="color:red; font-size: small"> </span>
             </div>
@@ -85,49 +105,58 @@
             <input type="hidden" name="Estado" value="true" />
 
             <div class="form-control mt-6">
-                <input type="submit" value="Actualizar Producto" class="btn btn-primary w-full" />
+                <input type="submit" value=@(Localizer["Actualizar producto"])
+                       class="btn btn-primary w-full" />
             </div>
         </div>
 
         <!-- Columna etiquetas -->
         <div class="flex flex-col gap-2">
-            <p class="font-bold">Etiquetas del producto</p>
-            <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado derecho para asignarlas al producto.</p>
-            <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado izquierdo para desasignarlas.</p>
-            <div id="error-etiquetas" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
-            <div class="w-full bg-gray-200 space-x-10 flex border rounded p-2">
-                <div id="dp1" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
-                     style="padding-left: 5%; padding-top:1%; padding-right: 5%">
-                    <p class="mb-1 font-bold text-center" style="font-size: small">Etiquetas</p>
-                    <p class="mb-1 font-bold text-center" style="font-size: small">disponibles</p>                    @{
-                        var etiquetas = ViewBag.ListaEtiquetas as List<DoreanSportic.Application.DTOs.EtiquetaDTO>;
-                        var asignadas = Model.IdEtiqueta?.Select(e => e.Id).ToList() ?? new List<int>();
-                        int index = 1;
-                    }
-                    @foreach (var etiqueta in etiquetas.Where(e => !asignadas.Contains(e.Id)))
-                    {
-                        <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary" data-id="@etiqueta.Id">
-                            @etiqueta.Nombre
-                        </div>
-                    }
-                </div>
-                <div id="dp2" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
-                     style="padding-left: 5%; padding-top:1%; padding-right: 5%">
-                    <p class="mb-1 font-bold text-center" style="font-size: small">Etiquetas</p>
-                    <p class="mb-1 font-bold text-center" style="font-size: small">asignadas</p>
-                    @foreach (var etiqueta in etiquetas.Where(e => asignadas.Contains(e.Id)))
-                    {
-                        <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary" data-id="@etiqueta.Id">
-                            @etiqueta.Nombre
-                        </div>
-                    }
+            <div class="w-100">
+                <p class="font-bold">@(Localizer["Etiquetas del producto"])</p>
+                <p class="mb-1 italic" style="font-size: small">
+                    @(Localizer["Arrastre las etiquetas al lado derecho para asignarlas al producto"]).
+                </p>
+                <p class="mb-1 italic" style="font-size: small">
+                    @(Localizer["Arrastre las etiquetas al lado izquierdo para desasignarlas"]).
+                </p>
+                <div id="error-etiquetas" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
+                <div class="w-full bg-gray-200 space-x-10 flex border rounded p-2">
+                    <div id="dp1" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
+                         style="padding-left: 5%; padding-top:1%; padding-right: 5%">
+                        @(Localizer["Etiquetas disponibles"])
+                        @{
+                            var etiquetas = ViewBag.ListaEtiquetas as List<DoreanSportic.Application.DTOs.EtiquetaDTO>;
+                            var asignadas = Model.IdEtiqueta?.Select(e => e.Id).ToList() ?? new List<int>();
+                            int index = 1;
+                        }
+                        @foreach (var etiqueta in etiquetas.Where(e => !asignadas.Contains(e.Id)))
+                        {
+                            <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary" data-id="@etiqueta.Id">
+                                @etiqueta.Nombre
+                            </div>
+                        }
+                    </div>
+                    <div id="dp2" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
+                         style="padding-left: 5%; padding-top:1%; padding-right: 5%">
+                        @(Localizer["Etiquetas asignadas"])
+
+                        @foreach (var etiqueta in etiquetas.Where(e => asignadas.Contains(e.Id)))
+                        {
+                            <div id="dg@(index++)" draggable="true" class="drag w-48 p-1 mb-2 rounded font-bold text-center text-white bg-primary" data-id="@etiqueta.Id">
+                                @etiqueta.Nombre
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
 
             <div>
                 <!-- Cargar el contenedor de promedio de reseñas -->
                 <div id="contenedor-resennas" class="w-full flex flex-row gap gap-1">
-                    <p class="text-sm">Cargando reseñas...</p>
+                    <p class="text-sm">
+                        @(Localizer["Cargando reseñas..."])
+                    </p>
                 </div>
             </div>
 
@@ -135,11 +164,15 @@
             <!-- Enviar el estado del producto  (Activo o Inactivo-->
             <div class="form-control w-fit">
                 <label class="label">
-                    <span class="label-text font-bold text-black mb-1">Estado</span>
+                    <span class="label-text font-bold text-black mb-1">
+                        @(Localizer["Estado"])
+                    </span>
                 </label>
 
                 <div class="flex items-center gap-2">
-                    <span>Inactivo</span>
+                    <span>
+                        @(Localizer["Inactivo"])
+                    </span>
 
                     <input type="hidden" name="_Estado" value="false" />
 
@@ -147,7 +180,9 @@
                            name="Estado"
                            class="toggle border-black bg-white checked:border-primary checked:bg-primary checked:text-white"
                            value="true" @(Model.Estado ? "checked" : "") />
-                    <span>Activo</span>
+                    <span>
+                        @(Localizer["Activo"])
+                    </span>
                 </div>
             </div>
 
@@ -172,7 +207,9 @@
                            x-on:drop.prevent="addFiles($event); $refs.dnd.classList.remove('drag-over')"/>
 
                     <div class="flex flex-col items-center justify-center text-center">
-                        <p>Arrastre las imágenes aquí o haga clic para seleccionarlas.</p>
+                        <p>
+                            @(Localizer["Arrastre las imágenes aquí o haga clic para seleccionarlas"]).
+                        </p>
                     </div>
                 </div>
 

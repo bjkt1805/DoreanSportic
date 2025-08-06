@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
 @using DoreanSportic.Infrastructure.Models
-
 @using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 
 <!-- Para el separador de miles-->
 @{
@@ -35,7 +37,9 @@
                     @if ((item.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false) ||
                                     (item.IdCategoriaNavigation?.IdPromocion?.Any(p => p.FechaInicio <= DateTime.Today && p.FechaFin >= DateTime.Today) ?? false))
                     {
-                        <div class="badge badge-secondary">OFERTA</div>
+                        <div class="badge badge-secondary">
+                            @(Localizer["OFERTA"])
+                        </div>
                     }
                 </div>
 
@@ -88,13 +92,17 @@
                 // de porcentaje de descuento y el precio con descuento
                 <div class="flex flex-col gap gap-1">
                     <div class="flex flex-row gap gap-1 text-xs text-gray-400">
-                        <b>Precio anterior: </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
+                        <b>
+                            @(Localizer["Precio anterior"]):
+                        </b><span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
                         <div class="badge bg-[#FF0000] badge-xl text-white font-bold">
                             - @descuentoTotal.ToString("0")%
                         </div>
                     </div>
                     <div class="flex flex-row gap gap-1">
-                        <b>Precio en oferta: </b>
+                        <b>
+                            @(Localizer["Precio en oferta"]):
+                        </b>
                         <div class="badge badge-xl bg-success text-black font-bold">
                             ₡@precioConDescuento.ToString("N2", culturaPersonalizada)
                         </div>
@@ -104,7 +112,9 @@
             else
             {
                 <div class="flex flex-row gap gap-1">
-                    <b class="mt-1">Precio base: </b>
+                    <b class="mt-1">
+                        @(Localizer["Precio base"]):
+                    </b>
                     <div class="badge badge-outline w-fit">
                         <b>₡@precioBase.ToString("N2", culturaPersonalizada)</b> + I.V.A
                     </div>
@@ -117,7 +127,9 @@
             <div class= "flex flex-row gap gap-2">
                 <!-- Mostrar la cantidad de producto disponible -->
                 <div class="flex flex-row gap gap-1">
-                    <b>Cantidad: </b>
+                    <b>
+                        @(Localizer["Cantidad"]):
+                    </b>
                     <div class="badge badge-outline w-fit">
                         @Html.DisplayFor(m => item.Stock)
                     </div>
@@ -127,18 +139,20 @@
 
                 <!-- Mostrar el estado del producto -->
                 <div class="flex flex-row gap gap-1">
-                    <b>Estado: </b>
+                    <b>
+                        @(Localizer["Estado"]):
+                    </b>
                     @{
                         if (item.Estado == true)
                         {
                             <div class="badge bg-[#50C878] text-white">
-                                Activo
+                                @(Localizer["Activo"])
                             </div>
                         }
                         else
                         {
                             <div class="badge bg-[#FF0000] text-white">
-                                Inactivo
+                                @(Localizer["Inactivo"])
                             </div>
                         }
                     }
@@ -154,14 +168,14 @@
                 <a href="javascript:void(0);"
                    class="btn btn-soft btn-primary text-white"
                    onclick="cargarDetalleProducto(@item.Id)">
-                    Ver detalles
+                    @(Localizer["Ver detalles"])
                 </a>
 
                 <!-- Redirección por medio de AJAX a EDITAR -->
                 <a href="javascript:void(0);"
                    class="btn btn-soft btn-warning text-black"
                    onclick="cargarEditarProducto(@item.Id)">
-                    Editar
+                    @(Localizer["Editar"])
                 </a>
 
             </div>

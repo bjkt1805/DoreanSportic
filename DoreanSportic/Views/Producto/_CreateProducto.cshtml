@@ -1,5 +1,8 @@
 ﻿@model DoreanSportic.Application.DTOs.ProductoDTO
 @using DoreanSportic.Infrastructure.Models
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 
 <form asp-action="Create" asp-antiforgery="true" method="post" enctype="multipart/form-data"
       x-data="dataFileDnD()"
@@ -10,9 +13,11 @@
         <a href="javascript:void(0);"
            class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
            onclick="cargarVista('/Producto/IndexAdmin')">
-            Volver al listado
+            @(Localizer["Volver al listado"])
         </a>
-        <h2 class="text-left font-bold">NUEVO PRODUCTO</h2>
+        <h2 class="text-left font-bold">
+            @(Localizer["NUEVO PRODUCTO"])
+        </h2>
     </div>
 
 
@@ -26,7 +31,9 @@
             <!-- Para controlar la inserción del nombre del producto-->
             <div class="form-control w-full">
                 <label asp-for="Nombre" class="label">
-                    <span class="label-text font-bold text-black">Nombre del producto</span>
+                    <span class="label-text font-bold text-black">
+                        @(Localizer["Nombre del producto"])
+                    </span>
                 </label>
                 <input asp-for="Nombre" class="input input-bordered w-full mb-3 mt-1 required" style="border-color:black" />
                 <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"> </span>
@@ -35,7 +42,9 @@
             <!-- Para controlar la inserción de la descripción del producto-->
             <div class="form-control w-full">
                 <label asp-for="Descripcion" class="label">
-                    <span class="label-text font-bold text-black">Descripción</span>
+                    <span class="label-text font-bold text-black">
+                        @(Localizer["Descripción"])
+                    </span>
                 </label>
                 <textarea asp-for="Descripcion" class="textarea textarea-bordered w-full mb-3 mt-1" style="border-color:black"></textarea>
                 <span asp-validation-for="Descripcion" class="text-sm italic" style="color:red; font-size: small"></span>
@@ -47,7 +56,9 @@
                 <!-- Para controlar la inserción del precio base del producto-->
                 <div class="form-control w-full">
                     <label asp-for="PrecioBase" class="label">
-                        <span class="label-text font-bold text-black">Precio base (₡)</span>
+                        <span class="label-text font-bold text-black">
+                            @(Localizer["Precio base (₡)"])
+                        </span>
                     </label>
                     <input asp-for="PrecioBase" id="inputPrecioBase" type="number" step="0.01" class="input input-bordered w-full mb-3 mt-1" style="border-color:black" />
                     <span asp-validation-for="PrecioBase" class="text-sm italic" style="color:red; font-size: small"></span>
@@ -56,7 +67,9 @@
                  <!-- Para controlar la inserción del stock (cantidad) del producto-->
                 <div class="form-control w-full">
                     <label asp-for="Stock" class="label">
-                        <span class="label-text font-bold text-black">Cantidad</span>
+                        <span class="label-text font-bold text-black">
+                            @(Localizer["Cantidad"])
+                        </span>
                     </label>
                     <input asp-for="Stock" id="inputCantidad" type="number" step="1" class="input input-bordered w-full mb-3 mt-1" style="border-color:black" />
                     <span asp-validation-for="Stock" class="text-sm italic" style="color:red; font-size: small"></span>
@@ -66,10 +79,14 @@
             <!-- Para controlar la selección de la categoría del producto-->
             <div class="form-control w-full">
                 <label asp-for="IdCategoria" class="label">
-                    <span class="label-text font-bold text-black">Categoría</span>
+                    <span class="label-text font-bold text-black">
+                        @(Localizer["Categoría"])
+                    </span>
                 </label>
                 <select asp-for="IdCategoria" asp-items="ViewBag.ListCategorias" class="select select-bordered w-full mb-3 mt-1" style="border-color:black">
-                    <option value="">Seleccione una categoría</option>
+                    <option value="">
+                        @(Localizer["Seleccione una categoría"])                        
+                    </option>
                 </select>
                 <span asp-validation-for="IdCategoria" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
@@ -77,10 +94,14 @@
             <!-- Para controlar la selección de la marca del producto-->
             <div class="form-control w-full">
                 <label asp-for="IdMarca" class="label">
-                    <span class="label-text font-bold text-black">Marca</span>
+                    <span class="label-text font-bold text-black">
+                        @(Localizer["Marca"])
+                    </span>
                 </label>
                 <select asp-for="IdMarca" asp-items="ViewBag.ListMarcas" class="select select-bordered w-full mb-4 mt-1" style="border-color:black">
-                    <option value="">Seleccione una marca</option>
+                    <option value="">
+                        @(Localizer["Seleccione una marca"])
+                    </option>
                 </select>
                 <span asp-validation-for="IdMarca" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
@@ -93,23 +114,28 @@
 
             <!-- Botón para enviar datos en el formulario-->
             <div class="form-control mt-6">
-                <input type="submit" value="Crear Producto" class="btn btn-primary w-full" />
+                <input type="submit" value=@(Localizer["Crear producto"]) class="btn btn-primary w-full" />
             </div>
         </div>
 
         <!-- Segunda columna (centro): Manejo de etiquetas (listas y drag and drop)-->
         <div class="flex flex-col gap-2 ">
             <div class="w-100">
-                <p class="font-bold">Etiquetas del producto</p>
-                <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado derecho para asignarlas al producto.</p>
-                <p class="mb-1 italic" style="font-size: small">Arrastre las etiquetas al lado izquierdo para desasignarlas.</p>
+                <p class="font-bold">
+                    @(Localizer["Etiquetas del producto"])
+                </p>
+                <p class="mb-1 italic" style="font-size: small">
+                    @(Localizer["Arrastre las etiquetas al lado derecho para asignarlas al producto"]).
+                </p>
+                <p class="mb-1 italic" style="font-size: small">
+                    @(Localizer["Arrastre las etiquetas al lado izquierdo para desasignarlas"]).
+                </p>
                 <div id="error-etiquetas" class="mb-1 text-sm italic" style="color:red; font-size: small"></div>
                 <div class="w-full bg-gray-200 space-x-10 flex border rounded" style="padding-left: 1%; padding-top:1%; padding-bottom:1%; padding-right:1%">
                     <div id="dp1" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
                          style="padding-left: 5%; padding-top:1%; padding-right: 5%">
-                        <p class="mb-1 font-bold text-center" style="font-size: small">Etiquetas</p>
-                        <p class="mb-1 font-bold text-center" style="font-size: small">disponibles</p>
-                        
+                            @(Localizer["Etiquetas disponibles"])
+
                         <!-- Cargar los botones draggueables para las etiquetas dinámicamente a través de Razor-->
                         @{
                             var etiquetas = ViewBag.ListaEtiquetas as List<DoreanSportic.Application.DTOs.EtiquetaDTO>;
@@ -127,16 +153,25 @@
                          </div>
                     <div id="dp2" droppable="true" class="w-50 drop rounded-lg my-1 mx-1 border rounded"
                          style="padding-left: 5%; padding-top:1%; padding-right: 5%">
-                        <p class="mb-1 font-bold text-center" style="font-size: small">Etiquetas</p>
-                        <p class="mb-1 font-bold text-center" style="font-size: small">asignadas</p>
+                            @(Localizer["Etiquetas asignadas"])
+
                     </div>
                 </div>
             </div>
 
             <div>
                 <!-- Cargar el contenedor de promedio de reseñas -->
-                <div id="contenedor-resennas" class="w-full flex flex-row gap gap-1">
-                    <p class="text-sm">Cargando reseñas...</p>
+                <!-- Como el contenedor de promedios y reseñas se carga por AJAX (vista parcial)
+                        hay que enviar la data a traducir por medio del atributo "data-[...]" para poder
+                        traducir el texto dentro
+                -->
+                <div id="contenedor-resennas" class="w-full flex flex-row gap gap-1"
+                     data-promedio="@Localizer["Promedio de valoraciones"]">
+
+
+                    <p class="text-sm">
+                        @(Localizer["Cargando reseñas..."])
+                    </p>
                 </div>
             </div>
 
@@ -145,7 +180,9 @@
 
         <!-- Terecera columna (derecha): imágenes (dropzone) -->
         <div class="bg-white rounded w-9/12 mx-4">
-            <p class="font-bold mb-1">Imágenes del producto</p>
+            <p class="font-bold mb-1">
+                @(Localizer["Imágenes del producto"])
+            </p>
 
             <!-- Mostrar error si no se sube ninguna imagen -->
             <div id="zona-errores-validacion" class="text-sm italic" style="color:red; font-size: small"></div>
@@ -170,7 +207,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <p class="m-0">Arrastre las imágenes aquí o haga clic para seleccionarlas.</p>
+                        <p class="m-0">
+                            @(Localizer["Arrastre las imágenes aquí o haga clic para seleccionarlas"]).
+                        </p>
                     </div>
                 </div>
 

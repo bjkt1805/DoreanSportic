@@ -120,4 +120,7 @@
   <data name="Ropa" xml:space="preserve">
     <value>Ropa</value>
   </data>
+  <data name="Accesorios" xml:space="preserve">
+    <value>Accesorios</value>
+  </data>
 </root>

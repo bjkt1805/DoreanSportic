@@ -230,15 +230,21 @@ function inicializarCarrusel() {
     mostrarSlide(currentSlide);
 }
 
-// Función para cargar las reseñas del producto den tro de la vista de detalle de producto
+// Función para cargar las reseñas del producto dentro de la vista de detalle de producto
 function cargarResennasProducto(_idProducto, esVistaDetalle) {
     const zonaDetalle = document.getElementById("detalle-producto");
     //_idProducto = zonaDetalle?.dataset?.id;
 
+    // Para poder traducir el texto "Promedio de valoraciones:" hay que buscar el dataset
+    // donde se va a traducir el texto (Promedio de valoraciones / Average Rating)
+
+    const promedio = document.getElementById("contenedor-resennas")
+        .dataset.promedio || "Average rating:";
+
     if (_idProducto == null) {
         const html = `
         <div class="flex w-full items-start gap-2 mb-4">
-            <span class="font-bold">Promedio de valoraciones: 0.0</span>
+            <span class="font-bold">${promedio}: 0.0</span>
             <div class="flex gap-1">
                 ${[...Array(5)].map(() => `
                     <svg xmlns="http://www.w3.org/2000/svg"

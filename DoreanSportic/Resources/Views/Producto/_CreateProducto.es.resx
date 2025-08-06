@@ -117,10 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ropa" xml:space="preserve">
-    <value>Sportswear</value>
+  <data name="NUEVO PRODUCTO" xml:space="preserve">
+    <value>NUEVO PRODUCTO</value>
   </data>
-  <data name="Accesorios" xml:space="preserve">
-    <value>Accesories</value>
+  <data name="Volver al listado" xml:space="preserve">
+    <value>Volver al listado</value>
+  </data>
+  <data name="Promedio de valoraciones" xml:space="preserve">
+    <value>Promedio de valoraciones</value>
+  </data>
+  <data name="Etiquetas disponibles" xml:space="preserve">
+    <value>                        &lt;p class="mb-1 font-bold text-center" style="font-size: small"&gt;Etiquetas&lt;/p&gt;
+                        &lt;p class="mb-1 font-bold text-center" style="font-size: small"&gt;disponibles&lt;/p&gt;</value>
+  </data>
+  <data name="Etiquetas asignadas" xml:space="preserve">
+    <value>                        &lt;p class="mb-1 font-bold text-center" style="font-size: small"&gt;Etiquetas&lt;/p&gt;
+                        &lt;p class="mb-1 font-bold text-center" style="font-size: small"&gt;asignadas&lt;/p&gt;
+</value>
+  </data>
+  <data name="Arrastre las etiquetas al lado derecho para asignarlas al producto" xml:space="preserve">
+    <value>Arrastre las etiquetas al lado derecho para asignarlas al producto</value>
+  </data>
+  <data name="Arrastre las etiquetas al lado izquierdo para desasignarlas" xml:space="preserve">
+    <value>Arrastre las etiquetas al lado derecho para asignarlas al producto</value>
+  </data>
+  <data name="Etiquetas del producto" xml:space="preserve">
+    <value>Etiquetas del producto</value>
+  </data>
+  <data name="Marca" xml:space="preserve">
+    <value>Marca</value>
+  </data>
+  <data name="Categoría" xml:space="preserve">
+    <value>Categoría</value>
+  </data>
+  <data name="Crear producto" xml:space="preserve">
+    <value>Crear producto</value>
+  </data>
+  <data name="Cargando reseñas..." xml:space="preserve">
+    <value>Cargando reseñas...</value>
+  </data>
+  <data name="Seleccione una marca" xml:space="preserve">
+    <value>Seleccione una marca</value>
+  </data>
+  <data name="Seleccione una categoría" xml:space="preserve">
+    <value>Seleccione una categoría</value>
+  </data>
+  <data name="Cantidad" xml:space="preserve">
+    <value>Cantidad</value>
+  </data>
+  <data name="Prevista de imagen" xml:space="preserve">
+    <value>Prevista de imagen</value>
+  </data>
+  <data name="Descripción" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="Imágenes del producto" xml:space="preserve">
+    <value>Imágenes del producto</value>
+  </data>
+  <data name="Precio base (₡)" xml:space="preserve">
+    <value>Precio base (₡)</value>
+  </data>
+  <data name="Nombre del producto" xml:space="preserve">
+    <value>Nombre del producto</value>
+  </data>
+  <data name="Arrastre las imágenes aquí o haga clic para seleccionarlas" xml:space="preserve">
+    <value>Arrastre las imágenes aquí o haga clic para seleccionarlas</value>
   </data>
 </root>

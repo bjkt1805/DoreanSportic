@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ropa" xml:space="preserve">
-    <value>Sportswear</value>
+  <data name="OFERTA" xml:space="preserve">
+    <value>OFERTA</value>
   </data>
-  <data name="Accesorios" xml:space="preserve">
-    <value>Accesories</value>
+  <data name="Precio base" xml:space="preserve">
+    <value>Precio base</value>
+  </data>
+  <data name="Precio en oferta" xml:space="preserve">
+    <value>Precio en oferta</value>
+  </data>
+  <data name="Ver detalles" xml:space="preserve">
+    <value>Ver detalles</value>
+  </data>
+  <data name="Estado" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Cantidad" xml:space="preserve">
+    <value>Cantidad</value>
+  </data>
+  <data name="Precio anterior" xml:space="preserve">
+    <value>Precio anterior</value>
+  </data>
+  <data name="Editar" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Activo" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="Inactivo" xml:space="preserve">
+    <value>Inactivo</value>
   </data>
 </root>

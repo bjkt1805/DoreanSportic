@@ -1,22 +1,29 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 
 <!-- Contenedor padre centrado -->
 <div class="w-full min-h-full flex flex-col gap-6 px-4">
 
     <!-- Toggle centrado -->
     <div class="mb-2 text-center flex flex-row gap-2 items-center">
-        <p class="text-purple-600 font-bold">Ropa</p>
+        <p class="text-purple-600 font-bold">
+            @(Localizer["Ropa"])
+        </p>
         <input type="checkbox"
                checked="checked"
                class="toggle border-purple-600 bg-purple-400 checked:border-orange-500 checked:bg-orange-400 checked:text-orange-800" />
-        <p class="text-orange-500 font-bold">Accesorios</p>
+        <p class="text-orange-500 font-bold">
+            @(Localizer["Accesorios"])
+        </p>
     </div>
 
     <!-- Contenedor del botón de crear producto-->
     <div class="mb-2 flex flex-row gap-4">
         <button class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
                 onclick="cargarVista('/Producto/Create')">
-            CREAR PRODUCTO
+            @(Localizer["CREAR PRODUCTO"])
         </button>
     </div>
 
