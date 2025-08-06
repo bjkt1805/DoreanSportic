@@ -65,7 +65,9 @@
                 </div>
 
                 <!-- Para mostrar el mensaje de error personalizado-->
-                <span id="errorFechaInicio" class="text-sm italic hidden" style="color:red; font-size: small" "></span>
+                <span id="errorFechaInicio"
+                      data-msj-fecha-inicio="@Localizer["Seleccione un valor para la fecha de inicio"]"
+                      class="text-sm italic hidden" style="color:red; font-size: small"></span>
             </div>
 
 
@@ -87,8 +89,9 @@
                 </div>
 
                 <!-- Para mostrar el mensaje de error personalizado-->
-                <span id="errorFechaFin" class="text-sm italic hidden" style="color:red; font-size: small" "></span>
-
+                <span id="errorFechaFin"
+                      data-msj-fecha-fin="@Localizer["Seleccione un valor para la fecha de fin"]"
+                      class="text-sm italic hidden" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Input oculto para enviar True para el estado del producto-->

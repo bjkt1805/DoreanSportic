@@ -147,6 +147,12 @@
   <data name="Categoría" xml:space="preserve">
     <value>Categoría</value>
   </data>
+  <data name="Seleccione un valor para la fecha de inicio" xml:space="preserve">
+    <value>Seleccione un valor para la fecha de inicio</value>
+  </data>
+  <data name="Seleccione un valor para la fecha de fin" xml:space="preserve">
+    <value>Seleccione un valor para la fecha de fin</value>
+  </data>
   <data name="Tipo de promoción" xml:space="preserve">
     <value>Tipo de promoción</value>
   </data>

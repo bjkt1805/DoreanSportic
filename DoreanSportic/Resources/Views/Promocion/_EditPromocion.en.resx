@@ -123,6 +123,12 @@
   <data name="{0} producto(s) seleccionado(s)" xml:space="preserve">
     <value>{0} product(s) selected</value>
   </data>
+  <data name="Seleccione un valor para la fecha de inicio" xml:space="preserve">
+    <value>Select a value for the start date</value>
+  </data>
+  <data name="Seleccione un valor para la fecha de fin" xml:space="preserve">
+    <value>Select a value for the end date</value>
+  </data>
   <data name="Inactiva" xml:space="preserve">
     <value>Inactive</value>
   </data>

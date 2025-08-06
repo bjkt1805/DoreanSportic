@@ -683,9 +683,11 @@ function validacionFormularioPromocion() {
         const fechaFin = convertirFecha(fechaFinStr);
 
         // Validar fecha de inicio
+        // Traer el valor del localizer para mostrar el error internacionalizado
+        const msjFechaInicio = document.getElementById("errorFechaInicio").dataset.msjFechaInicio
         if (!fechaInicioStr || isNaN(fechaInicio.getTime())) {
             isValid = false;
-            errorInicio.textContent = "Seleccione un valor para la fecha de inicio";
+            errorInicio.textContent = msjFechaInicio;
             errorInicio.classList.remove("hidden");
             fechaInicioInput.classList.add("border-red-500");
         } else {
@@ -695,9 +697,11 @@ function validacionFormularioPromocion() {
         }
 
         // Validar fecha de fin
+        // Traer el valor del localizer para mostrar el error internacionalizado
+        const msjFechaFin = document.getElementById("errorFechaFin").dataset.msjFechaFin
         if (!fechaFinStr || isNaN(fechaFin.getTime())) {
             isValid = false;
-            errorFin.textContent = "Seleccione un valor para la fecha de fin";
+            errorFin.textContent = msjFechaFin;
             errorFin.classList.remove("hidden");
             fechaFinInput.classList.add("border-red-500");
         } else {
