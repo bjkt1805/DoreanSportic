@@ -1,4 +1,37 @@
-﻿//Función general para cargar la vista parcial
+﻿// Función para ayudar al toast a mostrar
+// el texto traducido. 
+window.getTranslation = function (key) {
+    const lang = getCurrentLangShort();
+    // Si existe traducción para la clave y el idioma, la devuelve
+    if (translations[key] && translations[key][lang]) {
+        return translations[key][lang];
+    }
+    // Fallback: español, o la clave si no existe nada
+    return translations[key]?.es || key;
+}
+
+// Función para traducir mensajes de éxito y error
+window.translations = {
+    "ProductoAgregado": {
+        es: "¡Producto creado correctamente!",
+        en: "Product created successfully!"
+    },
+    "ProductoActualizado": {
+        es: "¡Producto actualizado correctamente!",
+        en: "Product updated successfully!"
+    },
+    "PromocionCreada": {
+        es: "¡Promoción creada correctamente!",
+        en: "Promotion created successfully!"
+    },
+    "PromocionActualizada": {
+        es: "¡Promoción actualizada correctamente!",
+        en: "Promotion updated successfully!"
+    },
+};
+
+
+//Función general para cargar la vista parcial
 function cargarVista(ruta) {
     const loader = document.getElementById('loader');
     const container = document.getElementById('contenido-dinamico');
@@ -992,8 +1025,7 @@ async function revisarRespuestaPostPromocion(formData) {
             const data = await response.json();
 
             if (data.success) {
-                mostrarToast(data.mensaje, "success");
-
+                mostrarToast(getTranslation(data.mensaje), "success");
                 cargarVista("/Promocion/IndexAdmin"); 
 
             } else {
@@ -1041,6 +1073,44 @@ function controlarVisibilidadSegunEstado() {
     // Llamada inicial al cargar la vista
     actualizarVisibilidad();
 }
+
+// Función para obtener la cookie inyectada por ASP.NET Core para el idioma
+function getAspNetCultureCookie() {
+    // Obtener el valor de la cookie .AspNetCore.Culture
+    const name = '.AspNetCore.Culture=';
+    // Decodificar y separar las cookies
+    const decoded = decodeURIComponent(document.cookie);
+    // Separar las cookies por punto y coma
+    const ca = decoded.split(';');
+    // Recorrer las cookies para encontrar la que nos interesa
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        // Si la cookie comienza con el nombre que buscamos, devolver su valor
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return null;
+}
+
+// Función para obtener la cultura actual del usuario desde la cookie .AspNetCore.Culture
+function getCurrentCulture() {
+    // Obtener la cookie de cultura inyectada por ASP.NET Core
+    const cookie = getAspNetCultureCookie();
+    // Si no existe la cookie, devolver el idioma por defecto (español)
+    if (!cookie) return "en"; // idioma por defecto
+    // El formato es: c=en-US|uic=en-US
+    const match = cookie.match(/c=([^|]+)/);
+    return match ? match[1] : "en";
+}
+
+// Función para obtener el idioma actual en formato corto (en o es)
+function getCurrentLangShort() {
+    // Devuelve "en" o "es"
+    const culture = getCurrentCulture();
+    return culture.split('-')[0];
+}
+
 
 
 

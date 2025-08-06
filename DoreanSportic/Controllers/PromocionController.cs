@@ -95,7 +95,7 @@ namespace DoreanSportic.Controllers
 
                 // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
                 // con vistas parciales
-                return Json(new { success = true, mensaje = "Promoción creada exitosamente" });
+                return Json(new { success = true, mensaje = "PromocionCreada" });
             }
 
             // Recargar combos si hay error
@@ -104,7 +104,7 @@ namespace DoreanSportic.Controllers
 
             // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
             // con vistas parciales
-            return Json(new { success = true, mensaje = "Promoción creada exitosamente" });
+            return Json(new { success = true, mensaje = "PromocionCreada" });
         }
 
         // GET: PromocionController/Edit/5
@@ -153,11 +153,11 @@ namespace DoreanSportic.Controllers
             try
             {
                 await _servicePromocion.UpdateAsync(dto);
-                return Json(new { success = true, mensaje = "Promoción actualizada correctamente" });
+                return Json(new { success = true, mensaje = "PromocionActualizada" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, mensaje = "Error al actualizar la promoción" });
+                return Json(new { success = false, mensaje = "Error" });
             }
         }
 

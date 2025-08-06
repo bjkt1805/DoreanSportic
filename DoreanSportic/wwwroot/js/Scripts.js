@@ -230,8 +230,8 @@ function dataFileDnD() {
                     const data = await response.json();
 
                     if (data.success) {
-                        // Mostrar toast
-                        mostrarToast(data.mensaje, "success");
+                        // Mostrar toast con mensaje internacionalizado
+                        mostrarToast(getTranslation(data.mensaje), "success");
 
                         // Cargar _IndexAdmin dinámicamente en el contenedor
                         cargarVista('/Producto/IndexAdmin');
@@ -293,5 +293,42 @@ function recargarResumenCarritoNavbar() {
 document.addEventListener("DOMContentLoaded", () => {
     recargarResumenCarritoNavbar();
 });
+
+// Función para obtener la cookie inyectada por ASP.NET Core para el idioma
+function getAspNetCultureCookie() {
+    // Obtener el valor de la cookie .AspNetCore.Culture
+    const name = '.AspNetCore.Culture=';
+    // Decodificar y separar las cookies
+    const decoded = decodeURIComponent(document.cookie);
+    // Separar las cookies por punto y coma
+    const ca = decoded.split(';');
+    // Recorrer las cookies para encontrar la que nos interesa
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        // Si la cookie comienza con el nombre que buscamos, devolver su valor
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return null;
+}
+
+// Función para obtener la cultura actual del usuario desde la cookie .AspNetCore.Culture
+function getCurrentCulture() {
+    // Obtener la cookie de cultura inyectada por ASP.NET Core
+    const cookie = getAspNetCultureCookie();
+    // Si no existe la cookie, devolver el idioma por defecto (español)
+    if (!cookie) return "en"; // idioma por defecto
+    // El formato es: c=en-US|uic=en-US
+    const match = cookie.match(/c=([^|]+)/);
+    return match ? match[1] : "en";
+}
+
+// Función para obtener el idioma actual en formato corto (en o es)
+function getCurrentLangShort() {
+    // Devuelve "en" o "es"
+    const culture = getCurrentCulture();
+    return culture.split('-')[0];
+}
 
 

@@ -5,7 +5,9 @@ using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Web.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
@@ -220,12 +222,13 @@ namespace DoreanSportic.Controllers
 
                 // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
                 // con vistas parciales
-                return Json(new { success = true, mensaje = "Producto creado exitosamente" });
+                return Json(new { success = true, mensaje = "ProductoAgregado" });
+
 
             }
             // Como _IndexAdmin es una vista parcial, hay que devolver un JSON ya que RedirectToAction no sirve
             // con vistas parciales
-            return Json(new { success = true, mensaje = "Producto creado exitosamente" });
+            return Json(new { success = true, mensaje = "ProductoAgregado" });
         }
 
 
@@ -309,7 +312,7 @@ namespace DoreanSportic.Controllers
             return Json(new
             {
                 success = true,
-                mensaje = "Producto actualizado correctamente"
+                mensaje = "ProductoActualizado"
             });
         }
 
