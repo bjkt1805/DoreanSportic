@@ -1,11 +1,13 @@
 ﻿using DoreanSportic.Infrastructure.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using DoreanSportic.Application.DTOs;
 
 namespace DoreanSportic.Application.DTOs;
 
@@ -13,39 +15,53 @@ public record ProductoDTO
 {
     public int Id { get; set; }
 
-    [Display(Name = "Nombre del producto")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerido ")]
-    [StringLength(200, ErrorMessage = "El nombre no puede exceder los 200 caracteres.")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "NombreRequerido")]
+    [StringLength(200,
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "NombreLongitud")]
     public string Nombre { get; set; } = null!;
 
-    [Display(Name = "Descripción del producto")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = " {0} es requerida ")]
-    [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres.")]
+    [Required(
+        AllowEmptyStrings = false,
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "DescripcionRequerida")]
+    [StringLength(500,
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "DescripcionLongitud")]
     public string? Descripcion { get; set; }
 
-    [Display(Name = "Precio Base")]
     [DisplayFormat(DataFormatString = "{0:C0}")]
-    [Required(ErrorMessage = " {0} es requerido ")]
-    //[RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico *")]
-    [Range(5000, 100000.00, ErrorMessage = "  {0} debe estar en el rango de ₡{1} y ₡{2} (hasta dos decimales) ")]
-    [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Máximo dos decimales")]
+    [Required(
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "PrecioBaseRequerido")]
+    [Range(5000, 100000.00,
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "PrecioBaseRango")]
+    [RegularExpression(@"^\d+(\.\d{1,2})?$",
+        ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+        ErrorMessageResourceName = "PrecioBaseDecimales")]
     public decimal PrecioBase { get; set; }
 
-    [Display(Name = "Cantidad")]
-    [Required(ErrorMessage = " {0} es requerida ")]
-    [RegularExpression(@"^\d+$", ErrorMessage = "* {0} debe ser númerico ")]
-    [Range(0, 100, ErrorMessage = "  {0} debe ser menor a {2} ")]
+    [Required(
+         ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+         ErrorMessageResourceName = "StockRequerido")]
+    [RegularExpression(@"^\d+$",
+         ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+         ErrorMessageResourceName = "StockNumerico")]
+    [Range(0, 100,
+         ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+         ErrorMessageResourceName = "StockRango")]
     public int Stock { get; set; }
 
-    [Display(Name = "Marca")]
     [Required(ErrorMessage = " {0} es requerida ")]
     public int IdMarca { get; set; }
 
-    [Display(Name = "Categoría")]
     [Required(ErrorMessage = " {0} es requerida ")]
     public int IdCategoria { get; set; }
 
-    [Display(Name = "Estado")]
     public bool Estado { get; set; }
 
     [ValidateNever]
@@ -68,7 +84,9 @@ public record ProductoDTO
 
     public byte[]? PrimeraImagen { get; set; }
 
-    [Required(ErrorMessage = "* Debe insertar al menos una imagen *")]
+    [Required(
+            ErrorMessageResourceType = typeof(Resources.ProductoDTO),
+            ErrorMessageResourceName = "ImagenesProductoRequerido")]
     public virtual ICollection<ImagenProducto> ImagenesProducto { get; set; } = new List<ImagenProducto>();
-
 }
+

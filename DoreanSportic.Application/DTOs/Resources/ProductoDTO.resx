@@ -117,10 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NombreRequerido" xml:space="preserve">
-    <value>El nombre no puede exceder los 200 caracteres.</value>
+  <data name="DescripcionLongitud" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="DescripcionRequerida" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="IdCategoriaRequerido " xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="IdMarcaRequerido" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="ImagenesProductoRequerido" xml:space="preserve">
+    <value>DescripcionLongitud</value>
   </data>
   <data name="NombreLongitud" xml:space="preserve">
-    <value>El nombre del producto es requerido</value>
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="NombreRequerido" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="PrecioBaseDecimales" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="PrecioBaseRango" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="PrecioBaseRequerido" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="StockNumerico" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="StockRango" xml:space="preserve">
+    <value>DescripcionLongitud</value>
+  </data>
+  <data name="StockRequerido" xml:space="preserve">
+    <value>DescripcionLongitud</value>
   </data>
 </root>
