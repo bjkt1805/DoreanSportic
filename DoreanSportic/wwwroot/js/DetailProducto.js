@@ -196,7 +196,7 @@ function manejarEnvioDetalleCarrito(e) {
                 // para que el toast sea visible en pantalla
                 setTimeout(() => {
                     window.location.href = "/Producto/Index";
-                }, 500); // 
+                }, 750); // 
                 
             } else if (result.errores) {
                 // Mostrar errores manualmente si vienen en el JSON

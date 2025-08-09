@@ -20,32 +20,35 @@
 
 <hr stlye="color: white"/>
 
-<!-- Lista de productos -->
-<ul class="divide-y gap-2">
-    @foreach (var item in Model)
-    {
-        @* Cargar los productos en cada detalle del carrito *@
-        <li class="flex items-center py-2">
-            @if (item.IdProductoNavigation.PrimeraImagen != null)
-            {
-                var base64 = @Convert.ToBase64String(item.IdProductoNavigation.PrimeraImagen ?? new byte[0]);
-                <img src="data:image/png;base64,@base64" alt=@(Localizer["Imagen del producto"])
-                     class="w-10 h-10 rounded object-cover mr-2" />
-            }
-            else
-            {
-                <img src="/ruta/imagen-generica.png" alt=@(Localizer["Imagen del producto"]) class="w-10 h-10 rounded object-cover mr-2" />
-            }
+<!-- Contenedor con scroll -->
+<div style="max-height: 250px; overflow-y: auto;">
+    <!-- Lista de productos -->
+    <ul class="divide-y gap-2">
+        @foreach (var item in Model)
+        {
+            @* Cargar los productos en cada detalle del carrito *@
+            <li class="flex items-center py-2">
+                @if (item.IdProductoNavigation.PrimeraImagen != null)
+                {
+                    var base64 = @Convert.ToBase64String(item.IdProductoNavigation.PrimeraImagen ?? new byte[0]);
+                    <img src="data:image/png;base64,@base64" alt=@(Localizer["Imagen del producto"])
+                         class="w-10 h-10 rounded object-cover mr-2" />
+                }
+                else
+                {
+                    <img src="/ruta/imagen-generica.png" alt=@(Localizer["Imagen del producto"]) class="w-10 h-10 rounded object-cover mr-2" />
+                }
 
-            <div class="flex-1" style="margin-left: 5%">
-                <div class="font-bold text-sm">@item.IdProductoNavigation.Nombre</div>
-                <div class="text-xs text-gray-300"><b>@(Localizer["Cantidad"]): </b>@item.Cantidad</div>
-                <div class="text-xs text-gray-200"><b>@(Localizer["Subtotal"]): </b>₡@item.SubTotal.ToString("N2", culturaPersonalizada)</div>
-            </div>
-        </li>
-        <hr stlye="color: white" />
-    }
-</ul>
+                <div class="flex-1" style="margin-left: 5%">
+                    <div class="font-bold text-sm">@item.IdProductoNavigation.Nombre</div>
+                    <div class="text-xs text-gray-300"><b>@(Localizer["Cantidad"]): </b>@item.Cantidad</div>
+                    <div class="text-xs text-gray-200"><b>@(Localizer["Subtotal"]): </b>₡@item.SubTotal.ToString("N2", culturaPersonalizada)</div>
+                </div>
+            </li>
+            <hr stlye="color: white" />
+        }
+    </ul>
+</div>
 
 <!-- Subtotal y acciones (redirecciones de los botones) -->
 <div class="pt-2">
