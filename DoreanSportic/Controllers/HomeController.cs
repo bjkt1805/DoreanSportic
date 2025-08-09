@@ -1,7 +1,7 @@
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Models;
-using DoreanSportic.Web.ViewModel;
+using DoreanSportic.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 // importar librería de localización

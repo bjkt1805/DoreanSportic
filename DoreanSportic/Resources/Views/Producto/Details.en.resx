@@ -142,7 +142,7 @@
     <value>Press "ESC" on the keyboard or click on the x to close this window</value>
   </data>
   <data name="¡Producto agregado al carrito!" xml:space="preserve">
-    <value>Press "ESC" on the keyboard or click on the x to close this window</value>
+    <value>Product added to cart successfully!</value>
   </data>
   <data name="Reseña agregada exitosamente" xml:space="preserve">
     <value>Review added successfully</value>

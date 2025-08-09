@@ -1,7 +1,7 @@
 ﻿using DoreanSportic.Application.DTOs;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
-using DoreanSportic.Web.ViewModel;
+using DoreanSportic.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 //using X.PagedList.Extensions;

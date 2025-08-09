@@ -2,7 +2,7 @@
 using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
-using DoreanSportic.Web.ViewModel;
+using DoreanSportic.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Transactions;
@@ -103,11 +103,11 @@ namespace DoreanSportic.Web.Controllers
                 await _serviceCarritoDetalle.AddAsync(dto);
 
                 // Retornar por medio de JSON la respuesta del modelo/servidor
-                return Json(new { success = true, mensaje = "¡Producto agregado al carrito!"});
+                return Json(new { success = true, mensaje = "ProductoAgregadoAlCarrito" });
 
             }
             // Retornar por medio de JSON la respuesta del modelo/servidor
-            return Json(new { success = true, mensaje = "¡Producto agregado al carrito!"});
+            return Json(new { success = true, mensaje = "ProductoAgregadoAlCarrito" });
         }
 
         // GET: Método para cargar la vista parcial de los detalles del carrito

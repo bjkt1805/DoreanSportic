@@ -10,7 +10,8 @@ window.getTranslation = function (key) {
     return translations[key]?.es || key;
 }
 
-// Función para traducir mensajes de éxito y error
+// Función para traducir mensajes de éxito y error dentro de
+// la ventana global
 window.translations = {
     "ProductoAgregado": {
         es: "¡Producto creado correctamente!",
@@ -27,7 +28,7 @@ window.translations = {
     "PromocionActualizada": {
         es: "¡Promoción actualizada correctamente!",
         en: "Promotion updated successfully!"
-    },
+    }
 };
 
 

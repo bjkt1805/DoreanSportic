@@ -1,7 +1,7 @@
 ﻿using DoreanSportic.Application.DTOs;
 using DoreanSportic.Infrastructure.Models;
 
-namespace DoreanSportic.Web.ViewModel
+namespace DoreanSportic.Web.ViewModels
 {
     public class DetalleProductoViewModel
     {

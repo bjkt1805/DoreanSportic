@@ -179,8 +179,6 @@ app.UseRequestLocalization(localizationOptions);
 
 app.UseSession();
 
-
-
 app.UseAuthorization();
 
 // Activar Antiforgery 

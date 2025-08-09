@@ -11,6 +11,18 @@ function getMensaje(key, ...params) {
     return mensaje;
 }
 
+// Función para ayudar al toast a mostrar
+// el texto traducido. 
+window.getTranslation = function (key) {
+    const lang = getCurrentLangShort();
+    // Si existe traducción para la clave y el idioma, la devuelve
+    if (translations[key] && translations[key][lang]) {
+        return translations[key][lang];
+    }
+    // Fallback: español, o la clave si no existe nada
+    return translations[key]?.es || key;
+}
+
 // Script para escuchar el evento submit del formulario para crear la Resenna
 function manejarEnvioResenna(e) {
     e.preventDefault();
@@ -180,9 +192,11 @@ function manejarEnvioDetalleCarrito(e) {
                 mostrarToast(getMensaje("msjProductoAgregado"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
-
-                // Redirigir al usuario a la vista de productos
-                window.location.href = "/Producto/Index";
+                // Esperar 1 segundo para redirigir a "/Producto/Index"
+                // para que el toast sea visible en pantalla
+                setTimeout(() => {
+                    window.location.href = "/Producto/Index";
+                }, 500); // 
                 
             } else if (result.errores) {
                 // Mostrar errores manualmente si vienen en el JSON
@@ -235,6 +249,7 @@ function mostrarToast(mensaje, tipo = "info") {
     }
     document.body.appendChild(toast);
 
+    // Esperar 4 segundos antes de remover el toast del DOM
     setTimeout(() => {
         toast.remove();
     }, 4000);
