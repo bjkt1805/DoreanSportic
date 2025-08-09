@@ -88,7 +88,7 @@ namespace Libreria.Web.Controllers
             return Redirect(returnUrl ?? "/");
         }
 
-        // Registro del usuario
+        // Devolver la vista de Registro del usuario
         [HttpGet]
         public IActionResult Register() => View(new RegistroViewModel());
 

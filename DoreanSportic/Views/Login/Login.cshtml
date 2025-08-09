@@ -1,0 +1,71 @@
+﻿@model DoreanSportic.Web.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Iniciar sesión";
+
+    // URL de retorno después del inicio de sesión
+    var returnUrl = ViewBag.ReturnUrl as string ?? Url.Content("~/");
+}
+
+<!-- Contenedor para manejar el login del sistema-->
+<div class="hero bg-base-200 min-h-screen">
+    <div class="hero-content flex-col lg:flex-row-reverse w-full">
+        <div class="text-center lg:text-left max-w-xl">
+            <h1 class="text-5xl font-bold">¡Bienvenido!</h1>
+            <p class="py-6">
+                Inicia sesión para continuar con tu compra,ver tus pedidos y administrar tu cuenta.
+            </p>
+        </div>
+
+        <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+            <div class="card-body">
+                @* Errores del modelo *@
+                <div asp-validation-summary="ModelOnly" class="text-error mb-2"></div>
+
+                @* Formulario de inicio de sesión *@
+                <form asp-action="LogIn" asp-controller="Login" method="post">
+                    @Html.AntiForgeryToken()
+
+                    @* Campo oculto para la URL de retorno *@
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+                    @* Campos de entrada para el nombre de usuario y la contraseña *@
+                    <fieldset class="fieldset">
+
+                        @* Título del formulario *@
+                        <legend class="text-lg font-semibold">Iniciar sesión</legend>
+
+                        @* Campo de Usuario *@
+                        <label class="label" asp-for="UserName"></label>
+                        <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" />
+                        <span class="text-error text-sm" asp-validation-for="UserName"></span>
+
+                        @* Campo de Contraseña *@
+                        <label class="label mt-3" asp-for="Password"></label>
+                        <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" />
+                        <span class="text-error text-sm" asp-validation-for="Password"></span>
+
+                        @* Campo de se me olvidó la contraseña*@
+                        <div class="mt-2">
+                            <a class="link link-hover text-sm">¿Olvidaste tu contraseña?</a>
+                        </div>
+
+                        @* Botón de inicio de sesión *@
+                        <button class="btn btn-neutral mt-4" type="submit">Iniciar sesión</button>
+                    </fieldset>
+                </form>
+
+                <div class="divider">o</div>
+
+                @* Para registrar usuario *@
+                <p class="text-sm">
+                    ¿No tienes cuenta?
+                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Register">Regístrate</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
