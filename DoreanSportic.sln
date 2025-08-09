@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoreanSportic.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoreanSportic.Infrastructure", "DoreanSportic.Infrastructure\DoreanSportic.Infrastructure.csproj", "{98FAC3B8-2D78-4495-B786-C4904804CBE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoreanSportic.Abstractions", "DoreanSportic.Abstractions\DoreanSportic.Abstractions.csproj", "{79506803-7069-44D5-B7B9-B8485BFE6051}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98FAC3B8-2D78-4495-B786-C4904804CBE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79506803-7069-44D5-B7B9-B8485BFE6051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79506803-7069-44D5-B7B9-B8485BFE6051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79506803-7069-44D5-B7B9-B8485BFE6051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79506803-7069-44D5-B7B9-B8485BFE6051}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

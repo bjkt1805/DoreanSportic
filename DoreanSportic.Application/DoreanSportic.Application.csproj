@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DoreanSportic.Infrastructure\DoreanSportic.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="DTOs\Resources\ProductoDTO.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -60,5 +56,10 @@
       <LastGenOutput>ResennaValoracionDTO.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DoreanSportic.Infrastructure\DoreanSportic.Infrastructure.csproj" />
+		<ProjectReference Include="..\DoreanSportic.Abstractions\DoreanSportic.Abstractions.csproj" />
+	</ItemGroup>
 
 </Project>

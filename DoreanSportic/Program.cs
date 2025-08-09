@@ -4,6 +4,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Data;
 using DoreanSportic.Infrastructure.Repository.Implementations;
 using DoreanSportic.Infrastructure.Repository.Interfaces;
+using DoreanSportic.Abstractions.Auth;
 using DoreanSportic.Web.Middleware;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,9 @@ builder.Services.AddTransient<IServiceRol, ServiceRol>();
 builder.Services.AddTransient<IServiceSexo, ServiceSexo>();
 builder.Services.AddTransient<IServiceTarjeta, ServiceTarjeta>();
 builder.Services.AddTransient<IServiceUsuario, ServiceUsuario>();
+
+// Hasher para autenticación
+builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 
 // Configurar autenticación y autorización de usuarios
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -4,7 +4,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Infrastructure.Repository.Implementations;
 using DoreanSportic.Infrastructure.Repository.Interfaces;
-using DoreanSportic.Web.Utils;
+using DoreanSportic.Abstractions.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +16,12 @@ namespace DoreanSportic.Application.Services.Implementations
     {
         private readonly IRepositoryUsuario _repository;
         private readonly IMapper _mapper;
-        public ServiceUsuario(IRepositoryUsuario repository, IMapper mapper)
+        private readonly IPasswordHasher _passwordHasher;
+        public ServiceUsuario(IRepositoryUsuario repository, IMapper mapper, IPasswordHasher passwordHasher)
         {
             _repository = repository;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
         public async Task<UsuarioDTO> FindByIdAsync(int id)
         {
@@ -57,13 +59,13 @@ namespace DoreanSportic.Application.Services.Implementations
             return await _repository.ExisteUserNameAsync(userName);
         }
 
-        public async Task<UsuarioDTO?> LoginAsync(string id, string password)
+        public async Task<UsuarioDTO?> LoginAsync(string userName, string password)
         {
             var user = await _repository.FindByUserNameWithClienteAsync(userName);
             if (user == null) return null;
 
             // Verificar hash
-            var ok = DoreanSportic.Web.Utils.PasswordHasher.Verify(password, user.PasswordHash);
+            var ok = _passwordHasher.Verify(password, user.PasswordHash);
             if (!ok) return null;
 
             // Mapear a DTO con Cliente incluido
