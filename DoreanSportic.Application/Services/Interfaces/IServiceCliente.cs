@@ -11,6 +11,8 @@ namespace DoreanSportic.Application.Services.Interfaces
     {
         Task<ICollection<ClienteDTO>> ListAsync();
         Task<ClienteDTO> FindByIdAsync(int id);
-        Task<int> AddAsync(ClienteDTO entity);
+
+        // Crear cliente
+        Task<int> CrearClienteAsync(ClienteDTO dto);
     }
 }

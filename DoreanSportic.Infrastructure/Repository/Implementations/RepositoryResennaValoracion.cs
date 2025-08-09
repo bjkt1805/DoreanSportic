@@ -76,7 +76,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             }
             catch (Exception ex)
             {
-                // Para loggear la excepció al enviar
+                // Para loggear la excepción al enviar
                 // datos a la base de datos
                 var inner = ex.InnerException;
                 var innerMessage = inner?.Message ?? ex.Message;

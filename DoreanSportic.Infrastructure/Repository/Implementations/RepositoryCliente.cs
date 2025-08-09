@@ -27,5 +27,37 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var collection = await _context.Set<Cliente>().ToListAsync();
             return collection;
         }
+        public async Task<int> CrearClienteAsync(Cliente entity)
+        {
+            // Añadir el cliente a la base de datos
+            await _context.Set<Cliente>().AddAsync(entity);
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                // Para loggear la excepción al enviar
+                // datos a la base de datos
+                var inner = ex.InnerException;
+                var innerMessage = inner?.Message ?? ex.Message;
+
+                // Imprimir en consola el error
+                Console.WriteLine("Error al guardar en base de datos: " + innerMessage);
+            }
+            return entity.Id;
+        }
     }
 }

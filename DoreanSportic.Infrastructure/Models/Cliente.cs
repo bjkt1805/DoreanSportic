@@ -15,8 +15,6 @@ public partial class Cliente
 
     public int? IdSexo { get; set; }
 
-    public DateTime? FechaNacimiento { get; set; }
-
     public string? Telefono { get; set; }
 
     public bool Estado { get; set; }

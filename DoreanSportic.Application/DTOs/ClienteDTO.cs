@@ -19,8 +19,6 @@ public record ClienteDTO
 
     public int? IdSexo { get; set; }
 
-    public DateTime? FechaNacimiento { get; set; }
-
     public string? Telefono { get; set; }
 
     public string? DireccionEnvio { get; set; }

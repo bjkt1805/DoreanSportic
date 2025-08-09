@@ -15,7 +15,11 @@ namespace DoreanSportic.Application.Services.Interfaces
         // PARA EFECTOS DEL AVANCE 4
         Task<UsuarioDTO> PrimerUsuario();
         Task<bool> ExisteUserNameAsync(string userName);
-        Task<int> CrearUsuarioAsync(Usuario u);
-        Task<UsuarioDTO> LoginAsync(string id, string password);
+
+        // Crear usuario
+        Task<int> CrearUsuarioAsync(UsuarioDTO dto);
+
+        // Login de usuario 
+        Task<UsuarioDTO?> LoginAsync(string id, string password);
     }
 }

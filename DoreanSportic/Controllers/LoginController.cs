@@ -1,4 +1,6 @@
-﻿using DoreanSportic.Application.Services.Interfaces;
+﻿using DoreanSportic.Application.DTOs;
+using DoreanSportic.Application.Services.Implementations;
+using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Web.Utils;
 using DoreanSportic.Web.ViewModels;
@@ -17,10 +19,14 @@ namespace Libreria.Web.Controllers
     {
 
         private readonly IServiceUsuario _serviceUsuario;
+        private readonly IServiceCliente _serviceCliente;
         private readonly ILogger<LoginController> _logger;
-        public LoginController(IServiceUsuario serviceUsuario, ILogger<LoginController> logger)
+        public LoginController(IServiceUsuario serviceUsuario, 
+            IServiceCliente serviceCliente, 
+            ILogger<LoginController> logger)
         {
             _serviceUsuario = serviceUsuario;
+            _serviceCliente = serviceCliente;
             _logger = logger;
         }
 
@@ -69,9 +75,9 @@ namespace Libreria.Web.Controllers
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(
                            CookieAuthenticationDefaults.AuthenticationScheme,
-                           new ClaimsPrincipal(identity),
+                           new ClaimsPrincipal(claimsIdentity),
                            new AuthenticationProperties { IsPersistent = true, AllowRefresh = true });
-            )
+            
             // Guardar IdCliente en sesión para acceso rápido en otras partes de la aplicación
             HttpContext.Session.SetInt32("IdCliente", cliente.Id);
 
@@ -80,6 +86,54 @@ namespace Libreria.Web.Controllers
 
             // Redirigir al usuario a la URL de retorno o a la página principal
             return Redirect(returnUrl ?? "/");
+        }
+
+        // Registro del usuario
+        [HttpGet]
+        public IActionResult Register() => View(new RegistroViewModel());
+
+        // POST: LoginController/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegistroViewModel viewModel)
+        {
+            // Si el viewModel no es válido, retornar la vista con los errores
+            if (!ModelState.IsValid) return View(viewModel);
+
+            // Validar si el usuario ya existe
+            if (await _serviceUsuario.ExisteUserNameAsync(viewModel.UserName))
+            {
+                // Si el usuario ya existe, agregar error al modelo y retornar la vista
+                ModelState.AddModelError(nameof(viewModel.UserName), "El usuario ya existe.");
+                return View(viewModel);
+            }
+
+            // Crear Cliente
+            var clienteId = await _serviceCliente.CrearClienteAsync(new ClienteDTO
+            {
+                Nombre = viewModel.Nombre,
+                Apellido = viewModel.Apellido,
+                Email = viewModel.Email,
+                Telefono = viewModel.Telefono,
+                Estado = true
+            });
+
+            // crear Usuario (junto con Hash de Contraseña)
+            var usuarioId = await _serviceUsuario.CrearUsuarioAsync(new UsuarioDTO
+            {
+                IdCliente = clienteId,
+                UserName = viewModel.UserName,
+                // Crear el hash de la contraseña utilizando PasswordHasher
+                PasswordHash = PasswordHasher.Hash(viewModel.Password),
+                FechaRegistro = DateTime.Now,
+                EsActivo = true,
+                Estado = true,
+                IdRol = 2 // “Cliente”
+            });
+
+            // Si el usuario se creó correctamente, redirigir a la página de inicio de sesión
+            TempData["Msg"] = "Registro exitoso. Inicie sesión.";
+            return RedirectToAction(nameof(Login));
         }
 
         // LogOff: Método para cerrar sesión del usuario

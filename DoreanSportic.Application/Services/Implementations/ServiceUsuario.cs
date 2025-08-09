@@ -4,6 +4,7 @@ using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Infrastructure.Repository.Implementations;
 using DoreanSportic.Infrastructure.Repository.Interfaces;
+using DoreanSportic.Web.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
-        // Para efectos del avance 4
+        // PARA EFECTOS DEL AVANCE 4
         public async Task<UsuarioDTO> PrimerUsuario()
         {
             var @object = await _repository.PrimerUsuario();
@@ -44,5 +45,30 @@ namespace DoreanSportic.Application.Services.Implementations
             return objectMapped;
         }
 
+        public async Task<int> CrearUsuarioAsync(UsuarioDTO dto)
+        {
+            var objectMapped = _mapper.Map<Usuario>(dto);
+            return await _repository.CrearUsuarioAsync(objectMapped);
+        }
+
+        public async Task<bool> ExisteUserNameAsync(string userName)
+        {
+            // Verificar si el nombre de usuario ya existe en la base de datos
+            return await _repository.ExisteUserNameAsync(userName);
+        }
+
+        public async Task<UsuarioDTO?> LoginAsync(string id, string password)
+        {
+            var user = await _repository.FindByUserNameWithClienteAsync(userName);
+            if (user == null) return null;
+
+            // Verificar hash
+            var ok = DoreanSportic.Web.Utils.PasswordHasher.Verify(password, user.PasswordHash);
+            if (!ok) return null;
+
+            // Mapear a DTO con Cliente incluido
+            var dto = _mapper.Map<UsuarioDTO>(user);
+            return dto;
+        }
     }
 }

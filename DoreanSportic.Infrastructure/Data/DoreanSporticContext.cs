@@ -128,9 +128,6 @@ public partial class DoreanSporticContext : DbContext
                 .HasMaxLength(200)
                 .HasColumnName("email");
             entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.FechaNacimiento)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaNacimiento");
             entity.Property(e => e.IdSexo).HasColumnName("idSexo");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
@@ -489,7 +486,7 @@ public partial class DoreanSporticContext : DbContext
                 .HasMaxLength(200)
                 .HasColumnName("passwordHash");
             entity.Property(e => e.UserName)
-                .HasMaxLength(100)
+                .HasMaxLength(30)
                 .HasColumnName("userName");
 
             entity.HasOne(d => d.IdClienteNavigation).WithOne(p => p.Usuario)
