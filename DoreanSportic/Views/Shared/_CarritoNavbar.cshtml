@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DoreanSportic.Application.DTOs.CarritoDetalleDTO>
+﻿@model DoreanSportic.Web.ViewModels.CarritoCarritoDetalleViewModel
 @using System.Globalization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -10,10 +10,10 @@
     culturaPersonalizada.NumberFormat.NumberDecimalSeparator = ".";
     
     // Obtener el subtotal a pagar (por medio de LINQ)
-    var subtotal = Model.Sum(x => x.SubTotal);
+    var subtotal = Model.CarritoDetalles.Sum(x => x.SubTotal);
 
     // Obtener la cantidad de detalles
-    var cantidad = Model.Count();
+    var cantidad = Model.CarritoDetalles.Count();
 }
 
 <span class="text-lg font-bold">@(Localizer["Productos en el carrito"]): @cantidad</span>
@@ -24,7 +24,7 @@
 <div style="max-height: 250px; overflow-y: auto;">
     <!-- Lista de productos -->
     <ul class="divide-y gap-2">
-        @foreach (var item in Model)
+        @foreach (var item in Model.CarritoDetalles)
         {
             @* Cargar los productos en cada detalle del carrito *@
             <li class="flex items-center py-2">
@@ -50,6 +50,8 @@
     </ul>
 </div>
 
+
+
 <!-- Subtotal y acciones (redirecciones de los botones) -->
 <div class="pt-2">
     <div id="subtotalCarrito"
@@ -57,8 +59,9 @@
          class="text-white" style="font-size: 20px">
       <b>@(Localizer["Subtotal"]): </b>₡@subtotal.ToString("N2", culturaPersonalizada)</div>
     <div class="card-actions mt-2">
-        <a id="verCarrito" href="/Carrito/Index" class="btn btn-block">@(Localizer["Ver carrito"])</a>
-        <a id="completarCompra" href="/Carrito/Index" class="btn btn-success btn-block">@(Localizer["Completar compra"])</a>
+        <!-- Redirección a la vista de detalles del carrito -->
+        <a id="verCarrito" href="/Carrito/Details/@Model.CarritoId" class="btn btn-success btn-block">@(Localizer["Ver carrito"])</a>
+
     </div>
 </div>
 

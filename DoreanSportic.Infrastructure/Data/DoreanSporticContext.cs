@@ -269,9 +269,14 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.Estado).HasColumnName("estado");
+            entity.Property(e => e.Foto).HasColumnName("foto");
             entity.Property(e => e.IdEmpaque).HasColumnName("idEmpaque");
             entity.Property(e => e.IdPedido).HasColumnName("idPedido");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+            entity.Property(e => e.MensajePersonalizado).HasColumnName("mensajePersonalizado");
+            entity.Property(e => e.SubTotal)
+                .HasColumnType("decimal(12, 2)")
+                .HasColumnName("subTotal");
 
             entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdEmpaque)

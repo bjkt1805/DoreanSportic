@@ -124,7 +124,14 @@ namespace DoreanSportic.Web.Controllers
             {
                 detalles = await _serviceCarritoDetalle.GetByCarritoIdAsync(idCarrito.Value);
             }
-            return PartialView("_CarritoNavbar", detalles);
+
+            var viewModelCarrito = new CarritoCarritoDetalleViewModel
+            {
+                CarritoId = idCarrito,
+                CarritoDetalles = detalles,
+            };
+
+            return PartialView("_CarritoNavBar", viewModelCarrito);
         }
     }
 }

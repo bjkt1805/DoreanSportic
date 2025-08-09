@@ -15,6 +15,12 @@ public partial class PedidoDetalle
 
     public int Cantidad { get; set; }
 
+    public byte[]? Foto { get; set; }
+
+    public string? MensajePersonalizado { get; set; }
+
+    public decimal? SubTotal { get; set; }
+
     public bool Estado { get; set; }
 
     public virtual Empaque? IdEmpaqueNavigation { get; set; }

@@ -17,9 +17,15 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
-        public Task<Carrito> FindByIdAsync(int id)
+        public async Task<Carrito> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            //Obtener el carrito (Eager loading con Detalles del carrito)
+            var @object = await _context.Carrito
+                                .Where(x => x.Id == id)
+                                .Include(c => c.CarritoDetalle)
+                                    .ThenInclude(d => d.IdProductoNavigation)
+                                .FirstAsync();
+            return @object!;
         }
         public async Task<ICollection<Carrito>> ListAsync()
         {

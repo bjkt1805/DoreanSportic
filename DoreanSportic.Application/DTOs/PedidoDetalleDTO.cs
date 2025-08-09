@@ -11,13 +11,19 @@ public record PedidoDetalleDTO
 {
     public int Id { get; set; }
 
-    public string IdPedido { get; set; } = null!;
+    public int IdPedido { get; set; }
 
     public int IdProducto { get; set; }
 
     public int? IdEmpaque { get; set; }
 
     public int Cantidad { get; set; }
+
+    public byte[]? Foto { get; set; }
+
+    public string? MensajePersonalizado { get; set; }
+
+    public decimal? SubTotal { get; set; }
 
     public bool Estado { get; set; }
 

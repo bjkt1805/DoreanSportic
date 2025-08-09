@@ -289,7 +289,6 @@ function recargarResumenCarritoNavbar() {
             // Obtener los elementos del DOM por id (subtotalCarrito, btnVerCarrito y btnCompletar)
             const subtotalCarrito = document.getElementById("subtotalCarrito");
             const btnVerCarrito = document.getElementById("verCarrito");
-            const btnCompletar = document.getElementById("completarCompra");
 
             // Función para habilitar/deshabilitar los botones de "Ver Carrito" y "Completar Compra" ---
             function deshabilitarHabilitarBotones(anchor, disabled) {
