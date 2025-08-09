@@ -13,6 +13,8 @@ using System.Text;
 // Para implementar (I18N) internacionalización y localización de la aplicación
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+// Para implementar autenticación y autorización de usuarios
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +77,17 @@ builder.Services.AddTransient<IServiceRol, ServiceRol>();
 builder.Services.AddTransient<IServiceSexo, ServiceSexo>();
 builder.Services.AddTransient<IServiceTarjeta, ServiceTarjeta>();
 builder.Services.AddTransient<IServiceUsuario, ServiceUsuario>();
+
+// Configurar autenticación y autorización de usuarios
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login"; // Ruta para iniciar sesión
+        options.LogoutPath = "/Auth/Logout"; // Ruta para cerrar sesión
+        options.AccessDeniedPath = "/Auth/Forbidden"; // Ruta para acceso denegado
+        options.SlidingExpiration = true; // Habilitar expiración deslizante
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20); // Tiempo de expiración de la sesión
+    });
 
 //Configurar Automapper
 builder.Services.AddAutoMapper(config =>
@@ -178,7 +191,7 @@ var localizationOptions = new RequestLocalizationOptions
 app.UseRequestLocalization(localizationOptions);
 
 app.UseSession();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Activar Antiforgery 

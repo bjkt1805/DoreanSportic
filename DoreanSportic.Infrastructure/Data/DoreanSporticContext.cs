@@ -124,9 +124,6 @@ public partial class DoreanSporticContext : DbContext
             entity.Property(e => e.Apellido)
                 .HasMaxLength(100)
                 .HasColumnName("apellido");
-            entity.Property(e => e.DireccionEnvio)
-                .HasMaxLength(500)
-                .HasColumnName("direccionEnvio");
             entity.Property(e => e.Email)
                 .HasMaxLength(200)
                 .HasColumnName("email");
@@ -225,6 +222,9 @@ public partial class DoreanSporticContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Pedido__3213E83FA6BF513B");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DireccionEnvio)
+                .HasMaxLength(500)
+                .HasColumnName("direccionEnvio");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.EstadoPedido)
                 .HasMaxLength(50)

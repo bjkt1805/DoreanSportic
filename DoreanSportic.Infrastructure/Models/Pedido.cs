@@ -23,6 +23,8 @@ public partial class Pedido
 
     public int? IdMetodoPago { get; set; }
 
+    public string? DireccionEnvio { get; set; }
+
     public bool Estado { get; set; }
 
     public virtual Cliente IdClienteNavigation { get; set; } = null!;

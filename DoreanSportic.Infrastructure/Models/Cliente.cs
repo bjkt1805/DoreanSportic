@@ -19,8 +19,6 @@ public partial class Cliente
 
     public string? Telefono { get; set; }
 
-    public string? DireccionEnvio { get; set; }
-
     public bool Estado { get; set; }
 
     public virtual ICollection<Carrito> Carrito { get; set; } = new List<Carrito>();
