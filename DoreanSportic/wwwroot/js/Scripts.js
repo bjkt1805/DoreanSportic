@@ -285,14 +285,58 @@ function recargarResumenCarritoNavbar() {
                 // con la cantidad correcta
                 document.getElementById("carrito-navbar-badge").innerText = cantidad;
             }
+
+            // Obtener los elementos del DOM por id (subtotalCarrito, btnVerCarrito y btnCompletar)
+            const subtotalCarrito = document.getElementById("subtotalCarrito");
+            const btnVerCarrito = document.getElementById("verCarrito");
+            const btnCompletar = document.getElementById("completarCompra");
+
+            // Función para habilitar/deshabilitar los botones de "Ver Carrito" y "Completar Compra" ---
+            function deshabilitarHabilitarBotones(anchor, disabled) {
+                // Si no existe la etiqueta anchor ("<a>")
+                // al recibirla como parámetro, no hacer nada
+                if (!anchor) return;
+
+                // Si los botones/links están deshabilitados, agregar las clases y atributos 
+                // necesarios para deshabilitarlos en el UI
+                if (disabled) {
+                    anchor.setAttribute("aria-disabled", "true");
+                    anchor.classList.add("btn-disabled", "pointer-events-none", "opacity-100", "cursor-not-allowed");
+                } else {
+
+                    // En caso de que los botones/links estén habilitados, remover las clases y atributos
+                    // necesarios para habitarlos en el UI
+                    anchor.removeAttribute("aria-disabled");
+                    anchor.classList.remove("btn-disabled", "pointer-events-none", "opacity-100", "cursor-not-allowed");
+                }
+            }
+
+            // Función para actualizar los botones dependiendo del
+            // valor del subtotal (si es 0 = deshabilitados; si es 1 = habilitados)
+            function actualizarBotonesPorSubTotal() {
+                // Si no existe el elemento con id subTotalCarrito en el DOM,
+                // simplemente no hacer nada
+                if (!subtotalCarrito) return;
+
+                // Eliminar todo el contenido textual de subTotalcarrito
+                // a excepción de los dígitos y punto decimal
+                const subtotalNum = parseFloat(
+                    // Reemplazar todo el contenido que no sea número ni decimal con "" (eliminarlos)
+                    subtotalCarrito.textContent.replace(/[^\d.]/g, "")
+                );
+
+                // Si subtotal es menor o igual a 0, o si subtotal no es un número
+                // deshabilitar los botones "Ver Carrito" y "Completar Comprar"
+                // por medio de la función deshabilitarHabilitarBotones
+                const disabled = isNaN(subtotalNum) || subtotalNum <= 0;
+                deshabilitarHabilitarBotones(btnVerCarrito, disabled);
+                deshabilitarHabilitarBotones(btnCompletar, disabled);
+            }
+
+            // Ejecutar una vez al cargar la página
+            actualizarBotonesPorSubTotal();
         });
 }
-
-// Cuando el DOM esté listo, cargar la función que recarga el carrito de compras
-// en el navbar cuando se agregan o quitan detalles/productos del carrito de compras
-document.addEventListener("DOMContentLoaded", () => {
-    recargarResumenCarritoNavbar();
-});
 
 // Función para obtener la cookie inyectada por ASP.NET Core para el idioma
 function getAspNetCultureCookie() {
@@ -330,5 +374,13 @@ function getCurrentLangShort() {
     const culture = getCurrentCulture();
     return culture.split('-')[0];
 }
+
+// Cuando el DOM esté listo, cargar la función que recarga el carrito de compras
+// en el navbar cuando se agregan o quitan detalles/productos del carrito de compras
+document.addEventListener("DOMContentLoaded", () => {
+    recargarResumenCarritoNavbar();
+});
+
+
 
 

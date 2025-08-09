@@ -9,7 +9,7 @@
     culturaPersonalizada.NumberFormat.NumberGroupSeparator = " ";
     culturaPersonalizada.NumberFormat.NumberDecimalSeparator = ".";
     
-    // Obtener el subtotal a pagar
+    // Obtener el subtotal a pagar (por medio de LINQ)
     var subtotal = Model.Sum(x => x.SubTotal);
 
     // Obtener la cantidad de detalles
@@ -52,10 +52,13 @@
 
 <!-- Subtotal y acciones (redirecciones de los botones) -->
 <div class="pt-2">
-    <div class="text-white" style="font-size: 20px"><b>@(Localizer["Subtotal"]): </b>₡@subtotal.ToString("N2", culturaPersonalizada)</div>
+    <div id="subtotalCarrito"
+         data-subtotal="@subtotal"
+         class="text-white" style="font-size: 20px">
+      <b>@(Localizer["Subtotal"]): </b>₡@subtotal.ToString("N2", culturaPersonalizada)</div>
     <div class="card-actions mt-2">
-        <a href="/Carrito/Index" class="btn btn-block">@(Localizer["Ver carrito"])</a>
-        <a href="/Carrito/Index" class="btn btn-success btn-block">@(Localizer["Completar compra"])</a>
+        <a id="verCarrito" href="/Carrito/Index" class="btn btn-block">@(Localizer["Ver carrito"])</a>
+        <a id="completarCompra" href="/Carrito/Index" class="btn btn-success btn-block">@(Localizer["Completar compra"])</a>
     </div>
 </div>
 
