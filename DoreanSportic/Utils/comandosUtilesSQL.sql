@@ -68,6 +68,22 @@ BEGIN
     FROM inserted;
 END;
 
+-- PARA RECONSTRUIR UNA LLAVE PRIMARIA CON AUTOINCREMENTADOR (IDENTITY) -- 
 
+-- 2. Agregar columna temporal que va a reemplazar a la llave primaria
+ALTER TABLE Cliente
+ADD id_temp INT IDENTITY(1,1) NOT NULL;
+
+-- 2. Eliminar llave primaria existente
+ALTER TABLE Cliente DROP CONSTRAINT PK__Cliente__3213E83F650CCA99;
+
+-- 3. Eliminar columna id antigua
+ALTER TABLE Cliente DROP COLUMN id;
+
+-- 4. Renombrar la columna temporal
+EXEC sp_rename 'Cliente.id_temp', 'id', 'COLUMN';
+
+-- 5. Volver a crear la PK
+ALTER TABLE Cliente ADD CONSTRAINT PK_Cliente PRIMARY KEY (id);
 
 

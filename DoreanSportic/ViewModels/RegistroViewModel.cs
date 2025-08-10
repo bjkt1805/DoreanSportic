@@ -52,6 +52,11 @@ namespace DoreanSportic.Web.ViewModels
         // Email del cliente requerido, con validación de formato de email
         [Required(ErrorMessage = "El correo electrónico es requerido")]
         [EmailAddress(ErrorMessage = "Correo electrónico no válido")]
+        // Validación por regex: que incluya el TLD (.com, .net, .org, etc.)
+        [RegularExpression(
+            @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.((com|org|net|es|edu|gov|mil|info|co|io)|[a-zA-Z]{2,6})$",
+            ErrorMessage = "El correo debe terminar en un dominio válido (.com, .org, .es, etc.)"
+        )]
         // DataType.EmailAddress para validar el formato de email
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Correo electrónico")]

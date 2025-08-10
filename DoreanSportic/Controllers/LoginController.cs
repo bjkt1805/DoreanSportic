@@ -141,6 +141,15 @@ namespace Libreria.Web.Controllers
                 return View(viewModel);
             }
 
+            // Validar si el email ya está registrado
+            if (await _serviceCliente.ExisteEmailAsync(viewModel.Email))
+            {
+                // Si el email ya está registrado, agregar error al modelo y retornar la vista
+                ModelState.AddModelError(nameof(viewModel.Email), "El correo electrónico ya está registrado.");
+                viewModel.Sexos = await ObtenerSexosAsync(); // Reasignar los sexos al viewModel
+                return View(viewModel);
+            }
+
             // Crear Cliente
             var clienteId = await _serviceCliente.CrearClienteAsync(new ClienteDTO
             {

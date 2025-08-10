@@ -59,13 +59,9 @@ public partial class DoreanSporticContext : DbContext
 
         modelBuilder.Entity<Cliente>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cliente__3213E83F650CCA99");
-
             entity.HasIndex(e => e.Email, "UQ__Cliente__AB6E6164BE3AAF53").IsUnique();
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Apellido)
                 .HasMaxLength(100)
                 .HasColumnName("apellido");
@@ -138,7 +134,6 @@ public partial class DoreanSporticContext : DbContext
                 .HasForeignKey(d => d.IdProducto)
                 .HasConstraintName("FK_ImagenProducto_Producto");
         });
-
 
         modelBuilder.Entity<Marca>(entity =>
         {

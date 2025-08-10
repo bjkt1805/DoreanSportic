@@ -26,6 +26,12 @@ namespace DoreanSportic.Application.Services.Implementations
             var objectMapped = _mapper.Map<ClienteDTO>(@object);
             return objectMapped;
         }
+
+        public async Task<bool> ExisteEmailAsync(string email)
+        {
+            // Verificar si el nombre de usuario ya existe en la base de datos
+            return await _repository.ExisteEmailAsync(email);
+        }
         public async Task<ICollection<ClienteDTO>> ListAsync()
         {
             //Obtener datos del repositorio

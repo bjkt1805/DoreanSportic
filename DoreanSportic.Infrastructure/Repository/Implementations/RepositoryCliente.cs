@@ -21,6 +21,14 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> ExisteEmailAsync(string email)
+        {
+            // Verificar si existe un usuario con el mismo correo electrónico
+            return await _context.Set<Cliente>()
+                .AnyAsync(c => c.Email == email && c.Estado);
+        }
+
         public async Task<ICollection<Cliente>> ListAsync()
         {
             //Select * from Cliente

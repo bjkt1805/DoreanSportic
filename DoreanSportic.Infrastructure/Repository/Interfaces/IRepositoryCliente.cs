@@ -12,6 +12,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<ICollection<Cliente>> ListAsync();
         Task<Cliente> FindByIdAsync(int id);
 
+        Task<bool> ExisteEmailAsync(String email);
+
         Task<int> CrearClienteAsync(Cliente entity);
     }
 }
