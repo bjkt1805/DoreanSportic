@@ -52,6 +52,7 @@ namespace Libreria.Web.Controllers
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
+            // Si el usuario ya está autenticado, redirigir a la página principal
             ViewBag.ReturnUrl = returnUrl;
             // Retornar la vista con el ViewModelLogin vacío
             return View(new LoginViewModel());
@@ -188,39 +189,36 @@ namespace Libreria.Web.Controllers
         // GET: LoginController/CambiarContrasenna
         // Mostrar la vista para cambiar la contraseña
         [HttpGet]
-        public IActionResult CambiarContrasenna() => View(new CambiarContrasennaViewModel());
+        public IActionResult CambiarContrasenna()
+        {
+            var viewModel = new CambiarContrasennaViewModel();
+                return View(viewModel);
+        }
 
         // POST: LoginController/CambiarContrasenna
         // Método para procesar el cambio de contraseña
         [HttpPost]
+        // [AllowAnonymous] // Permitir acceso anónimo para que cualquier usuario pueda cambiar su contraseña
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CambiarContrasenna(CambiarContrasennaViewModel viewModel)
+        public async Task<IActionResult> RecuperarContrasenna (CambiarContrasennaViewModel viewModel)
         {
             // Si el modelo no es válido, retornar la vista con los errores
             if (!ModelState.IsValid) return View(viewModel);
             
-            // Obtener el ID del usuario autenticado desde los claims
-            var idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-
-            // Si no se encuentra el ID del usuario, retornar un Forbidden
-            if (idUsuario == 0) return Forbid();
-
             // Intentar cambiar la contraseña utilizando el servicio
-            var resultado = await _serviceUsuario.CambiarContrasennaAsync(idUsuario, viewModel.ContrasennaActual, viewModel.ContrasennaNueva);
+            var resultado = await _serviceUsuario.RecuperarContrasennaAsync(viewModel.Usuario, viewModel.ContrasennaNueva);
 
             // Si el resultado es falso, significa que la contraseña actual es incorrecta
             if (!resultado)
             {
                 // Si el cambio de contraseña falla, agregar error al modelo y retornar la vista
-                ModelState.AddModelError(string.Empty, "La contraseña actual es incorrecta.");
+                ModelState.AddModelError(nameof(viewModel.Usuario), "El usuario no existe o está inactivo.");
                 return View(viewModel);
             }
 
-            // Cerrar sesión del usuario después de cambiar la contraseña y redirigir al login
-            await HttpContext.SignOutAsync();
-
             // Si el cambio de contraseña es exitoso, redirigir al login nuevamente
-            TempData["Msg"] = "Contraseña cambiada exitosamente. Vuelve a iniciar sesión.";
+            TempData["Msg"] = "Contraseña recuperada exitosamente. Vuelve a iniciar sesión.";
             return RedirectToAction("Login", "Login");
         }
 

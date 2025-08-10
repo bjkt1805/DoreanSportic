@@ -73,22 +73,16 @@ namespace DoreanSportic.Application.Services.Implementations
             return dto;
         }
 
-        public async Task<bool> CambiarContrasennaAsync(int idUsuario, string contrasennaActual, string contrasennaNueva)
+        public async Task<bool> RecuperarContrasennaAsync(string nombreUsuario, string nuevaContrasenna)
         {
-            // Obtener el usuario por su ID
-            var usuario = await _repository.FindByIdAsync(idUsuario);
+            // Obtener el usuario mediante su nombre de Usuario (UserName)
+            var usuario = await _repository.FindByUserNameAsync(nombreUsuario);
 
             // Si el usuario no existe, retornar false
             if (usuario == null) return false;
 
-            // Verificar la contraseña actual através del hash
-            var ok = _passwordHasher.Verify(contrasennaActual, usuario.PasswordHash);
-
-            // Si la verificación falla, retornar false
-            if (!ok) return false;
-
             // Hashear la nueva contraseña para enviarla encriptada a la base de datos
-            var nuevoHash = _passwordHasher.Hash(contrasennaNueva);
+            usuario.PasswordHash = _passwordHasher.Hash(nuevaContrasenna);
 
             // Actualizar la contraseña en el repositorio
             var cambioContrasenna = await _repository.SaveChangesAsync();

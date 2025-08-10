@@ -19,10 +19,18 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
         public async Task<Usuario> FindByIdAsync(int id)
         {
-            var @objetct = await _context.Set<Usuario>()
+            var @object = await _context.Set<Usuario>()
                                 // Solo usuarios activos
                                 .FirstOrDefaultAsync(u => u.Id == id && u.Estado); 
-            return @objetct!;
+            return @object!;
+        }
+
+        public async Task<Usuario> FindByUserNameAsync(string userName)
+        {
+            var @object = await _context.Set<Usuario>()
+                                // Solo usuarios activos
+                                .FirstOrDefaultAsync(u => u.UserName == userName && u.Estado && u.EsActivo);
+            return @object!;
         }
 
         public async Task<ICollection<Usuario>> ListAsync()

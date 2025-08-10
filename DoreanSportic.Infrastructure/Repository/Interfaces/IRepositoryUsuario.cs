@@ -11,6 +11,7 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
     {
         Task<ICollection<Usuario>> ListAsync();
         Task<Usuario> FindByIdAsync(int id);
+        Task<Usuario> FindByUserNameAsync(string userName);
 
         // PARA EFECTOS DEL AVANCE 4
         Task<Usuario> PrimerUsuario();
