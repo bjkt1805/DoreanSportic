@@ -90,7 +90,7 @@ namespace Libreria.Web.Controllers
 
         // Devolver la vista de Registro del usuario
         [HttpGet]
-        public IActionResult Register() => View(new RegistroViewModel());
+        public IActionResult Registrar () => View(new RegistroViewModel());
 
         // POST: LoginController/Register
         [HttpPost]

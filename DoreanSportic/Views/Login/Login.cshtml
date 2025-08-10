@@ -1,6 +1,7 @@
 ﻿@model DoreanSportic.Web.ViewModels.LoginViewModel
 @{
     ViewData["Title"] = "Iniciar sesión";
+    Layout = "_LayoutLogin";
 
     // URL de retorno después del inicio de sesión
     var returnUrl = ViewBag.ReturnUrl as string ?? Url.Content("~/");
@@ -54,12 +55,12 @@
                     </fieldset>
                 </form>
 
-                <div class="divider">o</div>
+                <hr />
 
                 @* Para registrar usuario *@
                 <p class="text-sm">
                     ¿No tienes cuenta?
-                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Register">Regístrate</a>
+                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Registrar">Regístrate</a>
                 </p>
             </div>
         </div>

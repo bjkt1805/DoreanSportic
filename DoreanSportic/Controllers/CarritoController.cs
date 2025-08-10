@@ -2,8 +2,11 @@
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+// Solo permitir acceso a usuarios autenticados
+using Microsoft.AspNetCore.Authorization;
 namespace DoreanSportic.Web.Controllers
 {
+    [Authorize] // Asegurar que el usuario esté autenticado para acceder a los métodos de este controlador
     public class CarritoController : Controller
     {
         private readonly IServiceCarrito _serviceCarrito;

@@ -86,9 +86,9 @@ builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Auth/Login"; // Ruta para iniciar sesión
-        options.LogoutPath = "/Auth/Logout"; // Ruta para cerrar sesión
-        options.AccessDeniedPath = "/Auth/Forbidden"; // Ruta para acceso denegado
+        options.LoginPath = "/Login/Login"; // Ruta para iniciar sesión
+        options.LogoutPath = "/Login/Logout"; // Ruta para cerrar sesión
+        options.AccessDeniedPath = "/Login/Forbidden"; // Ruta para acceso denegado
         options.SlidingExpiration = true; // Habilitar expiración deslizante
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20); // Tiempo de expiración de la sesión
     });
