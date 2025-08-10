@@ -15,6 +15,14 @@
              background-size: cover;">
     @RenderBody()
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Scripts de jQuery-->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <!-- Importar archivo js que contiene el side client validation de para los formularios de login y de registrar -->
+    <script src="~/js/ScriptsLogin.js"></script>
 </body>
 
 

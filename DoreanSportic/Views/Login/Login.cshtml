@@ -20,7 +20,7 @@
         <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
             <div class="card-body">
                 @* Errores del modelo *@
-                <div asp-validation-summary="ModelOnly" class="text-error mb-2"></div>
+                <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
                 @* Formulario de inicio de sesión *@
                 <form asp-action="LogIn" asp-controller="Login" method="post">
@@ -37,13 +37,13 @@
 
                         @* Campo de Usuario *@
                         <label class="label" asp-for="UserName"></label>
-                        <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" style="border-color:black" />
-                        <span class="text-error text-sm" asp-validation-for="UserName"></span>
+                        <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" style="border-color:black;" />
+                        <span class="text-error text-sm italic" asp-validation-for="UserName" style="color:red; font-size: small"></span>
 
                         @* Campo de Contraseña *@
                         <label class="label mt-3" asp-for="Password"></label>
                         <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
-                        <span class="text-error text-sm" asp-validation-for="Password"></span>
+                        <span class="text-error text-sm italic" asp-validation-for="Password" style="color:red; font-size: small"></span>
 
                         @* Campo de se me olvidó la contraseña*@
                         <div class="mt-2">
