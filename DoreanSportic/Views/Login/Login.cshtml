@@ -8,12 +8,12 @@
 }
 
 <!-- Contenedor para manejar el login del sistema-->
-<div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content flex-col lg:flex-row-reverse w-full">
-        <div class="text-center lg:text-left max-w-xl">
-            <h1 class="text-5xl font-bold">¡Bienvenido!</h1>
-            <p class="py-6">
-                Inicia sesión para continuar con tu compra,ver tus pedidos y administrar tu cuenta.
+<div class="hero min-h-screen w-75">
+    <div class="hero-content flex-col lg:flex-row-reverse w-full shadow-lg p-3">
+        <div class="text-center text-black lg:text-left max-w-xl">
+            <h1 class="text-5xl font-bold" style="font-size: 25px">¡Bienvenido!</h1>
+            <p class="py-6 font-bold">
+                Inicia sesión para continuar
             </p>
         </div>
 
@@ -37,12 +37,12 @@
 
                         @* Campo de Usuario *@
                         <label class="label" asp-for="UserName"></label>
-                        <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" />
+                        <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="UserName"></span>
 
                         @* Campo de Contraseña *@
                         <label class="label mt-3" asp-for="Password"></label>
-                        <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" />
+                        <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="Password"></span>
 
                         @* Campo de se me olvidó la contraseña*@
@@ -51,7 +51,7 @@
                         </div>
 
                         @* Botón de inicio de sesión *@
-                        <button class="btn btn-neutral mt-4" type="submit">Iniciar sesión</button>
+                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">Iniciar sesión</button>
                     </fieldset>
                 </form>
 

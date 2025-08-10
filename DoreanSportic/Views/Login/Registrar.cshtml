@@ -4,11 +4,11 @@
     Layout = "_LayoutLogin";
 }
 
-<div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content flex-col lg:flex-row w-full">
+<div class="hero bg-base-200 min-h-screen w-100">
+    <div class="hero-content flex-col lg:flex-row w-full shadow-lg p-3">
         <div class="text-center lg:text-left max-w-xl">
             <h1 class="text-5xl font-bold">Crea tu cuenta</h1>
-            <p class="py-6">
+            <p class="py-6 font-bold">
                 Regístrate para comprar más rápido, ver tus pedidos y guardar tus datos de envío.
             </p>
         </div>
@@ -29,49 +29,49 @@
                             @* Campo nombre*@
                             <div>
                                 <label class="label" asp-for="Nombre"></label>
-                                <input class="input input-bordered" asp-for="Nombre" placeholder="Nombre" />
+                                <input class="input input-bordered" asp-for="Nombre" placeholder="Nombre" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="Nombre"></span>
                             </div>
 
                             @* Campo apellido*@
                             <div>
                                 <label class="label" asp-for="Apellido"></label>
-                                <input class="input input-bordered" asp-for="Apellido" placeholder="Apellido" />
+                                <input class="input input-bordered" asp-for="Apellido" placeholder="Apellido" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="Apellido"></span>
                             </div>
                         </div>
 
                         @* Campo correo electrónico*@
-                        <label class="label mt-3" asp-for="Email"></label>
-                        <input class="input input-bordered" asp-for="Email" type="email" placeholder="correo@ejemplo.com" />
+                        <label class="label mt-3" asp-for="Email">Correo electrónico</label>
+                        <input class="input input-bordered" asp-for="Email" type="email" placeholder="correo@ejemplo.com" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="Email"></span>
 
                         @* Campo teléfono *@
-                        <label class="label mt-3" asp-for="Telefono"></label>
-                        <input class="input input-bordered" asp-for="Telefono" placeholder="Teléfono" />
+                        <label class="label mt-3" asp-for="Telefono">Teléfono</label>
+                        <input class="input input-bordered" asp-for="Telefono" placeholder="Teléfono" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="Telefono"></span>
 
                         @* Para crear el usuario y la contraseña *@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                             <div>
-                                <label class="label" asp-for="UserName"></label>
-                                <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" />
+                                <label class="label" asp-for="UserName">Nombre de usuario</label>
+                                <input class="input input-bordered" asp-for="UserName" placeholder="Nombre de usuario" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="UserName"></span>
                             </div>
                             <div>
-                                <label class="label" asp-for="Password"></label>
-                                <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" />
+                                <label class="label" asp-for="Password">Contraseña</label>
+                                <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="Password"></span>
                             </div>
                         </div>
 
                         @* Confirmación de contraseña*@
-                        <label class="label mt-3" asp-for="ConfirmPassword"></label>
-                        <input class="input input-bordered" asp-for="ConfirmPassword" type="password" placeholder="Confirmar contraseña" />
+                        <label class="label mt-3" asp-for="ConfirmPassword">Confirmar Contraseña</label>
+                        <input class="input input-bordered" asp-for="ConfirmPassword" type="password" placeholder="Confirmar contraseña" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="ConfirmPassword"></span>
 
                         @* Botón para crear cuenta*@
-                        <button class="btn btn-neutral mt-4" type="submit">Crear cuenta</button>
+                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">Crear cuenta</button>
                     </fieldset>
                 </form>
 
