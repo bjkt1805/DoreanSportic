@@ -266,7 +266,7 @@ function dataFileDnD() {
 // Función para recargar el resumen del carrito 
 // en el navbar
 function recargarResumenCarritoNavbar() {
-    fetch("/CarritoDetalle/NavbarCarrito")
+    fetch("/PedidoDetalle/NavbarCarrito")
         .then(response => response.text())
         .then(html => {
             // renderizar la vista parcial del carito en el dropdown

@@ -19,11 +19,10 @@ namespace DoraanSportic.Application.Profiles
         public ProductoProfile()
         {
             CreateMap<ProductoDTO, Producto>()
-                .ForMember(dest => dest.ImagenesProducto, opt => opt.Ignore()) // 👈 Ignorar colección
-                .ForMember(dest => dest.IdEtiqueta, opt => opt.Ignore())       // 👈 Ignorar colección
-                .ForMember(dest => dest.IdPromocion, opt => opt.Ignore())      // Si aplica
-                .ForMember(dest => dest.PedidoDetalle, opt => opt.Ignore())
-                .ForMember(dest => dest.CarritoDetalle, opt => opt.Ignore());
+                .ForMember(dest => dest.ImagenesProducto, opt => opt.Ignore())
+                .ForMember(dest => dest.IdEtiqueta, opt => opt.Ignore())
+                .ForMember(dest => dest.IdPromocion, opt => opt.Ignore())
+                .ForMember(dest => dest.PedidoDetalle, opt => opt.Ignore());
 
             CreateMap<ProductoDTO, Producto>().ReverseMap();
         }

@@ -11,5 +11,7 @@ namespace DoreanSportic.Application.Services.Interfaces
     {
         Task<ICollection<PedidoDTO>> ListAsync();
         Task<PedidoDTO> FindByIdAsync(int id);
+
+        Task<int> AddAsync(PedidoDTO dto);
     }
 }

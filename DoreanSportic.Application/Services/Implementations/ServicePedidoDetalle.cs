@@ -36,6 +36,11 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
+        public async Task<int> AddAsync(PedidoDetalleDTO dto)
+        {
+            var objectMapped = _mapper.Map<PedidoDetalle>(dto);
+            return await _repository.AddAsync(objectMapped);
+        }
         public async Task<ICollection<PedidoDetalleDTO>> GetDetallesPorPedido(int idPedido)
         {
             //Obtener datos del repositorio
@@ -45,6 +50,12 @@ namespace DoreanSportic.Application.Services.Implementations
 
             // Return lista
             return collection;
+        }
+
+        public async Task<List<PedidoDetalleDTO>> GetByPedidoIdAsync(int idCarrito)
+        {
+            var detalles = await _repository.GetByPedidoIdAsync(idCarrito);
+            return _mapper.Map<List<PedidoDetalleDTO>>(detalles);
         }
     }
 }

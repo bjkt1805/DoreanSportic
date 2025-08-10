@@ -10,6 +10,6 @@ namespace DoreanSportic.Web.ViewModels
         public IEnumerable<ResennaValoracionDTO> Resennas { get; set; }
         public IEnumerable<EmpaqueDTO> EmpaquesDisponibles { get; set; }
         // Para poder crear detalle de Carrito
-        public CarritoDetalleDTO DetalleCarrito { get; set; }
+        public PedidoDetalleDTO DetallePedido { get; set; }
     }
 }

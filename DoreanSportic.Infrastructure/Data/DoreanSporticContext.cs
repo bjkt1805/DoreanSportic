@@ -12,10 +12,6 @@ public partial class DoreanSporticContext : DbContext
     {
     }
 
-    public virtual DbSet<Carrito> Carrito { get; set; }
-
-    public virtual DbSet<CarritoDetalle> CarritoDetalle { get; set; }
-
     public virtual DbSet<Categoria> Categoria { get; set; }
 
     public virtual DbSet<Cliente> Cliente { get; set; }
@@ -50,59 +46,6 @@ public partial class DoreanSporticContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Carrito>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Carrito__3213E83F243EC652");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.EstadoPago)
-                .HasMaxLength(20)
-                .HasColumnName("estadoPago");
-            entity.Property(e => e.FechaCreacion)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("fechaCreacion");
-            entity.Property(e => e.IdCliente).HasColumnName("idCliente");
-
-            entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Carrito)
-                .HasForeignKey(d => d.IdCliente)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Carrito_Cliente");
-        });
-
-        modelBuilder.Entity<CarritoDetalle>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Carrito___3213E83FB2BADD66");
-
-            entity.ToTable("Carrito_Detalle");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Cantidad).HasColumnName("cantidad");
-            entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.Foto).HasColumnName("foto");
-            entity.Property(e => e.IdCarrito).HasColumnName("idCarrito");
-            entity.Property(e => e.IdEmpaque).HasColumnName("idEmpaque");
-            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
-            entity.Property(e => e.MensajePersonalizado).HasColumnName("mensajePersonalizado");
-            entity.Property(e => e.SubTotal)
-                .HasColumnType("decimal(12, 2)")
-                .HasColumnName("subTotal");
-
-            entity.HasOne(d => d.IdCarritoNavigation).WithMany(p => p.CarritoDetalle)
-                .HasForeignKey(d => d.IdCarrito)
-                .HasConstraintName("FK_CarritoDetalle_Carrito");
-
-            entity.HasOne(d => d.IdEmpaqueNavigation).WithMany(p => p.CarritoDetalle)
-                .HasForeignKey(d => d.IdEmpaque)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_CarritoDetalle_Empaque");
-
-            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.CarritoDetalle)
-                .HasForeignKey(d => d.IdProducto)
-                .HasConstraintName("FK_CarritoDetalle_Producto");
-        });
-
         modelBuilder.Entity<Categoria>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Categori__3213E83FFD2A0F22");
@@ -120,10 +63,15 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasIndex(e => e.Email, "UQ__Cliente__AB6E6164BE3AAF53").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
             entity.Property(e => e.Apellido)
                 .HasMaxLength(100)
                 .HasColumnName("apellido");
+            entity.Property(e => e.DireccionEnvio)
+                .HasMaxLength(500)
+                .HasColumnName("direccionEnvio");
             entity.Property(e => e.Email)
                 .HasMaxLength(200)
                 .HasColumnName("email");
@@ -191,6 +139,7 @@ public partial class DoreanSporticContext : DbContext
                 .HasConstraintName("FK_ImagenProducto_Producto");
         });
 
+
         modelBuilder.Entity<Marca>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Marca__3213E83F79D22278");
@@ -223,10 +172,10 @@ public partial class DoreanSporticContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("direccionEnvio");
             entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.EstadoPedido)
+            entity.Property(e => e.EstadoPago)
                 .HasMaxLength(50)
                 .HasDefaultValue("Pendiente")
-                .HasColumnName("estadoPedido");
+                .HasColumnName("estadoPago");
             entity.Property(e => e.FechaPedido)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -249,6 +198,7 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Pedido)
                 .HasForeignKey(d => d.IdCliente)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Pedido_Cliente");
 
             entity.HasOne(d => d.IdMetodoPagoNavigation).WithMany(p => p.Pedido)
@@ -282,7 +232,6 @@ public partial class DoreanSporticContext : DbContext
 
             entity.HasOne(d => d.IdPedidoNavigation).WithMany(p => p.PedidoDetalle)
                 .HasForeignKey(d => d.IdPedido)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PedidoDetalle_Pedido");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.PedidoDetalle)

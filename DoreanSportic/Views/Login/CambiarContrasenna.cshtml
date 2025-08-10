@@ -1,0 +1,53 @@
+﻿@model DoreanSportic.Web.ViewModels.CambiarContrasennaViewModel
+@{
+    ViewData["Title"] = "Cambiar contraseña";
+    Layout = "_LayoutLogin"; 
+}
+
+<div class="hero bg-transparent min-h-screen w-75">
+    <div class="hero-content flex-col w-full max-w-md">
+        <div class="text-center text-white">
+            <h1 class="text-3xl font-bold">Cambiar contraseña</h1>
+            <p class="py-4">Actualiza tu contraseña para mantener tu cuenta segura.</p>
+        </div>
+
+        <div class="card bg-base-100 w-full shadow-2xl">
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-error mb-2"></div>
+
+                <form asp-action="CambiarPassword" method="post">
+                    @Html.AntiForgeryToken()
+
+                    @* Errores del modelo *@
+                    <div asp-validation-summary="ModelOnly" class="text-error mb-2"></div>
+
+                    @* Fomrulario para cambiar contraseña *@
+                    <fieldset class="fieldset">
+
+                        @* Campo de contraseña actual*@
+                        <label class="label" asp-for="ContrasennaActual"></label>
+                        <input class="input input-bordered" asp-for="ContrasennaActual" type="password" />
+                        <span class="text-error text-sm" asp-validation-for="ContrasennaActual"></span>
+
+                        @* Campor de contrasenna nueva *@
+                        <label class="label mt-3" asp-for="ContrasennaNueva"></label>
+                        <input class="input input-bordered" asp-for="ContrasennaNueva" type="password" />
+                        <span class="text-error text-sm" asp-validation-for="ContrasennaNueva"></span>
+
+                        @* Campo de confirmar contrasenna *@
+                        <label class="label mt-3" asp-for="ConfirmarContrasenna"></label>
+                        <input class="input input-bordered" asp-for="ConfirmarContrasenna" type="password" />
+                        <span class="text-error text-sm" asp-validation-for="ConfirmarContrasenna"></span>
+
+                        @* Botón para enviar solicitud *@
+                        <button class="btn btn-neutral mt-4" type="submit">Enviar</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

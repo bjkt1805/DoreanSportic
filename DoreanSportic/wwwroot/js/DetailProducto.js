@@ -83,7 +83,7 @@ function manejarEnvioResenna(e) {
 }
 
 // Script para escuchar el evento submit del formulario para agregar un detalle del carrito
-function manejarEnvioDetalleCarrito(e) {
+function manejarEnvioDetallePedido(e) {
     e.preventDefault();
 
     // Para validar el estado del formulario
@@ -99,8 +99,8 @@ function manejarEnvioDetalleCarrito(e) {
     const deseaPersonalizar = componentePersonalizacion?.__x?.$data?.deseaPersonalizar === "si";
 
     // Obtener los valores de campos personalizados (mensaje personalizado y tipo de empaque)
-    const mensajeInput = document.querySelector("textarea[name='DetalleCarrito.MensajePersonalizado']");
-    const empaqueSelect = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
+    const mensajeInput = document.querySelector("textarea[name='DetallePedido.MensajePersonalizado']");
+    const empaqueSelect = document.querySelector("select[name='DetallePedido.IdEmpaque']");
 
     // Llamar a la función de Alpine que maneja la inserción de la imagen
     const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
@@ -175,14 +175,14 @@ function manejarEnvioDetalleCarrito(e) {
 
     // Si el archivo existe, añadirlo al formulario
     if (archivoAlpine) {
-        formData.set("DetalleCarrito.FotoArchivo", archivoAlpine);
+        formData.set("DetallePedido.FotoArchivo", archivoAlpine);
     }
 
-    // Enviar en segundo plano el estado de detalleCarrito como "true"
-    formData.set("DetalleCarrito.Estado","true");
+    // Enviar en segundo plano el estado de detallePedido como "true"
+    formData.set("DetallePedido.Estado","true");
 
     // enviar el formulario al controlador si todo está correcto
-    fetch("/CarritoDetalle/Create", {
+    fetch("/PedidoDetalle/Create", {
         method: "POST",
         body: formData
     })
@@ -405,9 +405,9 @@ async function calcularSubtotal() {
 
     // Obtener los valores de los inputs del formulario para 
     // calcular dinámicamente el subTotal
-    const form = document.getElementById("formCarritoDetalle");
+    const form = document.getElementById("formPedidoDetalle");
     const inputCantidad = document.getElementById("inputCantidad");
-    const selectEmpaque = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
+    const selectEmpaque = document.querySelector("select[name='DetallePedido.IdEmpaque']");
     const radioPersonalizar = document.querySelectorAll("input[name='DeseaPersonalizar']");
     const subtotalSpan = document.getElementById("subTotalValor");
 
@@ -427,7 +427,7 @@ async function calcularSubtotal() {
     if (deseaPersonalizar) {
 
         // Obtener la referencia ACTUAL al select insertado dinámicamente
-        const selectEmpaque = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
+        const selectEmpaque = document.querySelector("select[name='DetallePedido.IdEmpaque']");
 
         // Inicializar el precio del empaque en 0
         let precioEmpaque = 0;
@@ -509,17 +509,17 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Cuando el DOM esté listo, realizar la validación del input de cantidad para
-// añadir el producto al carrito
+// añadir el producto al pedido
 document.addEventListener("DOMContentLoaded", function () {
     escucharInputCantidad();
     bloquearBorradoInputCantidad();
 });
 
-// Cuando el DOM esté listo ,asignar el evento de submit del formulario de detalle de carrito 
+// Cuando el DOM esté listo ,asignar el evento de submit del formulario de detalle de pedido 
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("formCarritoDetalle");
+    const form = document.getElementById("formPedidoDetalle");
     if (form) {
-        form.addEventListener("submit", manejarEnvioDetalleCarrito);
+        form.addEventListener("submit", manejarEnvioDetallePedido);
     }
 });
 
@@ -529,7 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Obtener los valores de los inputs del formulario para 
     // calcular dinámicamente el subTotal
-    const form = document.getElementById("formCarritoDetalle");
+    const form = document.getElementById("formPedidoDetalle");
     const inputCantidad = document.getElementById("inputCantidad");
     const mensajeTextarea = document.querySelector("textarea[name='MensajePersonalizado']");
     const dropzone = document.querySelector('[x-data="dataSingleFileDnD()"]');
@@ -576,7 +576,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("select-empaque-listo", () => {
     // Esperar al siguiente "tick" para que el DOM esté completamente actualizado
     setTimeout(() => {
-        const selectEmpaque = document.querySelector("select[name='DetalleCarrito.IdEmpaque']");
+        const selectEmpaque = document.querySelector("select[name='DetallePedido.IdEmpaque']");
         if (selectEmpaque && !selectEmpaque.dataset.listenerAttached) {
             console.log("Select encontrado y listener agregado");
             selectEmpaque.addEventListener("change", () => {

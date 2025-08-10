@@ -198,12 +198,12 @@
 
     </div>
 
-    <!-- Formulario para agregar el producto al carrito de compras -->
+    <!-- Formulario para agregar el producto al pedido -->
     <div class="p-2 h-auto" style="width: 100%">
         @if (Model.Producto.Stock > 0)
         {
 
-            <form asp-controller="CarritoDetalle" id="formCarritoDetalle" 
+            <form asp-controller="PedidoDetalle" id="formPedidoDetalle" 
                 asp-action="Create" method="post" enctype="multipart/form-data" 
                 class="mt-4 space-y-3"
                 data-precio-base="@Model.Producto.PrecioBase"
@@ -218,9 +218,9 @@
                     <!-- Cantidad -->
                     <div class="form-control flex flex-col gap-1">
                         <label for="inputCantidad" class="label font-bold">@(Localizer["Cantidad"])</label>
-                        <input asp-for="@Model.DetalleCarrito.Cantidad" id="inputCantidad" type="number" value="0" min="0" max="@Model.Producto.Stock"
+                        <input asp-for="@Model.DetallePedido.Cantidad" id="inputCantidad" type="number" value="0" min="0" max="@Model.Producto.Stock"
                                class="input input-bordered mb-1" required style="border-color:black;"/>
-                        <span asp-validation-for="@Model.DetalleCarrito.Cantidad" style="color:red; font-size: small; font-style:italic"></span>
+                        <span asp-validation-for="@Model.DetallePedido.Cantidad" style="color:red; font-size: small; font-style:italic"></span>
                     </div>
                         <div class="flex items-end">
                             <p class="font-bold" style="font-size: 20px">
@@ -261,7 +261,7 @@
 
                                         @*Seleccionar el tipo de empaque *@
                                         <div class="form-control mt-2" style="border-color:black;">
-                                            <label asp-for= "@Model.DetalleCarrito.IdEmpaque" class="label font-bold mb-1 flex items-center gap-2">
+                                            <label asp-for= "@Model.DetallePedido.IdEmpaque" class="label font-bold mb-1 flex items-center gap-2">
                                 
                                                 <!-- Icono caja -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -271,7 +271,7 @@
                                             @(Localizer["Tipo de empaque"])
                                             </label asp-for>
                                             <select 
-                                                asp-for="@Model.DetalleCarrito.IdEmpaque" 
+                                                asp-for="@Model.DetallePedido.IdEmpaque" 
                                                 class="select select-bordered w-full" 
                                                 style="border-color:black;">
 
@@ -283,7 +283,7 @@
                                                     </option>
                                                 }
                                             </select>
-                                            <span asp-validation-for="@Model.DetalleCarrito.IdEmpaque" class="text-sm italic" style="color:red; font-size: small"></span>
+                                            <span asp-validation-for="@Model.DetallePedido.IdEmpaque" class="text-sm italic" style="color:red; font-size: small"></span>
                                             <!-- Mostrar errores de tipo Empaque -->
                                             <div id="error-tipoEmpaque" class="text-sm italic" style="color:red; font-size: small"></div>
 
@@ -291,7 +291,7 @@
 
                                         @*Mensaje de personalización*@
                                         <div class="form-control mt-2 flex flex-col">
-                                            <label asp-for= "@Model.DetalleCarrito.MensajePersonalizado" class="label font-bold mb-1 flex items-center gap-2">
+                                            <label asp-for= "@Model.DetallePedido.MensajePersonalizado" class="label font-bold mb-1 flex items-center gap-2">
                                                 <!-- Icono comentario -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor">
@@ -299,8 +299,8 @@
                                                           d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.832L3 20l1.46-3.916A8.954 8.954 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                                 </svg>
                                             @(Localizer["Mensaje personalizado del empaque (₡ 2 000.00)"])</label>
-                                            <textarea asp-for="@Model.DetalleCarrito.MensajePersonalizado" maxlength="500" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
-                                            <span asp-validation-for="@Model.DetalleCarrito.MensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></span>
+                                            <textarea asp-for="@Model.DetallePedido.MensajePersonalizado" maxlength="500" class="textarea textarea-bordered" rows="3" style="border-color:black;"></textarea>
+                                            <span asp-validation-for="@Model.DetallePedido.MensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></span>
                                             <!-- Mostrar errores de mensaje personalizado -->
                                             <div id="error-mensajePersonalizado" class="text-sm italic" style="color:red; font-size: small"></div>
                                         </div>
@@ -328,7 +328,7 @@
                                                  class="relative w-full min-h-[200px] flex items-center justify-center border rounded-lg bg-base-100 border-base-100 p-4 transition hover:border-blue-500 rounded">
 
                                             <!-- Para manejar la inserción de la imagen-->
-                                            <input asp-for="@Model.DetalleCarrito.FotoArchivo"
+                                            <input asp-for="@Model.DetallePedido.FotoArchivo"
                                                    accept="image/*" 
                                                    type="file"
                                                    class="drop-zone absolute inset-0 z-50 w-full h-full p-0 m-0 outline-none opacity-0"
@@ -373,14 +373,14 @@
 
                 <!-- Input oculto para enviar True para el estado del detalle de carrito -->
                 <div class="form-control w-full hidden">
-                    <input type="checkbox" name="DetalleCarrito.Estado" checked />
+                    <input type="checkbox" name="DetallePedido.Estado" checked />
                 </div>
 
                 <!-- Input oculto para enviar el Id del producto a la hora de insertarlo -->
-                <input type="hidden" name="DetalleCarrito.IdProducto" value="@Model.Producto.Id" />
+                <input type="hidden" name="DetallePedido.IdProducto" value="@Model.Producto.Id" />
 
                 <!-- Input oculto para enviar el subTotal calculado por JavaScript (calcularSubtotal) al formulario -->
-                <input type="hidden" name="DetalleCarrito.SubTotal" id="inputSubTotal" value="0.00" />
+                <input type="hidden" name="DetallePedido.SubTotal" id="inputSubTotal" value="0.00" />
 
                 <!-- Botón para agregar producto al carrito -->
                 <button id="btnAgregarCarrito" type="submit" class="btn btn-success mt-2 w-full justify-end">

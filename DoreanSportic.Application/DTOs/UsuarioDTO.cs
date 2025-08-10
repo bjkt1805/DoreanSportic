@@ -28,4 +28,6 @@ public record UsuarioDTO
     public virtual Cliente IdClienteNavigation { get; set; } = null!;
 
     public virtual Rol IdRolNavigation { get; set; } = null!;
+
+    public virtual ICollection<ResennaValoracion> ResennaValoracion { get; set; } = new List<ResennaValoracion>();
 }

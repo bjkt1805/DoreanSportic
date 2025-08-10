@@ -19,7 +19,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-error mb-2"></div>
 
                 @* Formulario de registro *@
-                <form asp-action="Register" asp-controller="Login" method="post">
+                <form asp-action="Registrar" asp-controller="Login" method="post">
                     @Html.AntiForgeryToken()
 
                     @* Campos para registrar el usuario *@
@@ -28,45 +28,53 @@
 
                             @* Campo nombre*@
                             <div>
-                                <label class="label" asp-for="Nombre"></label>
+                                <label class="label mb-1" asp-for="Nombre"></label>
                                 <input class="input input-bordered" asp-for="Nombre" placeholder="Nombre" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="Nombre"></span>
                             </div>
 
                             @* Campo apellido*@
                             <div>
-                                <label class="label" asp-for="Apellido"></label>
+                                <label class="label mb-1" asp-for="Apellido"></label>
                                 <input class="input input-bordered" asp-for="Apellido" placeholder="Apellido" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="Apellido"></span>
                             </div>
                         </div>
 
                         @* Campo correo electrónico*@
-                        <label class="label mt-3" asp-for="Email">Correo electrónico</label>
+                        <label class="label" asp-for="Email">Correo electrónico</label>
                         <input class="input input-bordered" asp-for="Email" type="email" placeholder="correo@ejemplo.com" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="Email"></span>
 
                         @* Campo teléfono *@
-                        <label class="label mt-3" asp-for="Telefono">Teléfono</label>
+                        <label class="label" asp-for="Telefono">Teléfono (opcional)</label>
                         <input class="input input-bordered" asp-for="Telefono" placeholder="Teléfono" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="Telefono"></span>
 
+                        @* Campo Sexo *@
+                        <label class="label mb-1" asp-for="IdSexo">Sexo (opcional) </label>
+                        <select class="select select-bordered w-full" asp-for="IdSexo" asp-items="Model.Sexos">
+                            <option value="0">-- Seleccione --</option>
+                        </select>
+                        <span class="text-error text-sm" asp-validation-for="IdSexo"></span>
+
+
                         @* Para crear el usuario y la contraseña *@
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                                <label class="label" asp-for="UserName">Nombre de usuario</label>
+                                <label class="label mb-1" asp-for="UserName">Nombre de usuario</label>
                                 <input class="input input-bordered" asp-for="UserName" placeholder="Nombre de usuario" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="UserName"></span>
                             </div>
                             <div>
-                                <label class="label" asp-for="Password">Contraseña</label>
+                                <label class="label mb-1" asp-for="Password">Contraseña</label>
                                 <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
                                 <span class="text-error text-sm" asp-validation-for="Password"></span>
                             </div>
                         </div>
 
                         @* Confirmación de contraseña*@
-                        <label class="label mt-3" asp-for="ConfirmPassword">Confirmar Contraseña</label>
+                        <label class="label" asp-for="ConfirmPassword">Confirmar Contraseña</label>
                         <input class="input input-bordered" asp-for="ConfirmPassword" type="password" placeholder="Confirmar contraseña" style="border-color:black" />
                         <span class="text-error text-sm" asp-validation-for="ConfirmPassword"></span>
 

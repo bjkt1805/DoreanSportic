@@ -10,10 +10,10 @@
     culturaPersonalizada.NumberFormat.NumberDecimalSeparator = ".";
     
     // Obtener el subtotal a pagar (por medio de LINQ)
-    var subtotal = Model.CarritoDetalles.Sum(x => x.SubTotal);
+    var subtotal = Model.PedidoDetalles.Sum(x => x.SubTotal);
 
     // Obtener la cantidad de detalles
-    var cantidad = Model.CarritoDetalles.Count();
+    var cantidad = Model.PedidoDetalles.Count();
 }
 
 <span class="text-lg font-bold">@(Localizer["Productos en el carrito"]): @cantidad</span>
@@ -24,7 +24,7 @@
 <div style="max-height: 250px; overflow-y: auto;">
     <!-- Lista de productos -->
     <ul class="divide-y gap-2">
-        @foreach (var item in Model.CarritoDetalles)
+        @foreach (var item in Model.PedidoDetalles)
         {
             @* Cargar los productos en cada detalle del carrito *@
             <li class="flex items-center py-2">
@@ -60,7 +60,7 @@
       <b>@(Localizer["Subtotal"]): </b>₡@subtotal.ToString("N2", culturaPersonalizada)</div>
     <div class="card-actions mt-2">
         <!-- Redirección a la vista de detalles del carrito -->
-        <a id="verCarrito" href="/Carrito/Details/@Model.CarritoId" class="btn btn-success btn-block">@(Localizer["Ver carrito"])</a>
+        <a id="verCarrito" href="/Pedido/Details/@Model.PedidoId" class="btn btn-success btn-block">@(Localizer["Ver carrito"])</a>
 
     </div>
 </div>

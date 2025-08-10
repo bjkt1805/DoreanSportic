@@ -69,9 +69,6 @@ public record ProductoDTO
     public bool Estado { get; set; }
 
     [ValidateNever]
-    public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
-
-    [ValidateNever]
     public virtual Categoria IdCategoriaNavigation { get; set; } = null!;
 
     [ValidateNever]

@@ -28,7 +28,7 @@ builder.Services.AddControllersWithViews()
 // Agregar servicios de internacionalización y localización
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// Configurar Session (para carrito de compras)
+// Configurar Session (para carrito de compras en el navbar )
 builder.Services.AddSession(
         options =>
         {
@@ -40,8 +40,6 @@ builder.Services.AddSession(
 //***********************
 // Configurar D.I.
 //Repository
-builder.Services.AddTransient<IRepositoryCarrito, RepositoryCarrito>();
-builder.Services.AddTransient<IRepositoryCarritoDetalle, RepositoryCarritoDetalle>();
 builder.Services.AddTransient<IRepositoryCategoria, RepositoryCategoria>();
 builder.Services.AddTransient<IRepositoryCliente, RepositoryCliente>();
 builder.Services.AddTransient<IRepositoryEmpaque, RepositoryEmpaque>();
@@ -60,8 +58,6 @@ builder.Services.AddTransient<IRepositoryTarjeta, RepositoryTarjeta>();
 builder.Services.AddTransient<IRepositoryUsuario, RepositoryUsuario>();
 
 //Services
-builder.Services.AddTransient<IServiceCarrito, ServiceCarrito>();
-builder.Services.AddTransient<IServiceCarritoDetalle, ServiceCarritoDetalle>();
 builder.Services.AddTransient<IServiceCategoria, ServiceCategoria>();
 builder.Services.AddTransient<IServiceCliente, ServiceCliente>();
 builder.Services.AddTransient<IServiceEtiqueta, ServiceEtiqueta>();
@@ -96,8 +92,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 //Configurar Automapper
 builder.Services.AddAutoMapper(config =>
 {
-    config.AddProfile<CarritoProfile>();
-    config.AddProfile<CarritoDetalleProfile>();
     config.AddProfile<CategoriaProfile>();
     config.AddProfile<ClienteProfile>();
     config.AddProfile<EtiquetaProfile>();

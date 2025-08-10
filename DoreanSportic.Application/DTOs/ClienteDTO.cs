@@ -25,13 +25,9 @@ public record ClienteDTO
 
     public bool Estado { get; set; }
 
-    public virtual ICollection<Carrito> Carrito { get; set; } = new List<Carrito>();
-
     public virtual Sexo? IdSexoNavigation { get; set; }
 
     public virtual ICollection<Pedido> Pedido { get; set; } = new List<Pedido>();
-
-    public virtual ICollection<ResennaValoracion> ResennaValoracion { get; set; } = new List<ResennaValoracion>();
 
     public virtual ICollection<Tarjeta> Tarjeta { get; set; } = new List<Tarjeta>();
 

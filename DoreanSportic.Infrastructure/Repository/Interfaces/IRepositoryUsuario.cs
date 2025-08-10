@@ -20,5 +20,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         // Buscar usuario por cliente
         Task<Usuario?> FindByUserNameWithClienteAsync(string userName);
+
+        // Cambiar solo campos necesarios de Usuario
+        Task<int> SaveChangesAsync();
     }
 }

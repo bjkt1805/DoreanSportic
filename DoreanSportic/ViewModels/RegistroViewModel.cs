@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace DoreanSportic.Web.ViewModels
 {
@@ -21,6 +22,13 @@ namespace DoreanSportic.Web.ViewModels
         public string Apellido { get; set; } = "";
         [Required, EmailAddress] 
         public string Email { get; set; } = "";
+
         public string? Telefono { get; set; }
+
+        [Display(Name = "Sexo")]
+        public int IdSexo { get; set; }
+
+        // Combo para cargar los sexos 
+        public IEnumerable<SelectListItem>? Sexos { get; set; }
     }
 }

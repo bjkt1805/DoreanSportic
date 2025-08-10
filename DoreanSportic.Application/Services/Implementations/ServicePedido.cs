@@ -35,5 +35,11 @@ namespace DoreanSportic.Application.Services.Implementations
             // Return lista
             return collection;
         }
+
+        public async Task<int> AddAsync(PedidoDTO dto)
+        {
+            var objectMapped = _mapper.Map<Pedido>(dto);
+            return await _repository.AddAsync(objectMapped);
+        }
     }
 }

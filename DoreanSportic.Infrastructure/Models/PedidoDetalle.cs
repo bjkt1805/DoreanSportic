@@ -19,7 +19,7 @@ public partial class PedidoDetalle
 
     public string? MensajePersonalizado { get; set; }
 
-    public decimal? SubTotal { get; set; }
+    public decimal SubTotal { get; set; }
 
     public bool Estado { get; set; }
 

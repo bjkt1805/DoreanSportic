@@ -13,7 +13,5 @@ public partial class Empaque
 
     public bool Estado { get; set; }
 
-    public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
-
     public virtual ICollection<PedidoDetalle> PedidoDetalle { get; set; } = new List<PedidoDetalle>();
 }

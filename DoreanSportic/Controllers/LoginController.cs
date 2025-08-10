@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -20,14 +21,30 @@ namespace Libreria.Web.Controllers
 
         private readonly IServiceUsuario _serviceUsuario;
         private readonly IServiceCliente _serviceCliente;
+        private readonly IServiceSexo _serviceSexo;
         private readonly ILogger<LoginController> _logger;
-        public LoginController(IServiceUsuario serviceUsuario, 
-            IServiceCliente serviceCliente, 
+        public LoginController(IServiceUsuario serviceUsuario,
+            IServiceCliente serviceCliente,
+            IServiceSexo serviceSexo,
             ILogger<LoginController> logger)
         {
             _serviceUsuario = serviceUsuario;
             _serviceCliente = serviceCliente;
+            _serviceSexo = serviceSexo;
             _logger = logger;
+        }
+
+        // Obtener la lista de sexos (para el registro de usuario)
+        private async Task<IEnumerable<SelectListItem>> ObtenerSexosAsync()
+        {
+            // Obtener la lista de sexos desde el servicio
+            var sexos = await _serviceSexo.ListAsync();
+            // Mapearlos a SelectListItem para el combo
+            return sexos.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Nombre
+            });
         }
 
         // GET: LoginController
@@ -41,6 +58,7 @@ namespace Libreria.Web.Controllers
         }
 
         // POST: LoginController/LogIn
+        // Método para procesar el login del usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LoginViewModel viewModel, string? returnUrl = null)
@@ -77,7 +95,7 @@ namespace Libreria.Web.Controllers
                            CookieAuthenticationDefaults.AuthenticationScheme,
                            new ClaimsPrincipal(claimsIdentity),
                            new AuthenticationProperties { IsPersistent = true, AllowRefresh = true });
-            
+
             // Guardar IdCliente en sesión para acceso rápido en otras partes de la aplicación
             HttpContext.Session.SetInt32("IdCliente", cliente.Id);
 
@@ -88,23 +106,37 @@ namespace Libreria.Web.Controllers
             return Redirect(returnUrl ?? "/");
         }
 
+        // GET: LoginController/Register
         // Devolver la vista de Registro del usuario
         [HttpGet]
-        public IActionResult Registrar () => View(new RegistroViewModel());
+        public async Task<IActionResult> Registrar()
+        {
+            var viewModel = new RegistroViewModel
+            {
+                Sexos = await ObtenerSexosAsync()// Obtener la lista de sexos para el combo
+            };
+            return View(viewModel);
+        }
 
         // POST: LoginController/Register
+        // Método para procesar el registro del usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegistroViewModel viewModel)
+        public async Task<IActionResult> Registrar(RegistroViewModel viewModel)
         {
             // Si el viewModel no es válido, retornar la vista con los errores
-            if (!ModelState.IsValid) return View(viewModel);
+            if (!ModelState.IsValid) {
+                
+                viewModel.Sexos = await ObtenerSexosAsync(); // Reasignar los sexos al viewModel
+                return View(viewModel);
+            }
 
             // Validar si el usuario ya existe
             if (await _serviceUsuario.ExisteUserNameAsync(viewModel.UserName))
             {
                 // Si el usuario ya existe, agregar error al modelo y retornar la vista
                 ModelState.AddModelError(nameof(viewModel.UserName), "El usuario ya existe.");
+                viewModel.Sexos = await ObtenerSexosAsync(); // Reasignar los sexos al viewModel
                 return View(viewModel);
             }
 
@@ -115,6 +147,7 @@ namespace Libreria.Web.Controllers
                 Apellido = viewModel.Apellido,
                 Email = viewModel.Email,
                 Telefono = viewModel.Telefono,
+                IdSexo = viewModel.IdSexo,
                 Estado = true
             });
 
@@ -136,6 +169,7 @@ namespace Libreria.Web.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+
         // LogOff: Método para cerrar sesión del usuario
         [Authorize]
         [HttpPost]
@@ -150,5 +184,45 @@ namespace Libreria.Web.Controllers
         {
             return View();
         }
+
+        // GET: LoginController/CambiarContrasenna
+        // Mostrar la vista para cambiar la contraseña
+        [HttpGet]
+        public IActionResult CambiarContrasenna() => View(new CambiarContrasennaViewModel());
+
+        // POST: LoginController/CambiarContrasenna
+        // Método para procesar el cambio de contraseña
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarContrasenna(CambiarContrasennaViewModel viewModel)
+        {
+            // Si el modelo no es válido, retornar la vista con los errores
+            if (!ModelState.IsValid) return View(viewModel);
+            
+            // Obtener el ID del usuario autenticado desde los claims
+            var idUsuario = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+
+            // Si no se encuentra el ID del usuario, retornar un Forbidden
+            if (idUsuario == 0) return Forbid();
+
+            // Intentar cambiar la contraseña utilizando el servicio
+            var resultado = await _serviceUsuario.CambiarContrasennaAsync(idUsuario, viewModel.ContrasennaActual, viewModel.ContrasennaNueva);
+
+            // Si el resultado es falso, significa que la contraseña actual es incorrecta
+            if (!resultado)
+            {
+                // Si el cambio de contraseña falla, agregar error al modelo y retornar la vista
+                ModelState.AddModelError(string.Empty, "La contraseña actual es incorrecta.");
+                return View(viewModel);
+            }
+
+            // Cerrar sesión del usuario después de cambiar la contraseña y redirigir al login
+            await HttpContext.SignOutAsync();
+
+            // Si el cambio de contraseña es exitoso, redirigir al login nuevamente
+            TempData["Msg"] = "Contraseña cambiada exitosamente. Vuelve a iniciar sesión.";
+            return RedirectToAction("Login", "Login");
+        }
+
     }
 }

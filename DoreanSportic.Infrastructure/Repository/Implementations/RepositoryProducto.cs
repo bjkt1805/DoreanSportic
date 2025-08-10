@@ -52,6 +52,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return collection;
         }
 
+        // Listar los productos por categoria (para el cliente)
         public async Task<ICollection<Producto>> GetProductoByCategoria(int idCategoria)
         {
             //Select * from Producto where idCategoria = @idCategoria
@@ -72,6 +73,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return collection;
         }
 
+        // Listar los productos por Id
+
         public async Task<Producto> FindByIdAsync(int id)
         {
             //Obtener un Producto (Eager loading con Imagenes Producto, Categoria y Marca)
@@ -87,6 +90,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return @object!;
         }
 
+        // Agregar un nuevo producto a la base de datos
         public async Task<int> AddAsync(Producto entity, string[] selectedEtiquetas)
         {
             // Relación de muchos a muchos solo con llave primaria compuesta
@@ -123,6 +127,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             }
             return entity.Id;
         }
+
+        // Actualizar un producto existente en la base de datos
         public async Task UpdateAsync(Producto entity, string[] selectedEtiquetas, List<ImagenProducto> listaImagenes)
         {
             // Obtener el producto actual desde la base de datos
@@ -171,6 +177,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             await _context.SaveChangesAsync();
         }
 
+        // Obtener las etiquetas asociadas a un producto
         private async Task<ICollection<Etiqueta>> getEtiquetas(string[] selectedEtiquetas)
         {
             // Buscar o crear etiquetas

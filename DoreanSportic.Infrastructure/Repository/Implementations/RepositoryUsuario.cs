@@ -17,10 +17,14 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
-        public Task<Usuario> FindByIdAsync(int id)
+        public async Task<Usuario> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var @objetct = await _context.Set<Usuario>()
+                                // Solo usuarios activos
+                                .FirstOrDefaultAsync(u => u.Id == id && u.Estado); 
+            return @objetct!;
         }
+
         public async Task<ICollection<Usuario>> ListAsync()
         {
             //Select * from Usuario
@@ -85,5 +89,26 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                     u.UserName == userName &&
                     u.Estado && u.EsActivo);
         }
+
+        // Actualizar el usuario
+        public async Task<bool> UpdateAsync(Usuario entity)
+        {
+            // Actualizar el usuario en la base de datos
+            _context.Set<Usuario>().Update(entity);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción si ocurre un error al guardar
+                Console.WriteLine("Error al actualizar el usuario: " + ex.Message);
+                return false;
+            }
+        }
+
+        // Cambiar solo campos necesarios de Usuario
+        public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
     }
 }

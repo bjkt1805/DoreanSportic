@@ -11,7 +11,7 @@ public record TarjetaDTO
 {
     public int Id { get; set; }
 
-    public int IdCliente { get; set; }
+    public string IdCliente { get; set; } = null!;
 
     public string NumeroEnmascarado { get; set; } = null!;
 

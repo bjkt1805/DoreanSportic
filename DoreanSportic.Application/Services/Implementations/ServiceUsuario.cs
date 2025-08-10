@@ -72,5 +72,29 @@ namespace DoreanSportic.Application.Services.Implementations
             var dto = _mapper.Map<UsuarioDTO>(user);
             return dto;
         }
+
+        public async Task<bool> CambiarContrasennaAsync(int idUsuario, string contrasennaActual, string contrasennaNueva)
+        {
+            // Obtener el usuario por su ID
+            var usuario = await _repository.FindByIdAsync(idUsuario);
+
+            // Si el usuario no existe, retornar false
+            if (usuario == null) return false;
+
+            // Verificar la contraseña actual através del hash
+            var ok = _passwordHasher.Verify(contrasennaActual, usuario.PasswordHash);
+
+            // Si la verificación falla, retornar false
+            if (!ok) return false;
+
+            // Hashear la nueva contraseña para enviarla encriptada a la base de datos
+            var nuevoHash = _passwordHasher.Hash(contrasennaNueva);
+
+            // Actualizar la contraseña en el repositorio
+            var cambioContrasenna = await _repository.SaveChangesAsync();
+
+            // Retornar true si se actualizó correctamente (1), de lo contrario false
+            return cambioContrasenna > 0;
+        }
     }
 }

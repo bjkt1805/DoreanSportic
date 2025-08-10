@@ -21,5 +21,8 @@ namespace DoreanSportic.Application.Services.Interfaces
 
         // Login de usuario 
         Task<UsuarioDTO?> LoginAsync(string id, string password);
+
+        // Cambiar contraseña
+        Task<bool> CambiarContrasennaAsync(int idUsuario, string contrasennaActual, string contrasennaNueva);
     }
 }

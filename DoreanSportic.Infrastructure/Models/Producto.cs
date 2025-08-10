@@ -22,8 +22,6 @@ public partial class Producto
 
     public bool Estado { get; set; }
 
-    public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
-
     public virtual Categoria IdCategoriaNavigation { get; set; } = null!;
 
     public virtual Marca IdMarcaNavigation { get; set; } = null!;

@@ -9,11 +9,15 @@ public partial class Pedido
 
     public string? NumFactura { get; set; }
 
-    public int IdCliente { get; set; }
+    public int? IdCliente { get; set; }
 
     public DateTime FechaPedido { get; set; }
 
-    public string? EstadoPedido { get; set; }
+    public string EstadoPago { get; set; } = null!;
+
+    public string? DireccionEnvio { get; set; }
+
+    public int? IdMetodoPago { get; set; }
 
     public decimal? SubTotal { get; set; }
 
@@ -21,13 +25,9 @@ public partial class Pedido
 
     public decimal? Total { get; set; }
 
-    public int? IdMetodoPago { get; set; }
-
-    public string? DireccionEnvio { get; set; }
-
     public bool Estado { get; set; }
 
-    public virtual Cliente IdClienteNavigation { get; set; } = null!;
+    public virtual Cliente? IdClienteNavigation { get; set; }
 
     public virtual MetodoPago? IdMetodoPagoNavigation { get; set; }
 
