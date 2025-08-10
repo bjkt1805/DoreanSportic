@@ -54,9 +54,9 @@
                         @* Campo Sexo *@
                         <label class="label mb-1" asp-for="IdSexo">Sexo (opcional) </label>
                         <select class="select select-bordered" asp-for="IdSexo" asp-items="Model.Sexos" style="border-color:black">
-                            <option value="0">-- Seleccione --</option>
+                            @* Si el usuario no selecciona ningún sexo, por defecto se seleccion 3 = Otro *@
+                            <option value="3">-- Seleccione --</option>
                         </select>
-                        <span class="text-error text-sm italic" asp-validation-for="IdSexo" style="color:red; font-size: small"></span>
 
 
                         @* Para crear el usuario y la contraseña *@

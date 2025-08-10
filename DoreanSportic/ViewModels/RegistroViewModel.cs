@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace DoreanSportic.Web.ViewModels
@@ -70,6 +71,7 @@ namespace DoreanSportic.Web.ViewModels
         [Display(Name = "Teléfono")]
         public string? Telefono { get; set; }
 
+        [ValidateNever]
         [Display(Name = "Sexo")]
         public int IdSexo { get; set; }
 
