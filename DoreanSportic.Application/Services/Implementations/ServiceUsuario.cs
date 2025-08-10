@@ -68,7 +68,7 @@ namespace DoreanSportic.Application.Services.Implementations
             var ok = _passwordHasher.Verify(password, user.PasswordHash);
             if (!ok) return null;
 
-            // Mapear a DTO con Cliente incluido
+            // Mapear a DTO con Cliente (idClienteNavigation) incluido
             var dto = _mapper.Map<UsuarioDTO>(user);
             return dto;
         }
