@@ -41,5 +41,13 @@ namespace DoreanSportic.Application.Services.Implementations
             var objectMapped = _mapper.Map<Pedido>(dto);
             return await _repository.AddAsync(objectMapped);
         }
+
+        // Método para actualizar el encabezado del pedido (dirección de envío, etc)
+        public async Task<bool> ActualizarEncabezadoAsync(int pedidoId, int clienteId, string? direccionEnvio)
+        {
+            // Actlizar el encabezado del pedido
+            await _repository.UpdateHeaderAsync(pedidoId, clienteId, direccionEnvio);
+            return true;
+        }
     }
 }

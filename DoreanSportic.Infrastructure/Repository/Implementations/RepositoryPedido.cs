@@ -66,6 +66,87 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             }
             return entity.Id;
         }
+
+        // Metodo para actualizar el encabezado del pedido
+        public async Task UpdateHeaderAsync(int pedidoId, int? idCliente, string? direccionEnvio)
+        {
+            // Obtener el pedido por id
+            var pedido = await _context.Pedido.FirstAsync(p => p.Id == pedidoId);
+
+            // Si el idCliente tiene valor, asignarlo al pedido
+            if (idCliente.HasValue) pedido.IdCliente = idCliente.Value;
+
+            // Asignar la dirección de envío al pedido
+            pedido.DireccionEnvio = direccionEnvio;
+
+            // Para debuggear los cambios que va a realizar EF
+            // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
+
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                // Para loggear la excepció al enviar
+                // datos a la base de datos
+                var inner = ex.InnerException;
+                var innerMessage = inner?.Message ?? ex.Message;
+
+                // Imprimir en consola el error
+                Console.WriteLine("Error al guardar en base de datos: " + innerMessage);
+            }
+        }
+
+        // Metodo para actualizar los totales y el estado de pago del pedido
+        public async Task UpdateTotalsAndStateAsync(int pedidoId, decimal sub, decimal imp, decimal total, string? estadoPago = null)
+        {
+            // Obtener el pedido por id 
+            var pedido = await _context.Pedido.FirstAsync(p => p.Id == pedidoId);
+
+            // Actualizar los totales del pedido
+            pedido.SubTotal = sub; pedido.Impuesto = imp; pedido.Total = total;
+
+            // Si el estado de pago no es nulo o vacío, actualizarlo
+            if (!string.IsNullOrWhiteSpace(estadoPago)) pedido.EstadoPago = estadoPago;
+            var entries = _context.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entidad: {entry.Entity.GetType().Name}, Estado: {entry.State}");
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                // Para loggear la excepció al enviar
+                // datos a la base de datos
+                var inner = ex.InnerException;
+                var innerMessage = inner?.Message ?? ex.Message;
+
+                // Imprimir en consola el error
+                Console.WriteLine("Error al guardar en base de datos: " + innerMessage);
+            }
+        }
+
+        // Método para verificar si un pedido tiene detalles
+        public async Task<bool> AnyDetalleAsync(int pedidoId)
+        {
+            // Verificar si existe algún detalle de pedido asociado al pedidoId
+            return await _context.PedidoDetalle.AnyAsync(d => d.IdPedido == pedidoId);
+        }
     }
 
 

@@ -17,5 +17,14 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         Task<List<PedidoDetalle>> GetByPedidoIdAsync(int idPedido);
 
+        // Méodo para obtener el ID del pedido asociado a un detalle
+        Task<int?> GetPedidoIdByDetalleAsync(int detalleId);
+
+        // Método para actualizar la cantidad, subtotal, impuesto y total de un detalle de pedido
+        Task UpdateCantidadAsync(int detalleId, int nuevaCantidad, decimal nuevoSub, decimal nuevoImp, decimal nuevoTotal);
+
+        // Método para eliminar un detalle de pedido
+        Task RemoveAsync(int detalleId);
+
     }
 }

@@ -13,5 +13,17 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<PedidoDTO> FindByIdAsync(int id);
 
         Task<int> AddAsync(PedidoDTO dto);
+
+        // Método para actualizar el encabezado del pedido
+        Task<bool> ActualizarEncabezadoAsync(int pedidoId, int userId, string? direccionEnvio);
+
+        // Método para actualizar los totales y el estado de pago del pedido
+        Task<(decimal sub, decimal imp, decimal total)> RecalcularTotalesAsync(int pedidoId);
+
+        // Método para verificar si un pedido tiene detalles
+        Task<(bool ok, List<(int detalleId, string nombre, int stockDisp, int cant)> errores)> ValidarStockAsync(int pedidoId);
+
+        // Confirmar el pedido: descuenta stock + cambia estado
+        Task<bool> ConfirmarAsync(int pedidoId); // descuenta stock + cambia estado
     }
 }

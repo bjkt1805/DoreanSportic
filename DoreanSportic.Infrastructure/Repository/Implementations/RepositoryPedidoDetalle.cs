@@ -17,9 +17,11 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             _context = context;
         }
-        public Task<PedidoDetalle> FindByIdAsync(int id)
+        public async Task<PedidoDetalle> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.PedidoDetalle
+                .Include(d => d.IdProductoNavigation)
+                .FirstAsync(d => d.Id == id);
         }
         public async Task<ICollection<PedidoDetalle>> ListAsync()
         {
@@ -62,6 +64,15 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return entity.Id;
         }
 
+        // Método para obtener el pedido asociado a un detalle
+        public async Task<int?> GetPedidoIdByDetalleAsync(int detalleId)
+        {
+            return await _context.PedidoDetalle
+                .Where(d => d.Id == detalleId)
+                .Select(d => (int?)d.IdPedido)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<List<PedidoDetalle>> GetByPedidoIdAsync(int idPedido)
         {
             return await _context.Set<PedidoDetalle>()
@@ -85,6 +96,23 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                 .Where(r => r.IdPedido == idPedido)
                 .ToListAsync();
             return collection;
+        }
+
+        // Método para actualizar la cantidad, subtotal, impuesto y total de un detalle de pedido
+        public async Task UpdateCantidadAsync(int detalleId, int nuevaCantidad, decimal nuevoSub, decimal nuevoImp, decimal nuevoTotal)
+        {
+            var d = await _context.PedidoDetalle.FirstAsync(x => x.Id == detalleId);
+            d.Cantidad = nuevaCantidad;
+            d.SubTotal = nuevoSub;
+            await _context.SaveChangesAsync();
+        }
+
+        // Método para eliminar un detalle de pedido
+        public async Task RemoveAsync(int detalleId)
+        {
+            var d = await _context.PedidoDetalle.FirstAsync(x => x.Id == detalleId);
+            _context.PedidoDetalle.Remove(d);
+            await _context.SaveChangesAsync();
         }
     }
 }

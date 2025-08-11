@@ -15,10 +15,16 @@
                 class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow ">
 
                 <li class="bg-[#004AAD]"><a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Index">@(Localizer["Inicio"])</a></li>
-                <!--Administrador-->
-                <li>
-                    <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">@(Localizer["Administrador"])</a>
-                </li>
+                
+                <!-- Si el usuario logueado tiene rol administrador, mostrar la opción "Administrador" en el navbar-->
+                @if (User.FindFirst(ClaimTypes.Role)?.Value == "1")
+                {
+                    <li>
+                        <a class="btn btn-ghost" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                            @(Localizer["Administrador"])
+                        </a>
+                    </li>
+                }
 
                 <!--Productos-->
                 <li>

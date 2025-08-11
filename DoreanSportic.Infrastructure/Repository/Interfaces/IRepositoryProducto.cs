@@ -18,6 +18,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<int> AddAsync(Producto entity, string[] selectedEtiquetas);
         Task UpdateAsync(Producto entity, string[] selectedEtiquetas, List<ImagenProducto> listaImagenes);
 
+        // Método para quitar stock de un producto
+        Task<bool> TryDescontarStockAsync(int productoId, int cantidad); 
 
     }
 }

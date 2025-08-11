@@ -13,5 +13,14 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<Pedido> FindByIdAsync(int id);
 
         Task<int> AddAsync(Pedido entity);
+
+        // Método para actualizar el encabezado del pedido
+        Task UpdateHeaderAsync(int pedidoId, int? idCliente, string? direccionEnvio);
+
+        // Método para actualizar los totales y el estado de pago del pedido
+        Task UpdateTotalsAndStateAsync(int pedidoId, decimal sub, decimal imp, decimal total, string? estadoPago = null);
+
+        // Método para agregar un detalle al pedido
+        Task<bool> AnyDetalleAsync(int pedidoId);
     }
 }

@@ -188,5 +188,16 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
         }
 
+        // Método para descontar el stock de un producto
+        public async Task<bool> TryDescontarStockAsync(int productoId, int cantidad)
+        {
+            // Obtener el producto por ID
+            var producto = await _context.Producto.FirstAsync(x => x.Id == productoId);
+            if (producto.Stock < cantidad) return false;
+            producto.Stock -= cantidad;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }
