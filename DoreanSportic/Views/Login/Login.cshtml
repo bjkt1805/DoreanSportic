@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Iniciar sesión";
+    ViewData["Title"] = @Localizer["Iniciar sesión"];
     Layout = "_LayoutLogin";
 
     // URL de retorno después del inicio de sesión
@@ -13,9 +13,9 @@
 <div class="hero min-h-screen w-75">
     <div class="hero-content flex-col lg:flex-row-reverse w-full shadow-lg p-3">
         <div class="text-center text-black lg:text-left max-w-xl">
-            <h1 class="text-5xl font-bold" style="font-size: 25px">¡Bienvenido!</h1>
+            <h1 class="text-5xl font-bold" style="font-size: 25px">@Localizer["Bienvenido"]</h1>
             <p class="py-6 font-bold">
-                Inicia sesión para continuar
+                @Localizer["Inicia sesión para continuar"]
             </p>
         </div>
 
@@ -35,25 +35,25 @@
                     <fieldset class="fieldset">
 
                         @* Título del formulario *@
-                        <legend class="text-lg font-semibold">Iniciar sesión</legend>
+                        <legend class="text-lg font-semibold">@Localizer["Iniciar sesión"]</legend>
 
                         @* Campo de Usuario *@
-                        <label class="label" asp-for="UserName"></label>
+                        <label class="label" asp-for="UserName">@Localizer["Usuario"]</label>
                         <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" style="border-color:black;" />
                         <span class="text-error text-sm italic" asp-validation-for="UserName" style="color:red; font-size: small"></span>
 
                         @* Campo de Contraseña *@
-                        <label class="label mt-3" asp-for="Password"></label>
+                        <label class="label mt-3" asp-for="Password">@Localizer["Contrasenna"]</label>
                         <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
                         <span class="text-error text-sm italic" asp-validation-for="Password" style="color:red; font-size: small"></span>
 
                         @* Campo de se me olvidó la contraseña*@
                         <div class="mt-2">
-                            <a class="link link-hover text-sm" asp-controller="Login" asp-action="RecuperarContrasenna">¿Olvidaste tu contraseña?</a>
+                            <a class="link link-hover text-sm" asp-controller="Login" asp-action="RecuperarContrasenna">@Localizer["¿Olvidaste tu contraseña?"]</a>
                         </div>
 
                         @* Botón de inicio de sesión *@
-                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">Iniciar sesión</button>
+                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">@Localizer["Iniciar sesión"]</button>
                     </fieldset>
                 </form>
 
@@ -61,8 +61,8 @@
 
                 @* Para registrar usuario *@
                 <p class="text-sm">
-                    ¿No tienes cuenta?
-                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Registrar">Regístrate</a>
+                    @Localizer["¿No tienes cuenta?"]
+                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Registrar">@Localizer["Regístrate"]</a>
                 </p>
             </div>
         </div>

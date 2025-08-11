@@ -33,7 +33,11 @@ window.translations = {
     "CorreoElectronicoYaRegistrado": {
         es: "El correo electrónico ya está registrado",
         en: "Email address is already registered"
-    }
+    },
+    "CredencialesIncorrectos": {
+        es: "Usuario o contraseña inválidos",
+        en: "Incorrect username or password"
+    },
 };
 
 // Función que sirve como handler para pintar los errores que vienen del servidor/modelo
@@ -343,18 +347,19 @@ function manejarSubmitLogin(event) {
         .then(data => {
             if (data.success) {
                 // Si el login es exitoso, mostrar Toast y redirigir a la página principal o a la URL indicada
-                mostrarToast(getTranslation("Bienvenido"), "success");
+                mostrarToast(getMensaje("msjloginok"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
-                // Esperar .75 segundos para redirigir a "/Producto/Index"
+                // Esperar .75 segundos para redirigir a la página 
+                // donde se envió la solicitud de autenticación
                 // para que el toast sea visible en pantalla
                 setTimeout(() => {
-                    window.location.href = "/Producto/Index";
+                    window.location.href = data.redirectUrl || "/";
                 }, 750);  
 
             } else if (data.errors) {
                 // Si hay errores, pintarlos en el formulario
-                pintarErroresFormulario(form, data.errors);
+                mostrarToast(getTranslation("CredencialesIncorrectos"), "error");
             } else if (data.errores) {
                 pintarErroresFormulario(form, data.errores);
                 mostrarToast(getMensaje?.("msjLoginError") || "Revisa tus credenciales", "error");
@@ -407,7 +412,7 @@ function manejarSubmitRegistro(event) {
 
             // Si viene un mensaje simple del backend, mostrar el error en el formulario
             if (data.errors) {
-                pintarErroresFormulario(form, data.errors);
+                mostrarToast(getMensaje("CredencialesIncorrectos"), "error");
                 return;
             }
 
@@ -460,14 +465,24 @@ function manejarSubmitRecuperarContrasenna(event) {
                 // para que el toast sea visible en pantalla
                 setTimeout(() => {
                     window.location.href = "/Login/Login";
-                }, 750);  
-            } else if (data.errors) {
-                // Si hay errores, pintarlos en el formulario
-                pintarErroresFormulario(form, data.errors);
-            } else if (data.errores) {
-                pintarErroresFormulario(form, data.errores);
-                mostrarToast(getMensaje?.("msjLoginError") || "Revisa tus credenciales", "error");
+                }, 750);
+                return;
             }
+
+            // Si viene un mensaje simple del backend, mostrar el error en el formulario
+            if (data.errors) {
+                pintarErroresFormulario(form, data.errors);
+                return;
+            }
+
+            // Si algún caso devuelve diccionario de errores por campo
+            if (data.errors || data.errores) {
+                pintarErroresFormulario(form, data.errors || data.errores);
+                return;
+            }
+
+            // fallback
+            mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
         })
         // Capturar cualquier error de la petición
         .catch(error => {
@@ -569,7 +584,8 @@ function getCurrentLangShort() {
 // Cuando el DOM esté listo, cargar los eventos de validación de los campos del formulario de registro
 document.addEventListener("DOMContentLoaded", () => {
     const formularioRegistro = document.getElementById("formRegistro");
-    if (!formularioRegistro) return;
+    const formularioRecuperarContrasenna = document.getElementById("formRecuperarContrasenna");
+    if (!formularioRegistro && !formularioRecuperarContrasenna) return;
 
     configurarValidacionUsuario("UserName", "UserName", "msj-usuario");
     configurarValidacionPassword("Password", "Password", "msj-password");

@@ -63,7 +63,7 @@ namespace Libreria.Web.Controllers
         // Método para procesar el login del usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel viewModel, string returnUrl = null)
         {
             // Si el viewModel no es válido, retornar la vista con los errores
             if (!ModelState.IsValid) return View(viewModel);
@@ -74,8 +74,14 @@ namespace Libreria.Web.Controllers
             if (resultado == null)
             {
                 // Si el resultado es nulo, significa que las credenciales son incorrectas
-                ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos.");
-                return View(viewModel);
+                return Json(new
+                {
+                    success = false,
+                    errors = new
+                    {
+                        UserName = "CredencialesIncorrectos"
+                    }
+                });
             }
 
             var usuario = resultado; // ASignar el valor retornado por el servicio a la variable 'usuario'
@@ -107,7 +113,7 @@ namespace Libreria.Web.Controllers
             // Redirigir al usuario a la URL de retorno o a la página principal
 
             // Si returnUrl es nulo o no es una URL local, redirigir a la página de inicio
-            return Json(new { success = true });
+            return Json(new { success = true, redirectUrl = returnUrl });
         }
 
         // GET: LoginController/Registrar

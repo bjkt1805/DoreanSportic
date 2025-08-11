@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["Registrarse"];
+    ViewData["Title"] = @Localizer["Registrarse"];
     Layout = "_LayoutLogin";
 }
 
@@ -92,6 +92,7 @@
                                       data-msj-len='@Localizer["La contraseña debe tener entre {{0}} y {{1}} caracteres"]'
                                       data-min="8" data-max="64"
                                       data-msj-req='@Localizer["Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial"]'
+                                      class="mt-1"
                                       style="display:none"></span>
                             </div>
                         </div>
