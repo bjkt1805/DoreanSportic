@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using System.Security.Claims;
 using System.Security.Principal;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using DoreanSportic.Web.Resources.Controllers;
 using Microsoft.Extensions.Localization;
 
 namespace Libreria.Web.Controllers
@@ -25,18 +24,15 @@ namespace Libreria.Web.Controllers
         private readonly IServiceCliente _serviceCliente;
         private readonly IServiceSexo _serviceSexo;
         private readonly ILogger<LoginController> _logger;
-        private readonly IStringLocalizer<LoginControllerResources> _localizer;
         public LoginController(IServiceUsuario serviceUsuario,
             IServiceCliente serviceCliente,
             IServiceSexo serviceSexo,
-            ILogger<LoginController> logger,
-            IStringLocalizer<LoginControllerResources> localizer)
+            ILogger<LoginController> logger)
         {
             _serviceUsuario = serviceUsuario;
             _serviceCliente = serviceCliente;
             _serviceSexo = serviceSexo;
             _logger = logger;
-            _localizer = localizer;
         }
 
         // Obtener la lista de sexos (para el registro de usuario)

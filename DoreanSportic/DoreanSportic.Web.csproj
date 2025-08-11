@@ -20,6 +20,7 @@
   <ItemGroup>
     <Folder Include="BD\" />
     <Folder Include="Logs\" />
+    <Folder Include="Resources\Controllers\" />
     <Folder Include="wwwroot\Assets\" />
   </ItemGroup>
 
@@ -48,11 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Controllers\LoginControllerResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>LoginControllerResources.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\ViewModels\RegistroViewModelResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,10 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Controllers\LoginControllerResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LoginControllerResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\ViewModels\RegistroViewModelResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RegistroViewModelResources.Designer.cs</LastGenOutput>
