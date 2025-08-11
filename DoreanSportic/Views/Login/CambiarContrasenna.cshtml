@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
-                <form asp-action="RecuperarContrasenna" method="post">
+                <form id="formRecuperarContrasenna" asp-action=" RecuperarContrasenna" method="post">
                     @Html.AntiForgeryToken()
 
                     @* Errores del modelo *@
@@ -46,6 +46,19 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Localizers necesarios para manejar por medio de JavaScript (validación cliente) -->
+<div id="mensajes-internacionalizados" class="hidden"
+     data-CambioOk="Contraseña actualizada"
+     data-CambioError="No se pudo cambiar la contraseña"
+     data-ModeloInvalido="Formulario inválido o incompleto"
+     data-msjErrorInesperado="Error inesperado"
+     data-passLen="La contraseña debe tener entre {0} y {1} caracteres"
+     data-passReq="Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial"
+     data-confirmar="Las contraseñas no coinciden"
+     data-usuarioLong="El usuario debe tener entre {0} y {1} caracteres"
+     data-usuarioForm="Solo letras, números, punto, guion y guion bajo">
 </div>
 
 @section Scripts {

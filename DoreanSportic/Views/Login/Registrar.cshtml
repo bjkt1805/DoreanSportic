@@ -1,15 +1,17 @@
 ﻿@model DoreanSportic.Web.ViewModels.RegistroViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Registrarse";
+    ViewData["Title"] = Localizer["Registrarse"];
     Layout = "_LayoutLogin";
 }
 
 <div class="hero bg-base-200 min-h-screen w-100">
     <div class="hero-content flex-col lg:flex-row w-full shadow-lg p-3">
         <div class="text-center lg:text-left max-w-xl">
-            <h1 class="text-5xl font-bold" style="font-size: 25px">Crea tu cuenta</h1>
+            <h1 class="text-5xl font-bold" style="font-size: 25px">@Localizer["Crea tu cuenta"]</h1>
             <p class="py-6 font-bold">
-                Regístrate para comprar más rápido, ver tus pedidos y guardar tus datos de envío.
+                @Localizer["Regístrate para comprar más rápido, ver tus pedidos y guardar tus datos de envío."]
             </p>
         </div>
 
@@ -19,7 +21,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
                 @* Formulario de registro *@
-                <form asp-action="Registrar" asp-controller="Login" method="post">
+                <form id="formRegistro" asp-action="Registrar" asp-controller="Login" method="post">
                     @Html.AntiForgeryToken()
 
                     @* Campos para registrar el usuario *@
@@ -28,70 +30,110 @@
 
                             @* Campo nombre*@
                             <div>
-                                <label class="label mb-1" asp-for="Nombre"></label>
-                                <input class="input input-bordered" asp-for="Nombre" placeholder="Nombre" style="border-color:black" />
+                                <label class="label mb-1" asp-for="Nombre">@Localizer["Nombre"]</label>
+                                <input class="input input-bordered" asp-for="Nombre" placeholder='@Localizer["Nombre"]' style="border-color:black" />
                                 <span class="text-error text-sm italic" asp-validation-for="Nombre" style="color:red; font-size: small"></span>
+                                <span id="msj-nombre"
+                                      data-msj-len='@Localizer["El nombre debe tener entre {{0}} y {{1}} caracteres"]'
+                                      data-min="2" data-max="30"
+                                      data-msj='@Localizer["El nombre solo debe contener letras"]'
+                                      style="display:none"></span>
                             </div>
 
                             @* Campo apellido*@
                             <div>
-                                <label class="label mb-1" asp-for="Apellido"></label>
-                                <input class="input input-bordered" asp-for="Apellido" placeholder="Apellido" style="border-color:black" />
+                                <label class="label mb-1" asp-for="Apellido">@Localizer["Apellido"]</label>
+                                <input class="input input-bordered" asp-for="Apellido" placeholder='@Localizer["Apellido"]' style="border-color:black" />
                                 <span class="text-error text-sm italic" asp-validation-for="Apellido" style="color:red; font-size: small"></span>
+                                <span id="msj-apellido"
+                                      data-msj-len='@Localizer["El apellido debe tener entre {{0}} y {{1}} caracteres"]'
+                                      data-min="2" data-max="30"
+                                      data-msj='@Localizer["El apellido solo debe contener letras"]'
+                                      style="display:none"></span>
                             </div>
                         </div>
 
                         @* Campo correo electrónico*@
-                        <label class="label" asp-for="Email">Correo electrónico</label>
-                        <input class="input input-bordered" asp-for="Email" type="email" placeholder="correo@ejemplo.com" style="border-color:black" />
+                        <label class="label" asp-for="Email">@Localizer["Correo electrónico"]</label>
+                        <input class="input input-bordered" asp-for="Email" type="email" placeholder='@Localizer["correo@ejemplo.com"]' style="border-color:black" />
                         <span class="text-error text-sm italic" asp-validation-for="Email" style="color:red; font-size: small"></span>
+                        <span id="msj-email" data-msj='@Localizer["Correo electrónico no válido"]' style="display:none"></span>
 
                         @* Campo teléfono *@
-                        <label class="label" asp-for="Telefono">Teléfono (opcional)</label>
-                        <input class="input input-bordered" asp-for="Telefono" placeholder="Teléfono" style="border-color:black" />
+                        <label class="label" asp-for="Telefono">@Localizer["Teléfono (opcional)"]</label>
+                        <input class="input input-bordered" asp-for="Telefono" placeholder='@Localizer["Teléfono"]' style="border-color:black" />
                         <span class="text-error text-sm italic" asp-validation-for="Telefono" style="color:red; font-size: small"></span>
+                        <span id="msj-telefono" data-msj='@Localizer["Número de teléfono no válido"]' style="display:none"></span>
 
                         @* Campo Sexo *@
-                        <label class="label mb-1" asp-for="IdSexo">Sexo (opcional) </label>
+                        <label class="label mb-1" asp-for="IdSexo">@Localizer["Sexo (opcional)"]</label>
                         <select class="select select-bordered" asp-for="IdSexo" asp-items="Model.Sexos" style="border-color:black">
-                            @* Si el usuario no selecciona ningún sexo, por defecto se seleccion 3 = Otro *@
-                            <option value="3">-- Seleccione --</option>
+                            <option value="3">-- @Localizer["Seleccione"] --</option>
                         </select>
 
 
                         @* Para crear el usuario y la contraseña *@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                                <label class="label mb-1" asp-for="UserName">Nombre de usuario</label>
-                                <input class="input input-bordered" asp-for="UserName" placeholder="Nombre de usuario" style="border-color:black" />
+                                <label class="label" asp-for="UserName">@Localizer["Usuario"]</label>
+                                <input class="input input-bordered" asp-for="UserName" placeholder='@Localizer["Nombre de usuario"]' style="border-color:black" />
                                 <span class="text-error text-sm italic" asp-validation-for="UserName" style="color:red; font-size: small"></span>
+                                <span id="msj-usuario"
+                                      data-msj-len='@Localizer["El usuario debe tener entre {{0}} y {{1}} caracteres"]'
+                                      data-min="8" data-max="30"
+                                      data-msj-form='@Localizer["Solo letras, números, punto, guion y guion bajo"]'
+                                      style="display:none"></span>
                             </div>
                             <div>
-                                <label class="label mb-1" asp-for="Password">Contraseña</label>
-                                <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
+                                <label class="label mb-1" asp-for="Password">@Localizer["Contraseña"]</label>
+                                <input class="input input-bordered" asp-for="Password" type="password" placeholder='@Localizer["Contraseña"]' style="border-color:black" />
                                 <span class="text-error text-sm italic" asp-validation-for="Password" style="color:red; font-size: small"></span>
+                                <span id="msj-password"
+                                      data-msj-len='@Localizer["La contraseña debe tener entre {{0}} y {{1}} caracteres"]'
+                                      data-min="8" data-max="64"
+                                      data-msj-req='@Localizer["Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial"]'
+                                      style="display:none"></span>
                             </div>
                         </div>
 
                         @* Confirmación de contraseña*@
-                        <label class="label" asp-for="ConfirmPassword">Confirmar Contraseña</label>
-                        <input class="input input-bordered" asp-for="ConfirmPassword" type="password" placeholder="Confirmar contraseña" style="border-color:black" />
+                        <label class="label" asp-for="ConfirmPassword">@Localizer["Confirmar contraseña"]</label>
+                        <input class="input input-bordered" asp-for="ConfirmPassword" type="password" placeholder='@Localizer["Confirmar contraseña"]' style="border-color:black" />
                         <span class="text-error text-sm italic" asp-validation-for="ConfirmPassword" style="color:red; font-size: small"></span>
+                        <span id="msj-confirm" data-msj='@Localizer["Las contraseñas no coinciden"]' style="display:none"></span>
 
                         @* Botón para crear cuenta*@
-                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">Crear cuenta</button>
+                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">@Localizer["Crear cuenta"]</button>
+
                     </fieldset>
                 </form>
 
                 <hr />
 
                 <p class="text-sm">
-                    ¿Ya tienes cuenta?
-                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Login">Inicia sesión</a>
+                    @Localizer["¿Ya tienes cuenta?"]
+                    <a class="link link-hover font-semibold" asp-controller="Login" asp-action="Login">@Localizer["Inicia sesión"]</a>
                 </p>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Localizers necesarios para manejar por medio de JavaScript (validación cliente) -->
+<div id="mensajes-internacionalizados" class="hidden"
+     data-RegistroOk='@Localizer["Cuenta creada correctamente"]'
+     data-RegistroError='@Localizer["Corrige los errores del formulario"]'
+     data-ModeloInvalido='@Localizer["Formulario inválido o incompleto"]'
+     data-msjErrorInesperado='@Localizer["Error inesperado"]'
+     data-usuarioLong='@Localizer["El usuario debe tener entre {{0}} y {{1}} caracteres"]'
+     data-usuarioForm='@Localizer["Solo letras, números, punto, guion y guion bajo"]'
+     data-passLen='@Localizer["La contraseña debe tener entre {{0}} y {{1}} caracteres"]'
+     data-passReq='@Localizer["Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial"]'
+     data-confirmar='@Localizer["Las contraseñas no coinciden"]'
+     data-email='@Localizer["Correo electrónico no válido"]'
+     data-nombre='@Localizer["El nombre solo debe contener letras"]'
+     data-apellido='@Localizer["El apellido solo debe contener letras"]'
+     data-tel='@Localizer["Número de teléfono no válido"]'>
 </div>
 
 @section Scripts {

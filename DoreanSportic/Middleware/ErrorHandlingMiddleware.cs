@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Net;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace DoreanSportic.Web.Middleware
@@ -7,68 +8,76 @@ namespace DoreanSportic.Web.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ErrorHandlingMiddleware> _logger;
-        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
+        private readonly IWebHostEnvironment _env;
+
+        public ErrorHandlingMiddleware(
+            RequestDelegate next,
+            ILogger<ErrorHandlingMiddleware> logger,
+            IWebHostEnvironment env)
         {
             _next = next;
             _logger = logger;
+            _env = env;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            string messagesJson, routeWhereExceptionOccured, eventId, path = "";
-            StringBuilder str = new StringBuilder();
             try
             {
                 await _next(context);
             }
             catch (Exception ex)
             {
-                routeWhereExceptionOccured = context.Request.Path;
-                path = JsonConvert.SerializeObject(routeWhereExceptionOccured);
-                // Create Random IdEvent
-                Random random = new Random();
-                eventId = random.Next(1, 5000).ToString("######") + "-" +
-               DateTime.Now.ToString("yyMMddhhmmss");
-                ErrorMiddlewareViewModel result = new ErrorMiddlewareViewModel
+                // En desarrollo, deja que la Developer Exception Page maneje todo.
+                if (_env.IsDevelopment())
                 {
-                    Path = path,
-                    IdEvent = eventId
-                };
-                if (ex is AggregateException ae)
-                {
-                    result.ListMessages = ae.InnerExceptions.Select(e => e.Message).ToList();
-                }
-                else
-                {
-                    string messages = ex.Message;
-                    result.ListMessages = new List<string> {messages};
+                    // Vuelve a lanzar la excepción para que se renderice la página de error de dev
+                    throw;
                 }
 
-                str.AppendFormat("\n");
-                str.AppendFormat("EventId :{0}\n", eventId);
-                str.AppendFormat("ErrorList :{0}\n", string.Join(",", result.ListMessages));
-                str.AppendFormat("StackTrace :{0}\n", ex.StackTrace);
-                messagesJson = JsonConvert.SerializeObject(result);
-                context.Items["ErrorMessagesJson"] = messagesJson;
-                _logger.LogError(str.ToString());
-                await HandleErrorAsync(context);
+                await HandleErrorAsync(context, ex);
             }
         }
-        private static async Task HandleErrorAsync(HttpContext context)
-        {
-            string? msg = context.Items["ErrorMessagesJson"] as string;
-            string redirectUrl = $"/Home/ErrorHandler?messagesJson={msg}";
-            context.Response.Redirect(redirectUrl);
-            // Dummy Await
-            await Task.FromResult(1);
-        }
 
+        private async Task HandleErrorAsync(HttpContext context, Exception ex)
+        {
+            // Si ya empezó la respuesta, no podemos tocar headers/status/redirect.
+            if (context.Response.HasStarted)
+            {
+                _logger.LogWarning("Response already started; cannot redirect. Path: {Path}", context.Request.Path);
+                return;
+            }
+
+            // Armar info mínima del error
+            var eventId = $"{Random.Shared.Next(1, 5000):000000}-{DateTime.Now:yyMMddHHmmss}";
+            var errorVm = new ErrorMiddlewareViewModel
+            {
+                Path = context.Request.Path,
+                IdEvent = eventId,
+                ListMessages = ex is AggregateException ae
+                    ? ae.InnerExceptions.Select(e => e.Message).ToList()
+                    : new List<string> { ex.Message }
+            };
+
+            // Log detallado (stack trace en logs, no en la query)
+            var sb = new StringBuilder()
+                .AppendLine()
+                .AppendLine($"EventId      : {eventId}")
+                .AppendLine($"Path         : {context.Request.Path}")
+                .AppendLine($"ErrorList    : {string.Join(" | ", errorVm.ListMessages)}")
+                .AppendLine($"StackTrace   : {ex.StackTrace}");
+            _logger.LogError(sb.ToString());
+
+            // Serializa y codifica para URL
+            var json = JsonConvert.SerializeObject(errorVm);
+            var encoded = WebUtility.UrlEncode(json);
+
+            // Limpia y redirige a tu página de error
+            context.Response.Clear(); // muy importante
+            // Si prefieres 302, Redirect ya establece 302 Found
+            context.Response.Redirect($"/Home/ErrorHandler?messagesJson={encoded}");
+
+            await Task.CompletedTask;
+        }
     }
 }
-
-
-
-
-
-
-

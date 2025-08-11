@@ -1,4 +1,6 @@
 ﻿@model DoreanSportic.Web.ViewModels.LoginViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "Iniciar sesión";
     Layout = "_LayoutLogin";
@@ -23,7 +25,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
                 @* Formulario de inicio de sesión *@
-                <form asp-action="LogIn" asp-controller="Login" method="post">
+                <form id="formLogin" asp-action="Login" asp-controller="Login" method="post">
                     @Html.AntiForgeryToken()
 
                     @* Campo oculto para la URL de retorno *@
@@ -47,7 +49,7 @@
 
                         @* Campo de se me olvidó la contraseña*@
                         <div class="mt-2">
-                            <a class="link link-hover text-sm" asp-controller="Login" asp-action="CambiarContrasenna">¿Olvidaste tu contraseña?</a>
+                            <a class="link link-hover text-sm" asp-controller="Login" asp-action="RecuperarContrasenna">¿Olvidaste tu contraseña?</a>
                         </div>
 
                         @* Botón de inicio de sesión *@
@@ -65,6 +67,13 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Localizers necesarios para manejar por medio de JavaScript (validación cliente) -->
+<div id="mensajes-internacionalizados" class="hidden"
+     data-msjLoginOk="@Localizer["Bienvenido"]"
+     data-msjLoginError="@Localizer["Revisa tus credenciales"]"
+     data-msjErrorInesperado="@Localizer["Error inesperado"]">
 </div>
 
 @section Scripts {

@@ -62,7 +62,7 @@ namespace Libreria.Web.Controllers
         // Método para procesar el login del usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogIn(LoginViewModel viewModel, string? returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             // Si el viewModel no es válido, retornar la vista con los errores
             if (!ModelState.IsValid) return View(viewModel);
@@ -104,10 +104,12 @@ namespace Libreria.Web.Controllers
             _logger.LogInformation("Login OK para usuario {User}", viewModel.UserName);
 
             // Redirigir al usuario a la URL de retorno o a la página principal
-            return Redirect(returnUrl ?? "/");
+
+            // Si returnUrl es nulo o no es una URL local, redirigir a la página de inicio
+            return Json(new { success = true });
         }
 
-        // GET: LoginController/Register
+        // GET: LoginController/Registrar
         // Devolver la vista de Registro del usuario
         [HttpGet]
         public async Task<IActionResult> Registrar()
@@ -119,7 +121,7 @@ namespace Libreria.Web.Controllers
             return View(viewModel);
         }
 
-        // POST: LoginController/Register
+        // POST: LoginController/Registrar
         // Método para procesar el registro del usuario
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -175,8 +177,8 @@ namespace Libreria.Web.Controllers
             });
 
             // Si el usuario se creó correctamente, redirigir a la página de inicio de sesión
-            TempData["Msg"] = "Registro exitoso. Inicie sesión.";
-            return RedirectToAction(nameof(Login));
+            return Json(new { success = true });
+
         }
 
 
@@ -195,10 +197,10 @@ namespace Libreria.Web.Controllers
             return View();
         }
 
-        // GET: LoginController/CambiarContrasenna
-        // Mostrar la vista para cambiar la contraseña
+        // GET: LoginController/RecuperarContrasenna
+        // Mostrar la vista para recuperar la contraseña
         [HttpGet]
-        public IActionResult CambiarContrasenna()
+        public IActionResult RecuperarContrasenna()
         {
             var viewModel = new CambiarContrasennaViewModel();
                 return View(viewModel);

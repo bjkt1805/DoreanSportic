@@ -1,81 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Humanizer.Localisation;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using DoreanSportic.Web.Resources.ViewModels;
 
-namespace DoreanSportic.Web.ViewModels
+namespace DoreanSportic.Web.ViewModels;
+public class RegistroViewModel
 {
-    public class RegistroViewModel
-    {
-        // Usuario requerido y que no supere los 30 caracteres
-        [Required(ErrorMessage = "El usuario es requerido")]
-        [StringLength(30, MinimumLength = 8, ErrorMessage = "El usuario debe tener entre {2} y {1} caracteres")]
-        [RegularExpression(@"^[A-Za-z0-9._-]+$", ErrorMessage = "Solo letras, números, punto, guion y guion bajo")]
-        [Display(Name = "Usuario")]
-        public string UserName { get; set; } = "";
+    [Display(Name = "UserName_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "UserName_Required")]
+    [StringLength(30, MinimumLength = 8,
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "UserName_Length")]
+    [RegularExpression(@"^[A-Za-z0-9._-]+$",
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "UserName_Format")]
+    public string UserName { get; set; } = "";
 
-        // Contraseña requerida, que no supere los 64, cumpla con validaciones (Regex)
-        [Required(ErrorMessage = "La contraseña es requerida")]
-        // DataType.Password para ocultar el texto ingresado
-        [DataType(DataType.Password)]
-        [StringLength(64, MinimumLength = 8, ErrorMessage = "La contraseña debe tener entre {2} y {1} caracteres")]
-        // Validación por regex: al menos una mayúscula, una minúscula, un número y un carácter especial
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$",
-        ErrorMessage = "Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial")]
-        [Display(Name = "Contraseña")]
-        public string Password { get; set; } = "";
+    [Display(Name = "Password_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "Password_Required")]
+    [DataType(DataType.Password)]
+    [StringLength(64, MinimumLength = 8,
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Password_Length")]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$",
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Password_Strength")]
+    public string Password { get; set; } = "";
 
-        // Confirmar contraseña, que sea igual a la contraseña configurada
-        [Required(ErrorMessage = "La confirmación es requerida")]
-        // DataType.Password para ocultar el texto ingresado
-        [DataType(DataType.Password)]
-        [Compare(nameof(Password), ErrorMessage = "Las contraseñas no coinciden")]
-        [Display(Name = "Confirmar contraseña")]
-        public string ConfirmPassword { get; set; } = "";
+    [Display(Name = "ConfirmPassword_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "ConfirmPassword_Required")]
+    [DataType(DataType.Password)]
+    [Compare(nameof(Password),
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "ConfirmPassword_Compare")]
+    public string ConfirmPassword { get; set; } = "";
 
-        // DATOS DEL CLIENTE //
+    [Display(Name = "Nombre_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "Nombre_Required")]
+    [StringLength(30, MinimumLength = 2,
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Nombre_Length")]
+    [RegularExpression(@"^[A-Za-zÀ-ÿ' ]+$",
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Nombre_Format")]
+    public string Nombre { get; set; } = "";
 
-        // Nombre del cliente requerido, que no supere los 30 caracteres
-        [Required(ErrorMessage = "El nombre es requerido")]
-        [StringLength(30, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre {2} y {1} caracteres")]
-        // Validación por regex: que incluya solo letras (incluidos los acentos), espacios y apóstrofes
-        [RegularExpression(@"^[A-Za-zÀ-ÿ' ]+$", ErrorMessage = "El nombre solo debe contener letras")]
-        [Display(Name = "Nombre")]
-        public string Nombre { get; set; } = "";
+    [Display(Name = "Apellido_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "Apellido_Required")]
+    [StringLength(30, MinimumLength = 2,
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Apellido_Length")]
+    [RegularExpression(@"^[A-Za-zÀ-ÿ' ]+$",
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Apellido_Format")]
+    public string Apellido { get; set; } = "";
 
-        // Apellido del cliente requerido, que no supere los 30 caracteres
-        [Required(ErrorMessage = "El apellido es requerido")]
-        [StringLength(30, MinimumLength = 2, ErrorMessage = "El apellido debe tener entre {2} y {1} caracteres")]
-        // Validación por regex: que incluya solo letras (incluidos los acentos), espacios y apóstrofes
-        [RegularExpression(@"^[A-Za-zÀ-ÿ' ]+$", ErrorMessage = "El apellido solo debe contener letras")]
-        [Display(Name = "Apellido")]
-        public string Apellido { get; set; } = "";
+    [Display(Name = "Email_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "Email_Required")]
+    [EmailAddress(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+                  ErrorMessageResourceName = "Email_Invalid")]
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.((com|org|net|es|edu|gov|mil|info|co|io)|[a-zA-Z]{2,6})$",
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Email_Tld")]
+    [DataType(DataType.EmailAddress)]
+    public string Email { get; set; } = "";
 
-        // Email del cliente requerido, con validación de formato de email
-        [Required(ErrorMessage = "El correo electrónico es requerido")]
-        [EmailAddress(ErrorMessage = "Correo electrónico no válido")]
-        // Validación por regex: que incluya el TLD (.com, .net, .org, etc.)
-        [RegularExpression(
-            @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.((com|org|net|es|edu|gov|mil|info|co|io)|[a-zA-Z]{2,6})$",
-            ErrorMessage = "El correo debe terminar en un dominio válido (.com, .org, .es, etc.)"
-        )]
-        // DataType.EmailAddress para validar el formato de email
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Correo electrónico")]
-        public string Email { get; set; } = "";
+    [Display(Name = "Telefono_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [RegularExpression(@"^(\+?\d{7,15}|(\+?\d{1,4}[-.\s]?)?(\d{2,4}[-.\s]?){2,4}\d{2,4})$",
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "Telefono_Invalid")]
+    public string? Telefono { get; set; }
 
-        // Teléfono del cliente opcional, acepta +506xxxxxxxx o números con separadores simples
-        // Validación por regex: acepta números con separadores simples o el formato internacional
-        [RegularExpression(
-        @"^(\+?\d{7,15}|(\+?\d{1,4}[-.\s]?)?(\d{2,4}[-.\s]?){2,4}\d{2,4})$",
-        ErrorMessage = "Número de teléfono no válido")]
-        [Display(Name = "Teléfono")]
-        public string? Telefono { get; set; }
+    [ValidateNever]
+    [Display(Name = "Sexo_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    public int IdSexo { get; set; }
 
-        [ValidateNever]
-        [Display(Name = "Sexo")]
-        public int IdSexo { get; set; }
-
-        // Combo para cargar los sexos 
-        public IEnumerable<SelectListItem>? Sexos { get; set; }
-    }
+    public IEnumerable<SelectListItem>? Sexos { get; set; }
 }
+

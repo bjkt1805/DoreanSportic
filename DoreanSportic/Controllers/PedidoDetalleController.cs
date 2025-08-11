@@ -111,11 +111,11 @@ namespace DoreanSportic.Web.Controllers
                 await _servicePedidoDetalle.AddAsync(dto);
 
                 // Retornar por medio de JSON la respuesta del modelo/servidor
-                return Json(new { success = true, mensaje = "ProductoAgregadoAlCarrito" });
+                return Json(new { success = true});
 
             }
             // Retornar por medio de JSON la respuesta del modelo/servidor
-            return Json(new { success = true, mensaje = "ProductoAgregadoAlCarrito" });
+            return Json(new { success = true});
         }
 
         // GET: Método para cargar la vista parcial de los detalles del carrito

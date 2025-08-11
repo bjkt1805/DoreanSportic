@@ -192,7 +192,7 @@ function manejarEnvioDetallePedido(e) {
                 mostrarToast(getMensaje("msjProductoAgregado"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
-                // Esperar 1 segundo para redirigir a "/Producto/Index"
+                // Esperar .75 segundos para redirigir a "/Producto/Index"
                 // para que el toast sea visible en pantalla
                 setTimeout(() => {
                     window.location.href = "/Producto/Index";
