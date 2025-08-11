@@ -26,18 +26,14 @@ window.getTranslation = function (key) {
 // Función para traducir mensajes de éxito y error dentro de
 // la ventana global
 window.translations = {
-    "Bienvenido": {
-        es: "¡Bienvenido(a)!",
-        en: "Welcome!"
+    "UsuarioYaExiste": {
+        es: "El usuario ya existe",
+        en: "Username already exists"
     },
-    "ContrasennaRecuperada": {
-        es: "¡Contraseña recuperada!",
-        en: "Password recovered!"
-    },
-    "CuentaRegistrada": {
-        es: "¡Cuenta registrada exitosamente!",
-        en: "Account registered successfully!"
-    },
+    "CorreoElectronicoYaRegistrado": {
+        es: "El correo electrónico ya está registrado",
+        en: "Email address is already registered"
+    }
 };
 
 // Función que sirve como handler para pintar los errores que vienen del servidor/modelo
@@ -51,6 +47,45 @@ function mostrarErrorEnCampo(nombreCampoModelo, mensaje, elementoInput) {
 
     // Añadir o quitar la clase de error al input correspondiente
     if (elementoInput) elementoInput.classList.toggle("border-red-500", !!mensaje);
+}
+
+// Función para convertir una cadena a PascalCase (UpperCamelCase)
+function toPascalCase(k) { return k ? k.charAt(0).toUpperCase() + k.slice(1) : k; }
+
+// Función para pintar los errores del formulario de forma dinámica
+function pintarErroresFormulario(form, errors) {
+    // Limpiar errores previos en el formulario
+    form.querySelectorAll("[data-valmsg-for]").forEach(span => span.textContent = "");
+
+    // Convertir los nombres de los campos a PascalCase si es necesario
+    for (const [key, msj] of Object.entries(errors)) {
+
+        // Si el campo no existe en el formulario, convertir a PascalCase
+        const campo = form.querySelector(`[name='${key}']`)
+            ? key
+            : toPascalCase(key);
+
+        // Obtener el input correspondiente al campo
+        const input = form.querySelector(`[name='${campo}']`);
+
+        // Si el mensaje es un array, tomar el primer mensaje
+        let mensaje = Array.isArray(msj) ? msj[0] : msj;
+
+        // Si el backend mandó una *clave*, se traduce con getTranslation
+        if (typeof mensaje === "string") {
+            mensaje = getTranslation(mensaje);
+        }
+
+        // Buscar el span con ambas opciones (nombreCampo o NombreCampo) por si acaso
+        const span = form.querySelector(
+            `span[data-valmsg-for='${campo}'], span[data-valmsg-for='${toPascalCase(key)}']`
+        );
+
+        // Mostrar el mensaje de error en el span correspondiente
+        if (span) span.textContent = mensaje || "";
+        // Añadir o quitar la clase de error al input correspondiente (opcional)
+        if (input) input.classList.toggle("border-red-500", !!mensaje);
+    }
 }
 
 // Función para obtener los mensajes de error a través de datasets (data-)
@@ -357,7 +392,7 @@ function manejarSubmitRegistro(event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Si el login es exitoso, mostrar Toast y redirigir a la página principal o a la URL indicada
+                // Si el registro es exitoso, mostrar Toast y redirigir a la página de Login o a la URL indicada
                 mostrarToast(getMensaje("registrook"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
@@ -365,20 +400,31 @@ function manejarSubmitRegistro(event) {
                 // para que el toast sea visible en pantalla
                 setTimeout(() => {
                     window.location.href = "/Login/Login";
-                }, 750);  
-            } else if (data.errors) {
-                // Si hay errores, pintarlos en el formulario
-                pintarErroresFormulario(form, data.errors);
-            } else if (data.errores) {
-                pintarErroresFormulario(form, data.errores);
-                mostrarToast(getMensaje?.("msjLoginError") || "Revisa tus credenciales", "error");
+                }, 750);
+                return;
             }
+
+
+            // Si viene un mensaje simple del backend, mostrar el error en el formulario
+            if (data.errors) {
+                pintarErroresFormulario(form, data.errors);
+                return;
+            }
+
+            // Si algún caso devuelve diccionario de errores por campo
+            if (data.errors || data.errores) {
+                pintarErroresFormulario(form, data.errors || data.errores);
+                return;
+            }
+
+            // fallback
+            mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
         })
         // Capturar cualquier error de la petición
         .catch(error => {
             console.error('Error:', error);
             mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
-});
+        });
 }
 
 // Función para manejar el envío del formulario de cambio de contraseña
@@ -427,7 +473,7 @@ function manejarSubmitRecuperarContrasenna(event) {
         .catch(error => {
             console.error('Error:', error);
             mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
-});
+        });
 }
 
 // Función para mostrar el toast a la hora de login/registro/cambio de contraseña

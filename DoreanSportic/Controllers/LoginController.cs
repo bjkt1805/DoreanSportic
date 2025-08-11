@@ -13,6 +13,8 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using System.Security.Claims;
 using System.Security.Principal;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using DoreanSportic.Web.Resources.Controllers;
+using Microsoft.Extensions.Localization;
 
 namespace Libreria.Web.Controllers
 {
@@ -23,15 +25,18 @@ namespace Libreria.Web.Controllers
         private readonly IServiceCliente _serviceCliente;
         private readonly IServiceSexo _serviceSexo;
         private readonly ILogger<LoginController> _logger;
+        private readonly IStringLocalizer<LoginControllerResources> _localizer;
         public LoginController(IServiceUsuario serviceUsuario,
             IServiceCliente serviceCliente,
             IServiceSexo serviceSexo,
-            ILogger<LoginController> logger)
+            ILogger<LoginController> logger,
+            IStringLocalizer<LoginControllerResources> localizer)
         {
             _serviceUsuario = serviceUsuario;
             _serviceCliente = serviceCliente;
             _serviceSexo = serviceSexo;
             _logger = logger;
+            _localizer = localizer;
         }
 
         // Obtener la lista de sexos (para el registro de usuario)
@@ -137,19 +142,37 @@ namespace Libreria.Web.Controllers
             // Validar si el usuario ya existe
             if (await _serviceUsuario.ExisteUserNameAsync(viewModel.UserName))
             {
-                // Si el usuario ya existe, agregar error al modelo y retornar la vista
-                ModelState.AddModelError(nameof(viewModel.UserName), "El usuario ya existe.");
-                viewModel.Sexos = await ObtenerSexosAsync(); // Reasignar los sexos al viewModel
-                return View(viewModel);
+                // Reasignar los sexos al viewModel
+                viewModel.Sexos = await ObtenerSexosAsync();
+
+                // Si el usuario ya existe, enviar el mensaje de error en formato JSON
+                return Json(new
+                {
+                    success = false,
+                    errors = new
+                    {
+                        UserName = "UsuarioYaExiste"
+                    }
+                });
+
             }
 
             // Validar si el email ya está registrado
             if (await _serviceCliente.ExisteEmailAsync(viewModel.Email))
             {
-                // Si el email ya está registrado, agregar error al modelo y retornar la vista
-                ModelState.AddModelError(nameof(viewModel.Email), "El correo electrónico ya está registrado.");
-                viewModel.Sexos = await ObtenerSexosAsync(); // Reasignar los sexos al viewModel
-                return View(viewModel);
+                // Reasignar los sexos al viewModel
+                viewModel.Sexos = await ObtenerSexosAsync();
+
+                // Si el correo ya está registrada, enviar el mensaje de error en formato JSON
+                return Json(new
+                {
+                    success = false,
+                    errors = new
+                    {
+                        Email = "CorreoElectronicoYaRegistrado"
+                    }
+                });
+
             }
 
             // Crear Cliente
