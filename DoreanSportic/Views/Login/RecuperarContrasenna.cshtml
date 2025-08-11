@@ -17,7 +17,7 @@
             <div class="card-body">
                 <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
-                <form id="formRecuperarContrasenna" asp-action=" RecuperarContrasenna" method="post">
+                <form id="formRecuperarContrasenna" asp-action="RecuperarContrasenna" method="post">
                     @Html.AntiForgeryToken()
 
                     @* Errores del modelo *@
@@ -64,7 +64,8 @@
      data-msjErrorInesperado='@Localizer["Error inesperado"]'
      data-passLen='@Localizer["La contraseña debe tener entre {{0}} y {{1}} caracteres"]'
      data-passReq='@Localizer["Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial"]'
-     data-confirmar='@Localizer["Las contraseñas no coinciden"]'>
+     data-confirmar='@Localizer["Las contraseñas no coinciden"]'
+     data-recuperacionOk='@Localizer["Contraseña recuperada"]'>
 </div>
 
 @section Scripts {

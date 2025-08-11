@@ -38,7 +38,11 @@ window.translations = {
         es: "Usuario o contraseña inválidos",
         en: "Incorrect username or password"
     },
-};
+    "UsuarioNoEncontradoInactivo": {
+        es: "Usuario no encontrado o inactivo",
+        en: "User not found or inactive",
+    }
+}
 
 // Función que sirve como handler para pintar los errores que vienen del servidor/modelo
 // para los formularios de login, cambio de contraseña y registro
@@ -458,7 +462,7 @@ function manejarSubmitRecuperarContrasenna(event) {
         .then(data => {
             if (data.success) {
                 // Si el login es exitoso, mostrar Toast y redirigir a la página principal o a la URL indicada
-                mostrarToast(getTranslation("ContrasennaRecuperada"), "success");
+                mostrarToast(getMensaje("recuperacionok"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
                 // Esperar .75 segundos para redirigir a "/Login/Login"
@@ -471,7 +475,8 @@ function manejarSubmitRecuperarContrasenna(event) {
 
             // Si viene un mensaje simple del backend, mostrar el error en el formulario
             if (data.errors) {
-                pintarErroresFormulario(form, data.errors);
+                // Si el login es exitoso, mostrar Toast y redirigir a la página principal o a la URL indicada
+                mostrarToast(getTranslation("UsuarioNoEncontradoInactivo"), "error");
                 return;
             }
 
@@ -526,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Obtener el formulario de registro
     const formRegistro = document.querySelector("#formRegistro");
     // Obtener el formulario de cambio de contraseña
-    const formRecuperarContrasenna = document.querySelector("#formCambioContrasenna");
+    const formRecuperarContrasenna = document.querySelector("#formRecuperarContrasenna");
 
     // Si el formulario de login existe, agregar el evento de envío
     if (formLogin) {
@@ -581,11 +586,11 @@ function getCurrentLangShort() {
     const culture = getCurrentCulture();
     return culture.split('-')[0];
 }
+
 // Cuando el DOM esté listo, cargar los eventos de validación de los campos del formulario de registro
 document.addEventListener("DOMContentLoaded", () => {
     const formularioRegistro = document.getElementById("formRegistro");
-    const formularioRecuperarContrasenna = document.getElementById("formRecuperarContrasenna");
-    if (!formularioRegistro && !formularioRecuperarContrasenna) return;
+    if (!formularioRegistro) return;
 
     configurarValidacionUsuario("UserName", "UserName", "msj-usuario");
     configurarValidacionPassword("Password", "Password", "msj-password");
@@ -594,5 +599,15 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarValidacionNombreApellido("Nombre", "Nombre", "msj-nombre");
     configurarValidacionNombreApellido("Apellido", "Apellido", "msj-apellido");
     configurarValidacionTelefono("Telefono", "Telefono", "msj-telefono");
+});
+
+// Cuando el DOM esté listo, cargar los eventos de validación de los campos del formulario de recuperar contraseña
+document.addEventListener("DOMContentLoaded", () => {
+    const formularioRecuperarContrasenna = document.getElementById("formRecuperarContrasenna");
+    if (!formularioRecuperarContrasenna) return;
+
+    configurarValidacionUsuario("UserName", "UserName", "msj-usuario");
+    configurarValidacionPassword("Password", "Password", "msj-password");
+    configurarValidacionConfirmacionPassword("ConfirmPassword", "Password", "ConfirmPassword", "msj-confirm");
 });
 

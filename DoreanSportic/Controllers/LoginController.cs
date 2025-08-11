@@ -249,13 +249,18 @@ namespace Libreria.Web.Controllers
             if (!resultado)
             {
                 // Si el cambio de contraseña falla, agregar error al modelo y retornar la vista
-                ModelState.AddModelError(nameof(viewModel.Usuario), "El usuario no existe o está inactivo.");
-                return View(viewModel);
+                return Json(new
+                {
+                    success = false,
+                    errors = new
+                    {
+                        Email = "UsuarioNoEncontradoInactivo"
+                    }
+                });
             }
 
             // Si el cambio de contraseña es exitoso, redirigir al login nuevamente
-            TempData["Msg"] = "Contraseña recuperada exitosamente. Vuelve a iniciar sesión.";
-            return RedirectToAction("Login", "Login");
+            return Json(new { success = true });
         }
 
     }
