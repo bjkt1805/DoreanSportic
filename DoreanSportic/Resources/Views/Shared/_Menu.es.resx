@@ -129,8 +129,17 @@
   <data name="Perfil" xml:space="preserve">
     <value>Perfil</value>
   </data>
+  <data name="Usuario" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="Cliente" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
   <data name="Cerrar sesión" xml:space="preserve">
     <value>Cerrar sesión</value>
+  </data>
+  <data name="Iniciar sesión" xml:space="preserve">
+    <value>Iniciar sesión</value>
   </data>
   <data name="Configuración" xml:space="preserve">
     <value>Configuración</value>

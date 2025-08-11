@@ -135,24 +135,60 @@
             </div>
         </div>
 
-        <!-- Contenedor del perfil de usuario-->
-        <div class="dropdown relative">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                <div class="w-25 rounded-full flex items-center justify-center" style="background-color:gray">
-                    <!-- SVG de usuario -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M5.121 17.804A9.969 9.969 0 0012 20c2.21 0 4.252-.715 5.879-1.926M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 2a10 10 0 00-9.878 8.12" />
-                    </svg>
+        <!-- Contenedor del perfil de usuario (dinámicamente manipulado por Razor para mostrar CerrarSesión + Nombre de usuario o Iniciar Sesión -->
+        @if (User?.Identity?.IsAuthenticated == true)
+        {
+            <!-- Perfil + Logout -->
+            <div class="dropdown relative">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-25 rounded-full flex items-center justify-center" style="background-color:gray">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M5.121 17.804A9.969 9.969 0 0012 20c2.21 0 4.252-.715 5.879-1.926M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 2a10 10 0 00-9.878 8.12" />
+                        </svg>
+                    </div>
                 </div>
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-75 p-2"
+                    style="right: 10%">
+                    <li>
+                        <p>
+                            <b>@Localizer["Usuario"]:</b> @User.Identity!.Name [@Localizer[@User.FindFirst("RolNombre")?.Value]]
+                        </p>
+                    </li>
+                    <li>
+                        <form asp-action="Logout" asp-controller="Login" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-ghost" style="width: 300%">@Localizer["Cerrar sesión"]</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
-            <ul tabindex="0"
-                class="menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-52 p-2 shadow" style="right: 10%">
-                <li><a class="btn btn-ghost">@(Localizer["Perfil"])</a></li>
-                <li><a class="btn btn-ghost">@(Localizer["Configuración"])</a></li>
-                <li><a class="btn btn-ghost">@(Localizer["Cerrar sesión"])</a></li>
-            </ul>
-        </div>
+        }
+        else
+        {
+            <!-- Perfil + Iniciar sesión -->
+            <div class="dropdown relative">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-25 rounded-full flex items-center justify-center" style="background-color:gray">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M5.121 17.804A9.969 9.969 0 0012 20c2.21 0 4.252-.715 5.879-1.926M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 2a10 10 0 00-9.878 8.12" />
+                        </svg>
+                    </div>
+                </div>
+                <ul tabindex="0"
+                    class="text-center menu menu-sm dropdown-content bg-[#004AAD] rounded-box z-1 mt-3 w-75 p-2"
+                    style="right: 10%">
+                    <li>
+                        <!-- Botón Iniciar sesión -->
+                        <a class="btn btn-ghost" asp-controller="Login" asp-action="Login">
+                            @Localizer["Iniciar sesión"]
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
     </div>
 
 

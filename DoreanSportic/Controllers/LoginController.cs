@@ -94,7 +94,8 @@ namespace Libreria.Web.Controllers
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()), // Asignar el ID del usuario como NameIdentifier
                 new Claim(ClaimTypes.Name, $"{cliente.Nombre} {cliente.Apellido}"), // Asignar el nombre completo del cliente
                 new Claim("ClienteId", cliente.Id.ToString()), // Asignar el ID del cliente como Claim personalizado
-                new Claim(ClaimTypes.Role, usuario.IdRol.ToString()) // Asignar el rol del usuario
+                new Claim(ClaimTypes.Role, usuario.IdRol.ToString()), // Asignar el rol del usuario
+                new Claim("RolNombre", usuario.IdRol == 1 ? "Administrador" : "Cliente") // Asignar el nombre del rol como Claim personalizado
             };
 
             // Crear el objeto ClaimsIdentity con los claims
