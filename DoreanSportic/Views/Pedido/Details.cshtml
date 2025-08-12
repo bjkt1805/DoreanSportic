@@ -105,6 +105,10 @@
     </div>
 </div>
 
+<form id="pedido-encabezado-form">
+    @Html.AntiForgeryToken()
+</form>
+
 @section Scripts {
     <script>
         // Carga parcial de detalles
@@ -119,21 +123,20 @@
             const userId = document.getElementById('selector-usuario')?.value;
             const direccion = document.getElementById('direccion-envio')?.value ?? '';
             const status = document.getElementById('save-status');
+            const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]').value;
 
             try {
                 const resp = await fetch('/Pedido/ActualizarEncabezado', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        // Si tu acción exige AntiForgeryToken, añade el token aquí
-                        //'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                        'RequestVerificationToken':token
                     },
                     body: JSON.stringify({ pedidoId, userId, direccionEnvio: direccion })
                 });
 
                 const data = await resp.json();
                 if (data?.success) {
-                    // Actualiza estado si vuelve desde servidor, o deja el que ya muestra
                     if (data.estadoNombre) {
                         document.getElementById('pedido-estado').textContent = data.estadoNombre;
                     }

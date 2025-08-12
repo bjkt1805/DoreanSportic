@@ -23,5 +23,6 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Método para eliminar un detalle de pedido
         Task EliminarAsync(int detalleId);
 
+        Task<int?> GetPedidoIdByDetalleAsync(int detalleId);
     }
 }

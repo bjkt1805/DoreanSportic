@@ -41,7 +41,7 @@ namespace DoreanSportic.Web.Controllers
             // Listar las reseñas asociadas a un producto
             var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);
 
-            return PartialView("_DetallesPedido", collection);
+            return PartialView("_DetallesPedidoEditable", collection);
         }
 
         // POST: PedidoDetalleController/Create
@@ -140,6 +140,30 @@ namespace DoreanSportic.Web.Controllers
             };
 
             return PartialView("_CarritoNavBar", viewModelCarrito);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActualizarCantidad(int detalleId, int cantidad)
+        {
+            var (det, eliminado) = await _servicePedidoDetalle.ActualizarCantidadAsync(detalleId, cantidad);
+
+            // averiguar pedidoId del detalle
+            int? pedidoId = await _servicePedidoDetalle.GetPedidoIdByDetalleAsync(detalleId); // crea wrapper en tu service si no existe
+            if (pedidoId is null)
+                return Json(new { success = false, mensaje = "No se encontró el pedido" });
+
+            var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(pedidoId.Value);
+            return Json(new { success = true, det, eliminado, totals = new { sub, imp, total } });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EliminarDetalle(int detalleId, int pedidoId)
+        {
+            await _servicePedidoDetalle.EliminarAsync(detalleId);
+            var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(pedidoId);
+            return Json(new { success = true, totals = new { sub, imp, total } });
         }
 
     }

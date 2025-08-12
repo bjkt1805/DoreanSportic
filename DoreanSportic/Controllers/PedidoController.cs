@@ -44,5 +44,40 @@ namespace DoreanSportic.Controllers
             return View(@object);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActualizarEncabezado([FromBody] ActualizarEncabezadoReq req)
+        {
+            // userId aquí es el IdCliente
+            var ok = await _servicePedido.ActualizarEncabezadoAsync(req.PedidoId, req.UserId, req.DireccionEnvio);
+            if (!ok) return Json(new { success = false, mensaje = "No fue posible guardar" });
+
+            // devolver estado y totales actuales (opc.)
+            var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(req.PedidoId);
+            return Json(new { success = true, estadoNombre = "EstadoPago", totals = new { sub, imp, total } });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Confirmar(int pedidoId)
+        {
+            var (ok, errores) = await _servicePedido.ValidarStockAsync(pedidoId);
+            if (!ok) return Json(new { success = false, errores = errores.Select(e => new { e.detalleId, e.nombre, e.stockDisp, e.cant }) });
+
+            var confirmado = await _servicePedido.ConfirmarAsync(pedidoId);
+            if (!confirmado) return Json(new { success = false, mensaje = "No fue posible confirmar el pedido" });
+
+            // Tras confirmar, totales ya quedan persistidos con estado.
+            var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(pedidoId);
+            return Json(new { success = true, mensaje = "Pedido registrado", totals = new { sub, imp, total } });
+        }
+
+        public record ActualizarEncabezadoReq
+        {
+            public int PedidoId { get; init; }
+            public int UserId { get; init; }
+            public string? DireccionEnvio { get; init; }
+        }
+
     }
 }
