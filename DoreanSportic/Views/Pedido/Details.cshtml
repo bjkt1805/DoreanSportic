@@ -55,12 +55,8 @@
                     <b>@(Localizer["Pedido"]) #:</b> <u>@Model.Id</u>
                 </p>
 
-                <label class="text-slate-700 mb-2"><b>@Localizer["Cliente"]:</b> @User.Identity?.Name</label>
-
-                <br />
-
                 <!-- Contenedor de selector de cliente + información detallada de este -->
-                <div class="flex flex-row gap-4 mt-4 p-2">
+                <div class="flex flex-row gap-4 mt-4">
 
                     <!-- Radios: qué mostrar -->
                     <div class="flex flex-col gap-4" style="padding-right: 10%;">
