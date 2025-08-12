@@ -81,14 +81,11 @@
                     <div id="cliente-resumen" class="p-3 rounded border mt-2 w-100">
                         <div class="mb-1">
                             <b>@Localizer["INFORMACIÓN DEL CLIENTE"]</b>
-                            <span id="cliente-nombre">
-                                @Model.IdClienteNavigation?.Nombre @Model.IdClienteNavigation?.Apellido
-                            </span>
                         </div>
                         <div>
                             <b>@Localizer["Cliente"]:</b>
                             <span id="cliente-nombre">
-                                @Model.IdClienteNavigation?.Nombre @Model.IdClienteNavigation?.Apellido
+                                @User.Identity?.Name
                             </span>
                         </div>
 
