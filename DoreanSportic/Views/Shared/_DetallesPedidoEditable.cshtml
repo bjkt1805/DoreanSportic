@@ -4,9 +4,9 @@
 @inject IViewLocalizer Localizer
 
 @{
-    var cultura = (CultureInfo)CultureInfo.InvariantCulture.Clone();
-    cultura.NumberFormat.NumberGroupSeparator = " ";
-    cultura.NumberFormat.NumberDecimalSeparator = ".";
+    var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+    culturaPersonalizada.NumberFormat.NumberGroupSeparator = " ";
+    culturaPersonalizada.NumberFormat.NumberDecimalSeparator = ".";
     // Saca pedidoId de ViewData o del primer item si lo traes
     var pedidoId = (int)(ViewData["PedidoId"] ?? 0);
 }
@@ -36,8 +36,8 @@
                     <td class="text-center" style="width:120px">
                         <input class="input input-bordered w-24 qty-input" type="number" min="0" step="1" value="@item.Cantidad" />
                     </td>
-                    <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", cultura)</td>
-                    <td class="text-end cell-subtotal">₡@item.SubTotal.ToString("N2", cultura)</td>
+                    <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", culturaPersonalizada)</td>
+                    <td class="text-end cell-subtotal">₡@item.SubTotal.ToString("N2", culturaPersonalizada)</td>
 
                     <td class="text-end">
                         <div class="flex flex-row justify-between">
@@ -48,29 +48,40 @@
 
                 </tr>
             }
+            @{
+                // totales iniciales (servidos por el server si los calculaste antes)
+                var subIni = Model.Sum(x => x.SubTotal);
+                var impIni = Math.Round(subIni * 0.13m, 2, MidpointRounding.AwayFromZero);
+                var totIni = subIni + impIni;
+            }
+
+            <tr>
+                <td colspan="5" class="text-end fw-bold">
+                    <b>@Localizer["Subtotal"]:</b> <span id="totals-sub">₡@subIni.ToString("N2", culturaPersonalizada)</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-end">
+                    <b>@(Localizer["Impuesto (IVA 13%)"]): </b> <span id="totals-tax">₡@impIni.ToString("N2", culturaPersonalizada)</span>
+                </td>
+            </tr>
+            <tr class="bg-primary text-white text-lg">
+                <td colspan="5" class="text-end fw-bold">
+                    <b>@(Localizer["Total a pagar"]): ₡@totIni.ToString("N2", culturaPersonalizada)</b><span id="totals-grand"></span>
+                </td>
+            </tr>
+            
         </tbody>
     </table>
 </div>
 
-@{
-    // totales iniciales (servidos por el server si los calculaste antes)
-    var subIni = Model.Sum(x => x.SubTotal);
-    var impIni = Math.Round(subIni * 0.13m, 2, MidpointRounding.AwayFromZero);
-    var totIni = subIni + impIni;
-}
-
-<div class="mt-3 text-right space-y-1">
-    <div><b>@Localizer["Total sin impuestos"]:</b> <span id="totals-sub">₡@subIni.ToString("N2", cultura)</span></div>
-    <div><b>@Localizer["Impuesto"]:</b> <span id="totals-tax">₡@impIni.ToString("N2", cultura)</span></div>
-    <div class="text-lg"><b>@Localizer["Total"]:</b> <span id="totals-grand">₡@totIni.ToString("N2", cultura)</span></div>
-</div>
 
 <!-- Botón para completar compra -->
-<div class="mt-4 flex gap-2 justify-end p-2">
-    <button id="btn-completar-compra" class="btn btn-primary">
-        @Localizer["Completar compra"]
+<div class="mt-4 flex p-2 gap-2">
+    <span id="save-status" class="text-sm mr-2"></span>
+    <button id="btn-completar-compra" class="btn btn-success text-white" style="margin-left:89%">
+        <b>@Localizer["Comprar"]</b>
     </button>
-    <span id="save-status" class="text-sm"></span>
 </div>
 
 
