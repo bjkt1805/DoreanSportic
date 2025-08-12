@@ -63,7 +63,8 @@
                 <div class="flex flex-row gap-4 mt-4 p-2">
 
                     <!-- Radios: qué mostrar -->
-                    <div class="flex flex-col gap-4" style="padding-right: 10%; padding-top: 1%">
+                    <div class="flex flex-col gap-4" style="padding-right: 10%;">
+                        <h1><b>@Localizer["Mostrar detalle del cliente"]</b></h1>
                         <!-- Radio button Correo-->
                         <label class="label cursor-pointer gap-2">
                             <input type="radio" name="mostrar-detalle" value="email" class="radio radio-sm" checked>
@@ -108,31 +109,35 @@
                 </label>
 
                 <!-- Selects en cascada -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3 mb-3">
 
                     <!-- Provincia-->
-                    <select id="sel-provincia" class="select select-bordered w-full">
+                    <select id="sel-provincia" class="select select-bordered w-50">
                         <option value="">@Localizer["Provincia"]</option>
                     </select>
 
                     <!-- Cantón -->
-                    <select id="sel-canton" class="select select-bordered w-full" disabled>
+                    <select id="sel-canton" class="select select-bordered w-50" disabled>
                         <option value="">@Localizer["Cantón"]</option>
                     </select>
 
                     <!-- Distrito -->
-                    <select id="sel-distrito" class="select select-bordered w-full" disabled>
+                    <select id="sel-distrito" class="select select-bordered w-50" disabled>
                         <option value="">@Localizer["Distrito"]</option>
                     </select>
                 
                 </div>
 
+                
                 <!-- Otras señas -->
-                <label for="otras-senas" class="font-semibold text-slate-700">
-                    <b>@Localizer["Otras señas"]</b>
-                </label>
-                <textarea id="otras-senas" class="textarea textarea-bordered w-full" rows="3"
-                          placeholder="@Localizer["Ej: 200m norte de ..."]"></textarea>
+                <div>
+                    <label for="otras-senas" class="font-semibold text-slate-700 mt-3">
+                        <b>@Localizer["Otras señas"]</b>
+                    </label>
+                    <textarea id="otras-senas" class="textarea textarea-bordered w-full mt-3" style="border-color:black" rows="3"
+                              placeholder="@Localizer["Ej: 200m norte de ..."]"></textarea>
+                </div>
+
 
                 <!-- Input oculto para armar direccion de envío -->
                 <input type="hidden" id="direccion-compuesta" />
