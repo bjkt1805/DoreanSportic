@@ -18,7 +18,7 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<List<PedidoDetalleDTO>> GetByPedidoIdAsync(int idCarrito);
 
         // Método para actualizar la cantidad de productos en un detalle del pedido
-        Task<(PedidoDetalleDTO? det, bool eliminado)> ActualizarCantidadAsync(int detalleId, int nuevaCantidad);
+        Task<(PedidoDetalleDTO? det, bool eliminado, int? pedidoId)> ActualizarCantidadAsync(int detalleId, int nuevaCantidad);
 
         // Método para eliminar un detalle de pedido
         Task EliminarAsync(int detalleId);

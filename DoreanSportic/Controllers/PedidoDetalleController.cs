@@ -147,10 +147,7 @@ namespace DoreanSportic.Web.Controllers
         public async Task<IActionResult> ActualizarCantidad(int detalleId, int cantidad)
         {
             // Actualizar la cantidad del detalle del pedido y obtener el detalle actualizado y si fue eliminado
-            var (detalle, eliminado) = await _servicePedidoDetalle.ActualizarCantidadAsync(detalleId, cantidad);
-
-            // averiguar pedidoId del detalle
-            int? pedidoId = await _servicePedidoDetalle.GetPedidoIdByDetalleAsync(detalleId); // crea wrapper en tu service si no existe
+            var (detalle, eliminado, pedidoId) = await _servicePedidoDetalle.ActualizarCantidadAsync(detalleId, cantidad);
 
             // Si el pedidoId es null, retornar error
             if (pedidoId is null)

@@ -59,15 +59,22 @@ namespace DoreanSportic.Application.Services.Implementations
         }
 
         // Método para actualizar la cantidad de productos en un detalle del pedido
-        public async Task<(PedidoDetalleDTO? det, bool eliminado)> ActualizarCantidadAsync(int detalleId, int nuevaCantidad)
+        public async Task<(PedidoDetalleDTO? det, bool eliminado, int? pedidoId)> ActualizarCantidadAsync(int detalleId, int nuevaCantidad)
         {
-            // Obtener el detalle del pedido por ID
-            var detalle = await _repository.FindByIdAsync(detalleId);
+            // obtener el pedidoId antes de hacer cambios en el detalle
+            var pedidoId = await _repository.GetPedidoIdByDetalleAsync(detalleId);
+            
+            // Si la nueva cantidad es 0 o menor, eliminar el detalle del pedido
             if (nuevaCantidad <= 0)
             {
                 await _repository.RemoveAsync(detalleId);
-                return (null, true);
+
+                // Retornar null, indicando que el detalle fue eliminado, y el pedidoId
+                return (null, true, pedidoId);
             }
+
+            // Obtener el detalle del pedido por ID
+            var detalle = await _repository.FindByIdAsync(detalleId);
 
             // ---- Cálculo del precio unitario con promociones (igual que en la vista parcial de detalles, para poder incluir
             // precios de descuento (si aplican)----
@@ -108,7 +115,9 @@ namespace DoreanSportic.Application.Services.Implementations
             await _repository.UpdateCantidadAsync(detalleId, nuevaCantidad, sub);
 
             var actualizado = await _repository.FindByIdAsync(detalleId);
-            return (_mapper.Map<PedidoDetalleDTO>(actualizado), false);
+            var dto = _mapper.Map<PedidoDetalleDTO>(actualizado);
+
+            return (dto, false, pedidoId);
         }
 
         // Método para eliminar un detalle de pedido
