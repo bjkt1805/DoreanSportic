@@ -103,16 +103,39 @@
 
 
             <div class="space-y-3">
-
-                <!-- Dirección de envío (editable) -->
-                <label for="direccion-envio" class="font-semibold text-slate-700">
+                <label class="font-semibold text-slate-700">
                     <b>@Localizer["Dirección de envío"]</b>
                 </label>
-                <textarea id="direccion-envio"
-                          class="textarea textarea-bordered w-full"
-                          rows="3"
-                          placeholder="@Localizer["Ingrese la dirección de envío"]">@Model.DireccionEnvio</textarea>
 
+                <!-- Selects en cascada -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+
+                    <!-- Provincia-->
+                    <select id="sel-provincia" class="select select-bordered w-full">
+                        <option value="">@Localizer["Provincia"]</option>
+                    </select>
+
+                    <!-- Cantón -->
+                    <select id="sel-canton" class="select select-bordered w-full" disabled>
+                        <option value="">@Localizer["Cantón"]</option>
+                    </select>
+
+                    <!-- Distrito -->
+                    <select id="sel-distrito" class="select select-bordered w-full" disabled>
+                        <option value="">@Localizer["Distrito"]</option>
+                    </select>
+                
+                </div>
+
+                <!-- Otras señas -->
+                <label for="otras-senas" class="font-semibold text-slate-700">
+                    <b>@Localizer["Otras señas"]</b>
+                </label>
+                <textarea id="otras-senas" class="textarea textarea-bordered w-full" rows="3"
+                          placeholder="@Localizer["Ej: 200m norte de ..."]"></textarea>
+
+                <!-- Input oculto para armar direccion de envío -->
+                <input type="hidden" id="direccion-compuesta" />
             </div>
         </div>
 
@@ -123,13 +146,6 @@
     </div>
 </div>
 
-<!-- Botón para completar compra -->
-<div class="flex items-center gap-3">
-    <button id="btn-completar-compra" class="btn btn-primary">
-        @Localizer["Completar compra"]
-    </button>
-    <span id="save-status" class="text-sm"></span>
-</div>
 
 <!-- Guardar el id de usuario/cliente en un input oculto -->
 <input type="hidden"

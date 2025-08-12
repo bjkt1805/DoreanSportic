@@ -64,9 +64,14 @@
     <div class="text-lg"><b>@Localizer["Total"]:</b> <span id="totals-grand">₡@totIni.ToString("N2", cultura)</span></div>
 </div>
 
+<!-- Botón para completar compra -->
 <div class="mt-4 flex gap-2 justify-end p-2">
-    <button id="btn-confirmar" class="btn btn-primary">@Localizer["Registrar pedido"]</button>
+    <button id="btn-completar-compra" class="btn btn-primary">
+        @Localizer["Completar compra"]
+    </button>
+    <span id="save-status" class="text-sm"></span>
 </div>
+
 
 <script>
     (function(){

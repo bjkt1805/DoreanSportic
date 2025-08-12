@@ -15,19 +15,42 @@ function initPedidoDetails(pedidoId, localizer) {
     // Completar la compra
     document.getElementById('btn-completar-compra')?.addEventListener('click', async () => {
         const userIdEl = document.getElementById('cliente-userid');
-        const pedidoIdAttr = userIdEl?.dataset?.pedidoId;              
-        const userId = Number(userIdEl?.value);                    
-        const direccion = document.getElementById('direccion-envio')?.value ?? '';
+        const pedidoIdAttr = userIdEl?.dataset?.pedidoId;
+        const userId = Number(userIdEl?.value);
         const status = document.getElementById('save-status');
 
 
+        // Obtener la dirección de envío
+        const selectProvincia = document.getElementById('sel-provincia');
+        const selectCanton = document.getElementById('sel-canton');
+        const selectDistrito = document.getElementById('sel-distrito');
+        const inputOtrasSenas = document.getElementById('otras-senas');
+
+        // Obtener el texto de la selección de provincia, cantón y distrito (para armar dirección de envío)
+        const provinciaText = selectProvincia?.selectedOptions[0]?.text || '';
+        const cantonText = selectCanton?.selectedOptions[0]?.text || '';
+        const distritoText = selectDistrito?.selectedOptions[0]?.text || '';
+
+        // Validación mínima en caso de que no haya seleccionado provincia, cantón o distrito
+        if (!provinciaText || !cantonText || !distritoText) {
+            alert('Por favor seleccione provincia, cantón y distrito para la dirección de envío.');
+            return;
+        }
+
+        // Armar la dirección de envío completa
+        const direccionCompuesta = `${provinciaText}, ${cantonText}, ${distritoText}${otras ? `. ${inputOtrasSenas}` : ''}`;
+
+        // Configurar el atributo al elemento input de dirección compuesta
+        document.getElementById('direccion-compuesta')?.setAttribute('value', direccionCompuesta);
+
+        // Actualizar el pedido (encabezado) con la dirección de envío)
         try {
             const resp = await fetch('/Pedido/ActualizarEncabezado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ pedidoId: pedidoIdAttr, userId, direccionEnvio: direccion })
+                body: JSON.stringify({ pedidoId: pedidoIdAttr, userId, direccionEnvio: direccionCompuesta })
             });
 
             const data = await resp.json();
@@ -46,21 +69,6 @@ function initPedidoDetails(pedidoId, localizer) {
             status.className = 'text-sm text-red-600';
         } finally {
             setTimeout(() => { status.textContent = ""; }, 2500);
-        }
-    });
-
-    document.getElementById('selector-usuario')?.addEventListener('change', async (e) => {
-        const userId = e.target.value;
-        try {
-            const r = await fetch(`/Cliente/GetByUserId?userId=${encodeURIComponent(userId)}`);
-            const cliente = await r.json();
-            // Refresca panel cliente
-            document.getElementById('cliente-nombre').textContent =
-                `${cliente?.nombre ?? ''} ${cliente?.apellido ?? ''}`.trim();
-            document.getElementById('cliente-email').textContent = cliente?.email ?? '';
-            document.getElementById('cliente-telefono').textContent = cliente?.telefono ?? '';
-        } catch {
-            // opcional: mostrar un pequeño aviso
         }
     });
 }
@@ -150,6 +158,109 @@ function initClienteDetalle() {
     });
 }
 
+// Función para cargar provincias, cantones y distritos para el envío
+
+async function cargarProvincias() {
+    // obtener el select de provincias
+    const selectProvincia = document.getElementById('sel-provincia');
+
+    // Si el select no existe, salir de la función
+    if (!selectProvincia) return;
+
+    try {
+        // Hacer fetch a la API para obtener las provincias
+        const response = await fetch('/Ubicacion/Provincias');
+
+        // Si la respuesta no es exitosa, salir de la función
+        if (!response.ok) return;
+
+        // Parsear la respuesta JSON
+        const data = await response.json();
+        // Ir cargando las provincias en el select y resetear cantones y distritos
+        selectProvincia.innerHTML = `<option value="">Provincia</option>` +
+            data.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('');
+        document.getElementById('sel-canton').innerHTML = `<option value="">Cantón</option>`;
+        document.getElementById('sel-distrito').innerHTML = `<option value="">Distrito</option>`;
+        document.getElementById('sel-canton').disabled = true;
+        document.getElementById('sel-distrito').disabled = true;
+    } catch {
+        return null;
+    }
+
+    // Función para cargar cantones dado el id de la provincia
+    async function cargarCantones(provId) {
+
+        // Obtener los selects de cantones y distritos
+        const selectCanton = document.getElementById('sel-canton');
+        const selectDistrito = document.getElementById('sel-distrito');
+
+        // Si no existen los selects de Canton o Distrito, salir de la función
+        if (!selectCanton || !selectDistrito) return;
+
+        try {
+            // Hacer fetch a la API para obtener los cantones de la provincia seleccionada
+            const response = await fetch(`/Ubicacion/Cantones?provinciaId=${encodeURIComponent(provId)}`);
+
+            // Si la respuesta no es exitosa, salir de la función
+            if (!response.ok) return;
+
+            // Parsear la respuesta JSON
+            const data = await response.json();
+            selectCanton.innerHTML = `<option value="">Cantón</option>` +
+                data.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+            selectCanton.disabled = false;
+            selectDistrito.innerHTML = `<option value="">Distrito</option>`;
+            selectDistrito.disabled = true;
+        } catch {
+            return null;
+        }
+    }
+
+    // Función para cargar distritos dado el id de la provincia y del cantón
+    async function cargarDistritos(provId, cantonId) {
+
+        // Obtener el select de distritos
+        const selectDistrito = document.getElementById('sel-distrito');
+
+        // Si no existe el select de Distrito, o no se recibio id de provincia o cantón, salir de la función
+        if (!selectDistrito || !provId || !cantonId) return;
+
+        try {
+
+            // Hacer fetch a la API para obtener los distritos del cantón seleccionado
+            const response = await fetch(`/Ubicacion/Distritos?provinciaId=${encodeURIComponent(provId)}&cantonId=${encodeURIComponent(cantonId)}`);
+
+            // Si la respuesta no es exitosa, salir de la función
+            if (!response.ok) return;
+
+            // Parsear la respuesta JSON
+            const data = await response.json();
+            selectDistrito.innerHTML = `<option value="">Distrito</option>` +
+                data.map(d => `<option value="${d.id}">${d.nombre}</option>`).join('');
+            selectDistrito.disabled = false;
+        } catch {
+            return null;
+        }
+    }
+
+    // listeners de cascada
+    document.addEventListener('change', (e) => {
+
+        // Si el cambio fue en el select de provincia, cargar los cantones correspondientes
+        if (e.target.id === 'sel-provincia') {
+            const provId = e.target.value;
+            cargarCantones(provId);
+        }
+
+        // Si el cambio fue en el select de cantón, cargar los distritos correspondientes
+        if (e.target.id === 'sel-canton') {
+            const provId = document.getElementById('sel-provincia').value;
+            const cantonId = e.target.value;
+            cargarDistritos(provId, cantonId);
+        }
+    });
+}
+
 // Cuando el DOM esté listo, cargar las funciones de inicialización necesarias para manejar el pedido, detalles y cliente
 document.addEventListener("DOMContentLoaded", () => {
     // Obtener configuración del pedido desde window.PedidoConfig
@@ -180,3 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Inicializar la función para manejar el detalle del cliente (radios de email/telefono))
     initClienteDetalle();
 });
+
+// Cuando el DOM esté listo, llamar a la función para cargar provincias
+document.addEventListener('DOMContentLoaded', cargarProvincias);

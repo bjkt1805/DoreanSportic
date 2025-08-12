@@ -37,6 +37,14 @@ builder.Services.AddSession(
             options.Cookie.IsEssential = true;
         }
 );
+
+// Para implementar el servicio de ubicación desde la API de ubicaciones de Costa Rica
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient<IServiceUbicacion, ServiceUbicacion>(c =>
+{
+    c.BaseAddress = new Uri("https://ubicaciones.paginasweb.cr/");
+});
+
 //***********************
 // Configurar D.I.
 //Repository
