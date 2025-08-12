@@ -17,8 +17,9 @@
             <tr>
                 <th>@Localizer["Producto"]</th>
                 <th class="text-center">@Localizer["Cantidad"]</th>
-                <th class="text-end">@Localizer["P. Unitario (estimado)"]</th>
+                <th class="text-end">@Localizer["Precio unitario"]</th>
                 <th class="text-end">@Localizer["Subtotal"]</th>
+                <th class="text-center"></th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -39,7 +40,10 @@
                     <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", cultura)</td>
                     <td class="text-end cell-subtotal">₡@item.SubTotal.ToString("N2", cultura)</td>
                     <td class="text-center">
-                        <button class="btn btn-xs btn-error btn-eliminar">@Localizer["Eliminar"]</button>
+                        <button class="btn btn-warning btn-xs text-black">@Localizer["Modificar"]</button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-xs text-white bg-[#FF4D4D]">@Localizer["Eliminar"]</button>
                     </td>
                 </tr>
             }
@@ -60,7 +64,7 @@
     <div class="text-lg"><b>@Localizer["Total"]:</b> <span id="totals-grand">₡@totIni.ToString("N2", cultura)</span></div>
 </div>
 
-<div class="mt-4 flex gap-2 justify-end">
+<div class="mt-4 flex gap-2 justify-end p-2">
     <button id="btn-confirmar" class="btn btn-primary">@Localizer["Registrar pedido"]</button>
 </div>
 

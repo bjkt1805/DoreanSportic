@@ -286,7 +286,7 @@ function recargarResumenCarritoNavbar() {
                 document.getElementById("carrito-navbar-badge").innerText = cantidad;
             }
 
-            // Obtener los elementos del DOM por id (subtotalCarrito, btnVerCarrito y btnCompletar)
+            // Obtener los elementos del DOM por id (subtotalCarrito btnVerCarrito)
             const subtotalCarrito = document.getElementById("subtotalCarrito");
             const btnVerCarrito = document.getElementById("verCarrito");
 
@@ -325,11 +325,10 @@ function recargarResumenCarritoNavbar() {
                 );
 
                 // Si subtotal es menor o igual a 0, o si subtotal no es un número
-                // deshabilitar los botones "Ver Carrito" y "Completar Comprar"
+                // deshabilitar el botón "Ver Carrito"
                 // por medio de la función deshabilitarHabilitarBotones
                 const disabled = isNaN(subtotalNum) || subtotalNum <= 0;
                 deshabilitarHabilitarBotones(btnVerCarrito, disabled);
-                deshabilitarHabilitarBotones(btnCompletar, disabled);
             }
 
             // Ejecutar una vez al cargar la página

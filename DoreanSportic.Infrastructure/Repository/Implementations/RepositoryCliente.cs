@@ -22,6 +22,11 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             throw new NotImplementedException();
         }
 
+        public async Task<Cliente> FindByUserIdAsync(int userId)
+        {
+            return await _context.Cliente
+                .FirstOrDefaultAsync(c => c.Usuario.Id == userId);
+        }
         public async Task<bool> ExisteEmailAsync(string email)
         {
             // Verificar si existe un usuario con el mismo correo electrónico

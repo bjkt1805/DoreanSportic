@@ -24,6 +24,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                                 .Where(x => x.Id == id)
                                 .Include(c => c.PedidoDetalle)
                                     .ThenInclude(d => d.IdProductoNavigation)
+                                 .Include(p => p.IdClienteNavigation)
+                                    .ThenInclude(c => c.Usuario)
                                 .FirstAsync();
             return @object!;
         }

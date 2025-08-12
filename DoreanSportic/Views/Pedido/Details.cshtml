@@ -1,9 +1,11 @@
 ﻿@model DoreanSportic.Application.DTOs.PedidoDTO
+@using System.Security.Claims
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Details";
+    var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div style="margin-left:10%; margin-right:15%">
@@ -14,96 +16,129 @@
     </div>
 
     <div class="mb-4 max-w-4xl mx-auto p-6 bg-white text-slate-500 shadow-md rounded mt-10 border rounded font-sans">
+
         <!-- Header de la “factura” (marca/empresa) -->
-        <div class="border-b pb-8 mb-8 flex items-center">
-            <div class="flex-1 text-left p-2">
-                <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
-                     alt="Company Logo" class="h-10 w-25 mr-4">
-                <p class="text-sm text-slate-500"><b>Dorean Sportic S.A.</b></p>
-                <p class="text-sm text-slate-500"><b>@(Localizer["Dirección"]): </b>San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
-                <p class="text-sm text-slate-500"><b>@(Localizer["Teléfono"]): </b>72969719</p>
-                <p class="text-sm text-slate-500"><b>@(Localizer["Correo electrónico"]):</b> doreansportic@gmail.com</p>
+        <div class="border-b pb-8 mb-8 w-full">
+            <div class="flex justify-between items-start">
+
+                <!-- Información de la empresa -->
+                <div class="flex-1 text-left p-2">
+                    <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
+                         alt="Company Logo" class="h-10 w-25 mr-4">
+                    <p class="text-sm text-slate-500"><b>Dorean Sportic S.A.</b></p>
+                    <p class="text-sm text-slate-500"><b>@Localizer["Dirección"]:</b> San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
+                    <p class="text-sm text-slate-500"><b>@Localizer["Teléfono"]:</b> 72969719</p>
+                    <p class="text-sm text-slate-500"><b>@Localizer["Correo electrónico"]:</b> doreansportic@gmail.com</p>
+                </div>
+
+                <!-- Fecha/Hora de emisión -->
+                <div class="text-right self-start" style="margin-top: 11%; padding-right: 5%">
+                    <b>@Localizer["Fecha del pedido"]:</b> @Model.FechaPedido.ToString("dd/MM/yyyy")
+                    <div class="text-xs text-slate-400 mb-1">
+                        <b>@Localizer["Hora de emisión"]:</b> @Model.FechaPedido.ToString("HH:mm:ss")<br />
+                        <p class="italic" style="font-size: 12px">* @Localizer["Formato de 24 horas"] *</p>
+                    </div>
+                    <div>
+                        <b>@Localizer["Estado de pago"]:</b>
+                        <span id="pedido-estado">@Model.EstadoPago</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        @* Encabezado tipo factura *@
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            @* Columna izquierda: selector de usuario y resumen del cliente *@
+
+        <!-- Encabezado tipo factura -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 p-2">
+            <!-- Columna izquierda: selector de usuario y resumen del cliente -->
             <div class="space-y-3">
                 <p class="text-sm text-slate-500">
                     <b>@(Localizer["Pedido"]) #:</b> <u>@Model.Id</u>
                 </p>
 
-                <label class="font-semibold text-slate-700">@Localizer["Usuario que solicita"]</label>
+                <label class="text-slate-700 mb-2"><b>@Localizer["Cliente"]:</b> @User.Identity?.Name</label>
 
-                <!-- Selector de usuario (si solo es el actual, dejamos una única opción) -->
-                <select id="selector-usuario"
-                        class="select select-bordered w-full"
-                        data-pedido-id="@Model.Id"
-                        data-current-user-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">
-                    <option value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" selected>
-                        @User.Identity?.Name
-                    </option>
-                    @* Si más adelante permites cambiar el usuario (p.e. admin), agrega más <option> aquí *@
-                </select>
+                <br />
 
-                <!-- Resumen no editable del cliente -->
-                <div id="cliente-resumen" class="p-3 rounded border">
-                    <div>
-                        <b>@Localizer["Cliente"]:</b>
-                        <span id="cliente-nombre">
-                            @Model.IdClienteNavigation?.Nombre @Model.IdClienteNavigation?.Apellido
-                        </span>
+                <!-- Contenedor de selector de cliente + información detallada de este -->
+                <div class="flex flex-row gap-4 mt-4 p-2">
+
+                    <!-- Radios: qué mostrar -->
+                    <div class="flex flex-col gap-4" style="padding-right: 10%; padding-top: 1%">
+                        <!-- Radio button Correo-->
+                        <label class="label cursor-pointer gap-2">
+                            <input type="radio" name="mostrar-detalle" value="email" class="radio radio-sm" checked>
+                            <span class="label-text">@Localizer["Correo electrónico"]</span>
+                        </label>
+
+                        <!-- Radio button Telefono-->
+                        <label class="label cursor-pointer gap-2">
+                            <input type="radio" name="mostrar-detalle" value="telefono" class="radio radio-sm">
+                            <span class="label-text">@Localizer["Teléfono"]</span>
+                        </label>
                     </div>
-                    <div>
-                        <b>@Localizer["Correo"]:</b>
-                        <span id="cliente-email">@Model.IdClienteNavigation?.Email</span>
-                    </div>
-                    <div>
-                        <b>@Localizer["Teléfono"]:</b>
-                        <span id="cliente-telefono">@Model.IdClienteNavigation?.Telefono</span>
+
+                    <!-- Resumen NO EDITABLE del cliente -->
+                    <div id="cliente-resumen" class="p-3 rounded border mt-2 w-100">
+                        <div class="mb-1">
+                            <b>@Localizer["INFORMACIÓN DEL CLIENTE"]</b>
+                            <span id="cliente-nombre">
+                                @Model.IdClienteNavigation?.Nombre @Model.IdClienteNavigation?.Apellido
+                            </span>
+                        </div>
+                        <div>
+                            <b>@Localizer["Cliente"]:</b>
+                            <span id="cliente-nombre">
+                                @Model.IdClienteNavigation?.Nombre @Model.IdClienteNavigation?.Apellido
+                            </span>
+                        </div>
+
+                        <!-- Área dinámica (se rellena según selección en el radio) -->
+                        <div class="mt-1">
+                            <b id="cliente-detalle-label">@Localizer["Correo"]:</b>
+                            <span id="cliente-detalle-valor">
+                                @Model.IdClienteNavigation?.Email
+                            </span>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-            @* Columna derecha: fecha / estado / dirección envío + botón guardar *@
-            <div class="space-y-3">
-                <div>
-                    <b>@Localizer["Fecha del pedido"]:</b> @Model.FechaPedido.ToString("dd/MM/yyyy")
-                    <div class="text-xs text-slate-400">
-                        <i>@Localizer["Hora de emisión"]: @Model.FechaPedido.ToString("HH:mm:ss") (@Localizer["Formato de 24 horas"])</i>
-                    </div>
-                </div>
 
-                <div>
-                    <b>@Localizer["Estado"]:</b>
-                    <span id="pedido-estado">@Model.IdMetodoPagoNavigation?.Nombre</span>
-                </div>
+            <div class="space-y-3">
 
                 <!-- Dirección de envío (editable) -->
                 <label for="direccion-envio" class="font-semibold text-slate-700">
-                    @Localizer["Dirección de envío"]
+                    <b>@Localizer["Dirección de envío"]</b>
                 </label>
                 <textarea id="direccion-envio"
                           class="textarea textarea-bordered w-full"
                           rows="3"
                           placeholder="@Localizer["Ingrese la dirección de envío"]">@Model.DireccionEnvio</textarea>
 
-                <div class="flex items-center gap-3">
-                    <button id="btn-guardar-encabezado" class="btn btn-primary">
-                        @Localizer["Guardar encabezado"]
-                    </button>
-                    <span id="save-status" class="text-sm"></span>
-                </div>
             </div>
         </div>
 
-        <!-- Detalle del pedido (tabla renderizada vía parcial) -->
+        <!-- Detalle del pedido (tabla renderizada vía vista parcial) -->
         <div id="tabla-detalles">
             <p class="text-sm">@(Localizer["Cargando detalles del pedido"])</p>
         </div>
     </div>
 </div>
+
+<!-- Botón para completar compra -->
+<div class="flex items-center gap-3">
+    <button id="btn-completar-compra" class="btn btn-primary">
+        @Localizer["Completar compra"]
+    </button>
+    <span id="save-status" class="text-sm"></span>
+</div>
+
+<!-- Guardar el id de usuario/cliente en un input oculto -->
+<input type="hidden"
+       id="cliente-userid"
+       value="@usuarioIdClaim"
+       data-pedido-id="@Model.Id" />
 
 <form id="pedido-encabezado-form">
     @Html.AntiForgeryToken()
@@ -111,62 +146,15 @@
 
 @section Scripts {
     <script>
-        // Carga parcial de detalles
-        fetch('/PedidoDetalle/GetDetallesPorPedido?idPedido=@Model.Id')
-            .then(r => r.text())
-            .then(html => { document.getElementById("tabla-detalles").innerHTML = html; })
-            .catch(() => { document.getElementById("tabla-detalles").innerHTML = "<p>Error cargando detalles.</p>"; });
-
-        // Guardar encabezado (dirección, usuario, etc.)
-        document.getElementById('btn-guardar-encabezado')?.addEventListener('click', async () => {
-            const pedidoId = document.getElementById('selector-usuario')?.dataset.pedidoId;
-            const userId = document.getElementById('selector-usuario')?.value;
-            const direccion = document.getElementById('direccion-envio')?.value ?? '';
-            const status = document.getElementById('save-status');
-            const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]').value;
-
-            try {
-                const resp = await fetch('/Pedido/ActualizarEncabezado', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken':token
-                    },
-                    body: JSON.stringify({ pedidoId, userId, direccionEnvio: direccion })
-                });
-
-                const data = await resp.json();
-                if (data?.success) {
-                    if (data.estadoNombre) {
-                        document.getElementById('pedido-estado').textContent = data.estadoNombre;
-                    }
-                    status.textContent = '@Localizer["Encabezado guardado"]';
-                    status.className = 'text-sm text-green-600';
-                } else {
-                    status.textContent = data?.mensaje || '@Localizer["No fue posible guardar"]';
-                    status.className = 'text-sm text-red-600';
-                }
-            } catch {
-                status.textContent = '@Localizer["Error inesperado"]';
-                status.className = 'text-sm text-red-600';
-            } finally {
-                setTimeout(() => { status.textContent = ""; }, 2500);
-            }
-        });
-
-        // Cambio de usuario (si en algún momento permites varios)
-        document.getElementById('selector-usuario')?.addEventListener('change', async (e) => {
-            const userId = e.target.value;
-            try {
-                const r = await fetch(`/Cliente/GetByUserId?userId=${encodeURIComponent(userId)}`);
-                const cliente = await r.json();
-                // Refresca panel cliente
-                document.getElementById('cliente-nombre').textContent = `${cliente?.nombre ?? ''} ${cliente?.apellido ?? ''}`.trim();
-                document.getElementById('cliente-email').textContent = cliente?.email ?? '';
-                document.getElementById('cliente-telefono').textContent = cliente?.telefono ?? '';
-            } catch {
-                // opcional: mostrar un pequeño aviso
-            }
-        });
+        window.PedidoConfig = {
+          pedidoId: @Model.Id,
+          localizer: {
+            "Encabezado guardado": "@Localizer["Encabezado guardado"]",
+            "No fue posible guardar": "@Localizer["No fue posible guardar"]",
+            "Error inesperado": "@Localizer["Error inesperado"]"
+          }
+        };
     </script>
+    <script src="~/js/Pedido.js" asp-append-version="true"></script>
+
 }
