@@ -20,7 +20,9 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         public async Task<PedidoDetalle> FindByIdAsync(int id)
         {
             return await _context.PedidoDetalle
-                .Include(d => d.IdProductoNavigation)
+                .Include(d => d.IdProductoNavigation).ThenInclude(p => p.IdPromocion)
+                .Include(d => d.IdProductoNavigation).ThenInclude(p => p.IdCategoriaNavigation).ThenInclude(c => c.IdPromocion)
+                .Include(d => d.IdEmpaqueNavigation)
                 .FirstAsync(d => d.Id == id);
         }
         public async Task<ICollection<PedidoDetalle>> ListAsync()
@@ -99,7 +101,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
 
         // Método para actualizar la cantidad, subtotal, impuesto y total de un detalle de pedido
-        public async Task UpdateCantidadAsync(int detalleId, int nuevaCantidad, decimal nuevoSub, decimal nuevoImp, decimal nuevoTotal)
+        public async Task UpdateCantidadAsync(int detalleId, int nuevaCantidad, decimal nuevoSub)
         {
             var d = await _context.PedidoDetalle.FirstAsync(x => x.Id == detalleId);
             d.Cantidad = nuevaCantidad;
@@ -107,7 +109,6 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             await _context.SaveChangesAsync();
         }
 
-        // Método para eliminar un detalle de pedido
         public async Task RemoveAsync(int detalleId)
         {
             var d = await _context.PedidoDetalle.FirstAsync(x => x.Id == detalleId);

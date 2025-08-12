@@ -112,8 +112,8 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             // Obtener el pedido por id 
             var pedido = await _context.Pedido.FirstAsync(p => p.Id == pedidoId);
 
-            // Actualizar los totales del pedido
-            pedido.SubTotal = sub; pedido.Impuesto = imp; pedido.Total = total;
+            // Actualizar el subtotal del pedido
+            pedido.SubTotal = sub; 
 
             // Si el estado de pago no es nulo o vacío, actualizarlo
             if (!string.IsNullOrWhiteSpace(estadoPago)) pedido.EstadoPago = estadoPago;
