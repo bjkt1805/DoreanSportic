@@ -146,15 +146,42 @@ namespace DoreanSportic.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActualizarCantidad(int detalleId, int cantidad)
         {
-            var (det, eliminado) = await _servicePedidoDetalle.ActualizarCantidadAsync(detalleId, cantidad);
+            // Actualizar la cantidad del detalle del pedido y obtener el detalle actualizado y si fue eliminado
+            var (detalle, eliminado) = await _servicePedidoDetalle.ActualizarCantidadAsync(detalleId, cantidad);
 
             // averiguar pedidoId del detalle
             int? pedidoId = await _servicePedidoDetalle.GetPedidoIdByDetalleAsync(detalleId); // crea wrapper en tu service si no existe
+
+            // Si el pedidoId es null, retornar error
             if (pedidoId is null)
                 return Json(new { success = false, mensaje = "No se encontró el pedido" });
 
+            // Recalcular totales del pedido y asignarlos a las variables sub, imp, total
             var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(pedidoId.Value);
-            return Json(new { success = true, det, eliminado, totals = new { sub, imp, total } });
+
+            // Detalle viene como un objeto en navegación de arbol (ejemplo: PedidoDetalleDTO tiene una propiedad ProductoDTO Producto)
+            // Entonces, para evitar enviar datos innecesarios al cliente, se puede crear un objeto anónimo con solo las propiedades necesarias
+
+            // Se crar una variable auxiliar para enviar un objeto compacto al cliente de detalle
+            var detalleCompacto = (object?)null;
+            if (detalle != null)
+            {
+                detalleCompacto = new PedidoDetalleDTO
+                {
+                    Id = detalle.Id,
+                    Cantidad = detalle.Cantidad,
+                    SubTotal = detalle.SubTotal,
+                };
+            }
+
+            // Retornar el detalle actualizado, si fue eliminado y los totales recalculados
+            return Json(new 
+            { 
+                success = true, 
+                detalle = detalleCompacto, eliminado,
+                totals = new { sub, imp, total } 
+            
+            });
         }
 
         [HttpPost]

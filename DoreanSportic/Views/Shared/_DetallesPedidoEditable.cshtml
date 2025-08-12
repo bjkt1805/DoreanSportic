@@ -11,7 +11,7 @@
     var pedidoId = (int)(ViewData["PedidoId"] ?? 0);
 }
 
-<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+<div id="detalles-root" data-pedido-id="@pedidoId" class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
     <table class="table">
         <thead class="bg-primary text-white">
             <tr>
@@ -34,15 +34,18 @@
                         <div class="font-semibold text-sm">@producto?.Nombre</div>
                     </td>
                     <td class="text-center" style="width:120px">
-                        <input class="input input-bordered w-24 qty-input" type="number" min="0" step="1" value="@item.Cantidad" />
+                        <input class="input input-bordered w-24 qty-input"
+                               type="number" min="0" step="1" value="@item.Cantidad"
+                               inputmode="numeric" />
+                        <span class="qty-error text-red-600 text-xs"></span>
                     </td>
                     <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", culturaPersonalizada)</td>
                     <td class="text-end cell-subtotal">₡@item.SubTotal.ToString("N2", culturaPersonalizada)</td>
 
                     <td class="text-end">
                         <div class="flex flex-row justify-between">
-                            <button class="btn btn-warning btn-xs text-black">@Localizer["Modificar"]</button>
-                            <button class="btn btn-xs text-white bg-[#FF4D4D]">@Localizer["Eliminar"]</button>
+                            <button id="btnModificar" class="btn btn-warning btn-xs text-black">@Localizer["Modificar"]</button>
+                            <button id="btnEliminar" class="btn btn-xs text-white bg-[#FF4D4D]">@Localizer["Eliminar"]</button>
                         </div>
                     </td>
 
@@ -67,7 +70,7 @@
             </tr>
             <tr class="bg-primary text-white text-lg">
                 <td colspan="5" class="text-end fw-bold">
-                    <b>@(Localizer["Total a pagar"]): ₡@totIni.ToString("N2", culturaPersonalizada)</b><span id="totals-grand"></span>
+                    <b>@(Localizer["Total a pagar"]): </b><span id="totals-grand">₡@totIni.ToString("N2", culturaPersonalizada)</span>
                 </td>
             </tr>
             
@@ -79,109 +82,8 @@
 <!-- Botón para completar compra -->
 <div class="mt-4 flex p-2 gap-2">
     <span id="save-status" class="text-sm mr-2"></span>
-    <button id="btn-completar-compra" class="btn btn-success text-white" style="margin-left:89%">
-        <b>@Localizer["Comprar"]</b>
+    <button id="btn-completar-compra" class="btn btn-success text-white">
+        <b>@Localizer["Pagar"]</b>
     </button>
 </div>
 
-
-<script>
-    (function(){
-      const pedidoId = @pedidoId;
-
-      const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]')?.value;
-      const body  = document.getElementById('pedido-detalles-body');
-
-      let t=null; const debounce = (fn,ms)=>{ clearTimeout(t); t=setTimeout(fn,ms); };
-
-      function formato(n){ return `₡${Number(n).toFixed(2)}`; }
-
-      function actualizarTotales(tot){
-        if(!tot) return;
-        document.getElementById('totals-sub').textContent   = formato(tot.sub);
-        document.getElementById('totals-tax').textContent   = formato(tot.imp);
-        document.getElementById('totals-grand').textContent = formato(tot.total);
-      }
-
-      // Cambiar cantidad (0 => eliminar)
-      body?.addEventListener('input', (e)=>{
-        if(!e.target.classList.contains('qty-input')) return;
-        const tr = e.target.closest('tr');
-        const detalleId = tr.dataset.detalleId;
-        const cantidad = parseInt(e.target.value || '0', 10);
-        if(isNaN(cantidad) || cantidad < 0){ e.target.value = 0; return; }
-
-        debounce(async ()=>{
-          const form = new FormData();
-          form.append('detalleId', detalleId);
-          form.append('cantidad',  cantidad);
-
-          const r = await fetch('/PedidoDetalle/ActualizarCantidad', {
-            method: 'POST',
-            headers: { 'RequestVerificationToken': token },
-            body: form
-          });
-          const data = await r.json();
-
-          if(!data.success){ return; }
-
-          if(data.eliminado){
-            tr.remove();
-          } else if(data.det){
-            // Subtotal de la fila
-            tr.querySelector('.cell-subtotal').textContent = formato(data.det.subTotal);
-            // P.unitario estimado (sub / cant)
-            const punit = data.det.cantidad > 0 ? (data.det.subTotal / data.det.cantidad) : 0;
-            tr.querySelector('.cell-punit').textContent = formato(punit);
-          }
-          actualizarTotales(data.totals);
-        }, 350);
-      });
-
-      // Eliminar por botón
-      body?.addEventListener('click', async (e)=>{
-        if(!e.target.classList.contains('btn-eliminar')) return;
-        const tr = e.target.closest('tr');
-        const detalleId = tr.dataset.detalleId;
-
-        const form = new FormData();
-        form.append('detalleId', detalleId);
-        form.append('pedidoId',  pedidoId);
-
-        const r = await fetch('/PedidoDetalle/EliminarDetalle', {
-          method: 'POST',
-          headers: { 'RequestVerificationToken': token },
-          body: form
-        });
-        const data = await r.json();
-        if(data.success){
-          tr.remove();
-          actualizarTotales(data.totals);
-        }
-      });
-
-      // Confirmar
-      document.getElementById('btn-confirmar')?.addEventListener('click', async ()=>{
-        const form = new FormData();
-        form.append('pedidoId', pedidoId);
-        const r = await fetch('/Pedido/Confirmar', {
-          method:'POST',
-          headers: { 'RequestVerificationToken': token },
-          body: form
-        });
-        const data = await r.json();
-        if(!data.success){
-          if(data.errores?.length){
-            const msg = data.errores.map(e => `• ${e.nombre}: solicitado ${e.cant}, disponible ${e.stockDisp}`).join('\n');
-            alert(msg);
-          } else {
-            alert(data.mensaje ?? 'No fue posible confirmar');
-          }
-          return;
-        }
-        actualizarTotales(data.totals);
-        alert('Pedido registrado');
-        location.reload();
-      });
-    })();
-</script>

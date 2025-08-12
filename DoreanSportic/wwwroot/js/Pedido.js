@@ -1,4 +1,259 @@
-﻿// Función para inicializar detalles del pedido
+﻿// Función para formatear números a dos decimales y agregar el símbolo de colón
+function formatColones(value) {
+    // Convertir a número válido
+    const numero = Number(value ?? 0);
+
+    // Formatear con separador de miles por defecto (usando coma o punto según locale)
+    let partes = numero
+        .toFixed(2) // Siempre 2 decimales
+        .split('.'); // Separar parte entera y decimal usando punto fijo
+
+    // Agregar separador de miles como espacio
+    partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    // Reconstruir usando punto como separador decimal
+    return `₡${partes[0]}.${partes[1]}`;
+}
+
+// Función para asociar eventos a la tabla de detalles del pedido
+function bindParcialEventos(root) {
+    if (!root) return;
+
+    // Obtener el id del pedido desde el elemento raíz (root) en este caso sería <div id="detalles-root">
+    const pedidoId = root.dataset.pedidoId; 
+
+    // Obtener el contenido de detalles del pedido (body de la tabla = <tbody id="pedido-detalles-body">)
+    const body = root.querySelector('#pedido-detalles-body');
+
+    // Función para actualizar totales en pantalla
+    function actualizarTotales(total) {
+
+        // Si no hay totales, no hacer nada
+        if (!total) return;
+
+        // Obtener el valor de subtotal
+        const subTotal = root.querySelector('#totals-sub');
+
+        // Obtener el valor del impuesto
+        const impuesto = root.querySelector('#totals-tax');
+
+        // Obtener el valor del total general
+        const granTotal = root.querySelector('#totals-grand');
+
+        // Si existe subTotal, darle formato de dos decimales y agregar el símbolo de colón
+        if (subTotal) subTotal.textContent = formatColones(total.sub);
+
+        // Si existe impuesto, darle formato de dos decimales y agregar el símbolo de colón
+        if (impuesto) impuesto.textContent = formatColones(total.imp);
+
+        // Si existe grandTotal, darle formato de dos decimales y agregar
+        if (granTotal) granTotal.textContent = formatColones(total.total);
+    }
+
+    // Configuración de un debounce para evitar múltiples llamadas al servidor en poco tiempo
+    let t = null;
+    const debounce = (fn, ms) => { clearTimeout(t); t = setTimeout(fn, ms); };
+
+    // Cambios de cantidad (0 => elimina el detalle)
+    // Escuchar el evento de input en el body de la tabla
+    body?.addEventListener('input', (e) => {
+
+        // Si el elemento que disparó el evento no tiene clase de cantidad, salir de la función
+        if (!e.target.classList.contains('qty-input')) return;
+
+        // Obtener la fila de la tabla (tr) m cercana al elemento que disparó el evento
+        const filaTabla = e.target.closest('tr');
+
+        // Asignar el dato detalleId desde el atributo data-detalle-id de la fila
+        const detalleId = filaTabla.dataset.detalleId;
+
+        // Obtener el valor numérico de la cantidad ingresada, asegurando que sea un número entero
+        // Si no hay valor, asignar 0 
+        const cantidad = parseInt(e.target.value || '0', 10);
+
+        // Obtener el token de verificación anti-CSRF desde el formulario de encabezado del pedido
+        const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]')?.value;
+
+        // Si la cantidad es NaN o menor que 0, asignar 0 al input y salir de la función
+        if (isNaN(cantidad) || cantidad < 0) { e.target.value = 0; return; }
+
+        // Llamar a la API para actualizar la cantidad del detalle
+        debounce(async () => {
+
+            // Crear un objeto FormData para enviar los datos al servidor
+            const form = new FormData();
+
+            // Añadir los datos necesarios al FormData (detalleId y cantidad))
+            form.append('detalleId', detalleId);
+            form.append('cantidad', cantidad);
+
+            // Añadir el token de verificación anti-CSRF al FormData
+            form.append('__RequestVerificationToken', token);
+
+            // Realizar la petición al servidor para actualizar la cantidad del detalle
+            const response = await fetch('/PedidoDetalle/ActualizarCantidad', {
+                method: 'POST',
+                body: form
+            });
+
+            // Obtener la respuesta en formato JSON
+            const data = await response.json();
+
+            // Si la respuesta no es exitosa, salir de la función
+            if (!data.success) return;
+
+            // Si la respuesta indica que el detalle fue eliminado, eliminar la fila de la tabla
+            if (data.eliminado) {
+                filaTabla.remove();
+
+            // Si hay detalle, hay que actualizar las filas subtotal y precio unitario 
+            } else if (data.detalle) {
+
+                // Actualizar el contenido de las celdas subTotal y Precio Unitario con los nuevos valores
+                filaTabla.querySelector('.cell-subtotal').textContent = formatColones(data.detalle.subTotal);
+                const punit = data.detalle.cantidad > 0 ? (data.detalle.subTotal / data.detalle.cantidad) : 0;
+                filaTabla.querySelector('.cell-punit').textContent = formatColones(punit);
+            }
+
+            // Actualizar los totales en pantalla con los nuevos valores
+            actualizarTotales(data.totals);
+        }, 350);
+    });
+
+    // Función para eliminar un detalle del pedido
+    body?.addEventListener('click', async (e) => {
+
+        // Si el elemento que disparó el evento no tiene clase de btn-eliminar, salir de la función
+        if (!e.target.classList.contains('btn-eliminar')) return;
+
+        // Asignar a filatabla la fila de la tabla (tr) más cercana al elemento que disparó el evento
+        const filaTabla = e.target.closest('tr');
+
+        // Asignar a detalleId el valor del atributo data-detalle-id de la fila
+        const detalleId = filaTabla.dataset.detalleId;
+
+        // Obtener el token de verificación anti-CSRF desde el formulario de encabezado del pedido
+        const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]')?.value;
+
+        // Crear un objeto FormData para enviar los datos al servidor
+        const form = new FormData();
+
+        // Añadir los datos necesarios al FormData (detalleId y pedidoId))
+        form.append('detalleId', detalleId);
+        form.append('pedidoId', pedidoId);
+
+        // Añadir el token de verificación anti-CSRF al FormData
+        form.append('__RequestVerificationToken', token);
+
+        // Realizar la petición al servidor para eliminar el detalle del pedido
+        const response = await fetch('/PedidoDetalle/EliminarDetalle', {
+            method: 'POST',
+            body: form
+        });
+
+        // Obtener la respuesta en formato JSON
+        const data = await response.json();
+
+        // Si la respuesta es exitosa, eliminar la fila de la tabla y actualizar los totales
+        if (data.success) {
+            filaTabla.remove();
+            actualizarTotales(data.totals);
+        }
+    });
+
+    // Completar compra (guardar encabezado con dirección)
+    root.parentElement // contenedor fuera de la tabla (el encabezado del pedido)
+        // buscar el botón de completar compra dentro del contenedor
+        ?.querySelector('#btn-completar-compra')
+
+        // Si existe el botón, agregar el evento click
+        ?.addEventListener('click', async () => {
+
+            // Asignar a userIdEl el elemento input con id cliente-userid
+            const userIdEl = document.getElementById('cliente-userid');
+
+            // Asignar a userId el valor numérico de userIdEl, asegurando que sea un número
+            const userId = Number(userIdEl?.value);
+
+            // Obtener el token de verificación anti-CSRF desde el formulario de encabezado del pedido
+            const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]')?.value;
+
+            // Ubicar los selects de provincia, cantón y distrito
+            const selectProv = document.getElementById('sel-provincia');
+            const selectCant = document.getElementById('sel-canton');
+            const selectDist = document.getElementById('sel-distrito');
+
+            // Asignar a otrasSennas el valor del input con id otras-senas, asegurando que sea un string sin espacios al inicio o final
+            const otrasSennas = document.getElementById('otras-senas')?.value?.trim();
+
+            // Asignar a constantes de tipo String el texto de las opciones seleccionadas en los selects de provincia, cantón y distrito
+            const provinciaTxt = selectProv?.selectedOptions[0]?.text || '';
+            const cantonTxt = selectCant?.selectedOptions[0]?.text || '';
+            const disttritoTxt = selectDist?.selectedOptions[0]?.text || '';
+
+            // Si los textos no existen o están vacíos, mostrar un mensaje de alerta y salir de la función
+            if (!provinciaTxt || !cantonTxt || !disttritoTxt) {
+                alert('Por favor seleccione provincia, cantón y distrito.');
+                return;
+            }
+
+            // Armar la dirección compuesta con los textos de provincia, cantón, distrito y otras señas (si existen)
+            const direccionCompuesta =
+                `${provinciaTxt}, ${cantonTxt}, ${disttritoTxt}${otrasSennas ? `. ${otrasSennas}` : ''}`;
+
+            // Asignar a status el elemento con id save-status
+            const status = document.getElementById('save-status');
+
+            // Realizar la llamada al servidor para actualizar el encabezado del pedido con la dirección de envío
+            try {
+                // Realizar la llamada al servidor para actualizar el encabezado del pedido con la dirección de envío
+                const response = await fetch('/Pedido/ActualizarEncabezado', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token,
+                    },
+                    body: JSON.stringify({
+                        pedidoId: pedidoId,
+                        userId,
+                        direccionEnvio: direccionCompuesta
+                    })
+                });
+
+                // Obtener la respuesta en formato JSON
+                const data = await response.json();
+
+                // Si la respuesta es exitosa, actualizar el estado del pedido y mostrar mensaje de éxito
+                if (data?.success) {
+                    if (data.estadoNombre) {
+                        document.getElementById('pedido-estado').textContent = data.estadoNombre;
+                    }
+
+                    // Actualizar el texto del estado de guardado
+                    status.textContent = (window.PedidoConfig?.localizer || {})["Encabezado guardado"] || "Encabezado guardado";
+                    // Cambiar la clase del estado a texto verde
+                    status.className = 'text-sm text-green-600';
+                } else {
+                    // Si la respuesta no es exitosa, mostrar mensaje de error
+                    status.textContent = data?.mensaje || (window.PedidoConfig?.localizer || {})["No fue posible guardar"] || "No fue posible guardar";
+                    // Cambiar la clase del estado a texto rojo
+                    status.className = 'text-sm text-red-600';
+                }
+            } catch {
+                // Si ocurre un error al hacer la llamada, mostrar mensaje de error
+                status.textContent = (window.PedidoConfig?.localizer || {})["Error inesperado"] || "Error inesperado";
+
+                // Cambiar la clase del estado a texto rojo
+                status.className = 'text-sm text-red-600';
+
+            // Finalmente el mensaje de estado después de 2.5 segundos
+            } finally {
+                setTimeout(() => { status.textContent = ""; }, 2500);
+            }
+        });
+}
+
+// Función para inicializar detalles del pedido
 function initPedidoDetails(pedidoId, localizer) {
 
     // Carga vista parcial de detalles con el id de pedido
@@ -6,6 +261,14 @@ function initPedidoDetails(pedidoId, localizer) {
         .then(response => response.text())
         .then(html => {
             document.getElementById("tabla-detalles").innerHTML = html;
+            // Inicializar la validación de cantidad en los inputs de cantidad
+            initDetalleCantidadValidation();
+
+            // Inicializar el bloqueo de borrado en los inputs de cantidad
+            initBloqueoBorradoCantidad();
+            // Una vez cargada la vista parcial, asociar los eventos a la tabla de detalles del pedido
+            const root = document.getElementById("detalles-root");
+            bindParcialEventos(root);
         })
         .catch(() => {
             document.getElementById("tabla-detalles").innerHTML =
@@ -72,7 +335,6 @@ function initPedidoDetails(pedidoId, localizer) {
         }
     });
 }
-
 
 //  Función para manejar el detalle del cliente (email/telefono)
 function initClienteDetalle() {
@@ -156,6 +418,145 @@ function initClienteDetalle() {
             if (e.target.checked) actualizarDetalle(e.target.value);
         });
     });
+}
+
+// Función para escuchar el input de cantidad en la tabla de detalles para manejar
+// la cantidad de productos a añadir al pedido
+function initDetalleCantidadValidation() {
+
+    // Obtener el body de la tabla de detalles del pedido (tbody con id pedido-detalles-body)
+    const body = document.getElementById('pedido-detalles-body'); 
+
+    // Si no existe el body, salir de la función
+    if (!body) return;
+
+    // Escuchar el evento de input en el body de la tabla
+    body.addEventListener('input', (e) => {
+
+        // Asignar a input el elemento que disparó el evento
+        const input = e.target;
+
+        // Si el elemento que disparó el evento no tiene la clase qty-input, salir de la función
+        if (!input.classList.contains('qty-input')) return;
+
+        // Solo dígitos, sin signos ni decimales
+        input.value = input.value.replace(/[^\d]/g, '');
+
+        // Limitar a 3 dígitos
+        if (input.value.length > 3) {
+            input.value = input.value.slice(0, 3);
+        }
+
+        // Convertir el valor del input a un número entero, o 0 si no hay valor
+        const numero = parseInt(input.value || '0', 10);
+
+        //// Mensaje localizado desde data-* en algún contenedor global (ajusta a tu caso)
+        //const msjCantidad = document.body.dataset.msjCantidad || 'Cantidad entre 1 y 100';
+
+        // Buscar el elemento de error en la misma fila (td) del input
+        const errorEl = input.closest('td')?.querySelector('.qty-error');
+
+        // Validar el número ingresado
+        if (!isNaN(numero)) {
+
+            // Si el número es menor que 1 o mayor que 100, mostrar mensaje de error
+            if (numero < 1 || numero > 100) {
+                if (errorEl) errorEl.textContent = msjCantidad;
+                input.classList.add('border-red-500');
+
+            // Si el número es válido, limpiar el mensaje de error
+            } else {
+                if (errorEl) errorEl.textContent = '';
+                input.classList.remove('border-red-500');
+            }
+
+        // Si el número no es un número válido, mostrar mensaje de error
+        } else {
+            if (errorEl) errorEl.textContent = '';
+            input.classList.remove('border-red-500');
+        }
+    });
+}
+
+// Función para inicializar el bloqueo de borrado en los inputs de cantidad
+function initBloqueoBorradoCantidad() {
+
+    // Obtener el body de la tabla de detalles del pedido (tbody con id pedido-detalles-body)
+    const body = document.getElementById('pedido-detalles-body');
+
+    // Si no existe el body, salir de la función
+    if (!body) return;
+
+    // Bloquear borrar si deja vacío
+    body.addEventListener('keydown', (e) => {
+        const input = e.target;
+        if (!input.classList.contains('qty-input')) return;
+
+        const key = e.key;
+        const blocked = (key === 'Backspace' || key === 'Delete');
+
+        // Evitar Ctrl/Cmd + X
+        if ((e.ctrlKey || e.metaKey) && key.toLowerCase() === 'x') {
+            e.preventDefault();
+            return;
+        }
+
+        // Si la tecla es Backspace o Delete, verificar si se debe bloquear
+        if (blocked) {
+            const val = input.value ?? '';
+            const start = input.selectionStart ?? 0;
+            const end = input.selectionEnd ?? 0;
+            const allSelected = (start === 0 && end === val.length);
+
+            // Si el valor es vacío o solo un dígito, bloquear el borrado
+            const dejarVacio = allSelected || (val.length <= 1 && start === end);
+            if (dejarVacio) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    // Bloquear pegar/cortar
+    body.addEventListener('paste', (e) => {
+        if (e.target.classList.contains('qty-input')) e.preventDefault();
+    });
+    body.addEventListener('cut', (e) => {
+        if (e.target.classList.contains('qty-input')) e.preventDefault();
+    });
+
+    // En blur, nunca permitir vacío o 0
+    body.addEventListener('blur', (e) => {
+        const input = e.target;
+        if (!input.classList.contains('qty-input')) return;
+        if (input.value === '' || input.value === '0') input.value = '1';
+    }, true);
+}
+
+// Función para bloquear el borrado en el input de cantidad
+function bloquearBorradoInputCantidad() {
+    const input = document.getElementById("inputCantidad");
+
+    if (!input) return;
+
+    // Escuchar el evento de key down cuando se 
+    // inserta valor en el input de cantidad
+    input.addEventListener("keydown", (e) => {
+        // Bloquear teclas de borrado
+        const teclasBloqueadas = ["Backspace", "Delete"];
+
+        if (teclasBloqueadas.includes(e.key)) {
+            e.preventDefault();
+        }
+
+        // También bloquear CTRL + X
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
+            e.preventDefault();
+        }
+    });
+
+    // Bloquear pegar
+    input.addEventListener("paste", (e) => e.preventDefault());
+    input.addEventListener("cut", (e) => e.preventDefault());
 }
 
 // Función para cargar provincias, cantones y distritos para el envío
@@ -294,3 +695,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Cuando el DOM esté listo, llamar a la función para cargar provincias
 document.addEventListener('DOMContentLoaded', cargarProvincias);
+
+
