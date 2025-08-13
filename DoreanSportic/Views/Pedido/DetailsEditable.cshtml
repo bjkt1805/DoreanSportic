@@ -159,6 +159,99 @@
     @Html.AntiForgeryToken()
 </form>
 
+<!-- Modal para agregar el modal de método de pago y pago -->
+@* Token anti-forgery accesible para JS *@
+<form id="form-anti-forgery">@Html.AntiForgeryToken()</form>
+
+<dialog id="modalPago" class="modal">
+    
+    <div class="modal-box bg-white rounded w-125" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
+
+        <div class="flex flex-row justify-between mt-1">
+            <h3 class="text-lg font-bold mb-2">PROCESAR PAGO</h3>
+
+            <button type="button"
+                    class="btn btn-sm btn-circle bg-black text-white"
+                    onclick="document.getElementById('modalPago').close()">
+                ✕
+            </button>
+        </div>
+        <p class="text-xs italic mb-4">Elija un método de pago y complete los datos.</p>
+
+        <!-- Método de pago -->
+        <div class="form-control mb-4">
+            <label class="label font-bold mb-2">Método de pago</label>
+            <div class="flex gap-4">
+                <label><input type="radio" name="pago-metodo" value="tarjeta" checked /> Tarjeta (Crédito/Débito)</label>
+                <label><input type="radio" name="pago-metodo" value="efectivo" /> Efectivo</label>
+            </div>
+        </div>
+
+        <!-- Formulario TARJETA -->
+        <div id="section-tarjeta" class="space-y-3">
+            <div>
+                <label class="label font-bold">Número de tarjeta</label>
+                <input id="card-number" class="input input-bordered w-full" maxlength="19" placeholder="#### #### #### ####" inputmode="numeric" />
+                <div id="err-card-number" class="text-red-600 text-xs mt-1"></div>
+            </div>
+
+            <div class="flex gap-3">
+                <div class="w-1/2">
+                    <label class="label font-bold">Fecha expiración (MM/AA)</label>
+                    <input id="card-exp" class="input input-bordered w-full" maxlength="5" placeholder="MM/AA" />
+                    <div id="err-card-exp" class="text-red-600 text-xs mt-1"></div>
+                </div>
+                <div class="w-1/2">
+                    <label class="label font-bold">CVV</label>
+                    <input id="card-cvv" class="input input-bordered w-full" maxlength="4" placeholder="3 o 4 dígitos" inputmode="numeric" />
+                    <div id="err-card-cvv" class="text-red-600 text-xs mt-1"></div>
+                </div>
+            </div>
+
+            <div>
+                <label class="label font-bold">Nombre del titular</label>
+                <input id="card-name" class="input input-bordered w-full" maxlength="80" placeholder="Como aparece en la tarjeta" />
+                <div id="err-card-name" class="text-red-600 text-xs mt-1"></div>
+            </div>
+        </div>
+
+        <!-- Formulario EFECTIVO -->
+        <div id="section-efectivo" class="space-y-3" style="display:none;">
+            <div>
+                <label class="label font-bold">Monto entregado</label>
+                <input id="cash-amount" class="input input-bordered w-full" inputmode="decimal" placeholder="0.00" />
+                <div id="err-cash-amount" class="text-red-600 text-xs mt-1"></div>
+            </div>
+
+            <div>
+                <label class="label font-bold">Vuelto</label>
+                <input id="cash-change" class="input input-bordered w-full" disabled />
+            </div>
+        </div>
+
+        <!-- Resumen -->
+        <div class="border rounded p-3 my-4 text-sm">
+            <div><b>Subtotal:</b> <span id="pago-sub">—</span></div>
+            <div><b>Impuesto (13%):</b> <span id="pago-imp">—</span></div>
+            <div><b>Total:</b> <span id="pago-tot">—</span></div>
+        </div>
+
+        <div class="modal-action flex justify-between">
+            <button type="button" class="btn btn-outline"
+                    onclick="document.getElementById('modalPago').close()">
+                Cancelar
+            </button>
+            <button id="btn-confirmar-pago" type="button" class="btn btn-success text-white">
+                Confirmar pago
+            </button>
+        </div>
+
+        <div id="pago-status" class="mt-2 text-sm"></div>
+        <div id="pago-errores-stock" class="mt-2 text-sm text-red-600 whitespace-pre-line"></div>
+    </div>
+</dialog>
+
+
 @section Scripts {
     <script>
         window.PedidoConfig = {

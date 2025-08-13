@@ -15,6 +15,56 @@ function formatColones(value) {
     return `₡${partes[0]}.${partes[1]}`;
 }
 
+// Función básica Luhn para validar número de tarjeta
+function luhnCheck(numStr) {
+
+    const digits = (numStr || '').replace(/\s+/g, '');
+    if (!/^\d+$/.test(digits)) return false;
+    let sum = 0, alt = false;
+    for (let i = digits.length - 1; i >= 0; i--) {
+        let n = parseInt(digits[i], 10);
+        if (alt) {
+            n *= 2;
+            if (n > 9) n -= 9;
+        }
+        sum += n;
+        alt = !alt;
+    }
+    return (sum % 10) === 0;
+}
+
+// Para verificar que la tarjeta no esté expirada (mes/año)
+function expValida(mmAA) {
+
+    // 
+    if (!/^\d{2}\/\d{2}$/.test(mmAA)) return false;
+    const [mmStr, aaStr] = mmAA.split('/');
+    const mm = Number(mmStr), aa = Number(aaStr);
+    if (mm < 1 || mm > 12) return false;
+
+    // Año base 2000-2099 para “AA”
+    const year = 2000 + aa;
+    const now = new Date();
+    // último día del mes de vencimiento
+    const expDate = new Date(year, mm, 0, 23, 59, 59);
+    return expDate >= now;
+}
+
+function parseMoney(v) {
+    if (typeof v !== 'string') return Number(v) || 0;
+    return Number(v.replace(/[^\d.]/g, '')) || 0;
+}
+
+// Función para pintar totales del modal leyendo los ya mostrados en la página
+function pintarTotalesModalDesdePantalla() {
+    const sub = document.getElementById('totals-sub')?.textContent ?? '—';
+    const imp = document.getElementById('totals-tax')?.textContent ?? '—';
+    const tot = document.getElementById('totals-grand')?.textContent ?? '—';
+    document.getElementById('pago-sub').textContent = sub;
+    document.getElementById('pago-imp').textContent = imp;
+    document.getElementById('pago-tot').textContent = tot;
+}
+
 // Función para leer la cantidad de una fila de productos por detalleId
 function getCantidadProducto(detalleId) {
 
@@ -372,11 +422,200 @@ function bindParcialEventos(root) {
                         document.getElementById('pedido-estado').textContent = data.estadoNombre;
                     }
 
-                    // Mostrar toast de exito y redireccionar a la página de pago
-                    mostrarToast('¡Éxito! Procede a pagar el pedido', "success");
-                    setTimeout(() => {
-                        window.location.href = "/Producto/Index";
-                    }, 750); 
+                    // Limpia campos/errores
+                    document.getElementById('pago-status').textContent = '';
+                    document.getElementById('pago-errores-stock').textContent = '';
+                    document.getElementById('card-number').value = '';
+                    document.getElementById('card-exp').value = '';
+                    document.getElementById('card-cvv').value = '';
+                    document.getElementById('card-name').value = '';
+                    document.getElementById('cash-amount').value = '';
+                    document.getElementById('cash-change').value = '';
+
+                    // Método por defecto: tarjeta
+                    document.querySelector('input[name="pago-metodo"][value="tarjeta"]').checked = true;
+                    document.getElementById('section-tarjeta').style.display = '';
+                    document.getElementById('section-efectivo').style.display = 'none';
+
+                    pintarTotalesModalDesdePantalla();
+                    // Cargar el modal para proceder con el pago
+                    document.getElementById('modalPago').showModal();
+
+                    // Toggle secciones según método
+                    document.querySelectorAll('input[name="pago-metodo"]').forEach(r => {
+                        r.addEventListener('change', (e) => {
+                            const m = e.target.value;
+                            document.getElementById('section-tarjeta').style.display = (m === 'tarjeta') ? '' : 'none';
+                            document.getElementById('section-efectivo').style.display = (m === 'efectivo') ? '' : 'none';
+                        });
+                    });
+
+                    // Formateo amigable para número de tarjeta #### #### #### ####
+                    document.getElementById('card-number')?.addEventListener('input', (e) => {
+                        let v = e.target.value.replace(/[^\d]/g, '').slice(0, 16);
+                        v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+                        e.target.value = v;
+                    });
+
+                    // Solo “MM/AA”
+                    document.getElementById('card-exp')?.addEventListener('input', (e) => {
+                        let v = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
+                        if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+                        e.target.value = v;
+                    });
+
+                    // CVV numérico 3 o 4
+                    document.getElementById('card-cvv')?.addEventListener('input', (e) => {
+                        e.target.value = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
+                    });
+
+                    // Efectivo: calcular vuelto en vivo
+                    document.getElementById('cash-amount')?.addEventListener('input', (e) => {
+                        const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
+                        const total = parseMoney(totalTxt);
+                        const entregado = parseMoney(e.target.value || '');
+                        const vuelto = Math.max(0, entregado - total);
+                        document.getElementById('cash-change').value = formatColones(vuelto);
+                    });
+
+                    /* ========== Confirmar pago (validaciones + POST CompletarCompra) ========== */
+                    document.getElementById('btn-confirmar-pago')?.addEventListener('click', async () => {
+                        const statusEl = document.getElementById('pago-status');
+                        const errStockEl = document.getElementById('pago-errores-stock');
+                        statusEl.textContent = ''; errStockEl.textContent = '';
+
+                        const metodo = document.querySelector('input[name="pago-metodo"]:checked')?.value || 'tarjeta';
+                        const token = document.querySelector('#form-anti-forgery input[name="__RequestVerificationToken"]')?.value;
+                        const pedidoId = Number(document.getElementById('detalles-root')?.dataset?.pedidoId);
+
+                        // Totales
+                        const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
+                        const total = parseMoney(totalTxt);
+
+                        // Reset errores
+                        const setErr = (id, msg) => { const el = document.getElementById(id); if (el) el.textContent = msg || ''; };
+
+                        // Validaciones según método
+                        if (metodo === 'tarjeta') {
+                            const cardNum = document.getElementById('card-number').value.trim();
+                            const cardExp = document.getElementById('card-exp').value.trim();
+                            const cardCVV = document.getElementById('card-cvv').value.trim();
+                            const cardName = document.getElementById('card-name').value.trim();
+
+                            let ok = true;
+
+                            // Número: 16 dígitos y Luhn
+                            const numDigits = cardNum.replace(/\s+/g, '');
+                            if (!/^\d{16}$/.test(numDigits)) {
+                                setErr('err-card-number', 'Debe tener 16 dígitos.');
+                                ok = false;
+                            } else if (!luhnCheck(cardNum)) {
+                                setErr('err-card-number', 'Número inválido (Luhn).');
+                                ok = false;
+                            } else {
+                                setErr('err-card-number', '');
+                            }
+
+                            // Expiración válida y no pasada
+                            if (!expValida(cardExp)) {
+                                setErr('err-card-exp', 'Fecha inválida o vencida (MM/AA).');
+                                ok = false;
+                            } else {
+                                setErr('err-card-exp', '');
+                            }
+
+                            // CVV 3 o 4 dígitos
+                            if (!/^\d{3,4}$/.test(cardCVV)) {
+                                setErr('err-card-cvv', 'CVV inválido (3 o 4 dígitos).');
+                                ok = false;
+                            } else {
+                                setErr('err-card-cvv', '');
+                            }
+
+                            // Nombre titular no vacío
+                            if (!cardName) {
+                                setErr('err-card-name', 'El nombre es requerido.');
+                                ok = false;
+                            } else {
+                                setErr('err-card-name', '');
+                            }
+
+                            if (!ok) return; // no enviamos al servidor
+
+                        } else { // efectivo
+                            const cash = parseMoney(document.getElementById('cash-amount').value || '');
+                            let ok = true;
+
+                            if (!(cash > 0)) {
+                                document.getElementById('err-cash-amount').textContent = 'Monto inválido (numérico y positivo).';
+                                ok = false;
+                            } else if (cash < total) {
+                                document.getElementById('err-cash-amount').textContent = 'El monto debe ser >= al total.';
+                                ok = false;
+                            } else {
+                                document.getElementById('err-cash-amount').textContent = '';
+                            }
+
+                            if (!ok) return;
+                        }
+
+                        // Si pasaron validaciones, “procesamos” pago y confirmamos el pedido
+                        statusEl.textContent = 'Procesando pago...';
+                        statusEl.className = 'text-sm text-slate-600';
+                        document.getElementById('btn-confirmar-pago').disabled = true;
+
+                        try {
+                            // Nota: aquí **no** enviamos datos de tarjeta al servidor (simulación local).
+                            // Solo llamamos a CompletarCompra para cerrar el pedido.
+                            const resp = await fetch('/Pedido/CompletarCompra', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': token
+                                },
+                                body: JSON.stringify({
+                                    pedidoId: pedidoId,
+                                    direccionEnvio: null // si ya guardaste antes; o manda la que corresponda
+                                })
+                            });
+
+                            const data = await resp.json();
+
+                            if (data?.success) {
+                                statusEl.textContent = 'Pago completado. ¡Gracias!';
+                                statusEl.className = 'text-sm text-green-600';
+
+                                // Refrescar navbar del carrito
+                                window.recargarResumenCarritoNavbar?.();
+
+                                // Recargar parcial de detalles (mostrará “No hay productos…” si ya quedó vacío)
+                                if (typeof recargarParcial === 'function') {
+                                    await recargarParcial(pedidoId);
+                                }
+
+                                // Cerrar modal
+                                document.getElementById('modalPago').close();
+
+                                // (Opcional) redirigir a página de gracias
+                                // window.location.href = `/Pedido/Gracias/${pedidoId}`;
+                            } else {
+                                if (data?.errores && Array.isArray(data.errores)) {
+                                    // Errores de stock
+                                    const lista = data.errores.map(e =>
+                                        `• ${e.nombre}: solicitado ${e.cant}, disponible ${e.stockDisp}`).join('\n');
+                                    errStockEl.textContent = lista;
+                                }
+                                statusEl.textContent = data?.mensaje || 'No fue posible completar la compra.';
+                                statusEl.className = 'text-sm text-red-600';
+                            }
+                        } catch {
+                            statusEl.textContent = 'Error inesperado al pagar.';
+                            statusEl.className = 'text-sm text-red-600';
+                        } finally {
+                            document.getElementById('btn-confirmar-pago').disabled = false;
+                        }
+
+                    });
 
 
                 } else {
@@ -386,6 +625,7 @@ function bindParcialEventos(root) {
             } catch {
                 // Si la respuesta no es exitosa, mostrar mensaje de error
                 mostrarToast('Error inesperado', "error");
+            }
         });
 }
 
