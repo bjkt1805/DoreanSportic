@@ -40,7 +40,8 @@ namespace DoreanSportic.Web.Controllers
         {
             // Listar las reseñas asociadas a un producto
             var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);
-
+            // Pasar el ID del pedido a la vista parcial por medio de ViewData
+            ViewData["PedidoId"] = idPedido;
             return PartialView("_DetallesPedidoEditable", collection);
         }
 

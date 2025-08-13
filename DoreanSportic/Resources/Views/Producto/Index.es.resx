@@ -123,4 +123,7 @@
   <data name="Accesorios" xml:space="preserve">
     <value>Accesorios</value>
   </data>
+  <data name="Cargando" xml:space="preserve">
+    <value>Cargando</value>
+  </data>
 </root>

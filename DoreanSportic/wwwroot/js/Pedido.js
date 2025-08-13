@@ -20,7 +20,7 @@ function bindParcialEventos(root) {
     if (!root) return;
 
     // Obtener el id del pedido desde el elemento raíz (root) en este caso sería <div id="detalles-root">
-    const pedidoId = root.dataset.pedidoId; 
+    const pedidoId = root.dataset.pedidoId;
 
     // Obtener el contenido de detalles del pedido (body de la tabla = <tbody id="pedido-detalles-body">)
     const body = root.querySelector('#pedido-detalles-body');
@@ -106,7 +106,14 @@ function bindParcialEventos(root) {
             if (data.eliminado) {
                 filaTabla.remove();
 
-            // Si hay detalle, hay que actualizar las filas subtotal y precio unitario 
+                // Si no hay más filas en el body, recargar la vista parcial para mostrar mensaje de "no hay detalles"
+                const quedan = body.querySelectorAll('tr[data-detalle-id]').length > 0;
+                if (!quedan) {
+                    await recargarParcial(pedidoId);
+                    return;
+                }
+
+                // Si hay detalle, hay que actualizar las filas subtotal y precio unitario 
             } else if (data.detalle) {
 
                 // Actualizar el contenido de las celdas subTotal y Precio Unitario con los nuevos valores
@@ -123,8 +130,8 @@ function bindParcialEventos(root) {
     // Función para eliminar un detalle del pedido
     body?.addEventListener('click', async (e) => {
 
-        // Si el elemento que disparó el evento no tiene clase de btn-eliminar, salir de la función
-        if (!e.target.classList.contains('btn-eliminar')) return;
+        // Si el elemento que disparó el evento no tiene la clase btn-eliminar-detalle, salir de la función
+        if (!e.target.classList.contains('btn-eliminar-detalle')) return;
 
         // Asignar a filatabla la fila de la tabla (tr) más cercana al elemento que disparó el evento
         const filaTabla = e.target.closest('tr');
@@ -158,6 +165,13 @@ function bindParcialEventos(root) {
         if (data.success) {
             filaTabla.remove();
             actualizarTotales(data.totals);
+
+            // Si no hay más filas en el body, recargar la vista parcial para mostrar mensaje de "no hay detalles"
+            const quedan = body.querySelectorAll('tr[data-detalle-id]').length > 0;
+            if (!quedan) {
+                await recargarParcial(pedidoId);
+                return;
+            }
         }
     });
 
@@ -246,7 +260,7 @@ function bindParcialEventos(root) {
                 // Cambiar la clase del estado a texto rojo
                 status.className = 'text-sm text-red-600';
 
-            // Finalmente el mensaje de estado después de 2.5 segundos
+                // Finalmente el mensaje de estado después de 2.5 segundos
             } finally {
                 setTimeout(() => { status.textContent = ""; }, 2500);
             }
@@ -425,7 +439,7 @@ function initClienteDetalle() {
 function initDetalleCantidadValidation() {
 
     // Obtener el body de la tabla de detalles del pedido (tbody con id pedido-detalles-body)
-    const body = document.getElementById('pedido-detalles-body'); 
+    const body = document.getElementById('pedido-detalles-body');
 
     // Si no existe el body, salir de la función
     if (!body) return;
@@ -464,13 +478,13 @@ function initDetalleCantidadValidation() {
                 if (errorEl) errorEl.textContent = msjCantidad;
                 input.classList.add('border-red-500');
 
-            // Si el número es válido, limpiar el mensaje de error
+                // Si el número es válido, limpiar el mensaje de error
             } else {
                 if (errorEl) errorEl.textContent = '';
                 input.classList.remove('border-red-500');
             }
 
-        // Si el número no es un número válido, mostrar mensaje de error
+            // Si el número no es un número válido, mostrar mensaje de error
         } else {
             if (errorEl) errorEl.textContent = '';
             input.classList.remove('border-red-500');
@@ -532,31 +546,20 @@ function initBloqueoBorradoCantidad() {
     }, true);
 }
 
-// Función para bloquear el borrado en el input de cantidad
-function bloquearBorradoInputCantidad() {
-    const input = document.getElementById("inputCantidad");
+// Función para recargar la vista parcial si ya no hay detalles en el pedido
+async function recargarSiNoHayDetalles(pedidoId) {
 
-    if (!input) return;
+    // Hacer fetch a la API para obtener los detalles del pedido
+    const html = await fetch(`/PedidoDetalle/GetDetallesPorPedido?idPedido=${pedidoId}`)
 
-    // Escuchar el evento de key down cuando se 
-    // inserta valor en el input de cantidad
-    input.addEventListener("keydown", (e) => {
-        // Bloquear teclas de borrado
-        const teclasBloqueadas = ["Backspace", "Delete"];
+    // asignar el resultado a la tabla de detalles
+    document.getElementById("tabla-detalles").innerHTML = html;
 
-        if (teclasBloqueadas.includes(e.key)) {
-            e.preventDefault();
-        }
+    // obtener el elemento raíz de detalles
+    const root = document.getElementById("detalles-root");
 
-        // También bloquear CTRL + X
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
-            e.preventDefault();
-        }
-    });
-
-    // Bloquear pegar
-    input.addEventListener("paste", (e) => e.preventDefault());
-    input.addEventListener("cut", (e) => e.preventDefault());
+    // Reenganchar los eventos a la tabla de detalles del pedido
+    bindParcialEventos(root);
 }
 
 // Función para cargar provincias, cantones y distritos para el envío
@@ -691,9 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Inicializar la función para manejar el detalle del cliente (radios de email/telefono))
     initClienteDetalle();
-});
+})
 
 // Cuando el DOM esté listo, llamar a la función para cargar provincias
 document.addEventListener('DOMContentLoaded', cargarProvincias);
-
-
