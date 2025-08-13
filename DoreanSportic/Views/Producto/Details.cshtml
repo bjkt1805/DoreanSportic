@@ -200,6 +200,8 @@
 
     <!-- Formulario para agregar el producto al pedido -->
     <div class="p-2 h-auto" style="width: 100%">
+
+        <!-- Si el stock del producto es mayor a 0 mostrar el formulario para agregarlo al carrito -->
         @if (Model.Producto.Stock > 0)
         {
 

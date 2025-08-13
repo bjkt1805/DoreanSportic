@@ -137,32 +137,15 @@
                 </div>
             }
 
-            <!-- Botones alineados abajo con justify-between -->  
-            <div class="flex justify-between gap-2">  
-                
+            <!-- Contenedor del botón de "Agregar"-->
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+
                 <!-- Redirección a la vista de detalles -->
                 <a class="btn btn-soft btn-primary text-white"
                    asp-action="Details" asp-route-id="@item.Id">
                     @(Localizer["Ver detalles"])
                 </a>
-
-                <!-- Botón para agregar al carrito -->
-                @{
-                    if (item.Stock == 0)
-                    {
-                        <button class="btn btn-soft text-white cursor-not-allowed" style="background-color: #808080" disabled>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
-                            @(Localizer["Agregar"])
-                        </button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-soft bg-[#006400] text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
-                            @(Localizer["Agregar"])
-                        </button>
-                    }
-                }
+                
             </div>
         </div>  
     </div>  

@@ -38,7 +38,7 @@ namespace DoreanSportic.Controllers
         //}
 
         // GET: PedidoController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> DetailsEditable(int id)
         {
             var @object = await _servicePedido.FindByIdAsync(id);
             return View(@object);

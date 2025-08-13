@@ -73,7 +73,7 @@
                     <td class="text-center w-25">
                         <input class="input input-bordered w-full qty-input"
                                type="number" min="0" step="1" value="@item.Cantidad" max="@producto.Stock"
-                               inputmode="numeric" />
+                               inputmode="numeric" pattern="\d*" />
                         <span class="qty-error text-red-600 text-xs"></span>
                     </td>
                     <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", culturaPersonalizada)</td>
@@ -114,6 +114,7 @@
             <thead class="bg-primary text-white">
                 <tr>
                     <th class="text-left">@(Localizer["Producto"])</th>
+                    <th class="text-center">@(Localizer["Mensaje"])</th>
                     <th class="text-center">@(Localizer["Imagen personalizada"])</th>
                     <th class="text-center">@(Localizer["Criterios de personalización"])</th>
                     <th class="text-end">@(Localizer["Subtotal paquetes (ya incluido)"])</th>
@@ -139,9 +140,19 @@
                         <td class="text-left">
                             @item.IdProductoNavigation?.Nombre
                             <div class="text-xs text-slate-500">
-                                @* Podés mostrar también el SubTotal de producto base si querés, pero por ahora esta sección es sólo personalización *@
                             </div>
                         </td>
+
+                        @* Mostrar solo los primeros 15 caracteres del mensaje personalizado si sobrepasa 15 caracteres*@
+                        <td class="text-left">
+                            @(
+                                !string.IsNullOrEmpty(item.MensajePersonalizado)
+                                ? (item.MensajePersonalizado.Length > 15
+                                ? item.MensajePersonalizado.Substring(0, 15) + "..."
+                                : item.MensajePersonalizado)
+                                : ""
+                            )
+                    </td>
 
                         <td class="text-center">
                             @if (usaFoto)
@@ -159,7 +170,7 @@
                         <td class="text-center">
                             <div class="flex flex-col gap-1">
                                 <p style="font-size: 10px">
-                                    <b>@Localizer["Tipo de empaque"]:</b>
+                                    <b>@Localizer["Empaque"]:</b>
                                     @item.IdEmpaqueNavigation?.TipoEmpaque
                                     <span class="ml-2">₡@empaquePrecio.ToString("N2", culturaPersonalizada)</span>
                                 </p>

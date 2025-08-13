@@ -60,7 +60,7 @@
       <b>@(Localizer["Subtotal"]): </b>₡@subtotal.ToString("N2", culturaPersonalizada)</div>
     <div class="card-actions mt-2">
         <!-- Redirección a la vista de detalles del carrito -->
-        <a id="verCarrito" href="/Pedido/Details/@Model.PedidoId" class="btn btn-success btn-block">@(Localizer["Ver carrito"])</a>
+        <a id="verCarrito" href="/Pedido/DetailsEditable/@Model.PedidoId" class="btn btn-success btn-block">@(Localizer["Ver carrito"])</a>
 
     </div>
 </div>

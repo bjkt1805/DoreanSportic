@@ -144,6 +144,23 @@ function bindParcialEventos(root) {
         // Si el elemento que disparó el evento no tiene clase de cantidad, salir de la función
         if (!e.target.classList.contains('qty-input')) return;
 
+        // Evitar procesar mientras el valor está vacío ("")
+        if (e.target.value === '') return;
+
+        // Clamp por stock (respetar el stock máximo del producto y no sobrepasar el atributo max del input)
+        // Obtener el valor máximo del atributo max del input, o 999999 si no existe
+        const max = parseInt(e.target.getAttribute('max') || '999999', 10);
+
+        // Si el valor máximo es un número válido, verificar si la cantidad ingresada supera el máximo
+        if (!isNaN(max)) {
+            const v = parseInt(e.target.value, 10);
+
+            // Si el valor ingresado es un número válido y supera el máximo, establecer el valor del input al máximo
+            if (!isNaN(v) && v > max) {
+                e.target.value = String(max);
+            }
+        }
+
         // Obtener la fila de la tabla (tr) m cercana al elemento que disparó el evento
         const filaTabla = e.target.closest('tr');
 
@@ -157,8 +174,8 @@ function bindParcialEventos(root) {
         // Obtener el token de verificación anti-CSRF desde el formulario de encabezado del pedido
         const token = document.querySelector('#pedido-encabezado-form input[name="__RequestVerificationToken"]')?.value;
 
-        // Si la cantidad es NaN o menor que 0, asignar 0 al input y salir de la función
-        if (isNaN(cantidad) || cantidad < 0) { e.target.value = 0; return; }
+        // Si la cantidad no es válida o menor que 0, no continuar (no enviar 0)
+        if (isNaN(cantidad) || cantidad < 0) { return; }
 
         // Llamar a la API para actualizar la cantidad del detalle
         debounce(async () => {
@@ -196,12 +213,10 @@ function bindParcialEventos(root) {
                 // Refrescar navbar
                 window.recargarResumenCarritoNavbar?.();
 
-                // Si no hay más filas en el body, recargar la vista parcial para mostrar mensaje de "no hay detalles"
-                const quedan = body.querySelectorAll('tr[data-detalle-id]').length > 0;
-                if (!quedan) {
-                    await recargarParcial(pedidoId);
-                    return;
-                }
+                // Si no quedan filas ni en productos ni en personalizados, recargar la vista parcial de detalles
+                // para mostrar el mensaje vacío
+                const recargado = await verificarVacioYRecargar(pedidoId);
+                if (recargado) return;
 
                 // Si hay detalle, hay que actualizar las filas subtotal y precio unitario 
             } else if (data.detalle) {
@@ -280,12 +295,10 @@ function bindParcialEventos(root) {
             // Refrescar navbar
             window.recargarResumenCarritoNavbar?.();
 
-            // Si no hay más filas en el body, recargar la vista parcial para mostrar mensaje de "no hay detalles"
-            const quedan = body.querySelectorAll('tr[data-detalle-id]').length > 0;
-            if (!quedan) {
-                await recargarParcial(pedidoId);
-                return;
-            }
+            // Si no quedan filas ni en productos ni en personalizados, recargar la vista parcial de detalles
+            // para mostrar el mensaje vacío
+            const recargado = await verificarVacioYRecargar(pedidoId);
+            if (recargado) return;
         }
     });
 
@@ -558,6 +571,40 @@ function initDetalleCantidadValidation() {
     // Si no existe el body, salir de la función
     if (!body) return;
 
+    // Bloquear teclas inválidas en inputs number (e, E, +, -, ., , y espacios)
+    // En el evento keydown (insertando de texto con el teclado)
+    body.addEventListener('keydown', (ev) => {
+        const input = ev.target;
+        if (!input.classList.contains('qty-input')) return;
+
+        const k = ev.key;
+        const bloqueadas = ['e', 'E', '+', '-', '.', ',', ' '];
+        if (bloqueadas.includes(k)) {
+            ev.preventDefault();
+            return;
+        }
+    });
+
+    // Evitar que la rueda del mouse cambie el número
+    body.addEventListener('wheel', (ev) => {
+        const input = ev.target;
+        if (!input.classList.contains('qty-input')) return;
+        // Si el input tiene foco, evita el scroll-change
+        if (document.activeElement === input) {
+            ev.preventDefault();
+        }
+    }, { passive: false });
+
+    // Permitir solo números positivos enteros en los inputs de cantidad
+    body.addEventListener('paste', (ev) => {
+        const input = ev.target;
+        if (!input.classList.contains('qty-input')) return;
+        const clip = (ev.clipboardData || window.clipboardData).getData('text') || '';
+        if (!/^\d+$/.test(clip)) {
+            ev.preventDefault();
+        }
+    });
+
     // Escuchar el evento de input en el body de la tabla
     body.addEventListener('input', (e) => {
 
@@ -569,6 +616,18 @@ function initDetalleCantidadValidation() {
 
         // Solo dígitos, sin signos ni decimales
         input.value = input.value.replace(/[^\d]/g, '');
+
+        // Si quedó vacío, no seguimos (el usuario está escribiendo)
+        if (input.value === '') return;
+
+        // Respetar el max (stock)
+        const maxAttr = parseInt(input.getAttribute('max') || '999999', 10);
+        if (!isNaN(maxAttr)) {
+            const v = parseInt(input.value, 10);
+            if (!isNaN(v) && v > maxAttr) {
+                input.value = String(maxAttr);
+            }
+        }
 
         // Limitar a 3 dígitos
         if (input.value.length > 3) {
@@ -660,7 +719,7 @@ function initBloqueoBorradoCantidad() {
     }, true);
 }
 
-// Función para recargar la vista parcial si ya no hay detalles en el pedido
+// Función asincrónica para recargar la vista parcial si ya no hay detalles en el pedido
 async function recargarSiNoHayDetalles(pedidoId) {
 
     // Hacer fetch a la API para obtener los detalles del pedido
@@ -676,7 +735,7 @@ async function recargarSiNoHayDetalles(pedidoId) {
     bindParcialEventos(root);
 }
 
-// Función para cargar provincias, cantones y distritos para el envío
+// Función asincrónica para cargar provincias, cantones y distritos para el envío
 
 async function cargarProvincias() {
     // obtener el select de provincias
@@ -779,6 +838,44 @@ async function cargarProvincias() {
     });
 }
 
+// Función para recargar la vista parcial de detalles del pedido
+async function recargarParcial(pedidoId) {
+    // Hacer fetch a la API para obtener los detalles del pedido
+    const response = await fetch(`/PedidoDetalle/GetDetallesPorPedido?idPedido=${pedidoId}`);
+
+    // Si la respuesta no es exitosa, retornar false
+    if (!response.ok) return false;
+
+    // Obtener el HTML de la respuesta
+    const html = await response.text();
+
+    // Asignar el HTML a la tabla de detalles del pedido
+    document.getElementById("tabla-detalles").innerHTML = html;
+
+    // Reasignar eventos a la nueva tabla
+    const root = document.getElementById("detalles-root");
+    bindParcialEventos(root);
+
+    return true;
+}
+
+// Función asincrónica para verificar si NO quedan filas ni en productos ni en personalización y recargar la vista parcial de detalles
+async function verificarVacioYRecargar(pedidoId) {
+    // Body de la tabla de productos
+    const bodyProd = document.getElementById('pedido-detalles-body');
+    const quedanProd = !!bodyProd && bodyProd.querySelectorAll('tr[data-detalle-id]').length > 0;
+
+    // Body de tabla personalizados (puede no existir si nunca hubo personalizados)
+    const bodyPers = document.getElementById('tbody-personal');
+    const quedanPers = !!bodyPers && bodyPers.querySelectorAll('tr[data-detalle-id]').length > 0;
+
+    // Si NO queda nada en ninguno, pedir de nuevo la parcial (que mostrará el mensaje)
+    if (!quedanProd && !quedanPers) {
+        await recargarParcial(pedidoId);
+        return true; // indicó que recargó
+    }
+    return false; // no recargó
+}
 
 // Cuando el DOM esté listo, cargar las funciones de inicialización necesarias para manejar el pedido, detalles y cliente
 document.addEventListener("DOMContentLoaded", () => {
