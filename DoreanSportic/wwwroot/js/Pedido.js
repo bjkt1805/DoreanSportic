@@ -327,23 +327,25 @@ function bindParcialEventos(root) {
             // Asignar a otrasSennas el valor del input con id otras-senas, asegurando que sea un string sin espacios al inicio o final
             const otrasSennas = document.getElementById('otras-senas')?.value?.trim();
 
+            // Obtener la opción seleccionada por cada Select
+            const provinciaId = selectProv?.value?.trim();
+            const cantonId = selectCant?.value?.trim();
+            const distritoId = selectDist?.value?.trim();
+
+            // Bloquear si no hay selección real
+
+            if (!provinciaId) { mostrarToast('Seleccione una provincia', "error"); selectProv?.focus(); return; }
+            if (!cantonId) { mostrarToast('Seleccione un cantón', "error"); selectCant?.focus(); return; }
+            if (!distritoId) { mostrarToast('Seleccione un distrito', "error"); selectDist?.focus(); return; }
+
             // Asignar a constantes de tipo String el texto de las opciones seleccionadas en los selects de provincia, cantón y distrito
             const provinciaTxt = selectProv?.selectedOptions[0]?.text || '';
             const cantonTxt = selectCant?.selectedOptions[0]?.text || '';
             const disttritoTxt = selectDist?.selectedOptions[0]?.text || '';
 
-            // Si los textos no existen o están vacíos, mostrar un mensaje de alerta y salir de la función
-            if (!provinciaTxt || !cantonTxt || !disttritoTxt) {
-                alert('Por favor seleccione provincia, cantón y distrito.');
-                return;
-            }
-
             // Armar la dirección compuesta con los textos de provincia, cantón, distrito y otras señas (si existen)
             const direccionCompuesta =
                 `${provinciaTxt}, ${cantonTxt}, ${disttritoTxt}${otrasSennas ? `. ${otrasSennas}` : ''}`;
-
-            // Asignar a status el elemento con id save-status
-            const status = document.getElementById('save-status');
 
             // Realizar la llamada al servidor para actualizar el encabezado del pedido con la dirección de envío
             try {
@@ -370,27 +372,20 @@ function bindParcialEventos(root) {
                         document.getElementById('pedido-estado').textContent = data.estadoNombre;
                     }
 
-                    // Actualizar el texto del estado de guardado
-                    status.textContent = (window.PedidoConfig?.localizer || {})["Encabezado guardado"] || "Encabezado guardado";
-                    // Cambiar la clase del estado a texto verde
-                    status.className = 'text-sm text-green-600';
+                    // Mostrar toast de exito y redireccionar a la página de pago
+                    mostrarToast('¡Éxito! Procede a pagar el pedido', "success");
+                    setTimeout(() => {
+                        window.location.href = "/Producto/Index";
+                    }, 750); 
+
+
                 } else {
                     // Si la respuesta no es exitosa, mostrar mensaje de error
-                    status.textContent = data?.mensaje || (window.PedidoConfig?.localizer || {})["No fue posible guardar"] || "No fue posible guardar";
-                    // Cambiar la clase del estado a texto rojo
-                    status.className = 'text-sm text-red-600';
+                    mostrarToast('Error al procesar el pedido', "error");
                 }
             } catch {
-                // Si ocurre un error al hacer la llamada, mostrar mensaje de error
-                status.textContent = (window.PedidoConfig?.localizer || {})["Error inesperado"] || "Error inesperado";
-
-                // Cambiar la clase del estado a texto rojo
-                status.className = 'text-sm text-red-600';
-
-                // Finalmente el mensaje de estado después de 2.5 segundos
-            } finally {
-                setTimeout(() => { status.textContent = ""; }, 2500);
-            }
+                // Si la respuesta no es exitosa, mostrar mensaje de error
+                mostrarToast('Error inesperado', "error");
         });
 }
 
@@ -717,6 +712,32 @@ function initBloqueoBorradoCantidad() {
         if (!input.classList.contains('qty-input')) return;
         if (input.value === '' || input.value === '0') input.value = '1';
     }, true);
+}
+
+// Función para mostrar el toast a la hora de dar clic al botón "Pagar" ya sea exitoso o error
+function mostrarToast(mensaje, tipo = "info") {
+    const toast = document.createElement("div");
+    toast.className = `toast toast-top toast-center z-50`;
+    if (tipo === "error") {
+        toast.innerHTML = `
+            <div class="alert alert-${tipo}" style="background-color:#FF0000">
+                <span class="text-white font-bold">${mensaje}</span>
+            </div>
+        `;
+    }
+    else {
+        toast.innerHTML = `
+            <div class="alert alert-${tipo}">
+                <span class="text-black font-bold">${mensaje}</span>
+            </div>
+        `;
+    }
+    document.body.appendChild(toast);
+
+    // Esperar 4 segundos antes de remover el toast del DOM
+    setTimeout(() => {
+        toast.remove();
+    }, 1500);
 }
 
 // Función asincrónica para recargar la vista parcial si ya no hay detalles en el pedido

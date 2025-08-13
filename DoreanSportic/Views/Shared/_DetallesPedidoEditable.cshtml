@@ -215,18 +215,20 @@
         </tr>
         <tr class="bg-primary text-white text-lg">
             <td colspan="5" class="text-end fw-bold">
-                <b>@(Localizer["Total a pagar"]): </b>
-                <span id="totals-grand">₡@totIni.ToString("N2", culturaPersonalizada)</span>
+                <b>@(Localizer["Total a pagar"]):
+                    <span id="totals-grand">₡@totIni.ToString("N2", culturaPersonalizada)</span>
+                </b>
             </td>
         </tr>
     </tbody>
 </table>
 
 <!-- Botón para completar compra -->
-<div class="mt-4 flex p-2 gap-2">
+<div class="p-2" style="display: flex; justify-content: flex-end; gap: 10px;">
     <span id="save-status" class="text-sm mr-2"></span>
-    <button id="btn-completar-compra" class="btn btn-success text-white">
+    <button id="btn-completar-compra" class="btn btn-success text-black">
         <b>@Localizer["Pagar"]</b>
     </button>
 </div>
+
 

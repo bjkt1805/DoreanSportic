@@ -22,6 +22,22 @@ namespace DoreanSportic.Controllers
             _servicePedidoDetalle = servicePedidoDetalle;
         }
 
+
+        // Record (datos) para actualizar el encabezado del pedido
+        public record ActualizarEncabezadoReq
+        {
+            public int PedidoId { get; init; }
+            public int UserId { get; init; }
+            public string? DireccionEnvio { get; init; }
+        }
+
+        // Record (datos) para completar la compra
+        public record CompletarCompraRequest
+        {
+            public int PedidoId { get; set; }
+            public string? DireccionEnvio { get; set; }
+        }
+
         // GET: PedidoController
         public async Task<ActionResult> Index(int? page)
         {
@@ -57,27 +73,75 @@ namespace DoreanSportic.Controllers
             return Json(new { success = true, estadoNombre = "EstadoPago", totals = new { sub, imp, total } });
         }
 
+
+        // Completar la compra: valida stock, descuenta stock (dentro de ConfirmarAsync), 
+        // actualiza dirección, cambia estado y devuelve totales.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Confirmar(int pedidoId)
+        public async Task<IActionResult> CompletarCompra([FromBody] CompletarCompraRequest req)
         {
-            var (ok, errores) = await _servicePedido.ValidarStockAsync(pedidoId);
-            if (!ok) return Json(new { success = false, errores = errores.Select(e => new { e.detalleId, e.nombre, e.stockDisp, e.cant }) });
+            // Validar que la solicitud no sea nula y que el PedidoId sea válido
+            if (req is null || req.PedidoId <= 0)
+                return Json(new { success = false, mensaje = "Solicitud inválida." });
 
-            var confirmado = await _servicePedido.ConfirmarAsync(pedidoId);
-            if (!confirmado) return Json(new { success = false, mensaje = "No fue posible confirmar el pedido" });
+            // Verificar que venga dirección de envío para actualizar el pedido (encabezado)
+            if (!string.IsNullOrWhiteSpace(req.DireccionEnvio))
+            {
 
-            // Tras confirmar, totales ya quedan persistidos con estado.
-            var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(pedidoId);
-            return Json(new { success = true, mensaje = "Pedido registrado", totals = new { sub, imp, total } });
+                // Llamar al servicio para actualizar el encabezado del pedido
+                var actualizado = await _servicePedido.ActualizarEncabezadoAsync(
+                    pedidoId: req.PedidoId,
+                    userId: 0,
+                    direccionEnvio: req.DireccionEnvio
+                );
+
+                // Si no se pudo actualizar el encabezado, devolver un mensaje de error
+                if (!actualizado)
+                    return Json(new { success = false, mensaje = "No fue posible guardar la dirección de envío." });
+            }
+
+            // Validar stock de los detalles del pedido
+            var (okStock, errores) = await _servicePedido.ValidarStockAsync(req.PedidoId);
+
+            // Si no hay stock suficiente, devolver la lista de errores
+            if (!okStock)
+            {
+                // Devolver la lista de errores en formato JSON
+                return Json(new
+                {
+                    success = false,
+
+                    // Mensaje de error general
+                    errores = errores.Select(e => new
+                    {
+                        e.detalleId,
+                        e.nombre,
+                        e.stockDisp,
+                        e.cant
+                    })
+                });
+            }
+
+            // Confirmar el pedido: descuenta stock y cambia estado
+            var confirmado = await _servicePedido.ConfirmarAsync(req.PedidoId);
+
+            // Si no se pudo confirmar el pedido, devolver un mensaje de error
+            if (!confirmado)
+                return Json(new { success = false, mensaje = "No fue posible completar la compra." });
+
+            // Si todo salió bien, recalcular los totales del pedido
+            var (sub, imp, total) = await _servicePedido.RecalcularTotalesAsync(req.PedidoId);
+
+            // Devolver la respuesta JSON con el éxito de la operación y los totales
+            return Json(new
+            {
+                success = true,
+                mensaje = "Compra completada.",
+                totals = new { sub, imp, total }
+            });
         }
 
-        public record ActualizarEncabezadoReq
-        {
-            public int PedidoId { get; init; }
-            public int UserId { get; init; }
-            public string? DireccionEnvio { get; init; }
-        }
+
 
     }
 }
