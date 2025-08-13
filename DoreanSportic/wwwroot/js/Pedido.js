@@ -65,6 +65,10 @@ function calcularSubtotalPersonalizaciones() {
 
 // Función para asociar eventos a la tabla de detalles del pedido
 function bindParcialEventos(root) {
+
+    // Constante IVA
+    const IVA = 0.13;
+
     if (!root) return;
 
     // Obtener el id del pedido desde el elemento raíz (root) en este caso sería <div id="detalles-root">
@@ -206,6 +210,16 @@ function bindParcialEventos(root) {
                 filaTabla.querySelector('.cell-subtotal').textContent = formatColones(data.detalle.subTotal);
                 const punit = data.detalle.cantidad > 0 ? (data.detalle.subTotal / data.detalle.cantidad) : 0;
                 filaTabla.querySelector('.cell-punit').textContent = formatColones(punit);
+
+                // Calcular el impuesto y total de la fila
+                const impFila = Math.round(data.detalle.subTotal * IVA * 100) / 100;
+                const totFila = data.detalle.subTotal + impFila;
+
+                // Pintar en la fila
+                const taxCell = filaTabla.querySelector('.cell-tax');
+                const totalCell = filaTabla.querySelector('.cell-total');
+                if (taxCell) taxCell.textContent = formatColones(impFila);
+                if (totalCell) totalCell.textContent = formatColones(totFila);
 
                 // Actualizar la fila de personalización si existe
                 actualizarFilaPersonalizacion(detalleId);

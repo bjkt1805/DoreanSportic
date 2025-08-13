@@ -23,6 +23,9 @@
     var personalizados = Model.Where(x => x.IdEmpaque != null && x.Foto != null).ToList();
 
     decimal subtotalPersonalizaciones = 0m;
+
+    // IVA
+    const decimal IVA = 0.13m;
 }
 
 @if (!hayItemes)
@@ -35,7 +38,7 @@
             @Localizer["Agregar productos"]
         </a>
     </div>
-    @* No renderizamos la tabla ni totales si no hay items *@
+    @* No renderizar la tabla ni totales si no hay items *@
     return;
 }
 
@@ -47,6 +50,8 @@
                 <th class="text-center">@Localizer["Cantidad"]</th>
                 <th class="text-end">@Localizer["Precio"]</th>
                 <th class="text-end">@Localizer["Subtotal"]</th>
+                <th class="text-end">@Localizer["IVA (13%)"]</th>
+                <th class="text-center">@Localizer["Total"]</th>
                 <th class="text-end"></th>
             </tr>
         </thead>
@@ -56,6 +61,10 @@
                 var producto = item.IdProductoNavigation;
                 // precio estimado mostrado (tu subtotal / cantidad cuando carga por primera vez)
                 var precioUnitEstimado = item.Cantidad > 0 ? (item.SubTotal / item.Cantidad) : 0m;
+
+                // Cálculo por fila
+                var impFila = Math.Round(item.SubTotal * IVA, 2, MidpointRounding.AwayFromZero);
+                var totFila = item.SubTotal + impFila;
 
                 <tr data-detalle-id="@item.Id">
                     <td>
@@ -69,6 +78,9 @@
                     </td>
                     <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", culturaPersonalizada)</td>
                     <td class="text-end cell-subtotal">₡@item.SubTotal.ToString("N2", culturaPersonalizada)</td>
+
+                    <td class="text-end cell-tax">₡@impFila.ToString("N2", culturaPersonalizada)</td>
+                    <td class="text-end cell-total">₡@totFila.ToString("N2", culturaPersonalizada)</td>
 
                     <td class="text-end">
                         <div>
