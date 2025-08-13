@@ -492,7 +492,7 @@ function bindParcialEventos(root) {
                         const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
                         const total = parseMoney(totalTxt);
 
-                        // Reset errores
+                        // Reset de errores
                         const setErr = (id, msg) => { const el = document.getElementById(id); if (el) el.textContent = msg || ''; };
 
                         // Validaciones según método
