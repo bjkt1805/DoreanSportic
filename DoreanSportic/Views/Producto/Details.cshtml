@@ -277,7 +277,7 @@
                                                 class="select select-bordered w-full" 
                                                 style="border-color:black;">
 
-                                                <option value="">Seleccione un tipo</option>
+                                                <option value="">@(Localizer["Seleccione un tipo"])</option>
                                                 @foreach (var empaque in Model.EmpaquesDisponibles)
                                                 {
                                                     <option value="@empaque.Id" data-precio="@empaque.PrecioBase">
