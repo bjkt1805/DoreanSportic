@@ -15,6 +15,54 @@ function formatColones(value) {
     return `₡${partes[0]}.${partes[1]}`;
 }
 
+// Función para leer la cantidad de una fila de productos por detalleId
+function getCantidadProducto(detalleId) {
+
+    // Buscar la fila del producto por detalleId y obtener el valor del input de cantidad
+    const filaProd = document.querySelector(`tr[data-detalle-id="${detalleId}"]`);
+    if (!filaProd) return 0;
+    const val = Number(filaProd.querySelector('input.qty-input')?.value || 0);
+    return isNaN(val) ? 0 : val;
+}
+
+// Recalcula el subtotal de UNA fila personalizada (por cambio de cantidad)
+function actualizarFilaPersonalizacion(detalleId) {
+
+    // Buscar la fila de personalización por detalleId y actualizar el subtotal
+    const filaPers = document.querySelector(`#tbody-personal tr[data-detalle-id="${detalleId}"]`);
+
+    // Si no existe la fila de personalización, salir de la función
+    if (!filaPers) return;
+
+    // Asignar a cell la celda de subtotal de personalización
+    const cell = filaPers.querySelector('.cell-pers-subtotal');
+
+    // Asignar a unit el valor numérico del atributo data-unit-pers de la celda, o 0 si no existe
+    const unit = Number(cell?.dataset.unitPers || 0);
+
+    // Obtener la cantidad del producto desde la tabla de productos
+    const qty = getCantidadProducto(detalleId);
+
+    // Calcular el nuevo subtotal de personalización
+    const nuevo = unit * qty;
+
+    // Actualizar el contenido de la celda con el nuevo subtotal formateado
+    cell.textContent = formatColones(nuevo);
+}
+
+// Suma todos los subtotales de personalización en pantalla
+function calcularSubtotalPersonalizaciones() {
+    let total = 0;
+    document.querySelectorAll('#tbody-personal tr[data-detalle-id]').forEach(row => {
+        const cell = row.querySelector('.cell-pers-subtotal');
+        const unit = Number(cell?.dataset.unitPers || 0);
+        const detId = row.getAttribute('data-detalle-id');
+        const qty = getCantidadProducto(detId);
+        total += unit * qty;
+    });
+    return total;
+}
+
 // Función para asociar eventos a la tabla de detalles del pedido
 function bindParcialEventos(root) {
     if (!root) return;
@@ -32,13 +80,44 @@ function bindParcialEventos(root) {
         if (!total) return;
 
         // Obtener el valor de subtotal
-        const subTotal = root.querySelector('#totals-sub');
+        const subTotal = document.getElementById('totals-sub'); 
 
         // Obtener el valor del impuesto
-        const impuesto = root.querySelector('#totals-tax');
+        const impuesto = document.getElementById('totals-tax');  
 
         // Obtener el valor del total general
-        const granTotal = root.querySelector('#totals-grand');
+        const granTotal = document.getElementById('totals-grand');
+
+        // Calcular el subtotal de personalizaciones presente en el DOM
+        // Inicializar subtotal de personalizaciones a 0
+        let subPers = 0;
+
+        // Buscar todas las filas de personalizaciones y calcular el subtotal
+        const filasPers = document.querySelectorAll('#tbody-personal tr[data-detalle-id]');
+
+        // Iterar sobre cada fila de personalización para calcular el subtotal
+        filasPers.forEach(row => {
+
+            // Asignar a cell la celda de subtotal de personalización
+            const cell = row.querySelector('.cell-pers-subtotal');
+
+            // Si no existe la celda, salir de la función
+            const unit = Number(cell?.dataset.unitPers || 0);
+
+            // Asignar a detId el valor del atributo data-detalle-id de la fila
+            const detId = row.getAttribute('data-detalle-id');
+
+            // Buscar la cantidad actual del producto correspondiente en la tabla principal
+            const qtyInput = root.querySelector(`tr[data-detalle-id="${detId}"] input.qty-input`);
+            const qty = Number(qtyInput?.value || 0);
+
+            // Si la cantidad es un número válido, sumar al subtotal de personalizaciones
+            if (!isNaN(qty)) subPers += unit * qty;
+        });
+
+        // Pintar "Subtotal personalizaciones" si existe el elemento
+        const subPersEl = document.getElementById('sub-pers');
+        if (subPersEl) subPersEl.textContent = formatColones(subPers);
 
         // Si existe subTotal, darle formato de dos decimales y agregar el símbolo de colón
         if (subTotal) subTotal.textContent = formatColones(total.sub);
@@ -106,6 +185,13 @@ function bindParcialEventos(root) {
             if (data.eliminado) {
                 filaTabla.remove();
 
+                // Eliminar también la fila de personalización si existe
+                const persRow = document.querySelector(`#tbody-personal tr[data-detalle-id="${detalleId}"]`);
+                if (persRow) persRow.remove();
+
+                // Refrescar navbar
+                window.recargarResumenCarritoNavbar?.();
+
                 // Si no hay más filas en el body, recargar la vista parcial para mostrar mensaje de "no hay detalles"
                 const quedan = body.querySelectorAll('tr[data-detalle-id]').length > 0;
                 if (!quedan) {
@@ -120,10 +206,16 @@ function bindParcialEventos(root) {
                 filaTabla.querySelector('.cell-subtotal').textContent = formatColones(data.detalle.subTotal);
                 const punit = data.detalle.cantidad > 0 ? (data.detalle.subTotal / data.detalle.cantidad) : 0;
                 filaTabla.querySelector('.cell-punit').textContent = formatColones(punit);
+
+                // Actualizar la fila de personalización si existe
+                actualizarFilaPersonalizacion(detalleId);
             }
 
             // Actualizar los totales en pantalla con los nuevos valores
             actualizarTotales(data.totals);
+
+            // Refrescar navbar
+            window.recargarResumenCarritoNavbar?.();
         }, 350);
     });
 
@@ -164,7 +256,15 @@ function bindParcialEventos(root) {
         // Si la respuesta es exitosa, eliminar la fila de la tabla y actualizar los totales
         if (data.success) {
             filaTabla.remove();
+
+            // Eliminar también la fila de personalización si existe
+            const persRow = document.querySelector(`#tbody-personal tr[data-detalle-id="${detalleId}"]`);
+            if (persRow) persRow.remove();
+
             actualizarTotales(data.totals);
+
+            // Refrescar navbar
+            window.recargarResumenCarritoNavbar?.();
 
             // Si no hay más filas en el body, recargar la vista parcial para mostrar mensaje de "no hay detalles"
             const quedan = body.querySelectorAll('tr[data-detalle-id]').length > 0;
@@ -664,6 +764,7 @@ async function cargarProvincias() {
         }
     });
 }
+
 
 // Cuando el DOM esté listo, cargar las funciones de inicialización necesarias para manejar el pedido, detalles y cliente
 document.addEventListener("DOMContentLoaded", () => {

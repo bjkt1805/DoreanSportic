@@ -15,8 +15,9 @@
     // Obtener el ID del pedido desde ViewData
     var pedidoId = (int)(ViewData["PedidoId"] ?? 0);
 
-    // Para verificar si hay productos en la tabla de detalles
-    var hayItemes = Model != null && Model.Any();
+    // Para verificar si hay productos en el modelo del todo
+    var hayItemes =
+        (Model != null && Model.Any()) || (Model != null && Model.Any(x => x.IdEmpaque != null && x.Foto != null));
 
     // Verificar si hay productos personalizados
     var personalizados = Model.Where(x => x.IdEmpaque != null && x.Foto != null).ToList();
@@ -103,10 +104,10 @@
                     <th class="text-left">@(Localizer["Producto"])</th>
                     <th class="text-center">@(Localizer["Imagen personalizada"])</th>
                     <th class="text-center">@(Localizer["Criterios de personalización"])</th>
-                    <th class="text-end">@(Localizer["Subtotal"])</th>
+                    <th class="text-end">@(Localizer["Subtotal paquetes (ya incluido)"])</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody-personal">
                 @foreach (var item in personalizados)
                 {
                     var empaquePrecio = item.IdEmpaqueNavigation?.PrecioBase ?? 0m;
@@ -122,7 +123,7 @@
                     var subtotalFila = costoUnitarioPersonalizacion * item.Cantidad;
                     subtotalPersonalizaciones += subtotalFila;
 
-                    <tr>
+                    <tr data-detalle-id="@item.Id" class="row-personal">
                         <td class="text-left">
                             @item.IdProductoNavigation?.Nombre
                             <div class="text-xs text-slate-500">
@@ -161,38 +162,42 @@
                             </div>
                         </td>
 
-                        <td class="text-end">
+                        <!-- Guardar el costo unitario en data-unit-pers -->
+                        <td class="text-end cell-pers-subtotal"
+                            data-unit-pers="@costoUnitarioPersonalizacion">
                             ₡@subtotalFila.ToString("N2", culturaPersonalizada)
                         </td>
                     </tr>
                 }
-
-                <tr>
-                    <td colspan="5" class="text-end fw-bold">
-                        <b>@Localizer["Subtotal personalizaciones"]:</b>
-                        ₡@subtotalPersonalizaciones.ToString("N2", culturaPersonalizada)
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="5" class="text-end fw-bold">
-                        <b>@Localizer["Subtotal"]:</b> <span id="totals-sub">₡@subIni.ToString("N2", culturaPersonalizada)</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="text-end">
-                        <b>@(Localizer["Impuesto (IVA 13%)"]): </b> <span id="totals-tax">₡@impIni.ToString("N2", culturaPersonalizada)</span>
-                    </td>
-                </tr>
-                <tr class="bg-primary text-white text-lg">
-                    <td colspan="5" class="text-end fw-bold">
-                        <b>@(Localizer["Total a pagar"]): </b><span id="totals-grand">₡@totIni.ToString("N2", culturaPersonalizada)</span>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
 }
+
+
+@* Bloque de totales: SIEMPRE visible *@
+<table class="table mt-2">
+    <tbody>
+        <tr>
+            <td colspan="5" class="text-end fw-bold">
+                <b>@Localizer["Subtotal (productos + personalizados)"]:</b>
+                <span id="totals-sub">₡@subIni.ToString("N2", culturaPersonalizada)</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="text-end">
+                <b>@(Localizer["Impuesto (IVA 13%)"]): </b>
+                <span id="totals-tax">₡@impIni.ToString("N2", culturaPersonalizada)</span>
+            </td>
+        </tr>
+        <tr class="bg-primary text-white text-lg">
+            <td colspan="5" class="text-end fw-bold">
+                <b>@(Localizer["Total a pagar"]): </b>
+                <span id="totals-grand">₡@totIni.ToString("N2", culturaPersonalizada)</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <!-- Botón para completar compra -->
 <div class="mt-4 flex p-2 gap-2">
