@@ -97,7 +97,7 @@ function cargarVista(ruta) {
         })
         .catch(error => {
             console.error("Error al cargar la vista:", error);
-            container.innerHTML = `<p class="text-red-600 font-semibold">Error al cargar la vista. <br> ${error.message}</p>`;
+            container.innerHTML = `<p class="text-red-600 font-semibold">ERROR<br> ${error.message}</p>`;
         });
 }
 
@@ -128,7 +128,7 @@ function inicializarVistaProductos() {
             .catch(error => {
                 console.error("Error al cargar productos:", error);
                 setTimeout(() => {
-                    container.innerHTML = "<p class='text-red-500'>Error al cargar los productos.</p>";
+                    container.innerHTML = "<p class='text-red-500'>ERROR</p>";
                     loader.classList.add('hidden');
                 }, 500);
             });
@@ -169,7 +169,7 @@ function cargarDetalleProducto(idProducto) {
         })
         .catch(err => {
             console.error("Error al cargar detalles:", err);
-            container.innerHTML = `<p class="text-red-500">Error al cargar detalles del producto.</p>`;
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -195,7 +195,7 @@ function cargarDetalleResenna(idResenna) {
         })
         .catch(err => {
             console.error("Error al cargar detalles:", err);
-            container.innerHTML = `<p class="text-red-500">Error al cargar detalles de la reseña.</p>`;
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -221,7 +221,7 @@ function cargarDetallePromocion(idPromocion) {
         })
         .catch(err => {
             console.error("Error al cargar detalles:", err);
-            container.innerHTML = `<p class="text-red-500">Error al cargar detalles de la promoción.</p>`;
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -306,7 +306,7 @@ function cargarResennasProducto(_idProducto, esVistaDetalle) {
                 document.getElementById("zona-resennas").innerHTML = html;
             })
             .catch(error => {
-                document.getElementById("zona-resennas").innerHTML = "<p>Error cargando promedio de valoraciones ...</p>";
+                document.getElementById("zona-resennas").innerHTML = "<p>ERROR</p>";
             });
     }
     else {
@@ -316,7 +316,7 @@ function cargarResennasProducto(_idProducto, esVistaDetalle) {
                 document.getElementById("contenedor-resennas").innerHTML = html;
             })
             .catch(error => {
-                document.getElementById("contenedor-resennas").innerHTML = "<p>Error cargando promedio de valoraciones ...</p>";
+                document.getElementById("contenedor-resennas").innerHTML = "<p>ERROR</p>";
             });
     }
 
@@ -402,7 +402,7 @@ function cargarEditarProducto(idProducto) {
         })
         .catch(err => {
             console.error("Error al cargar la vista de edición:", err);
-            container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición del producto.</p>`;
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -455,7 +455,7 @@ function cargarEditarPromocion(idPromocion) {
         })
         .catch(err => {
             console.error("Error al cargar la vista de edición:", err);
-            container.innerHTML = `<p class="text-red-500">Error al cargar la vista de edición de la promoción.</p>`;
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
             loader.classList.add('hidden');
         });
 }
@@ -599,7 +599,7 @@ document.addEventListener('click', function (e) {
 
         fetch(url)
             .then(res => {
-                if (!res.ok) throw new Error("Error al obtener reseñas");
+                if (!res.ok) throw new Error("ERROR");
                 return res.text();
             })
             .then(html => {
@@ -607,7 +607,7 @@ document.addEventListener('click', function (e) {
             })
             .catch(err => {
                 console.error("Error al cargar reseñas:", err);
-                document.getElementById("zona-resennas").innerHTML = "<p class='text-red-500'>Error al cargar reseñas.</p>";
+                document.getElementById("zona-resennas").innerHTML = "<p class='text-red-500'>ERROR</p>";
             });
     }
 
@@ -626,7 +626,7 @@ document.addEventListener('click', function (e) {
             })
             .catch(err => {
                 console.error("Error al cargar promociones:", err);
-                document.getElementById("zona-promociones").innerHTML = "<p class='text-red-500'>Error al cargar promociones.</p>";
+                document.getElementById("zona-promociones").innerHTML = "<p class='text-red-500'>ERROR</p>";
             });
     }
 });

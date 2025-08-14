@@ -251,6 +251,12 @@
     </div>
 </dialog>
 
+<!-- Contenedor del spinner de carga -->
+
+<div id="loader" class="hidden flex flex-col items-center gap-1 my-4">
+    <p class="text-gray-600 font-bold mb-2">@(Localizer["Procesando pago"])</p>
+    <span class="loading loading-ring loading-xl"></span>
+</div>
 
 @section Scripts {
     <script>
@@ -259,7 +265,12 @@
           localizer: {
             "Encabezado guardado": "@Localizer["Encabezado guardado"]",
             "No fue posible guardar": "@Localizer["No fue posible guardar"]",
-            "Error inesperado": "@Localizer["Error inesperado"]"
+            "Error inesperado": "@Localizer["Error inesperado"]",
+            "Monto inválido (numérico y positivo).": "@Localizer["Monto inválido (numérico y positivo)."]",
+            "El monto debe ser mayor o igual al total": "@Localizer["El monto debe ser mayor o igual al total"]",
+            "Error inesperado al pagar": "@Localizer["Error inesperado al pagar"]",
+            "Error al procesar la compra":"@Localizer["Error al procesar la compra"]",
+            "Pago completado. ¡Gracias!": "@Localizer"["Pago completado. ¡Gracias!"]",
           }
         };
     </script>

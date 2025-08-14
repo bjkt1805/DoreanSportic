@@ -15,51 +15,89 @@ function formatColones(value) {
     return `₡${partes[0]}.${partes[1]}`;
 }
 
-// Función básica Luhn para validar número de tarjeta
+// Función básica de validación Luhn para números de tarjeta
 function luhnCheck(numStr) {
 
+    // Asignar a digits el número sin espacios ni caracteres no numéricos
     const digits = (numStr || '').replace(/\s+/g, '');
+
+    // Validar que digits contenga solo números
     if (!/^\d+$/.test(digits)) return false;
+
+    // Asignar a sum el valor inicial 0 y a alt el valor inicial false
     let sum = 0, alt = false;
+
+    // Iterar sobre los dígitos desde el final hacia el principio
     for (let i = digits.length - 1; i >= 0; i--) {
+
+        // Convertir el dígito actual a número
         let n = parseInt(digits[i], 10);
+
+        // Si es un dígito alterno, multiplicar por 2
         if (alt) {
             n *= 2;
+
+            // Si el resultado es mayor a 9, restar 9
             if (n > 9) n -= 9;
         }
+
+        // Sumar el dígito (o el resultado modificado) a la suma total
         sum += n;
+
+        // Alternar el estado de alt para el siguiente dígito
         alt = !alt;
     }
+
+    // Validar que la suma total sea un múltiplo de 10
     return (sum % 10) === 0;
 }
 
 // Para verificar que la tarjeta no esté expirada (mes/año)
 function expValida(mmAA) {
 
-    // 
+    // Validar formato MM/AA y retornar false si no es válido
     if (!/^\d{2}\/\d{2}$/.test(mmAA)) return false;
+
+    // Extraer mes y año del formato MM/AA
     const [mmStr, aaStr] = mmAA.split('/');
+
+    // Validar que mmStr y aaStr sean números válidos
     const mm = Number(mmStr), aa = Number(aaStr);
+
+    // Si mm es menor que 1 o mayor que 12, retornar false
     if (mm < 1 || mm > 12) return false;
 
     // Año base 2000-2099 para “AA”
     const year = 2000 + aa;
+
+    // Asignar a now la fecha actual
     const now = new Date();
-    // último día del mes de vencimiento
+
+    // Crear una fecha de expiración al final del mes indicado (23:59:59)
     const expDate = new Date(year, mm, 0, 23, 59, 59);
+
+    // Comparar la fecha de expiración con la fecha actual
     return expDate >= now;
 }
 
-function parseMoney(v) {
-    if (typeof v !== 'string') return Number(v) || 0;
-    return Number(v.replace(/[^\d.]/g, '')) || 0;
+// Función para parsear un valor monetario (string o número) a un número
+function parseMoney(value) {
+
+    // Si el valor es undefined, null o no es un string, retornar 0, caso contrario
+    // eliminar caracteres no numéricos y convertir a número
+    if (typeof value !== 'string') return Number(value) || 0;
+    return Number(value.replace(/[^\d.]/g, '')) || 0;
 }
 
 // Función para pintar totales del modal leyendo los ya mostrados en la página
 function pintarTotalesModalDesdePantalla() {
+
+    // Asignar a sub, imp y tot los valores de los elementos con id correspondientes
     const sub = document.getElementById('totals-sub')?.textContent ?? '—';
     const imp = document.getElementById('totals-tax')?.textContent ?? '—';
     const tot = document.getElementById('totals-grand')?.textContent ?? '—';
+
+    // Asignar los valores a los elementos del modal con id correspondientes
     document.getElementById('pago-sub').textContent = sub;
     document.getElementById('pago-imp').textContent = imp;
     document.getElementById('pago-tot').textContent = tot;
@@ -70,8 +108,14 @@ function getCantidadProducto(detalleId) {
 
     // Buscar la fila del producto por detalleId y obtener el valor del input de cantidad
     const filaProd = document.querySelector(`tr[data-detalle-id="${detalleId}"]`);
+
+    // Si no existe la fila del producto, retornar 0
     if (!filaProd) return 0;
+
+    // Asignar a val el valor numérico del input de cantidad, o 0 si no existe
     const val = Number(filaProd.querySelector('input.qty-input')?.value || 0);
+
+    // Si val es NaN, retornar 0, caso contrario retornar val
     return isNaN(val) ? 0 : val;
 }
 
@@ -103,13 +147,27 @@ function actualizarFilaPersonalizacion(detalleId) {
 // Suma todos los subtotales de personalización en pantalla
 function calcularSubtotalPersonalizaciones() {
     let total = 0;
+
+    // Buscar todas las filas de personalización en el DOM
     document.querySelectorAll('#tbody-personal tr[data-detalle-id]').forEach(row => {
+
+        // Asignar a cell la celda de subtotal de personalización
         const cell = row.querySelector('.cell-pers-subtotal');
+
+        // Asignar a unit el valor numérico del atributo data-unit-pers de la celda, o 0 si no existe
         const unit = Number(cell?.dataset.unitPers || 0);
+
+        // Asignar a detId el valor del atributo data-detalle-id de la fila
         const detId = row.getAttribute('data-detalle-id');
+
+        // Buscar la cantidad actual del producto correspondiente en la tabla principal
         const qty = getCantidadProducto(detId);
+
+        // Si la cantidad es un número válido, sumar al total
         total += unit * qty;
     });
+
+    // Retornar el total 
     return total;
 }
 
@@ -134,10 +192,10 @@ function bindParcialEventos(root) {
         if (!total) return;
 
         // Obtener el valor de subtotal
-        const subTotal = document.getElementById('totals-sub'); 
+        const subTotal = document.getElementById('totals-sub');
 
         // Obtener el valor del impuesto
-        const impuesto = document.getElementById('totals-tax');  
+        const impuesto = document.getElementById('totals-tax');
 
         // Obtener el valor del total general
         const granTotal = document.getElementById('totals-grand');
@@ -280,9 +338,11 @@ function bindParcialEventos(root) {
                 const impFila = Math.round(data.detalle.subTotal * IVA * 100) / 100;
                 const totFila = data.detalle.subTotal + impFila;
 
-                // Pintar en la fila
+                // Asignar a taxCell y totalCell las celdas correspondientes de la fila
                 const taxCell = filaTabla.querySelector('.cell-tax');
                 const totalCell = filaTabla.querySelector('.cell-total');
+
+                // Si existen las celdas, actualizar su contenido con los nuevos valores formateados
                 if (taxCell) taxCell.textContent = formatColones(impFila);
                 if (totalCell) totalCell.textContent = formatColones(totFila);
 
@@ -422,7 +482,7 @@ function bindParcialEventos(root) {
                         document.getElementById('pedido-estado').textContent = data.estadoNombre;
                     }
 
-                    // Limpia campos/errores
+                    // Limpia campos/errores de los elementos del modal de pago
                     document.getElementById('pago-status').textContent = '';
                     document.getElementById('pago-errores-stock').textContent = '';
                     document.getElementById('card-number').value = '';
@@ -432,16 +492,20 @@ function bindParcialEventos(root) {
                     document.getElementById('cash-amount').value = '';
                     document.getElementById('cash-change').value = '';
 
-                    // Método por defecto: tarjeta
+                    // Asignar el método de pago por defecto a tarjeta y mostrar la sección correspondiente
                     document.querySelector('input[name="pago-metodo"][value="tarjeta"]').checked = true;
                     document.getElementById('section-tarjeta').style.display = '';
+
+                    // Ocultar sección de efectivo por defecto
                     document.getElementById('section-efectivo').style.display = 'none';
 
+                    // Llamar a pintarTotalesModalDesdePantalla para mostrar los totales en el modal
                     pintarTotalesModalDesdePantalla();
+
                     // Cargar el modal para proceder con el pago
                     document.getElementById('modalPago').showModal();
 
-                    // Toggle secciones según método
+                    // Mostrar el contenido del modal de pago (tarjeta o efectivo) dependiendo del método seleccionado
                     document.querySelectorAll('input[name="pago-metodo"]').forEach(r => {
                         r.addEventListener('change', (e) => {
                             const m = e.target.value;
@@ -450,26 +514,26 @@ function bindParcialEventos(root) {
                         });
                     });
 
-                    // Formateo amigable para número de tarjeta #### #### #### ####
+                    // Dar formato al campo de número de tarjeta
                     document.getElementById('card-number')?.addEventListener('input', (e) => {
                         let v = e.target.value.replace(/[^\d]/g, '').slice(0, 16);
                         v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
                         e.target.value = v;
                     });
 
-                    // Solo “MM/AA”
+                    // Solo aceptar formato MM/AA para la fecha de expiración
                     document.getElementById('card-exp')?.addEventListener('input', (e) => {
                         let v = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
                         if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
                         e.target.value = v;
                     });
 
-                    // CVV numérico 3 o 4
+                    // Aceptar CVV numérico 3 o 4 dígitos
                     document.getElementById('card-cvv')?.addEventListener('input', (e) => {
                         e.target.value = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
                     });
 
-                    // Efectivo: calcular vuelto en vivo
+                    // Calcular el efectivo y el vuelto a devolver
                     document.getElementById('cash-amount')?.addEventListener('input', (e) => {
                         const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
                         const total = parseMoney(totalTxt);
@@ -480,11 +544,16 @@ function bindParcialEventos(root) {
 
                     /* ========== Confirmar pago (validaciones + POST CompletarCompra) ========== */
                     document.getElementById('btn-confirmar-pago')?.addEventListener('click', async () => {
+
+                        // Obtener los elementos del modal de pago y limpiar mensajes de estado
                         const statusEl = document.getElementById('pago-status');
                         const errStockEl = document.getElementById('pago-errores-stock');
                         statusEl.textContent = ''; errStockEl.textContent = '';
 
+                        // Obtener el método de pago seleccionado
                         const metodo = document.querySelector('input[name="pago-metodo"]:checked')?.value || 'tarjeta';
+
+                        // Obtener el token de verificación anti-CSRF y el id del pedido desde el elemento raíz
                         const token = document.querySelector('#form-anti-forgery input[name="__RequestVerificationToken"]')?.value;
                         const pedidoId = Number(document.getElementById('detalles-root')?.dataset?.pedidoId);
 
@@ -496,77 +565,118 @@ function bindParcialEventos(root) {
                         const setErr = (id, msg) => { const el = document.getElementById(id); if (el) el.textContent = msg || ''; };
 
                         // Validaciones según método
+
+                        // Si el método es tarjeta, validar los campos de la tarjeta
                         if (metodo === 'tarjeta') {
+
+                            // Obtener los valores de los campos de la tarjeta
                             const cardNum = document.getElementById('card-number').value.trim();
                             const cardExp = document.getElementById('card-exp').value.trim();
                             const cardCVV = document.getElementById('card-cvv').value.trim();
                             const cardName = document.getElementById('card-name').value.trim();
 
+                            // Asignar a ok el valor inicial true para controlar el estado de las validaciones
                             let ok = true;
 
-                            // Número: 16 dígitos y Luhn
+                            // Validar que el número de tarjeta tenga 16 dígitos y pase la validación Luhn
                             const numDigits = cardNum.replace(/\s+/g, '');
                             if (!/^\d{16}$/.test(numDigits)) {
-                                setErr('err-card-number', 'Debe tener 16 dígitos.');
+
+                                // Si no tiene 16 dígitos, mostrar error y asignar ok a false
+                                setErr('err-card-number', 'Debe tener 16 dígitos');
                                 ok = false;
                             } else if (!luhnCheck(cardNum)) {
-                                setErr('err-card-number', 'Número inválido (Luhn).');
+
+                                // Si no pasa validación Luhn, mostrar error y asignar ok a false
+                                setErr('err-card-number', 'Número inválido (Luhn)');
                                 ok = false;
                             } else {
+                                // Si es válido, limpiar el error
                                 setErr('err-card-number', '');
                             }
 
-                            // Expiración válida y no pasada
+                            // Si la fecha de expiración no es válida o está vencida
                             if (!expValida(cardExp)) {
+
+                                // Mostrar error y asignar ok a false
                                 setErr('err-card-exp', 'Fecha inválida o vencida (MM/AA).');
                                 ok = false;
                             } else {
+
+                                // Si es válida, limpiar el error
                                 setErr('err-card-exp', '');
                             }
 
-                            // CVV 3 o 4 dígitos
+                            // Validación del CVV (3 o 4 dígitos)
                             if (!/^\d{3,4}$/.test(cardCVV)) {
+
+                                // Si no es válido, mostrar error y asignar ok a false
                                 setErr('err-card-cvv', 'CVV inválido (3 o 4 dígitos).');
                                 ok = false;
                             } else {
+
+                                // Si la validación es correcta, limpiar el error
                                 setErr('err-card-cvv', '');
                             }
 
-                            // Nombre titular no vacío
+                            // Si el nombre del titular de la tarjeta está vacío
                             if (!cardName) {
+
+                                // Mostrar error y asignar ok a false
                                 setErr('err-card-name', 'El nombre es requerido.');
                                 ok = false;
                             } else {
+
+                                // Si el nombre es válido, limpiar el error
                                 setErr('err-card-name', '');
                             }
 
-                            if (!ok) return; // no enviamos al servidor
+                            // Si alguna validación falló, no continuar
+                            if (!ok) return;
 
-                        } else { // efectivo
+                        // Si el método es efectivo
+                        } else {
+
+                            // Obtener el monto de efectivo ingresado y hacer parse mediante función parseMoney
                             const cash = parseMoney(document.getElementById('cash-amount').value || '');
+
+                            // Asignar true a ok
                             let ok = true;
 
+                            // Si el monto de efectivo no es mayor a 0
                             if (!(cash > 0)) {
-                                document.getElementById('err-cash-amount').textContent = 'Monto inválido (numérico y positivo).';
+
+                                // Mostrar error y asignar ok a false
+                                document.getElementById('err-cash-amount').textContent = localizer["Monto inválido (numérico y positivo)"];
+
+                                // Asignar false a ok 
                                 ok = false;
+
+                                // Si el monto de efectivo es menor al total del pedido
                             } else if (cash < total) {
-                                document.getElementById('err-cash-amount').textContent = 'El monto debe ser >= al total.';
+
+                                // Mostrar error y asignar ok a false
+                                document.getElementById('err-cash-amount').textContent = localizer["El monto debe ser mayor o igual al total"];
                                 ok = false;
+
+                            // Si el monto de efectivo es válido, limpiar el error
                             } else {
                                 document.getElementById('err-cash-amount').textContent = '';
                             }
 
+                            // Si ok es false, no continuar
                             if (!ok) return;
                         }
 
-                        // Si pasaron validaciones, “procesamos” pago y confirmamos el pedido
+                        // Si pasaron validaciones, procesar pago y confirmar el pedido
                         statusEl.textContent = 'Procesando pago...';
-                        statusEl.className = 'text-sm text-slate-600';
+
+
+                        // Deshabilitar el botón de confirmar pago para evitar múltiples clics  
                         document.getElementById('btn-confirmar-pago').disabled = true;
 
                         try {
-                            // Nota: aquí **no** enviamos datos de tarjeta al servidor (simulación local).
-                            // Solo llamamos a CompletarCompra para cerrar el pedido.
+                            // Hacer el llamado al servidor para completar la compra
                             const resp = await fetch('/Pedido/CompletarCompra', {
                                 method: 'POST',
                                 headers: {
@@ -575,20 +685,21 @@ function bindParcialEventos(root) {
                                 },
                                 body: JSON.stringify({
                                     pedidoId: pedidoId,
-                                    direccionEnvio: null // si ya guardaste antes; o manda la que corresponda
+                                    // Enviar direccionEnvio como null ya que se envío en el encabezado previamente
+                                    direccionEnvio: null
                                 })
                             });
 
                             const data = await resp.json();
 
+                            // Si la respuesta del servidor es correcta, mostrar mensaje de éxito
                             if (data?.success) {
-                                statusEl.textContent = 'Pago completado. ¡Gracias!';
-                                statusEl.className = 'text-sm text-green-600';
+                                mostrarToast(localizer["Pago completado. ¡Gracias!"], "success");
 
                                 // Refrescar navbar del carrito
                                 window.recargarResumenCarritoNavbar?.();
 
-                                // Recargar parcial de detalles (mostrará “No hay productos…” si ya quedó vacío)
+                                // Recargar vista parcial de detalles (mostrará “No hay productos…” si ya quedó vacío)
                                 if (typeof recargarParcial === 'function') {
                                     await recargarParcial(pedidoId);
                                 }
@@ -596,27 +707,32 @@ function bindParcialEventos(root) {
                                 // Cerrar modal
                                 document.getElementById('modalPago').close();
 
-                                // (Opcional) redirigir a página de gracias
-                                // window.location.href = `/Pedido/Gracias/${pedidoId}`;
+                                // Redirigir a página de pedidos/órdenes
+                                // window.location.href = `/Pedido/Index`;
                             } else {
+
+                                // Si hay errores en la respuesta
                                 if (data?.errores && Array.isArray(data.errores)) {
+
                                     // Errores de stock
                                     const lista = data.errores.map(e =>
                                         `• ${e.nombre}: solicitado ${e.cant}, disponible ${e.stockDisp}`).join('\n');
                                     errStockEl.textContent = lista;
                                 }
-                                statusEl.textContent = data?.mensaje || 'No fue posible completar la compra.';
-                                statusEl.className = 'text-sm text-red-600';
+                                // Mostrar mensaje de error por medio de toast
+                                mostrarToast(localizer["Error al procesar la compra"], "error");
+                                console.error('Error al procesar la compra:', data.errores);
                             }
+
+
                         } catch {
-                            statusEl.textContent = 'Error inesperado al pagar.';
+                            statusEl.textContent = localizer["Error inesperado al pagar"];
                             statusEl.className = 'text-sm text-red-600';
                         } finally {
                             document.getElementById('btn-confirmar-pago').disabled = false;
+
                         }
-
                     });
-
 
                 } else {
                     // Si la respuesta no es exitosa, mostrar mensaje de error

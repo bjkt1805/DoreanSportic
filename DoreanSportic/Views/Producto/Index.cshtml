@@ -82,7 +82,7 @@
                     .catch(error => {
                         console.error("Error al cargar productos:", error);
                         setTimeout(() => {
-                            container.innerHTML = "<p class='text-red-500'>Error al cargar los productos.</p>";
+                            container.innerHTML = "<p class='text-red-500'>ERROR</p>";
                             loader.classList.add('hidden');
                         }, 500);
                     });
