@@ -28,6 +28,8 @@ namespace DoreanSportic.Controllers
         {
             public int PedidoId { get; init; }
             public int UserId { get; init; }
+
+            public int MetodoPago { get; init; }
             public string? DireccionEnvio { get; init; }
         }
 

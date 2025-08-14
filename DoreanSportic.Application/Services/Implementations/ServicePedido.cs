@@ -109,7 +109,7 @@ namespace DoreanSportic.Application.Services.Implementations
             }
             // EstadoPago = "Registrado" (o el que uses)
             var totals = await RecalcularTotalesAsync(pedidoId);
-            await _repository.UpdateTotalsAndStateAsync(pedidoId, totals.sub, totals.imp, totals.total, "Registrado");
+            await _repository.UpdateTotalsAndStateAsync(pedidoId, totals.sub, totals.imp, totals.total, "Pagado");
             return true;
         }
     }

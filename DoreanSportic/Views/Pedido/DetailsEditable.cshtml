@@ -167,83 +167,94 @@
     
     <div class="modal-box bg-white rounded w-125" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
 
-        <div class="flex flex-row justify-between mt-1">
-            <h3 class="text-lg font-bold mb-2">PROCESAR PAGO</h3>
+        <!-- Contenedor del pago del pedido-->
+        <div id="modalPago-content">
+            <div class="flex flex-row justify-between mt-1">
+                <h3 class="text-lg font-bold mb-2">PROCESAR PAGO</h3>
 
-            <button type="button"
-                    class="btn btn-sm btn-circle bg-black text-white"
-                    onclick="document.getElementById('modalPago').close()">
-                ✕
-            </button>
-        </div>
-        <p class="text-xs italic mb-4">Elija un método de pago y complete los datos.</p>
-
-        <!-- Método de pago -->
-        <div class="form-control mb-4">
-            <label class="label font-bold mb-2">Método de pago</label>
-            <div class="flex gap-4">
-                <label><input type="radio" name="pago-metodo" value="tarjeta" checked /> Tarjeta (Crédito/Débito)</label>
-                <label><input type="radio" name="pago-metodo" value="efectivo" /> Efectivo</label>
+                <button type="button"
+                        class="btn btn-sm btn-circle bg-black text-white"
+                        onclick="document.getElementById('modalPago').close()">
+                    ✕
+                </button>
             </div>
-        </div>
+            <p class="text-xs italic mb-4">Elija un método de pago y complete los datos.</p>
 
-        <!-- Formulario TARJETA -->
-        <div id="section-tarjeta" class="space-y-3">
-            <div>
-                <label class="label font-bold">Número de tarjeta</label>
-                <input id="card-number" class="input input-bordered w-full" maxlength="19" placeholder="#### #### #### ####" inputmode="numeric" />
-                <div id="err-card-number" class="text-red-600 text-xs mt-1"></div>
-            </div>
-
-            <div class="flex gap-3">
-                <div class="w-1/2">
-                    <label class="label font-bold">Fecha expiración (MM/AA)</label>
-                    <input id="card-exp" class="input input-bordered w-full" maxlength="5" placeholder="MM/AA" />
-                    <div id="err-card-exp" class="text-red-600 text-xs mt-1"></div>
-                </div>
-                <div class="w-1/2">
-                    <label class="label font-bold">CVV</label>
-                    <input id="card-cvv" class="input input-bordered w-full" maxlength="4" placeholder="3 o 4 dígitos" inputmode="numeric" />
-                    <div id="err-card-cvv" class="text-red-600 text-xs mt-1"></div>
+            <!-- Método de pago -->
+            <div class="form-control mb-4">
+                <label class="label font-bold mb-2">Método de pago</label>
+                <div class="flex gap-4">
+                    <label><input type="radio" name="pago-metodo" value="tarjeta" checked /> Tarjeta (Crédito/Débito)</label>
+                    <label><input type="radio" name="pago-metodo" value="efectivo" /> Efectivo</label>
                 </div>
             </div>
 
-            <div>
-                <label class="label font-bold">Nombre del titular</label>
-                <input id="card-name" class="input input-bordered w-full" maxlength="80" placeholder="Como aparece en la tarjeta" />
-                <div id="err-card-name" class="text-red-600 text-xs mt-1"></div>
+            <!-- Formulario TARJETA -->
+            <div id="section-tarjeta" class="space-y-3">
+                <div>
+                    <label class="label font-bold">Número de tarjeta</label>
+                    <input id="card-number" class="input input-bordered w-full" maxlength="19" placeholder="#### #### #### ####" inputmode="numeric" />
+                    <div id="err-card-number" class="text-red-600 text-xs mt-1"></div>
+                </div>
+
+                <div class="flex gap-3">
+                    <div class="w-1/2">
+                        <label class="label font-bold">Fecha expiración (MM/AA)</label>
+                        <input id="card-exp" class="input input-bordered w-full" maxlength="5" placeholder="MM/AA" />
+                        <div id="err-card-exp" class="text-red-600 text-xs mt-1"></div>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="label font-bold">CVV</label>
+                        <input id="card-cvv" class="input input-bordered w-full" maxlength="4" placeholder="3 o 4 dígitos" inputmode="numeric" />
+                        <div id="err-card-cvv" class="text-red-600 text-xs mt-1"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="label font-bold">Nombre del titular</label>
+                    <input id="card-name" class="input input-bordered w-full" maxlength="80" placeholder="Como aparece en la tarjeta" />
+                    <div id="err-card-name" class="text-red-600 text-xs mt-1"></div>
+                </div>
+            </div>
+
+            <!-- Formulario EFECTIVO -->
+            <div id="section-efectivo" class="space-y-3" style="display:none;">
+                <div>
+                    <label class="label font-bold">Monto entregado</label>
+                    <input id="cash-amount"
+                           class="input input-bordered w-full"
+                           type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" />
+                    <div id="err-cash-amount" class="text-red-600 text-xs mt-1"></div>
+                </div>
+
+                <div>
+                    <label class="label font-bold">Vuelto</label>
+                    <input id="cash-change" class="input input-bordered w-full" disabled />
+                </div>
+            </div>
+
+            <!-- Resumen -->
+            <div class="border rounded p-3 my-4 text-sm">
+                <div><b>Subtotal:</b> <span id="pago-sub">—</span></div>
+                <div><b>Impuesto (13%):</b> <span id="pago-imp">—</span></div>
+                <div><b>Total:</b> <span id="pago-tot">—</span></div>
+            </div>
+
+            <div class="modal-action flex justify-between">
+                <button type="button" class="btn btn-outline"
+                        onclick="document.getElementById('modalPago').close()">
+                    Cancelar
+                </button>
+                <button id="btn-confirmar-pago" type="button" class="btn btn-success text-white">
+                    Confirmar pago
+                </button>
             </div>
         </div>
 
-        <!-- Formulario EFECTIVO -->
-        <div id="section-efectivo" class="space-y-3" style="display:none;">
-            <div>
-                <label class="label font-bold">Monto entregado</label>
-                <input id="cash-amount" class="input input-bordered w-full" inputmode="decimal" placeholder="0.00" />
-                <div id="err-cash-amount" class="text-red-600 text-xs mt-1"></div>
-            </div>
-
-            <div>
-                <label class="label font-bold">Vuelto</label>
-                <input id="cash-change" class="input input-bordered w-full" disabled />
-            </div>
-        </div>
-
-        <!-- Resumen -->
-        <div class="border rounded p-3 my-4 text-sm">
-            <div><b>Subtotal:</b> <span id="pago-sub">—</span></div>
-            <div><b>Impuesto (13%):</b> <span id="pago-imp">—</span></div>
-            <div><b>Total:</b> <span id="pago-tot">—</span></div>
-        </div>
-
-        <div class="modal-action flex justify-between">
-            <button type="button" class="btn btn-outline"
-                    onclick="document.getElementById('modalPago').close()">
-                Cancelar
-            </button>
-            <button id="btn-confirmar-pago" type="button" class="btn btn-success text-white">
-                Confirmar pago
-            </button>
+        <!-- Contenedor del spinner "Procesando pago" -->
+        <div id="modalPago-spinner" class="hidden flex flex-col items-center gap-2 py-10">
+            <p class="spinner-text text-gray-600 font-bold mb-2">@Localizer["Procesando pago"]</p>
+            <span class="loading loading-ring loading-xl"></span>
         </div>
 
         <div id="pago-status" class="mt-2 text-sm"></div>
@@ -251,12 +262,6 @@
     </div>
 </dialog>
 
-<!-- Contenedor del spinner de carga -->
-
-<div id="loader" class="hidden flex flex-col items-center gap-1 my-4">
-    <p class="text-gray-600 font-bold mb-2">@(Localizer["Procesando pago"])</p>
-    <span class="loading loading-ring loading-xl"></span>
-</div>
 
 @section Scripts {
     <script>
@@ -266,12 +271,12 @@
             "Encabezado guardado": "@Localizer["Encabezado guardado"]",
             "No fue posible guardar": "@Localizer["No fue posible guardar"]",
             "Error inesperado": "@Localizer["Error inesperado"]",
-            "Monto inválido (numérico y positivo).": "@Localizer["Monto inválido (numérico y positivo)."]",
+            "Monto inválido": "@Localizer["Monto inválido"]",
             "El monto debe ser mayor o igual al total": "@Localizer["El monto debe ser mayor o igual al total"]",
             "Error inesperado al pagar": "@Localizer["Error inesperado al pagar"]",
             "Error al procesar la compra":"@Localizer["Error al procesar la compra"]",
-            "Pago completado. ¡Gracias!": "@Localizer"["Pago completado. ¡Gracias!"]",
-          }
+            "Pago completado. ¡Gracias!": "@Localizer["Pago completado. ¡Gracias!"]",
+          },
         };
     </script>
     <script src="~/js/Pedido.js" asp-append-version="true"></script>

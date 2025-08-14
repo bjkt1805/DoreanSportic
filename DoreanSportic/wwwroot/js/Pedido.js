@@ -1,18 +1,12 @@
 ﻿// Función para formatear números a dos decimales y agregar el símbolo de colón
-function formatColones(value) {
-    // Convertir a número válido
-    const numero = Number(value ?? 0);
+function formatColones0(value) {
 
-    // Formatear con separador de miles por defecto (usando coma o punto según locale)
-    let partes = numero
-        .toFixed(2) // Siempre 2 decimales
-        .split('.'); // Separar parte entera y decimal usando punto fijo
+    // Obtener el número redondeado a dos decimales
+    const numero = Math.round(Number(value ?? 0)); // entero
 
-    // Agregar separador de miles como espacio
-    partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
-    // Reconstruir usando punto como separador decimal
-    return `₡${partes[0]}.${partes[1]}`;
+    // Formatear el número con separadores de miles y agregar el símbolo de colón
+    const entero = String(numero).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `₡${entero}`;
 }
 
 // Función básica de validación Luhn para números de tarjeta
@@ -171,8 +165,40 @@ function calcularSubtotalPersonalizaciones() {
     return total;
 }
 
+// Función para para cargar el spinner cuando se procesa el pago
+function togglePagoSpinner(show, localizer) {
+
+    // Asignar a content y spinner los elementos del DOM correspondientes
+    const content = document.getElementById('modalPago-content');
+    const spinner = document.getElementById('modalPago-spinner');
+
+    // Si no existen los elementos content o spinner, salir de la función
+    if (!content || !spinner) return;
+
+    // Asignar el texto del spinner
+    const txt = spinner.querySelector('.spinner-text');
+
+    // Si existe el elemento de texto del spinner, asignarle el texto de localización o un valor por defecto
+    if (txt) txt.textContent = (localizer?.["Procesando pago"] ?? "Procesando pago");
+
+    // Mostrar u ocultar el spinner y el contenido según el valor de show
+    if (show) {
+
+        // Si show es true, ocultar el contenido y mostrar el spinner
+        content.setAttribute('aria-hidden', 'true');
+        content.classList.add('hidden');
+        spinner.classList.remove('hidden');
+
+        // Si show es false, mostrar el contenido y ocultar el spinner
+    } else {
+        spinner.classList.add('hidden');
+        content.classList.remove('hidden');
+        content.removeAttribute('aria-hidden');
+    }
+}
+
 // Función para asociar eventos a la tabla de detalles del pedido
-function bindParcialEventos(root) {
+function bindParcialEventos(root, localizer) {
 
     // Constante IVA
     const IVA = 0.13;
@@ -506,13 +532,43 @@ function bindParcialEventos(root) {
                     document.getElementById('modalPago').showModal();
 
                     // Mostrar el contenido del modal de pago (tarjeta o efectivo) dependiendo del método seleccionado
+                    const totEl = document.getElementById('pago-tot');
+                    const originalTotalText = totEl.textContent; // guarda el formato "normal" (con decimales)
+
+                    // Cargar el contenido del modal de pago
                     document.querySelectorAll('input[name="pago-metodo"]').forEach(r => {
+
+                        // Evitar doble binding si se reabre el modal
+                        if (r.dataset.bound === '1') return;
+                        r.dataset.bound = '1';
+
+                        // Escuchar el evento change del input de método de pago
                         r.addEventListener('change', (e) => {
+
+                            // Asignar a m el valor del input seleccionado
                             const m = e.target.value;
+
+                            // Mostrar/ocultar secciones (tarjeta/efectivo) según el método seleccionado
                             document.getElementById('section-tarjeta').style.display = (m === 'tarjeta') ? '' : 'none';
                             document.getElementById('section-efectivo').style.display = (m === 'efectivo') ? '' : 'none';
+
+                            // Ajustar total mostrado
+                            const base = parseMoney(originalTotalText || totEl.textContent || '0');
+                            totEl.textContent = (m === 'efectivo')
+                                // Si es efectivo, mostrar el total sin decimales (redondeado hacia arriba)
+                                ? formatColones0(Math.ceil(base))
+
+                                // Caso contrario, mostrar el total original con decimales
+                                : originalTotalText;
                         });
                     });
+
+                    // Fuerza una vez el total correcto según el método seleccionado por defecto:
+                    const mSel = document.querySelector('input[name="pago-metodo"]:checked')?.value || 'tarjeta';
+                    const base = parseMoney(originalTotalText || totEl.textContent || '0');
+                    totEl.textContent = (mSel === 'efectivo')
+                        ? formatColones0(Math.ceil(base))
+                        : originalTotalText;
 
                     // Dar formato al campo de número de tarjeta
                     document.getElementById('card-number')?.addEventListener('input', (e) => {
@@ -533,14 +589,83 @@ function bindParcialEventos(root) {
                         e.target.value = e.target.value.replace(/[^\d]/g, '').slice(0, 4);
                     });
 
-                    // Calcular el efectivo y el vuelto a devolver
-                    document.getElementById('cash-amount')?.addEventListener('input', (e) => {
-                        const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
-                        const total = parseMoney(totalTxt);
-                        const entregado = parseMoney(e.target.value || '');
-                        const vuelto = Math.max(0, entregado - total);
-                        document.getElementById('cash-change').value = formatColones(vuelto);
-                    });
+                    // Solo dígitos (enteros)
+                    function sanitizarEntero(txt) {
+                        return String(txt ?? '').replace(/[^\d]/g, '');
+                    }
+
+                    // Función para formatear el monto en colones sin decimales
+                    (function wireCashAmount() {
+
+                        // Obtener los elementos del modal de pago (EFECTIVO)
+                        const cashInput = document.getElementById('cash-amount');
+                        const changeInput = document.getElementById('cash-change');
+
+                        // Si no existe el input de efectivo, salir de la función
+                        if (!cashInput) return;
+
+                        // Evitar doble binding si se reabre el modal
+                        if (cashInput.dataset.bound === '1') return;
+
+                        // Asignar el atributo data-bound al input de efectivo para evitar rebinding
+                        cashInput.dataset.bound = '1';
+
+                        // Bloquea todo menos teclas de navegación/edición y dígitos
+                        cashInput.addEventListener('keydown', (ev) => {
+                            const k = ev.key;
+                            const allowedCtrl = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Tab', 'Enter'];
+                            if (allowedCtrl.includes(k)) return;
+                            if (/^[0-9]$/.test(k)) return; // solo dígitos
+                            ev.preventDefault();
+                        });
+
+                        // Limpiar pegado (solo dígitos)
+                        cashInput.addEventListener('paste', (ev) => {
+                            ev.preventDefault();
+                            const txt = (ev.clipboardData || window.clipboardData).getData('text') || '';
+                            const sanitizado = sanitizarEntero(txt);
+                            document.execCommand('insertText', false, sanitizado);
+                        });
+
+                        // Al enfocar, mostrar número “crudo” (sin ₡, sin separadores)
+                        cashInput.addEventListener('focus', (e) => {
+                            const n = Math.trunc(parseMoney(e.target.value || ''));
+                            e.target.value = n ? String(n) : '';
+                        });
+
+                        // En cada input: sanitizar + generar vuelto + formatear sin decimales
+                        cashInput.addEventListener('input', (e) => {
+
+                            // Sanitizar el valor ingresado (quitar todo menos dígitos)
+                            let raw = sanitizarEntero(e.target.value);
+
+                            // Si el valor es vacío, asignar 0
+                            let num = Number(raw || '0');
+
+                            // Obtener el total mostrado en el modal
+                            const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
+                            const total = parseMoney(totalTxt); // convierte a número
+
+                            // Calcular el vuelto Vuelto (entero)
+                            const vuelto = Math.max(0, num - Math.ceil(total)); // evitar “céntimos” para el cambio
+
+                            // Si existe el input de vuelto, mostrar el vuelto formateado
+                            if (changeInput) changeInput.value = formatColones0(vuelto);
+
+                            // Mostrar en el input como colones sin decimales
+                            e.target.value = formatColones0(num);
+                        });
+
+                        // En evento blur del input de efectivo, se asegura formato/tope
+                        cashInput.addEventListener('blur', (e) => {
+
+                            // Asignar a n el valor parseado del input de efectivo
+                            const n = (parseMoney(e.target.value || ''));
+
+                            // Mostrar el valor formateado como colones sin decimales
+                            e.target.value = formatColones0(n);
+                        });
+                    })();
 
                     /* ========== Confirmar pago (validaciones + POST CompletarCompra) ========== */
                     document.getElementById('btn-confirmar-pago')?.addEventListener('click', async () => {
@@ -561,8 +686,16 @@ function bindParcialEventos(root) {
                         const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
                         const total = parseMoney(totalTxt);
 
-                        // Reset de errores
-                        const setErr = (id, msg) => { const el = document.getElementById(id); if (el) el.textContent = msg || ''; };
+                        // Reset de errores (se asignan estilos específicos)
+                        const setErr = (id, msg) => {
+                            const el = document.getElementById(id);
+                            if (el) {
+                                el.textContent = msg || '';
+                                el.style.fontSize = '10px';
+                                el.style.fontStyle = 'italic';
+                                el.style.color = 'red';
+                            }
+                        };
 
                         // Validaciones según método
 
@@ -588,7 +721,7 @@ function bindParcialEventos(root) {
                             } else if (!luhnCheck(cardNum)) {
 
                                 // Si no pasa validación Luhn, mostrar error y asignar ok a false
-                                setErr('err-card-number', 'Número inválido (Luhn)');
+                                setErr('err-card-number', 'Número inválido');
                                 ok = false;
                             } else {
                                 // Si es válido, limpiar el error
@@ -647,7 +780,8 @@ function bindParcialEventos(root) {
                             if (!(cash > 0)) {
 
                                 // Mostrar error y asignar ok a false
-                                document.getElementById('err-cash-amount').textContent = localizer["Monto inválido (numérico y positivo)"];
+                                document.getElementById('err-cash-amount').textContent = localizer["Monto inválido"];
+                                document.getElementById('err-cash-amount').style.cssText = 'font-size:10px; font-style:italic; color:red';
 
                                 // Asignar false a ok 
                                 ok = false;
@@ -657,6 +791,8 @@ function bindParcialEventos(root) {
 
                                 // Mostrar error y asignar ok a false
                                 document.getElementById('err-cash-amount').textContent = localizer["El monto debe ser mayor o igual al total"];
+                                document.getElementById('err-cash-amount').style.cssText = 'font-size:10px; font-style:italic; color:red';
+
                                 ok = false;
 
                             // Si el monto de efectivo es válido, limpiar el error
@@ -668,12 +804,18 @@ function bindParcialEventos(root) {
                             if (!ok) return;
                         }
 
-                        // Si pasaron validaciones, procesar pago y confirmar el pedido
-                        statusEl.textContent = 'Procesando pago...';
+                        // Si pasaron validaciones, procesar pago (mostrar spinner) y confirmar el pedido
+                        togglePagoSpinner(true, localizer);
 
 
                         // Deshabilitar el botón de confirmar pago para evitar múltiples clics  
                         document.getElementById('btn-confirmar-pago').disabled = true;
+
+                        // Obtener el valor del método seleccionado
+                        const metodoSeleccionado = document.querySelector('input[name="pago-metodo"]:checked')?.value;
+
+                        // Si el método seleccionado es efectivo, asignar 1, si es tarjeta, asignar 2
+                        const metodoPago = (metodoSeleccionado === 'efectivo') ? 1 : 2;
 
                         try {
                             // Hacer el llamado al servidor para completar la compra
@@ -685,6 +827,9 @@ function bindParcialEventos(root) {
                                 },
                                 body: JSON.stringify({
                                     pedidoId: pedidoId,
+
+                                    // Enviar el método de pago seleccionado (1 = efectivo, 2 = tarjeta)
+                                    metodoPago: metodoPago, 
                                     // Enviar direccionEnvio como null ya que se envío en el encabezado previamente
                                     direccionEnvio: null
                                 })
@@ -708,7 +853,7 @@ function bindParcialEventos(root) {
                                 document.getElementById('modalPago').close();
 
                                 // Redirigir a página de pedidos/órdenes
-                                // window.location.href = `/Pedido/Index`;
+                                 window.location.href = `/Pedido/Index`;
                             } else {
 
                                 // Si hay errores en la respuesta
@@ -760,7 +905,7 @@ function initPedidoDetails(pedidoId, localizer) {
             initBloqueoBorradoCantidad();
             // Una vez cargada la vista parcial, asociar los eventos a la tabla de detalles del pedido
             const root = document.getElementById("detalles-root");
-            bindParcialEventos(root);
+            bindParcialEventos(root, localizer);
         })
         .catch(() => {
             document.getElementById("tabla-detalles").innerHTML =
@@ -1216,7 +1361,7 @@ async function cargarProvincias() {
 }
 
 // Función para recargar la vista parcial de detalles del pedido
-async function recargarParcial(pedidoId) {
+async function recargarParcial(pedidoId, localizer) {
     // Hacer fetch a la API para obtener los detalles del pedido
     const response = await fetch(`/PedidoDetalle/GetDetallesPorPedido?idPedido=${pedidoId}`);
 
@@ -1231,7 +1376,7 @@ async function recargarParcial(pedidoId) {
 
     // Reasignar eventos a la nueva tabla
     const root = document.getElementById("detalles-root");
-    bindParcialEventos(root);
+    bindParcialEventos(root, localizer);
 
     return true;
 }
@@ -1270,7 +1415,12 @@ document.addEventListener("DOMContentLoaded", () => {
         localizer = {
             "Encabezado guardado": "Encabezado guardado",
             "No fue posible guardar": "No fue posible guardar",
-            "Error inesperado": "Error inesperado"
+            "Error inesperado": "Error inesperado",
+            "Monto inválido": "Monto inválido",
+            "El monto debe ser mayor o igual al total": "El monto debe ser mayor o igual al total",
+            "Error inesperado al pagar": "Error inesperado al pagar",
+            "Error al procesar la compra": "Error al procesar la compra",
+            "Pago completado. ¡Gracias!": "Pago completado. ¡Gracias!",
         };
     }
 
