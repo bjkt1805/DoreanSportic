@@ -146,7 +146,7 @@ var logger = new LoggerConfiguration()
 builder.Host.UseSerilog(logger);
 //***************************
 
-// Código temporal para crear hash de contraseña para los usuarios
+// Código temporal para crear hash de contraseña para los usuarios de forma manual
 //{
 //    var hasher = new DoreanSportic.Abstractions.Auth.BcryptPasswordHasher();
 //    var hash = hasher.Hash("prueba");

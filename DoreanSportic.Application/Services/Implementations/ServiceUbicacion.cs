@@ -17,8 +17,8 @@ public class ServiceUbicacion : IServiceUbicacion
         // Utiliza la caché para almacenar las provincias y evitar llamadas repetidas al servidor
         => _cache.GetOrCreateAsync("prov", async e =>
         {
-            // Configurar la expiración de la caché a 24 horas
-            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            // Configurar la expiración de la caché a 1 año
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365);
 
             // Obtener provincias desde el archivo JSON
             var dict = await _http.GetFromJsonAsync<Dictionary<string, string>>("provincias.json")
@@ -39,8 +39,8 @@ public class ServiceUbicacion : IServiceUbicacion
         // Utiliza la caché para almacenar los cantones de una provincia específica y evitar llamadas repetidas al servidor
         => _cache.GetOrCreateAsync($"cant_{provinciaId}", async e =>
         {
-            // Configurar la expiración de la caché a 24 horas
-            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            // Configurar la expiración de la caché a 1 año
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365);
 
             // Obtener los cantones desde el archivo JSON de la provincia específica
             var path = $"provincia/{provinciaId}/cantones.json";
@@ -62,8 +62,8 @@ public class ServiceUbicacion : IServiceUbicacion
         // Utiliza la caché para almacenar los distritos de un cantón específico y evitar llamadas repetidas al servidor
         => _cache.GetOrCreateAsync($"dist_{provinciaId}_{cantonId}", async e =>
         {
-            // Configurar la expiración de la caché a 24 horas
-            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            // Configurar la expiración de la caché a 1 año
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365);
 
             // Obtener los distritos desde el archivo JSON del cantón específico en la provincia
             var path = $"provincia/{provinciaId}/canton/{cantonId}/distritos.json";
