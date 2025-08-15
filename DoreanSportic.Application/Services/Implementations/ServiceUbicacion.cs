@@ -5,6 +5,7 @@ using static DoreanSportic.Application.DTOs.UbicacionDTO;
 
 public class ServiceUbicacion : IServiceUbicacion
 {
+    // Inyección de dependencias (HttpClient y IMemoryCache)
     private readonly HttpClient _http;
     private readonly IMemoryCache _cache;
     public ServiceUbicacion(HttpClient http, IMemoryCache cache)
@@ -12,71 +13,104 @@ public class ServiceUbicacion : IServiceUbicacion
         _http = http; _cache = cache;
     }
 
-    // Método para obtener provincias
+    // Modelos para deserializar la respuesta de la API
+    private sealed record ApiResponse<T>(string status, int statusCode, string message, T data);
+
+    private sealed record ProvinciaApiItem(int idProvincia, string descripcion);
+    private sealed record CantonApiItem(int idCanton, int idProvincia, string descripcion);
+    private sealed record DistritoApiItem(int idDistrito, int idCanton, string descripcion);
+
+    // Lamentablemente, la API envía Heredia con id 3 y Cartago con id 4 (debe hacerse un swap manual)
+
+    // Provincias: GET /provincias (la API devuelve un campo "status" que no se usa)
     public Task<IReadOnlyList<ProvinciaDTO>> GetProvinciasAsync()
-        // Utiliza la caché para almacenar las provincias y evitar llamadas repetidas al servidor
-        => _cache.GetOrCreateAsync("prov", async e =>
+
+        // Cache por 1 año (los datos no cambian)
+        => _cache.GetOrCreateAsync("prov_cr_v3", async e =>
         {
-            // Configurar la expiración de la caché a 1 año
             e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365);
 
-            // Obtener provincias desde el archivo JSON
-            var dict = await _http.GetFromJsonAsync<Dictionary<string, string>>("provincias.json")
-                       ?? new Dictionary<string, string>();
+            // Lista de provincias desde la API
+            ApiResponse<List<ProvinciaApiItem>>? api;
 
-            // Convertir el diccionario a una lista de ProvinciaDTO y ordenarla por Id
-            var list = dict
-                .Select(kv => new ProvinciaDTO(int.Parse(kv.Key), kv.Value))
-                .OrderBy(p => p.Id)
-                .ToList();
+            // Llamada con manejo de errores (si falla, devolver lista vacía)
+            try { api = await _http.GetFromJsonAsync<ApiResponse<List<ProvinciaApiItem>>>("provincias"); }
+            catch { api = null; }
 
-            // Retornar la lista como una colección de solo lectura
+            // Crear lista de DTOs de Provincias
+            var list = new List<ProvinciaDTO>();
+
+            // Recorrer los datos de la API y mapear a DTOs
+            foreach (var p in api?.data ?? new List<ProvinciaApiItem>())
+            {
+                var name = (p.descripcion ?? "").Trim();
+                var id = p.idProvincia;
+
+                // Aquí debe hacerse el swap manual de Heredia y Cartago
+
+                // Si el nombre de la provincia es Heredia y el id es 3, cambiar a 4
+                if (id == 3 && name.Equals("Heredia", StringComparison.OrdinalIgnoreCase)) id = 4;
+
+                // Si el nombre de la provincia es Cartago y el id es 4, cambiar a 3
+                else if (id == 4 && name.Equals("Cartago", StringComparison.OrdinalIgnoreCase)) id = 3;
+
+                // Agregar a la lista de DTOs
+                list.Add(new ProvinciaDTO(id, name));
+            }
+
+            // Ordenar la lista por Id y devolver como IReadOnlyList
+            list = list.OrderBy(x => x.Id).ToList();
             return (IReadOnlyList<ProvinciaDTO>)list;
         })!;
 
-    // Método para obtener cantones por provincia
+    // Cantones por provincia: GET /provincias/{idProvincia}/cantones
     public Task<IReadOnlyList<CantonDTO>> GetCantonesAsync(int provinciaId)
-        // Utiliza la caché para almacenar los cantones de una provincia específica y evitar llamadas repetidas al servidor
-        => _cache.GetOrCreateAsync($"cant_{provinciaId}", async e =>
+
+        // Cache por 1 año (los datos no cambian)
+        => _cache.GetOrCreateAsync($"cant_cr_v2_{provinciaId}", async e =>
         {
-            // Configurar la expiración de la caché a 1 año
             e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365);
 
-            // Obtener los cantones desde el archivo JSON de la provincia específica
-            var path = $"provincia/{provinciaId}/cantones.json";
-            var dict = await _http.GetFromJsonAsync<Dictionary<string, string>>(path)
-                       ?? new Dictionary<string, string>();
+            // Lista de provincias desde la API
+            ApiResponse<List<CantonApiItem>>? api;
 
-            // Convertir el diccionario a una lista de CantonDTO y ordenarla por Id
-            var list = dict
-                .Select(kv => new CantonDTO(int.Parse(kv.Key), kv.Value, provinciaId))
+            // Llamada con manejo de errores (si falla, devolver lista vacía)
+            try { api = await _http.GetFromJsonAsync<ApiResponse<List<CantonApiItem>>>($"provincias/{provinciaId}/cantones"); }
+            catch { api = null; }
+
+            // Mapear a DTOs y ordenar por Id
+            var list = (api?.data ?? new List<CantonApiItem>())
+                .Select(c => new CantonDTO(c.idCanton, c.descripcion, c.idProvincia)) // usamos el idProvincia que trae la API
                 .OrderBy(c => c.Id)
                 .ToList();
 
-            // Retor la lista como una colección de solo lectura
+            // Devolver como IReadOnlyList
             return (IReadOnlyList<CantonDTO>)list;
         })!;
 
-    // Método para obtener distritos por provincia y cantón
+    // Distritos por cantón: GET /cantones/{idCanton}/distritos
+    // (Mantenemos la firma con provinciaId para tu DTO; la API no lo devuelve, así que usamos el parámetro)
     public Task<IReadOnlyList<DistritoDTO>> GetDistritosAsync(int provinciaId, int cantonId)
-        // Utiliza la caché para almacenar los distritos de un cantón específico y evitar llamadas repetidas al servidor
-        => _cache.GetOrCreateAsync($"dist_{provinciaId}_{cantonId}", async e =>
+
+        // Cache por 1 año (los datos no cambian)
+        => _cache.GetOrCreateAsync($"dist_cr_v2_{provinciaId}_{cantonId}", async e =>
         {
-            // Configurar la expiración de la caché a 1 año
             e.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365);
 
-            // Obtener los distritos desde el archivo JSON del cantón específico en la provincia
-            var path = $"provincia/{provinciaId}/canton/{cantonId}/distritos.json";
-            var dict = await _http.GetFromJsonAsync<Dictionary<string, string>>(path)
-                       ?? new Dictionary<string, string>();
+            // Lista de provincias desde la API
+            ApiResponse<List<DistritoApiItem>>? api;
 
-            // Convertir el diccionario a una lista de DistritoDTO y ordenarla por Id
-            var list = dict
-                .Select(kv => new DistritoDTO(int.Parse(kv.Key), kv.Value, provinciaId, cantonId))
+            // Llamada con manejo de errores (si falla, devolver lista vacía)
+            try { api = await _http.GetFromJsonAsync<ApiResponse<List<DistritoApiItem>>>($"cantones/{cantonId}/distritos"); }
+            catch { api = null; }
+
+            // Mapear a DTOs y ordenar por Id
+            var list = (api?.data ?? new List<DistritoApiItem>())
+                .Select(d => new DistritoDTO(d.idDistrito, d.descripcion, provinciaId, cantonId))
                 .OrderBy(d => d.Id)
                 .ToList();
 
-            // Retornar la lista como una colección de solo lectura
+            // Devolver como IReadOnlyList
             return (IReadOnlyList<DistritoDTO>)list;
         })!;
 }

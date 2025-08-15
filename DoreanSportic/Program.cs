@@ -42,7 +42,7 @@ builder.Services.AddSession(
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient<IServiceUbicacion, ServiceUbicacion>(c =>
 {
-    c.BaseAddress = new Uri("https://ubicaciones.paginasweb.cr/");
+    c.BaseAddress = new Uri("https://api-geo-cr.vercel.app/");
 });
 
 //***********************

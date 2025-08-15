@@ -1,13 +1,15 @@
 ﻿// Función para formatear números a dos decimales y agregar el símbolo de colón
-function formatColones0(value) {
-
-    // Obtener el número redondeado a dos decimales
-    const numero = Math.round(Number(value ?? 0)); // entero
-
-    // Formatear el número con separadores de miles y agregar el símbolo de colón
-    const entero = String(numero).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    return `₡${entero}`;
+function formatColones(value) {
+    // Convertir a número válido
+    const n = Number(value ?? 0); // número con decimales
+    // Siempre 2 decimales
+    const partes = n.toFixed(2).split('.'); // ['entero', 'decimales']
+    // Separador de miles con espacio
+    partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    // Reconstruir con punto como separador decimal
+    return `₡${partes[0]}.${partes[1]}`;
 }
+
 
 // Función básica de validación Luhn para números de tarjeta
 function luhnCheck(numStr) {
@@ -556,7 +558,7 @@ function bindParcialEventos(root, localizer) {
                             const base = parseMoney(originalTotalText || totEl.textContent || '0');
                             totEl.textContent = (m === 'efectivo')
                                 // Si es efectivo, mostrar el total sin decimales (redondeado hacia arriba)
-                                ? formatColones0(Math.ceil(base))
+                                ? formatColones(Math.ceil(base))
 
                                 // Caso contrario, mostrar el total original con decimales
                                 : originalTotalText;
@@ -567,7 +569,7 @@ function bindParcialEventos(root, localizer) {
                     const mSel = document.querySelector('input[name="pago-metodo"]:checked')?.value || 'tarjeta';
                     const base = parseMoney(originalTotalText || totEl.textContent || '0');
                     totEl.textContent = (mSel === 'efectivo')
-                        ? formatColones0(Math.ceil(base))
+                        ? formatColones(Math.ceil(base))
                         : originalTotalText;
 
                     // Dar formato al campo de número de tarjeta
@@ -610,6 +612,9 @@ function bindParcialEventos(root, localizer) {
                         // Asignar el atributo data-bound al input de efectivo para evitar rebinding
                         cashInput.dataset.bound = '1';
 
+                        // Función helper: solo dígitos
+                        const soloDigitos = (txt) => (String(txt || '').replace(/[^\d]/g, ''));
+
                         // Bloquea todo menos teclas de navegación/edición y dígitos
                         cashInput.addEventListener('keydown', (ev) => {
                             const k = ev.key;
@@ -621,16 +626,41 @@ function bindParcialEventos(root, localizer) {
 
                         // Limpiar pegado (solo dígitos)
                         cashInput.addEventListener('paste', (ev) => {
+
+                            // Prevenir el pegado por defecto
                             ev.preventDefault();
+
+                            // Obtener el texto pegado y sanitizarlo (solo dígitos)
                             const txt = (ev.clipboardData || window.clipboardData).getData('text') || '';
-                            const sanitizado = sanitizarEntero(txt);
-                            document.execCommand('insertText', false, sanitizado);
+                            const sanitizado = soloDigitos(txt);
+
+                            // Insertar el texto sanitizado en la posición actual del cursor
+                            const start = cashInput.selectionStart ?? cashInput.value.length;
+
+                            // Si no hay selección, se inserta al final
+                            const end = cashInput.selectionEnd ?? cashInput.value.length;
+
+                            // Reconstruir el valor del input con el texto sanitizado
+                            const before = cashInput.value.slice(0, start);
+
+                            // Texto después del cursor
+                            const after = cashInput.value.slice(end);
+
+                            // Actualizar el valor del input con el texto sanitizado
+                            cashInput.value = soloDigitos(before + sanitizado + after);
+                            // Disparar cálculo de vuelto
+                            cashInput.dispatchEvent(new Event('input', { bubbles: true }));
                         });
 
                         // Al enfocar, mostrar número “crudo” (sin ₡, sin separadores)
                         cashInput.addEventListener('focus', (e) => {
-                            const n = Math.trunc(parseMoney(e.target.value || ''));
-                            e.target.value = n ? String(n) : '';
+                            // Si viene formateado, dejarlo así como está (no formatearlo)
+                            const n = parseMoney(e.target.value || '');
+
+                            // Mostrar el valor sin formato (solo dígitos)
+                            e.target.value = n ? String(Math.trunc(n)) : '';
+                            // Mover cursor al final
+                            e.target.setSelectionRange(e.target.value.length, e.target.value.length);
                         });
 
                         // En cada input: sanitizar + generar vuelto + formatear sin decimales
@@ -646,14 +676,14 @@ function bindParcialEventos(root, localizer) {
                             const totalTxt = document.getElementById('pago-tot')?.textContent || '0';
                             const total = parseMoney(totalTxt); // convierte a número
 
-                            // Calcular el vuelto Vuelto (entero)
+                            // Calcular el vuelto en vivo (número entero)
                             const vuelto = Math.max(0, num - Math.ceil(total)); // evitar “céntimos” para el cambio
 
                             // Si existe el input de vuelto, mostrar el vuelto formateado
-                            if (changeInput) changeInput.value = formatColones0(vuelto);
+                            if (changeInput) changeInput.value = formatColones(vuelto); 
 
-                            // Mostrar en el input como colones sin decimales
-                            e.target.value = formatColones0(num);
+                            // Mantener solo dígitos en crudo (sin formato)
+                            e.target.value = raw;
                         });
 
                         // En evento blur del input de efectivo, se asegura formato/tope
@@ -663,7 +693,7 @@ function bindParcialEventos(root, localizer) {
                             const n = (parseMoney(e.target.value || ''));
 
                             // Mostrar el valor formateado como colones sin decimales
-                            e.target.value = formatColones0(n);
+                            e.target.value = formatColones(n);
                         });
                     })();
 
@@ -852,8 +882,11 @@ function bindParcialEventos(root, localizer) {
                                 // Cerrar modal
                                 document.getElementById('modalPago').close();
 
-                                // Redirigir a página de pedidos/órdenes
-                                 window.location.href = `/Pedido/Index`;
+                                setTimeout(() => {
+                                    // Redirigir a página de pedidos/órdenes
+                                    window.location.href = `/Pedido/Index`;
+                                }, 1000);
+
                             } else {
 
                                 // Si hay errores en la respuesta
