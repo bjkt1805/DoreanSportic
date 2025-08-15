@@ -62,6 +62,12 @@ namespace DoreanSportic.Controllers
             return View(@object);
         }
 
+        public async Task<ActionResult> Details(int id)
+        {
+            var @object = await _servicePedido.FindByIdAsync(id);
+            return View(@object);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActualizarEncabezado([FromBody] ActualizarEncabezadoReq req)

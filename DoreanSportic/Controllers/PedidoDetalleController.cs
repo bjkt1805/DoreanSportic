@@ -36,13 +36,22 @@ namespace DoreanSportic.Web.Controllers
 
         // GET: PedidoController/DetallesPorPedido/{idPedido}
         [HttpGet]
-        public async Task<ActionResult> GetDetallesPorPedido(int idPedido)
+        public async Task<ActionResult> GetDetallesPorPedidoEditable(int idPedido)
         {
-            // Listar las reseñas asociadas a un producto
+            // Listar los detalles asociados a un pedido
             var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);
             // Pasar el ID del pedido a la vista parcial por medio de ViewData
             ViewData["PedidoId"] = idPedido;
             return PartialView("_DetallesPedidoEditable", collection);
+        }
+
+        // GET: PedidoController/DetallesPorPedido/{idPedido}
+        [HttpGet]
+        public async Task<ActionResult> GetDetallesPorPedido(int idPedido)
+        {
+            // Listar los detalles asociadados a un pedido
+            var collection = await _servicePedidoDetalle.GetDetallesPorPedido(idPedido);
+            return PartialView("_DetallesPedido", collection);
         }
 
         // POST: PedidoDetalleController/Create

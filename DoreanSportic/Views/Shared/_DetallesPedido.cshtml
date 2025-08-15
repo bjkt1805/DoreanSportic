@@ -8,6 +8,18 @@
     var culturaPersonalizada = (CultureInfo)CultureInfo.InvariantCulture.Clone();
     culturaPersonalizada.NumberFormat.NumberGroupSeparator = " "; // separador de miles
     culturaPersonalizada.NumberFormat.NumberDecimalSeparator = "."; // separador decimal
+
+    // Precio fijos de personalización
+
+    const decimal PRECIO_FIJO_MENSAJE_PERSONALIZADO = 2000m;
+    const decimal PRECIO_FIJO_FOTO = 3000m;
+
+    // IVA
+    const decimal IVA = 0.13m;
+
+    decimal subtotalGeneral = 0m;
+
+
 }
 
 <h2 class="p-2 font-bold text-slate-700">
@@ -18,10 +30,13 @@
     <table class="table">
         <thead class="bg-primary text-white">
             <tr>
-                <th class="text-center">@(Localizer["Nombre"])</th>
-                <th class="text-center">@(Localizer["Cantidad"])</th>
-                <th class="text-center">@(Localizer["Precio unitario"])</th>
-                <th class="text-center">@(Localizer["Subtotal"])</th>
+                <th class="text-left">@Localizer["Producto"]</th>
+                <th class="text-center">@Localizer["Cantidad"]</th>
+                <th class="text-end">@Localizer["Precio"]</th>
+                <th class="text-end">@Localizer["Subtotal"]</th>
+                <th class="text-end">@Localizer["IVA (13%)"]</th>
+                <th class="text-center">@Localizer["Total"]</th>
+                <th class="text-end"></th>
             </tr>
         </thead>
         <tbody>
@@ -32,49 +47,28 @@
                 foreach (var item in Model)
                 {
                     var producto = item.IdProductoNavigation;
-                    decimal precioBase = producto.PrecioBase;
+                    // precio estimado mostrado (tu subtotal / cantidad cuando carga por primera vez)
+                    var precioUnitEstimado = item.Cantidad > 0 ? (item.SubTotal / item.Cantidad) : 0m;
 
-                    // Obtener promociones activas por producto
-                    var promoProducto = producto.IdPromocion?
-                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
-                    var descuentoProducto = promoProducto?.PorcentajeDescuento ?? 0;
+                    // Cálculo por fila
+                    var impFila = Math.Round(item.SubTotal * IVA, 2, MidpointRounding.AwayFromZero);
+                    subTotalProducto += item.SubTotal; 
+                    subtotalGeneral += item.SubTotal;
+                    var totFila = item.SubTotal + impFila;
 
-                    // Obtener promociones activas por categoría
-                    var promoCategoria = producto.IdCategoriaNavigation?.IdPromocion?
-                    .FirstOrDefault(p => p.FechaInicio <= hoy && p.FechaFin >= hoy);
-                    var descuentoCategoria = promoCategoria?.PorcentajeDescuento ?? 0;
 
-                    var descuentoTotal = descuentoProducto + descuentoCategoria;
-                    if (descuentoTotal > 100) descuentoTotal = 100;
-
-                    var precioConDescuento = precioBase - (precioBase * descuentoTotal / 100);
-                    var subtotal = (descuentoTotal > 0 ? precioConDescuento : precioBase) * item.Cantidad;
-                    subTotalProducto += subtotal;
-                    <tr>
-                        <td class="text-center">@producto.Nombre</td>
+                    <tr data-detalle-id="@item.Id">
+                        <td>
+                            <div class="font-semibold text-sm">@producto?.Nombre</div>
+                        </td>
                         <td class="text-center">@item.Cantidad</td>
 
-                        @if (descuentoTotal > 0)
-                        {
-                            <td class="text-center">
-                                <div class="text-xs text-gray-400">
-                                    <b>Antes:</b> <span class="line-through">₡@precioBase.ToString("N2", culturaPersonalizada)</span>
-                                </div>
-                                <div class="text-green-600 font-bold">
-                                    ₡@precioConDescuento.ToString("N2", culturaPersonalizada)
-                                </div>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">
-                                ₡@precioBase.ToString("N2", culturaPersonalizada)
-                            </td>
-                        }
+                        <td class="text-end cell-punit">₡@precioUnitEstimado.ToString("N2", culturaPersonalizada)</td>
+                        <td class="text-end cell-subtotal">₡@item.SubTotal.ToString("N2", culturaPersonalizada)</td>
 
-                        <td class="text-center">
-                            ₡@subtotal.ToString("N2", culturaPersonalizada)
-                        </td>
+                        <td class="text-end cell-tax">₡@impFila.ToString("N2", culturaPersonalizada)</td>
+                        <td class="text-end cell-total">₡@totFila.ToString("N2", culturaPersonalizada)</td>
+
                     </tr>
                 }
             }
@@ -85,78 +79,105 @@
 
 <br />
 
-<h2 class="p-2 font-bold text-slate-700">@(Localizer["Detalle de personalizaciones"])</h2>
+<h2 class="p-2 font-bold text-slate-700">@(Localizer["Detalle de productos personalizados"])</h2>
 
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
     <table class="table">
         <thead class="bg-primary text-white">
             <tr>
-                <th class="text-center">@(Localizer["Producto"])</th>
-                <th class="text-center">@(Localizer["Cantidad"])</th>
+                <th class="text-left">@(Localizer["Producto"])</th>
+                <th class="text-center">@(Localizer["Mensaje"])</th>
+                <th class="text-center">@(Localizer["Imagen personalizada"])</th>
                 <th class="text-center">@(Localizer["Criterios de personalización"])</th>
-                <th class="text-center">Total</th>
             </tr>
         </thead>
         <tbody>
             @{
-                decimal subTotalProductoPersonalizado = 0;
+
+                decimal subTotalProductoGeneralizado = 0;
+                var impuestoProductoPersonalizado = subTotalProductoGeneralizado * 0.13M;
             }
 
             @foreach (var item in Model)
             {
                 if (item.IdEmpaque != null)
                 {
-                    decimal mensajePersonalizado = 1000.00M;
-                    decimal foto = 1500.00M;
-                    decimal totalProductoPersonalizado = ((item.IdEmpaqueNavigation?.PrecioBase ?? 0) + mensajePersonalizado + foto) * item.Cantidad;
-                    subTotalProductoPersonalizado += totalProductoPersonalizado;
+                    var empaquePrecio = item.IdEmpaqueNavigation?.PrecioBase ?? 0m;
+
+                    // Cálculo por fila
+                    var impFila = Math.Round(item.SubTotal * IVA, 2, MidpointRounding.AwayFromZero);
 
                     <tr>
                         <td class="text-left">
                             @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
                         </td>
 
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.Cantidad)
-                        </td>
-
+                        @* Mostrar solo los primeros 15 caracteres del mensaje personalizado si sobrepasa 15 caracteres*@
                         <td class="text-left">
-                            <div class="flex flex-col">
-                                <p><b>Tipo de empaque: </b>@Html.DisplayFor(modelItem => item.IdEmpaqueNavigation.TipoEmpaque)</p>
-                                <p><b>Precio base: </b>₡@item.IdEmpaqueNavigation?.PrecioBase?.ToString("N2", culturaPersonalizada)</p>
-                                <p><b>Mensaje personalizado: </b>₡@mensajePersonalizado.ToString("N2", culturaPersonalizada)</p>
-                                <p><b>Foto: </b>₡@foto.ToString("N2", culturaPersonalizada)</p>
-                            </div>
+                            @(
+                                                !string.IsNullOrEmpty(item.MensajePersonalizado)
+                                                ? (item.MensajePersonalizado.Length > 15
+                                                ? item.MensajePersonalizado.Substring(0, 15) + "..."
+                                                : item.MensajePersonalizado)
+                                                : ""
+                                                )
                         </td>
 
                         <td class="text-center">
-                            ₡@totalProductoPersonalizado.ToString("N2", culturaPersonalizada)
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Foto!)"
+                                 alt="Foto personalizada"
+                                 style="width:100%;height:70px;object-fit:cover;border-radius:8px;" />
+
+                        </td>
+
+                        <td class="text-center">
+                            <div class="flex flex-col gap-1">
+                                <p style="font-size: 10px">
+                                    <b>@Localizer["Empaque"]:</b>
+                                    @item.IdEmpaqueNavigation?.TipoEmpaque
+                                    <span class="ml-2">₡@empaquePrecio.ToString("N2", culturaPersonalizada)</span>
+                                </p>
+                                <p style="font-size: 10px">
+                                    <b>@Localizer["Mensaje personalizado"]:</b>
+                                    <span class="ml-2">₡@PRECIO_FIJO_MENSAJE_PERSONALIZADO.ToString("N2", culturaPersonalizada)</span>
+                                </p>
+                                <p style="font-size: 10px">
+                                    <b>@Localizer["Foto"]:</b>
+                                    <span class="ml-2">₡@PRECIO_FIJO_FOTO.ToString("N2", culturaPersonalizada)</span>
+                                </p>
+                            </div>
                         </td>
                     </tr>
                 }
             }
 
-            @{
-                var subtotalGeneral = subTotalProducto + subTotalProductoPersonalizado;
-                var impuesto = subtotalGeneral * 0.13M;
-                var total = subtotalGeneral + impuesto;
-            }
-
-            <tr>
-                <td colspan="4" class="text-end fw-bold">
-                    <b>Subtotal:</b> ₡@subtotalGeneral.ToString("N2", culturaPersonalizada)
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-end">
-                    <b>@(Localizer["Impuesto (IVA 13%)"]): </b> ₡@impuesto.ToString("N2", culturaPersonalizada)
-                </td>
-            </tr>
-            <tr class="bg-primary text-white text-lg">
-                <td colspan="4" class="text-end fw-bold">
-                    <b>@(Localizer["Total a pagar"]): ₡@total.ToString("N2", culturaPersonalizada)</b>
-                </td>
-            </tr>
         </tbody>
     </table>
 </div>
+
+@{
+    var impuestoGeneral = Math.Round(subtotalGeneral * IVA, 2, MidpointRounding.AwayFromZero);
+    var totalGeneral = subtotalGeneral + impuestoGeneral;
+
+}
+
+<table class="table mt-2">
+    <tbody>
+        <tr>
+            <td colspan="5" class="text-end fw-bold">
+                <b>@Localizer["Subtotal (productos + personalizaciones)"]:</b> ₡@subtotalGeneral.ToString("N2", culturaPersonalizada)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5" class="text-end">
+                <b>@(Localizer["Impuesto (IVA 13%)"]): </b> ₡@impuestoGeneral.ToString("N2", culturaPersonalizada)
+            </td>
+        </tr>
+        <tr class="bg-primary text-white text-lg">
+            <td colspan="5" class="text-end fw-bold">
+                <b>@(Localizer["Total pagado"]): ₡@totalGeneral.ToString("N2", culturaPersonalizada)</b>
+            </td>
+        </tr>
+
+    </tbody>
+</table>

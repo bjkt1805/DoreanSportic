@@ -1,0 +1,83 @@
+﻿@model DoreanSportic.Application.DTOs.PedidoDTO
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="py-4">
+    <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
+</div>
+
+<div style="margin-left:10%; margin-right:15%">
+    <div class="mb-4 max-w-4xl mx-auto p-6 bg-white text-slate-500 shadow-md rounded mt-10 border rounded font-sans" style="width: 110%">
+        <!-- Header -->
+        <div class="border-b pb-8 mb-8 flex items-center flex-row gap-5 justify-between">
+            <div class="flex-1 text-left p-2">
+                <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
+                     alt="Company Logo" class="h-10 w-25 mr-4">
+                <p class="text-sm text-slate-500"><b>Dorean Sportic S.A.</b></p>
+                <p class="text-sm text-slate-500"><b>Dirección: </b>San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
+                <p class="text-sm text-slate-500"><b>Teléfono: </b>72969719</p>
+                <p class="text-sm text-slate-500"><b>Email:</b> doreansportic@gmail.com</p>
+            </div>
+
+            <!-- Información del pedido/factura -->
+            <div class="text-right flex-1 items-end" style="margin-top: 11%; padding-right: 5%" ">
+
+                <!-- Código para extraer la fecha y la hora desde el campo fechaPedido del pedido el cual trae la hora, minuto y segundo de creación-->
+                @{
+                    var fechaFormateada = Model.FechaPedido.ToString("dd/MM/yyyy");
+                    var horaFormateada = Model.FechaPedido.ToString("HH:mm:ss");
+                }
+                <p class="text-sm text-slate-500"><b>Fecha del pedido: </b>@fechaFormateada</p>
+                <p class="text-sm text-slate-500"><b>Hora de emisión: </b>@horaFormateada</p>
+                <p class="text-slate-500" style="font-size: 12px"><i>* Formato de 24 horas *</i></p>
+                <p class="text-sm text-slate-500"><b>Estado de pago: </b>@Html.DisplayFor(model => model.EstadoPago)</p>
+
+            </div>
+    </div>
+
+            <!-- Información del cliente -->
+            <div class="mb-4 w-100 p-2">
+            <p class="text-sm text-slate-500">
+                    <b>Pedido #: </b><u>@Html.DisplayFor(model => model.Id)</u>
+                </p>
+            <div class="border rounded mt-2 p-2">
+                    <h2 class="font-bold text-slate-700">@Localizer["INFORMACIÓN DEL CLIENTE"]</h2>
+                    <p class="text-slate-600">
+                        <b>Nombre: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Nombre)
+                        @Html.DisplayFor(model => model.IdClienteNavigation.Apellido)
+                    </p>
+                    <p class="text-sm text-slate-500"><b>Teléfono: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Telefono)</p>
+                    <p class="text-sm text-slate-500"><b>Correo electrónico: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Email)</p>
+                    <p class="text-sm text-slate-500"><b>Dirección de envío: </b>@Html.DisplayFor(model => model.DireccionEnvio)</p>
+
+                </div>
+
+            </div>
+
+
+
+        <!-- Cargar los detalles del pedido-->
+        <div id="tabla-detalles">
+            <p class="text-sm">@(Localizer["Cargando detalles del pedido..."])</p>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+
+        fetch('/PedidoDetalle/GetDetallesPorPedido?idPedido=@Model.Id')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("tabla-detalles").innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById("tabla-detalles").innerHTML = "<p>ERROR</p>";
+            });
+    </script>
+}

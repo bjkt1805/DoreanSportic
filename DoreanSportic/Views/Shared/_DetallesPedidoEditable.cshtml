@@ -10,8 +10,9 @@
 
     // Precio fijos de personalización
 
-    const decimal PRECIO_FIJO_MENSAJE_PERSONALIZADO = 2000m; // Precio fijo por personalización
+    const decimal PRECIO_FIJO_MENSAJE_PERSONALIZADO = 2000m; 
     const decimal PRECIO_FIJO_FOTO = 3000m;
+    
     // Obtener el ID del pedido desde ViewData
     var pedidoId = (int)(ViewData["PedidoId"] ?? 0);
 
@@ -93,7 +94,7 @@
                 </tr>
             }
             @{
-                // totales iniciales (servidos por el server si los calculaste antes)
+                // Totales iniciales (calculados en Detalle de Producto antes de traerlos a la vista)
                 var subIni = Model.Sum(x => x.SubTotal);
                 var impIni = Math.Round(subIni * 0.13m, 2, MidpointRounding.AwayFromZero);
                 var totIni = subIni + impIni;
@@ -152,7 +153,7 @@
                                 : item.MensajePersonalizado)
                                 : ""
                             )
-                    </td>
+                        </td>
 
                         <td class="text-center">
                             @if (usaFoto)
@@ -198,12 +199,12 @@
 }
 
 
-@* Bloque de totales: SIEMPRE visible *@
+@* Bloque de totales: visible *@
 <table class="table mt-2">
     <tbody>
         <tr>
             <td colspan="5" class="text-end fw-bold">
-                <b>@Localizer["Subtotal (productos + personalizados)"]:</b>
+                <b>@Localizer["Subtotal (productos + personalizaciones)"]:</b>
                 <span id="totals-sub">₡@subIni.ToString("N2", culturaPersonalizada)</span>
             </td>
         </tr>

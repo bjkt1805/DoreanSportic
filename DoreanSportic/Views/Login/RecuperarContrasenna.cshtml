@@ -49,8 +49,13 @@
                         <span id="msj-confirm" data-msj='@Localizer["Las contraseñas no coinciden"]' style="display:none"></span>
 
 
-                        @* Botón para enviar solicitud *@
-                        <button class="btn bg-[#004AAD] text-white mt-4" type="submit">@Localizer["Enviar"]</button>
+                        <div class="flex flex-col gap-1 mt-4">
+                            @* Botón para enviar solicitud *@
+                            <button class="btn bg-[#004AAD] text-white" type="submit">@Localizer["Enviar"]</button>
+
+                            @* Botón para cancelar *@
+                            <a class="btn btn-soft text-black mt-2" asp-controller="Login" asp-action="Login">@Localizer["Cancelar"]</a>
+                        </div>
                     </fieldset>
                 </form>
             </div>

@@ -927,7 +927,7 @@ function bindParcialEventos(root, localizer) {
 function initPedidoDetails(pedidoId, localizer) {
 
     // Carga vista parcial de detalles con el id de pedido
-    fetch(`/PedidoDetalle/GetDetallesPorPedido?idPedido=${pedidoId}`)
+    fetch(`/PedidoDetalle/GetDetallesPorPedidoEditable?idPedido=${pedidoId}`)
         .then(response => response.text())
         .then(html => {
             document.getElementById("tabla-detalles").innerHTML = html;
