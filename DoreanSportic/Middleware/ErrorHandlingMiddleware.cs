@@ -28,10 +28,10 @@ namespace DoreanSportic.Web.Middleware
             }
             catch (Exception ex)
             {
-                // En desarrollo, deja que la Developer Exception Page maneje todo.
+                // En desarrollo, dejar que la Developer Exception Page maneje todo.
                 if (_env.IsDevelopment())
                 {
-                    // Vuelve a lanzar la excepción para que se renderice la página de error de dev
+                    // Volver a lanzar la excepción
                     throw;
                 }
 

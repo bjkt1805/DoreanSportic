@@ -1,0 +1,106 @@
+﻿@{
+    Layout = "_LayoutLogin";
+    ViewData["Title"] = "Acceso denegado";
+}
+
+<!-- Para seleccionar el idioma de la aplicación -->
+@{
+    // Obtener idioma/cultura actual que corre la aplicación
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
+
+    // Generar las opciones del formulario (options) como cadenas String ya que Razor no permite agregarlas como
+    // atributos en las opciones del formulario. Luego en el formulario se usa Html.Raw para inyectar texto HTML puro
+    // el cual Razor no ve como un tag helper (lo que provoca un error de no poder insertar código C# dentro del atributo del tag helper)
+    var optionEs = $"<option value=\"es-CR\"{(currentCulture.StartsWith("es") ? " selected" : "")}>ES</option>";
+    var optionEn = $"<option value=\"en-US\"{(currentCulture.StartsWith("en") ? " selected" : "")}>EN</option>";
+}
+
+<nav class="navbar bg-transparent absolute top-0 left-0 right-0 z-50">
+
+    <div class="flex-1"></div> <!-- empujar a la derecha -->
+    <div class="navbar-end pr-4 w-full">
+        @*Formulario para manejar la selección del idioma*@
+
+        <form id="lang-form"
+              action="@Url.Action("SetLanguage","Language")"
+              method="post"
+              class="flex items-center gap-2">
+            <div class="flex items-center gap-2" style="width: 150px ; padding-right: 10px">
+                <!-- Ícono de mundo SVG -->
+                <span class="text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="inline h-5 w-5 text-black" viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+                        <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" stroke-width="2" fill="none" />
+                    </svg>
+                </span>
+                <select name="culture"
+                        onchange="this.form.submit();"
+                        class="select select-sm bg-black text-white text-base-content"
+                        style="border:none">
+                    @Html.Raw(optionEs)
+                    @Html.Raw(optionEn)
+                </select>
+            </div>
+            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+        </form>
+    </div>
+
+</nav>
+
+<!-- Contenedor principal -->
+<div class="min-h-[70vh] flex items-center justify-center p-6">
+    <div class="max-w-xl w-full h-screen">
+        <!-- Tarjeta principal -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body items-center text-center gap-3">
+                <!-- Icono/Badge -->
+                <div class="badge badge-error badge-outline px-4 py-3 text-sm uppercase tracking-wide">
+                    403 • Acceso denegado
+                </div>
+
+                <!-- Título -->
+                <h1 class="text-2xl md:text-3xl font-bold">
+                    No tienes permisos para ver esta página
+                </h1>
+
+                <!-- Mensaje -->
+                <p class="text-base-content/70 leading-relaxed">
+                    Este recurso está restringido
+                </p>
+                <p>Si crees que se trata de un error, contacta al administrador.</p>
+
+
+                <!-- Acciones -->
+                <div class="mt-2 flex flex-wrap items-center justify-center gap-3">
+                    <a href="javascript:history.back()" class="btn btn-outline">
+                        ← Volver
+                    </a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                        Ir al inicio
+                    </a>
+                    <a asp-controller="Pedido" asp-action="Index" class="btn">
+                        Mis pedidos
+                    </a>
+                </div>
+
+                <!-- Detalle opcional -->
+                <div class="collapse collapse-arrow bg-base-200 mt-2 w-full">
+                    <p class="collapse-title text-sm font-medium">
+                        <b>Detalle técnico</b>
+                    </p>
+                    <div class="collapse-content text-left text-sm text-base-content/70">
+                        <p>
+                            Código: <span class="font-mono">403 Forbidden</span>.
+                        </p>
+                        <p>
+                            Esta página aparece cuando el servidor entiende la solicitud,
+                            pero se niega a autorizarla.
+                        </p>
+ 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -118,7 +118,7 @@
                     <th class="text-center">@(Localizer["Mensaje"])</th>
                     <th class="text-center">@(Localizer["Imagen personalizada"])</th>
                     <th class="text-center">@(Localizer["Criterios de personalización"])</th>
-                    <th class="text-end">@(Localizer["Subtotal paquetes (ya incluido)"])</th>
+                    <th class="text-end">@(Localizer["Subtotal empaques (ya incluido)"])</th>
                 </tr>
             </thead>
             <tbody id="tbody-personal">
@@ -227,6 +227,10 @@
 <!-- Botón para completar compra -->
 <div class="p-2" style="display: flex; justify-content: flex-end; gap: 10px;">
     <span id="save-status" class="text-sm mr-2"></span>
+    
+    @{
+
+    }
     <button id="btn-completar-compra" class="btn btn-success text-black">
         <b>@Localizer["Pagar"]</b>
     </button>

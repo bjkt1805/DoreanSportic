@@ -100,6 +100,11 @@ namespace Libreria.Web.Controllers
 
             // Crear el objeto ClaimsIdentity con los claims
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Limpiar sesión previa antes de hacer login
+            HttpContext.Session.Clear();
+
+            // Iniciar sesión del usuario con los claims y propiedades de autenticación
             await HttpContext.SignInAsync(
                            CookieAuthenticationDefaults.AuthenticationScheme,
                            new ClaimsPrincipal(claimsIdentity),
@@ -215,7 +220,13 @@ namespace Libreria.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             _logger.LogInformation("Logout de {User}", User.Identity?.Name);
-            await HttpContext.SignOutAsync();
+
+            // Limpiar la sesión del usuario
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Limpiar todos los datos de sesión
+            HttpContext.Session.Clear();
+
             return RedirectToAction(nameof(Login));
         }
         public IActionResult Forbidden()

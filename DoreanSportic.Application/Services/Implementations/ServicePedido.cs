@@ -43,6 +43,15 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
+        public async Task<IReadOnlyList<PedidoDTO>> ListByUserAsync(int userId)
+        {
+            // Obtener la lista de pedidos del repositorio
+            var pedidos = await _repository.ListByUserAsync(userId);
+            // Mapear la lista de pedidos a DTOs
+            var pedidosDTO = _mapper.Map<IReadOnlyList<PedidoDTO>>(pedidos);
+            return pedidosDTO;
+        }
+
         public async Task<int> AddAsync(PedidoDTO dto)
         {
             var objectMapped = _mapper.Map<Pedido>(dto);
@@ -50,10 +59,10 @@ namespace DoreanSportic.Application.Services.Implementations
         }
 
         // Método para actualizar el encabezado del pedido (dirección de envío, etc)
-        public async Task<bool> ActualizarEncabezadoAsync(int pedidoId, int clienteId, string? direccionEnvio)
+        public async Task<bool> ActualizarEncabezadoAsync(int pedidoId, int clienteId, string? direccionEnvio, int metodoPago)
         {
             // Actlizar el encabezado del pedido
-            await _repository.UpdateHeaderAsync(pedidoId, clienteId, direccionEnvio);
+            await _repository.UpdateHeaderAsync(pedidoId, clienteId, direccionEnvio, metodoPago);
             return true;
         }
 

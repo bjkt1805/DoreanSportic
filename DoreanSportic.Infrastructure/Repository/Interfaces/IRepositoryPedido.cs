@@ -12,10 +12,11 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<ICollection<Pedido>> ListAsync();
         Task<Pedido> FindByIdAsync(int id);
 
+        Task<IReadOnlyList<Pedido>> ListByUserAsync(int userId);
         Task<int> AddAsync(Pedido entity);
 
         // Método para actualizar el encabezado del pedido
-        Task UpdateHeaderAsync(int pedidoId, int? idCliente, string? direccionEnvio);
+        Task UpdateHeaderAsync(int pedidoId, int? idCliente, string? direccionEnvio, int metodoPago);
 
         // Método para actualizar los totales y el estado de pago del pedido
         Task UpdateTotalsAndStateAsync(int pedidoId, decimal sub, decimal imp, decimal total, string? estadoPago = null);

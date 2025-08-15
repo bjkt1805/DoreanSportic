@@ -1,13 +1,20 @@
 ﻿// Función para formatear números a dos decimales y agregar el símbolo de colón
 function formatColones(value) {
-    // Convertir a número válido
-    const n = Number(value ?? 0); // número con decimales
-    // Siempre 2 decimales
-    const partes = n.toFixed(2).split('.'); // ['entero', 'decimales']
-    // Separador de miles con espacio
-    partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    // Reconstruir con punto como separador decimal
-    return `₡${partes[0]}.${partes[1]}`;
+
+    // Obtener el valor como número, si no es un número válido, asignar 0
+    let n = Number(value);
+    if (!isFinite(n)) n = 0;
+    // Asignar a s el valor formateado a dos decimales
+    const s = n.toFixed(2);
+
+    // Separar la parte entera y decimal del número
+    const [intPart, decPart] = s.split('.');
+
+    // Si no hay parte decimal, retornar el entero con colón
+    const entero = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    // Si la parte decimal es undefined o vacía, retornar solo el entero con colón
+    return `₡${entero}.${decPart}`;
 }
 
 
@@ -79,10 +86,23 @@ function expValida(mmAA) {
 // Función para parsear un valor monetario (string o número) a un número
 function parseMoney(value) {
 
-    // Si el valor es undefined, null o no es un string, retornar 0, caso contrario
-    // eliminar caracteres no numéricos y convertir a número
+    // Si el valor es undefined, null o no es un string, retornar 0
     if (typeof value !== 'string') return Number(value) || 0;
-    return Number(value.replace(/[^\d.]/g, '')) || 0;
+
+    // Eliminar espacios al inicio y final, reemplazar comas por puntos si es necesario,
+    let s = value.trim().replace(/\s/g, '');
+
+    // Si contiene una coma y no tiene un punto, reemplazar la coma por un punto (para decimal)
+    if (s.includes(',') && !s.includes('.')) s = s.replace(',', '.');
+
+    // Si contiene comas, reemplazarlas por puntos si es necesario
+    else s = s.replace(/,/g, '');
+
+    // Reemplazar cualquier carácter que no sea dígito o punto por una cadena vacía
+    s = s.replace(/[^\d.]/g, '');
+
+    // Si el string resultante es vacío o no es un número válido, retornar 0
+    return Number(s) || 0;
 }
 
 // Función para pintar totales del modal leyendo los ya mostrados en la página
@@ -127,8 +147,8 @@ function actualizarFilaPersonalizacion(detalleId) {
     // Asignar a cell la celda de subtotal de personalización
     const cell = filaPers.querySelector('.cell-pers-subtotal');
 
-    // Asignar a unit el valor numérico del atributo data-unit-pers de la celda, o 0 si no existe
-    const unit = Number(cell?.dataset.unitPers || 0);
+    // Parsear el valor del atributo data-unit-pers de la celda a un número
+    const unit = parseMoney(String(cell?.dataset.unitPers ?? '0'));
 
     // Obtener la cantidad del producto desde la tabla de productos
     const qty = getCantidadProducto(detalleId);
@@ -150,8 +170,8 @@ function calcularSubtotalPersonalizaciones() {
         // Asignar a cell la celda de subtotal de personalización
         const cell = row.querySelector('.cell-pers-subtotal');
 
-        // Asignar a unit el valor numérico del atributo data-unit-pers de la celda, o 0 si no existe
-        const unit = Number(cell?.dataset.unitPers || 0);
+        // Asignar a unit el valor del atributo data-unit-pers de la celda, parseado a número
+        const unit = parseMoney(String(cell?.dataset.unitPers ?? '0'));
 
         // Asignar a detId el valor del atributo data-detalle-id de la fila
         const detId = row.getAttribute('data-detalle-id');
@@ -241,8 +261,8 @@ function bindParcialEventos(root, localizer) {
             // Asignar a cell la celda de subtotal de personalización
             const cell = row.querySelector('.cell-pers-subtotal');
 
-            // Si no existe la celda, salir de la función
-            const unit = Number(cell?.dataset.unitPers || 0);
+            // Asignar a unit el valor del atributo data-unit-pers de la celda
+            const unit = parseMoney(String(cell?.dataset.unitPers ?? '0'));
 
             // Asignar a detId el valor del atributo data-detalle-id de la fila
             const detId = row.getAttribute('data-detalle-id');
@@ -334,6 +354,9 @@ function bindParcialEventos(root, localizer) {
 
             // Obtener la respuesta en formato JSON
             const data = await response.json();
+
+            console.log('detalle:', data.detalle);
+            console.log('totals:', data.totals);
 
             // Si la respuesta no es exitosa, salir de la función
             if (!data.success) return;
@@ -857,11 +880,12 @@ function bindParcialEventos(root, localizer) {
                                 },
                                 body: JSON.stringify({
                                     pedidoId: pedidoId,
+                                    userId: userId,
 
                                     // Enviar el método de pago seleccionado (1 = efectivo, 2 = tarjeta)
                                     metodoPago: metodoPago, 
                                     // Enviar direccionEnvio como null ya que se envío en el encabezado previamente
-                                    direccionEnvio: null
+                                    direccionEnvio: direccionCompuesta
                                 })
                             });
 

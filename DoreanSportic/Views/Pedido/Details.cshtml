@@ -6,7 +6,7 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="py-4">
+<div class="py-4" style="margin-left:10%; margin-right:15%">
     <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">Volver al listado</a>
 </div>
 
@@ -35,6 +35,8 @@
                 <p class="text-sm text-slate-500"><b>Hora de emisión: </b>@horaFormateada</p>
                 <p class="text-slate-500" style="font-size: 12px"><i>* Formato de 24 horas *</i></p>
                 <p class="text-sm text-slate-500"><b>Estado de pago: </b>@Html.DisplayFor(model => model.EstadoPago)</p>
+                <p class="text-sm text-slate-500"><b>Método de pago: </b>@Html.DisplayFor(model => model.IdMetodoPagoNavigation.Nombre)</p>
+
 
             </div>
     </div>

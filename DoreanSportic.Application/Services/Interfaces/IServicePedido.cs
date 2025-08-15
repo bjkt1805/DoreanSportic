@@ -10,12 +10,13 @@ namespace DoreanSportic.Application.Services.Interfaces
     public interface IServicePedido
     {
         Task<ICollection<PedidoDTO>> ListAsync();
+        Task<IReadOnlyList<PedidoDTO>> ListByUserAsync(int userId);
         Task<PedidoDTO> FindByIdAsync(int id);
 
         Task<int> AddAsync(PedidoDTO dto);
 
         // Método para actualizar el encabezado del pedido
-        Task<bool> ActualizarEncabezadoAsync(int pedidoId, int userId, string? direccionEnvio);
+        Task<bool> ActualizarEncabezadoAsync(int pedidoId, int userId, string? direccionEnvio,int metodoPago);
 
         // Método para actualizar los totales y el estado de pago del pedido
         Task<(decimal sub, decimal imp, decimal total)> RecalcularTotalesAsync(int pedidoId);

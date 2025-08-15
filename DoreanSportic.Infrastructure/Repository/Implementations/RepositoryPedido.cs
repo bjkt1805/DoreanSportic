@@ -26,14 +26,25 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                                     .ThenInclude(d => d.IdProductoNavigation)
                                  .Include(p => p.IdClienteNavigation)
                                     .ThenInclude(c => c.Usuario)
+                                 .Include(p => p.IdMetodoPagoNavigation)
                                 .FirstAsync();
             return @object!;
         }
         public async Task<ICollection<Pedido>> ListAsync()
         {
             //Select * from Pedido
-            var collection = await _context.Set<Pedido>().ToListAsync();
+            var collection = await _context.Set<Pedido>()
+                .Where(p => p.IdCliente != null && p.Estado == true)
+                .ToListAsync();
             return collection;
+        }
+
+        public async Task<IReadOnlyList<Pedido>> ListByUserAsync(int userId)
+        {
+            return await _context.Pedido
+                .Where(p => p.IdCliente == userId)
+                .OrderByDescending(p => p.FechaPedido)
+                .ToListAsync();
         }
         public async Task<int> AddAsync(Pedido entity)
         {
@@ -70,7 +81,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
 
         // Metodo para actualizar el encabezado del pedido
-        public async Task UpdateHeaderAsync(int pedidoId, int? idCliente, string? direccionEnvio)
+        public async Task UpdateHeaderAsync(int pedidoId, int? idCliente, string? direccionEnvio, int metodoPago)
         {
             // Obtener el pedido por id
             var pedido = await _context.Pedido.FirstAsync(p => p.Id == pedidoId);
@@ -80,6 +91,9 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
             // Asignar la dirección de envío al pedido
             pedido.DireccionEnvio = direccionEnvio;
+
+            // Asignar el Id de metodo de pago
+            pedido.IdMetodoPago = metodoPago;
 
             // Para debuggear los cambios que va a realizar EF
             // antes de salvar los cambios (Ej: borrar entidedes, agregar campos, etc)
