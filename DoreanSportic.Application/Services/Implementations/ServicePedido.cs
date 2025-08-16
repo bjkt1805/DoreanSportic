@@ -85,12 +85,22 @@ namespace DoreanSportic.Application.Services.Implementations
         public async Task<(bool ok, List<(int detalleId, string nombre, int stockDisp, int cant)> errores)>
             ValidarStockAsync(int pedidoId)
         {
+            // Obtener detalles del pedido
             var detalles = await _repositoryDetalle.GetByPedidoIdAsync(pedidoId);
+
+            // Crear una lista de errores
             var errores = new List<(int, string, int, int)>();
+
+            // Recoorrer los detalles y verificar stock (solo líneas con producto)
             foreach (var detalle in detalles.Where(x => x.IdProducto != 0))
             {
+                // Obtener el producto por detalle
                 var p = await _repositoryProducto.FindByIdAsync(detalle.IdProducto);
+
+                // Si no existe el producto, agregar error y continuar
                 if (p == null) { errores.Add((detalle.Id, "Producto no existe", 0, detalle.Cantidad)); continue; }
+
+                // Si no hay stock suficiente, agregar error
                 if (p.Stock < detalle.Cantidad) errores.Add((detalle.Id, p.Nombre, p.Stock, detalle.Cantidad));
             }
             return (errores.Count == 0, errores);
