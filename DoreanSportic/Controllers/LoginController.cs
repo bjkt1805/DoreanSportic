@@ -102,7 +102,7 @@ namespace Libreria.Web.Controllers
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             // Limpiar sesión previa antes de hacer login
-            HttpContext.Session.Clear();
+            //HttpContext.Session.Clear();
 
             // Iniciar sesión del usuario con los claims y propiedades de autenticación
             await HttpContext.SignInAsync(
