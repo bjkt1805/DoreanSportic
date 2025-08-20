@@ -416,7 +416,7 @@ function manejarSubmitRegistro(event) {
 
             // Si viene un mensaje simple del backend, mostrar el error en el formulario
             if (data.errors) {
-                mostrarToast(getTranslation(data.errors[0].value), "error");
+                pintarErroresFormulario(form, data.errors || data.errores);
                 return;
             }
 
