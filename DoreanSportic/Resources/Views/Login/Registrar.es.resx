@@ -168,6 +168,9 @@
   <data name="¿Ya tienes cuenta?" xml:space="preserve">
     <value>¿Ya tienes cuenta?</value>
   </data>
+  <data name="Rol de usuario" xml:space="preserve">
+    <value>Rol de usuario</value>
+  </data>
   <data name="Inicia sesión" xml:space="preserve">
     <value>Inicia sesión</value>
   </data>
@@ -186,8 +189,14 @@
   <data name="Cuenta registrada exitosamente" xml:space="preserve">
     <value>¡Cuenta registrada exitosamente!</value>
   </data>
+  <data name="El usuario debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
+    <value>El usuario debe tener entre {{0}} y {{1}} caracteres</value>
+  </data>
   <data name="Solo letras, números, punto, guion y guion bajo" xml:space="preserve">
     <value>Solo letras, números, punto, guion y guion bajo</value>
+  </data>
+  <data name="La contraseña debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
+    <value>La contraseña debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
   <data name="Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial" xml:space="preserve">
     <value>Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial</value>
@@ -198,8 +207,14 @@
   <data name="Correo electrónico no válido" xml:space="preserve">
     <value>Correo electrónico no válido</value>
   </data>
+  <data name="El nombre debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
+    <value>El nombre debe tener entre {{0}} y {{1}} caracteres</value>
+  </data>
   <data name="El nombre solo debe contener letras" xml:space="preserve">
     <value>El nombre solo debe contener letras</value>
+  </data>
+  <data name="El apellido debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
+    <value>El apellido debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
   <data name="El apellido solo debe contener letras" xml:space="preserve">
     <value>El apellido solo debe contener letras</value>
@@ -212,17 +227,5 @@
   </data>
   <data name="Revisa tus credenciales" xml:space="preserve">
     <value>Revisa tus credenciales</value>
-  </data>
-  <data name="El nombre debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
-    <value>El nombre debe tener entre {{0}} y {{1}} caracteres</value>
-  </data>
-  <data name="El usuario debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
-    <value>El usuario debe tener entre {{0}} y {{1}} caracteres</value>
-  </data>
-  <data name="El apellido debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
-    <value>El apellido debe tener entre {{0}} y {{1}} caracteres</value>
-  </data>
-  <data name="La contraseña debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
-    <value>La contraseña debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
 </root>

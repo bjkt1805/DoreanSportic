@@ -259,6 +259,33 @@ namespace DoreanSportic.Web.Resources.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string TipoUsuario_DisplayName {
+            get {
+                return ResourceManager.GetString("TipoUsuario_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid role.
+        /// </summary>
+        public static string TipoUsuario_Range {
+            get {
+                return ResourceManager.GetString("TipoUsuario_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User role is required.
+        /// </summary>
+        public static string TipoUsuario_Required {
+            get {
+                return ResourceManager.GetString("TipoUsuario_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string UserName_DisplayName {

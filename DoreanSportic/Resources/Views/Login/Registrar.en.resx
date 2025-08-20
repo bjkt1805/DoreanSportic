@@ -168,6 +168,9 @@
   <data name="¿Ya tienes cuenta?" xml:space="preserve">
     <value>Already have an account?</value>
   </data>
+  <data name="Rol de usuario" xml:space="preserve">
+    <value>User role</value>
+  </data>
   <data name="Inicia sesión" xml:space="preserve">
     <value>Sign In</value>
   </data>

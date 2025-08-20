@@ -82,6 +82,18 @@ public class RegistroViewModel
     [Display(Name = "Sexo_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
     public int IdSexo { get; set; }
 
+    [Display(Name = "TipoUsuario_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
+    [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
+              ErrorMessageResourceName = "TipoUsuario_Required")]
+    [Range(1, int.MaxValue,
+        ErrorMessageResourceType = typeof(RegistroViewModelResources),
+        ErrorMessageResourceName = "TipoUsuario_Range")] 
+    public int IdTipoUsuario { get; set; } = 0;
+
+    [ValidateNever]
+    public IEnumerable<SelectListItem>? TiposUsuario { get; set; }
+
+    [ValidateNever]
     public IEnumerable<SelectListItem>? Sexos { get; set; }
 }
 

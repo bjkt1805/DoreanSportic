@@ -123,6 +123,15 @@
   <data name="UserName_Required" xml:space="preserve">
     <value>El usuario es requerido</value>
   </data>
+  <data name="TipoUsuario_DisplayName" xml:space="preserve">
+    <value>Rol</value>
+  </data>
+  <data name="TipoUsuario_Required" xml:space="preserve">
+    <value>Rol de usuario</value>
+  </data>
+  <data name="TipoUsuario_Range" xml:space="preserve">
+    <value>Rol no válido</value>
+  </data>
   <data name="UserName_Length" xml:space="preserve">
     <value>El usuario debe tener entre {{2}} y {{1}} caracteres</value>
   </data>

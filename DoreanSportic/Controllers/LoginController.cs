@@ -22,15 +22,18 @@ namespace Libreria.Web.Controllers
 
         private readonly IServiceUsuario _serviceUsuario;
         private readonly IServiceCliente _serviceCliente;
+        private readonly IServiceRol _serviceRol;
         private readonly IServiceSexo _serviceSexo;
         private readonly ILogger<LoginController> _logger;
         public LoginController(IServiceUsuario serviceUsuario,
             IServiceCliente serviceCliente,
+            IServiceRol serviceRol,
             IServiceSexo serviceSexo,
             ILogger<LoginController> logger)
         {
             _serviceUsuario = serviceUsuario;
             _serviceCliente = serviceCliente;
+            _serviceRol = serviceRol;
             _serviceSexo = serviceSexo;
             _logger = logger;
         }
@@ -127,9 +130,20 @@ namespace Libreria.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Registrar()
         {
+            var roles = await _serviceRol.ListAsync();
             var viewModel = new RegistroViewModel
             {
-                Sexos = await ObtenerSexosAsync()// Obtener la lista de sexos para el combo
+                // Obtener la lista de tipos de usuario para el combo
+                TiposUsuario = roles
+                    .Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Nombre
+                    })
+                    .ToList(),
+
+                // Obtener la lista de sexos para el combo
+                Sexos = await ObtenerSexosAsync()
             };
             return View(viewModel);
         }
@@ -142,9 +156,10 @@ namespace Libreria.Web.Controllers
         {
             // Si el viewModel no es válido, retornar la vista con los errores
             if (!ModelState.IsValid) {
-                
-                viewModel.Sexos = await ObtenerSexosAsync(); // Reasignar los sexos al viewModel
-                return View(viewModel);
+
+                var errores = ModelState.Where(kv => kv.Value!.Errors.Any())
+                    .ToDictionary(kv => kv.Key, kv => kv.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+                return Json(new { success = false, errors = errores });
             }
 
             // Validar si el usuario ya existe

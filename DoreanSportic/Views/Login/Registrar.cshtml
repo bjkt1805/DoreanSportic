@@ -148,6 +148,14 @@
                         <span class="text-error text-sm italic" asp-validation-for="ConfirmPassword" style="color:red; font-size: small"></span>
                         <span id="msj-confirm" data-msj='@Localizer["Las contraseñas no coinciden"]' style="display:none"></span>
 
+                        @* Seleccionar el tipo de usuario *@
+                        <label class="label mb-1" asp-for="IdTipoUsuario">@Localizer["Rol de usuario"]</label>
+                        <select class="select select-bordered" asp-for="IdTipoUsuario" asp-items="Model.TiposUsuario" style="border-color:black">
+                            <option value="0">-- @Localizer["Seleccione"] --</option>
+                        </select>
+                        <span class="text-error text-sm italic" asp-validation-for="IdTipoUsuario" style="color:red; font-size: small"></span>
+                        
+
                         @* Botón para crear cuenta*@
                         <button class="btn bg-[#004AAD] text-white mt-4" type="submit">@Localizer["Crear cuenta"]</button>
 
