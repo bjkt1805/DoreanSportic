@@ -24,5 +24,8 @@ namespace DoreanSportic.Application.Services.Interfaces
 
         // Cambiar contraseña
         Task<bool> RecuperarContrasennaAsync(string nombreUsuario, string nuevaContrasenna);
+
+        // Registrar inicio de sesión
+        Task<DateTime?> RegistrarInicioSesionAsync(int usuarioId);
     }
 }

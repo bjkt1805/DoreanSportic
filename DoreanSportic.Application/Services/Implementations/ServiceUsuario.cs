@@ -90,5 +90,15 @@ namespace DoreanSportic.Application.Services.Implementations
             // Retornar true si se actualizó correctamente (1), de lo contrario false
             return cambioContrasenna > 0;
         }
+
+        public async Task<DateTime?> RegistrarInicioSesionAsync(int usuarioId)
+        {
+            // Obtener la fecha y hora del último inicio de sesión
+            var anterior = await _repository.GetLastLoginUtcAsync(usuarioId);
+
+            // Actualizar la fecha y hora del último inicio de sesión
+            await _repository.ActualizarFechaHoraUltimoLogin(usuarioId, DateTime.UtcNow);
+            return anterior;
+        }
     }
 }

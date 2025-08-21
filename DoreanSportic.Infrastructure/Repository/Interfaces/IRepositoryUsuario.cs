@@ -24,5 +24,13 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         // Cambiar solo campos necesarios de Usuario
         Task<int> SaveChangesAsync();
+
+        // Obtener fecha/hora de inicio de sesión
+        Task<DateTime?> GetLastLoginUtcAsync (int usuarioId);
+
+        // Actualizar fecha/hora de inicio de sesión
+        Task ActualizarFechaHoraUltimoLogin(int id, DateTime utcNow);
+
+
     }
 }

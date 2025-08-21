@@ -87,8 +87,11 @@ namespace Libreria.Web.Controllers
                 });
             }
 
-            var usuario = resultado; // ASignar el valor retornado por el servicio a la variable 'usuario'
+            var usuario = resultado; // Asignar el valor retornado por el servicio a la variable 'usuario'
             var cliente = usuario.IdClienteNavigation; // Acceder al cliente asociado al usuario
+
+            // Registrar el inicio de sesión y obtener la fecha del último inicio de sesión previo
+            var ultimoPrevioUtc = await _serviceUsuario.RegistrarInicioSesionAsync(usuario.Id);
 
             // Claims
 
@@ -98,7 +101,8 @@ namespace Libreria.Web.Controllers
                 new Claim(ClaimTypes.Name, $"{cliente.Nombre} {cliente.Apellido}"), // Asignar el nombre completo del cliente
                 new Claim("ClienteId", cliente.Id.ToString()), // Asignar el ID del cliente como Claim personalizado
                 new Claim(ClaimTypes.Role, usuario.IdRol.ToString()), // Asignar el rol del usuario
-                new Claim("RolNombre", usuario.IdRol == 1 ? "Administrador" : "Cliente") // Asignar el nombre del rol como Claim personalizado
+                new Claim("RolNombre", usuario.IdRol == 1 ? "Administrador" : "Cliente"), // Asignar el nombre del rol como Claim personalizado
+                new Claim("LastLoginUtc", ultimoPrevioUtc?.ToString("O") ?? "") // Asignar la fecha del último inicio de sesión previo en formato ISO 8601 o cadena vacía si es nulo
             };
 
             // Crear el objeto ClaimsIdentity con los claims

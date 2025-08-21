@@ -19,6 +19,8 @@ public partial class Usuario
 
     public int IdRol { get; set; }
 
+    public DateTime? UltimoInicioSesionUtc { get; set; }
+
     public bool Estado { get; set; }
 
     public virtual Cliente IdClienteNavigation { get; set; } = null!;

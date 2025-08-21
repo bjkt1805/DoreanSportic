@@ -1,6 +1,24 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using System.Security.Claims
+@using System.Globalization
 @inject IViewLocalizer Localizer
+
+@{
+    // Obtener la fecha y hora del último inicio de sesión desde los claims del usuario autenticado
+    string? lastLoginStr = User.FindFirst("LastLoginUtc")?.Value;
+    
+    // Variable para almacenar la representación formateada de la fecha y hora
+    string lastLoginText = "";
+    
+    // Intentar convertir la cadena a DateTime y formatearla
+    if (!string.IsNullOrWhiteSpace(lastLoginStr) &&
+        DateTime.TryParse(lastLoginStr, null, DateTimeStyles.RoundtripKind, out var lastLoginUtc))
+    {
+        // Convertir a hora local y formatear según la cultura actual
+        var local = lastLoginUtc.ToLocalTime();
+        lastLoginText = local.ToString("g", CultureInfo.CurrentUICulture);
+    }
+}
 
 <div class="navbar bg-[#004AAD] text-white w-screen">
 
@@ -169,6 +187,14 @@
                             <b>@Localizer["Usuario"]:</b> @User.Identity!.Name [@Localizer[@User.FindFirst("RolNombre")?.Value]]
                         </p>
                     </li>
+                    @if (!string.IsNullOrEmpty(lastLoginText))
+                    {
+                        <li>
+                            <p class="w-100">
+                                <b>@Localizer["Último inicio de sesión"]:</b> @lastLoginText
+                            </p>
+                        </li>
+                    }
                     <li>
                         <form asp-action="Logout" asp-controller="Login" method="post">
                             @Html.AntiForgeryToken()

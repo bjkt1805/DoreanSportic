@@ -118,5 +118,21 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
         // Cambiar solo campos necesarios de Usuario
         public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
+
+        public async Task<DateTime?> GetLastLoginUtcAsync(int id)
+        {
+            return await _context.Set<Usuario>()
+                .Where(u => u.Id == id)
+                .Select(u => u.UltimoInicioSesionUtc)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task ActualizarFechaHoraUltimoLogin(int id, DateTime utcNow)
+        {
+            // EF Core 7/8
+            await _context.Set<Usuario>()
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(s => s.SetProperty(u => u.UltimoInicioSesionUtc, utcNow));
+        }
     }
 }

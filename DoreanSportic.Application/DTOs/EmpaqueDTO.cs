@@ -15,7 +15,7 @@ public record EmpaqueDTO
 
     public string? Observaciones { get; set; }
 
-    public byte[]? Foto { get; set; }
+    public byte[]? Imagen { get; set; }
 
     public decimal? PrecioBase { get; set; }
 

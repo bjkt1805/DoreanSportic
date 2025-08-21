@@ -21,6 +21,8 @@ public record UsuarioDTO
 
     public bool EsActivo { get; set; }
 
+    public DateTime? UltimoInicioSesionUtc { get; set; }
+
     public int IdRol { get; set; }
 
     public bool Estado { get; set; }
