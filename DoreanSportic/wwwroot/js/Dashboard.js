@@ -28,9 +28,29 @@ window.translations = {
     "PromocionActualizada": {
         es: "¡Promoción actualizada correctamente!",
         en: "Promotion updated successfully!"
-    }
+    },
+    "UsuarioYaExiste": {
+        es: "El usuario ya existe",
+        en: "Username already exists"
+    },
+    "CorreoElectronicoYaRegistrado": {
+        es: "El correo electrónico ya está registrado",
+        en: "Email address is already registered"
+    },
 };
 
+// Función utilitaria para obtener todos los mensajes internacionalizados (data-)
+// del contenedor utilitario para mostrarlos en pantalla
+function getMensaje(key, ...params) {
+    // Llamar al contenedor que tiene los mensajes internacionalizados
+    const div = document.getElementById("mensajes-internacionalizados");
+    let mensaje = div?.dataset[key] || "";
+    // Si el mensaje tiene parámetros tipo {0}, {1}, etc.
+    params.forEach((param, i) => {
+        mensaje = mensaje.replace(`{${i}}`, param);
+    });
+    return mensaje;
+}
 
 //Función general para cargar la vista parcial
 function cargarVista(ruta) {
@@ -89,8 +109,15 @@ function cargarVista(ruta) {
                     escucharInputCantidad();
                 }
 
+                                // Inicializar el form de creación de usuario
+                if (ruta == "/Usuario/Create") {
+                    inicializarCrearUsuario();
+                }
+
                 // Cargar reseñas del producto
                 cargarResennasProducto(null, false);
+
+
 
 
             }, 300);
@@ -585,6 +612,149 @@ function escucharInputCantidad() {
             input.classList.remove("border-red-500");
         }
     });
+}
+
+// Función para inicializar el form de registro/crear usuario
+function inicializarCrearUsuario() {
+
+    // Asignar a form el formulario de registro
+    const form = document.getElementById("formRegistro");
+
+    // Si no existe el formulario, no hacer nada
+    if (!form) return;
+
+    // unobtrusive
+    $.validator.unobtrusive.parse(form);
+
+    // Validaciones “en vivo” para los campos (reutiliza helpers de Login.js)
+    if (typeof configurarValidacionUsuario === "function") {
+        configurarValidacionUsuario("UserName", "UserName", "msj-usuario");
+    }
+
+    // Validaciones “en vivo” para el campo de Contraseña
+    if (typeof configurarValidacionPassword === "function") {
+        configurarValidacionPassword("Password", "Password", "msj-password");
+    }
+
+    // Validaciones “en vivo” para el campo de Confirmar Contraseña
+    if (typeof configurarValidacionConfirmacionPassword === "function") {
+        configurarValidacionConfirmacionPassword("ConfirmPassword", "Password", "ConfirmPassword", "msj-confirm");
+    }
+
+    // Validaciones “en vivo” para el campo de Email
+    if (typeof configurarValidacionEmail === "function") {
+        configurarValidacionEmail("Email", "Email", "msj-email");
+    }
+
+    // Validaciones “en vivo” para los campos de Nombre y Apellido
+    if (typeof configurarValidacionNombreApellido === "function") {
+        configurarValidacionNombreApellido("Nombre", "Nombre", "msj-nombre");
+        configurarValidacionNombreApellido("Apellido", "Apellido", "msj-apellido");
+    }
+
+    // Validaciones “en vivo” para el campo de Teléfono
+    if (typeof configurarValidacionTelefono === "function") {
+        configurarValidacionTelefono("Telefono", "Telefono", "msj-telefono");
+    }
+
+    // Hacer "submit" mediante AJAX al endpoint Login/Registrar
+    form.addEventListener("submit", async (ev) => {
+
+        // Evitar el comportamiento por defecto del formulario
+        ev.preventDefault();
+
+        // Validar el formulario con jQuery Validate y no continuar si hay errores
+        if (!$(form).valid()) return;
+
+        // Crear un objeto FormData con los datos del formulario
+        const formData = new FormData(form);
+
+        // Enviar solicitud POST al servidor
+        try {
+            const resp = await fetch(form.action || "/Login/Registrar", {
+                method: form.method || "POST",
+                body: formData
+            });
+
+            const data = await resp.json();
+
+            // Si la respuesta es exitosa, data.success será true
+            if (data.success) {
+
+                // Si el registro es exitoso, mostrar Toast y redirigir a la página de Login o a la URL indicada
+                mostrarToast(getMensaje("crearOk"), "success");
+                // Resetear el formulario si hay respuesta exitosa
+                form.reset();
+                // Esperar .75 segundos para redirigir a "/Usuario/IndexAdmin"
+                // y para que el toast sea visible en pantalla
+                if (typeof cargarVista === "function") {
+                    setTimeout(() => cargarVista("/Usuario/IndexAdmin"), 750);
+                }
+
+                // Limpiar el formulario
+                form.reset();
+                return;
+            }
+
+            // Si viene un mensaje simple del backend, mostrar el error en el formulario
+            if (data.errors) {
+                pintarErroresFormulario(form, data.errors || data.errores);
+                return;
+            }
+
+            // Si algún caso devuelve diccionario de errores por campo
+            if (data.errors || data.errores) {
+                pintarErroresFormulario(form, data.errors || data.errores);
+                return;
+            }
+
+            // fallback
+            mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
+
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
+        }
+    });
+}
+
+// Función para convertir una cadena a PascalCase (UpperCamelCase)
+function toPascalCase(k) { return k ? k.charAt(0).toUpperCase() + k.slice(1) : k; }
+
+// Función para pintar los errores del formulario de forma dinámica
+function pintarErroresFormulario(form, errors) {
+    // Limpiar errores previos en el formulario
+    form.querySelectorAll("[data-valmsg-for]").forEach(span => span.textContent = "");
+
+    // Convertir los nombres de los campos a PascalCase si es necesario
+    for (const [key, msj] of Object.entries(errors)) {
+
+        // Si el campo no existe en el formulario, convertir a PascalCase
+        const campo = form.querySelector(`[name='${key}']`)
+            ? key
+            : toPascalCase(key);
+
+        // Obtener el input correspondiente al campo
+        const input = form.querySelector(`[name='${campo}']`);
+
+        // Si el mensaje es un array, tomar el primer mensaje
+        let mensaje = Array.isArray(msj) ? msj[0] : msj;
+
+        // Si el backend mandó una *clave*, se traduce con getTranslation
+        if (typeof mensaje === "string") {
+            mensaje = getTranslation(mensaje);
+        }
+
+        // Buscar el span con ambas opciones (nombreCampo o NombreCampo) por si acaso
+        const span = form.querySelector(
+            `span[data-valmsg-for='${campo}'], span[data-valmsg-for='${toPascalCase(key)}']`
+        );
+
+        // Mostrar el mensaje de error en el span correspondiente
+        if (span) span.textContent = mensaje || "";
+        // Añadir o quitar la clase de error al input correspondiente (opcional)
+        if (input) input.classList.toggle("border-red-500", !!mensaje);
+    }
 }
 
 // Función para poder cargar las páginas de la tablas de las vistas parciales

@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
-<form asp-action="CreateAdmin" asp-controller="Usuario" asp-antiforgery="true" method="post"
+<form id="formRegistro" asp-action="Registrar" asp-controller="Login" asp-antiforgery="true" method="post"
       x-data
       onsubmit="return manejarSubmitUsuarioAdmin(event)"
       class="space-y-4 p-2 bg-base-100 rounded-xl shadow-lg">
@@ -29,7 +29,7 @@
                     <span class="label-text font-bold text-black">@Localizer["Nombre"]</span>
                 </label>
                 <input asp-for="Nombre" class="input input-bordered w-full mb-1 mt-1 required" style="border-color:black" />
-                <span asp-validation-for="Nombre" class="text-sm italic text-error"></span>
+                <span asp-validation-for="Nombre" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Apellido -->
@@ -38,7 +38,7 @@
                     <span class="label-text font-bold text-black">@Localizer["Apellido"]</span>
                 </label>
                 <input asp-for="Apellido" class="input input-bordered w-full mb-1 mt-1 required" style="border-color:black" />
-                <span asp-validation-for="Apellido" class="text-sm italic text-error"></span>
+                <span asp-validation-for="Apellido" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Email -->
@@ -47,7 +47,7 @@
                     <span class="label-text font-bold text-black">@Localizer["Correo electrónico"]</span>
                 </label>
                 <input asp-for="Email" type="email" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                <span asp-validation-for="Email" class="text-sm italic text-error"></span>
+                <span asp-validation-for="Email" class="text-sm italic" style="color:red; font-size: small"></span>
             </div>
 
             <!-- Teléfono + Sexo en fila -->
@@ -57,7 +57,7 @@
                         <span class="label-text font-bold text-black">@Localizer["Teléfono (opcional)"]</span>
                     </label>
                     <input asp-for="Telefono" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                    <span asp-validation-for="Telefono" class="text-sm italic text-error"></span>
+                    <span asp-validation-for="Telefono" class="text-sm italic" style="color:red; font-size: small"></span>
                 </div>
 
                 <div class="form-control w-full">
@@ -70,33 +70,14 @@
                 </div>
             </div>
 
-            <!-- Usuario + Password en fila -->
+            <!-- Usuario + Rol de usuario en fila -->
             <div class="flex flex-row gap-4">
                 <div class="form-control w-full">
                     <label asp-for="UserName" class="label">
-                        <span class="label-text font-bold text-black">@Localizer["Usuario"]</span>
+                        <span class="label-text font-bold text-black">@Localizer["Nombre de usuario"]</span>
                     </label>
                     <input asp-for="UserName" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                    <span asp-validation-for="UserName" class="text-sm italic text-error"></span>
-                </div>
-
-                <div class="form-control w-full">
-                    <label asp-for="Password" class="label">
-                        <span class="label-text font-bold text-black">@Localizer["Contraseña"]</span>
-                    </label>
-                    <input asp-for="Password" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                    <span asp-validation-for="Password" class="text-sm italic text-error"></span>
-                </div>
-            </div>
-
-            <!-- Confirm Password + Rol -->
-            <div class="flex flex-row gap-4">
-                <div class="form-control w-full">
-                    <label asp-for="ConfirmPassword" class="label">
-                        <span class="label-text font-bold text-black">@Localizer["Confirmar contraseña"]</span>
-                    </label>
-                    <input asp-for="ConfirmPassword" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                    <span asp-validation-for="ConfirmPassword" class="text-sm italic text-error"></span>
+                    <span asp-validation-for="UserName" class="text-sm italic" style=" color:red; font-size: small"></span>
                 </div>
 
                 <div class="form-control w-full">
@@ -106,7 +87,29 @@
                     <select asp-for="IdTipoUsuario" asp-items="Model.TiposUsuario" class="select select-bordered w-full mb-1 mt-1" style="border-color:black">
                         <option value="0">-- @Localizer["Seleccione"] --</option>
                     </select>
-                    <span asp-validation-for="IdTipoUsuario" class="text-sm italic text-error"></span>
+                    <span asp-validation-for="IdTipoUsuario" class="text-sm italic" style=" color:red; font-size: small"></span>
+                </div>
+
+
+            </div>
+
+            <!-- Contraseña y confirmar contraseña en fila -->
+            <div class="flex flex-row gap-4">
+
+                <div class="form-control w-full">
+                    <label asp-for="Password" class="label">
+                        <span class="label-text font-bold text-black">@Localizer["Contraseña"]</span>
+                    </label>
+                    <input asp-for="Password" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
+                    <span asp-validation-for="Password" class="text-sm italic" style=" color:red; font-size: small"></span>
+                </div>
+
+                <div class="form-control w-full">
+                    <label asp-for="ConfirmPassword" class="label">
+                        <span class="label-text font-bold text-black">@Localizer["Confirmar contraseña"]</span>
+                    </label>
+                    <input asp-for="ConfirmPassword" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
+                    <span asp-validation-for="ConfirmPassword" class="text-sm italic" style="color:red; font-size: small"></span>
                 </div>
             </div>
 
@@ -118,13 +121,32 @@
                 <button type="submit" class="btn btn-primary w-full">@Localizer["Crear usuario"]</button>
             </div>
         </div>
+
+        <!-- Columna 2: Ayudas (opcional) -->
+        <div class="flex flex-col gap-2 w-1/3">
+            <div class="w-full">
+                <p class="font-bold italic">@Localizer["Requisitos de seguridad"]</p>
+                <ul class="list-disc list-inside text-sm">
+                    <li>@Localizer["- La contraseña debe tener 8 a 64 caracteres"]</li>
+                    <li>@Localizer["- Debe incluir mayúscula, minúscula, número y símbolo"]</li>
+                    <li>@Localizer["- El nombre de usuario admite letras, números, punto, guion y guion bajo"]</li>
+                </ul>
+            </div>
+
+            <div class="w-full">
+                <p class="font-bold italic">@Localizer["Políticas"]</p>
+                <p class="text-sm">@Localizer["- El correo debe ser único. El nombre y apellido solo letras"]</p>
+            </div>
+        </div>
+
     </div>
 </form>
 
 <!-- Mensajes para JS -->
-<div id="mensajes-internacionalizados-usuario" class="hidden"
-     data-crear-ok='@Localizer["Usuario creado correctamente"]'
-     data-error-form='@Localizer["Corrige los errores del formulario"]'
-     data-error-inesperado='@Localizer["Error inesperado"]'>
+<div id="mensajes-internacionalizados" class="hidden"
+     data-crearOk='@Localizer["¡Usuario creado correctamente!"]'
+     data-errorForm='@Localizer["Corrige los errores del formulario"]'
+     data-errorInesperado='@Localizer["Error inesperado"]'>
+    
 </div>
 
