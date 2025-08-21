@@ -39,6 +39,19 @@ window.translations = {
     },
 };
 
+// Función que sirve como handler para pintar los errores que vienen del servidor/modelo
+// para los formularios de login, cambio de contraseña y registro
+function mostrarErrorEnCampo(nombreCampoModelo, mensaje, elementoInput) {
+    // Buscar el span que tiene el atributo data-valmsg-for con el nombre del campo del modelo
+    const spanError = document.querySelector(`span[data-valmsg-for='${nombreCampoModelo}']`);
+
+    // Si se encuentra el span, poner el mensaje de error dentro
+    if (spanError) spanError.textContent = mensaje || "";
+
+    // Añadir o quitar la clase de error al input correspondiente
+    if (elementoInput) elementoInput.classList.toggle("border-red-500", !!mensaje);
+}
+
 // Función utilitaria para obtener todos los mensajes internacionalizados (data-)
 // del contenedor utilitario para mostrarlos en pantalla
 function getMensaje(key, ...params) {
@@ -682,13 +695,13 @@ function inicializarCrearUsuario() {
             if (data.success) {
 
                 // Si el registro es exitoso, mostrar Toast y redirigir a la página de Login o a la URL indicada
-                mostrarToast(getMensaje("crearOk"), "success");
+                mostrarToast(getMensaje("crearok"), "success");
                 // Resetear el formulario si hay respuesta exitosa
                 form.reset();
-                // Esperar .75 segundos para redirigir a "/Usuario/IndexAdmin"
+                // Esperar .60 segundos para redirigir a "/Usuario/IndexAdmin"
                 // y para que el toast sea visible en pantalla
                 if (typeof cargarVista === "function") {
-                    setTimeout(() => cargarVista("/Usuario/IndexAdmin"), 750);
+                    setTimeout(() => cargarVista("/Usuario/IndexAdmin"), 600);
                 }
 
                 // Limpiar el formulario
@@ -755,6 +768,235 @@ function pintarErroresFormulario(form, errors) {
         // Añadir o quitar la clase de error al input correspondiente (opcional)
         if (input) input.classList.toggle("border-red-500", !!mensaje);
     }
+}
+
+// Función para obtener los mensajes de error a través de datasets (data-)
+// de un elemento HTML, dado su id
+function obtenerMensajesDesdeElemento(idElemento) {
+    return document.getElementById(idElemento)?.dataset || {};
+}
+
+// Regex para los inputs según el tipo de dato
+const patronUsuario = /^[A-Za-z0-9._-]+$/;
+const patronNombreApellido = /^[A-Za-zÀ-ÿ' ]+$/;
+const patronPasswordFuerte = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+const patronEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.((com|org|net|es|edu|gov|mil|info|co|io)|[a-zA-Z]{2,6})$/;
+const patronTelefono = /^(\+?\d{7,15}|(\+?\d{1,4}[-.\s]?)?(\d{2,4}[-.\s]?){2,4}\d{2,4})$/;
+
+// Función para escuchar el input de usuario y validar formato
+function configurarValidacionUsuario(idInput, nombreCampoModelo, idMensajes) {
+    // Obtener el input
+    const input = document.getElementById(idInput);
+
+    // Si no existe el input, salir de la función
+    if (!input) return;
+
+    // Obtener los mensajes desde el elemento HTML
+    const mensajes = obtenerMensajesDesdeElemento(idMensajes);
+
+    // Escuchar el evento keydown para evitar espacios
+    input.addEventListener("keydown", e => { if (e.key === " ") e.preventDefault(); });
+
+    // Escuchar el evento input para validar el formato
+    input.addEventListener("input", () => {
+
+        // Obtener el valor del input y quitar espacios al inicio y final
+        const valor = input.value.trim();
+
+        // Si el valor está vacío, mostrar mensaje de campo obligatorio
+        if (valor === "") { mostrarErrorEnCampo(nombreCampoModelo, "", input); return; }
+
+        // Validar longitud del usuario 
+        const min = parseInt(mensajes.min || "8"), max = parseInt(mensajes.max || "30");
+
+        // Validar longitud y formato del usuario
+        if (valor.length < min || valor.length > max) {
+            const mensaje = (mensajes.msjLen || "").replace("{0}", min).replace("{1}", max);
+            mostrarErrorEnCampo(nombreCampoModelo, mensaje, input); return;
+        }
+
+        // Validar formato del usuario
+        if (!patronUsuario.test(valor)) {
+            mostrarErrorEnCampo(nombreCampoModelo, mensajes.msjForm || "", input); return;
+        }
+
+        // Si todo es correcto, quitar mensaje de error
+        mostrarErrorEnCampo(nombreCampoModelo, "", input);
+    });
+}
+
+// Función para escuchar el input de password y validar formato
+function configurarValidacionPassword(idInput, nombreCampoModelo, idMensajes) {
+
+    // Obtener el input
+    const input = document.getElementById(idInput);
+
+    // Si no existe el input, salir de la función
+    if (!input) return;
+
+    // Obtener los mensajes desde el elemento HTML
+    const mensajes = obtenerMensajesDesdeElemento(idMensajes);
+
+    // Escuchar el evento input para validar el formato
+    input.addEventListener("input", () => {
+
+        // Obtener el valor del input
+        const valor = input.value;
+
+        // Chequear la longitud mínima y máxima de la contraseña
+        const min = parseInt(mensajes.min || "8"), max = parseInt(mensajes.max || "64");
+
+        // Si la longitud no es válida, mostrar mensaje de error
+        if (valor.length < min || valor.length > max) {
+
+            // Mostrar mensaje de error con los valores mínimos y máximos
+            const mensaje = (mensajes.msjLen || "").replace("{0}", min).replace("{1}", max);
+
+            // Mostrar el error en el campo correspondiente
+            mostrarErrorEnCampo(nombreCampoModelo, mensaje, input); return;
+        }
+
+        // Validar que la contraseña sea fuerte (mayúscula, minúscula, número, símbolo)
+        if (!patronPasswordFuerte.test(valor)) {
+            mostrarErrorEnCampo(nombreCampoModelo, mensajes.msjReq || "", input); return;
+        }
+
+        // Si todo es correcto, quitar mensaje de error
+        mostrarErrorEnCampo(nombreCampoModelo, "", input);
+    });
+}
+
+// Función para escuchar el input de confirmación de password y validar que coincida
+function configurarValidacionConfirmacionPassword(idInputConfirmar, idInputPassword, nombreCampoModelo, idMensajes) {
+
+    // Obtener los inputs
+    const inputConfirmar = document.getElementById(idInputConfirmar);
+    const inputPassword = document.getElementById(idInputPassword);
+
+    // Si no existen los inputs, salir de la función
+    if (!inputConfirmar || !inputPassword) return;
+
+    // Obtener los mensajes desde el elemento HTML
+    const mensajes = obtenerMensajesDesdeElemento(idMensajes);
+
+    // Función para validar que las contraseñas coincidan
+    const validar = () => {
+        if (inputConfirmar.value !== inputPassword.value) {
+            mostrarErrorEnCampo(nombreCampoModelo, mensajes.msj || "", inputConfirmar);
+        } else {
+            mostrarErrorEnCampo(nombreCampoModelo, "", inputConfirmar);
+        }
+    };
+
+    // Escuchar el evento input del input de confirmación de contraseña 
+    inputConfirmar.addEventListener("input", validar);
+
+    // También validar cuando cambie la contraseña original
+    inputPassword.addEventListener("input", validar);
+}
+
+// Función para escuchar el input de email y validar formato
+function configurarValidacionEmail(idInput, nombreCampoModelo, idMensajes) {
+
+    // Obtener el input
+    const input = document.getElementById(idInput);
+
+    // Si no existe el input, salir de la función
+    if (!input) return;
+
+    // Obtener los mensajes desde el elemento HTML
+    const mensajes = obtenerMensajesDesdeElemento(idMensajes);
+
+    // Escuchar el evento keydown para evitar espacios
+    input.addEventListener("keydown", e => { if (e.key === " ") e.preventDefault(); });
+
+    // Escuchar el evento input para validar el formato
+    input.addEventListener("input", () => {
+
+        // Obtener el valor del input y quitar espacios al inicio y final
+        const valor = input.value.trim();
+
+        // Si el valor está vacío, mostrar mensaje de campo obligatorio
+        if (valor === "") { mostrarErrorEnCampo(nombreCampoModelo, "", input); return; }
+
+        // Validar formato del email
+        if (!patronEmail.test(valor)) {
+            mostrarErrorEnCampo(nombreCampoModelo, mensajes.msj || "", input);
+        } else {
+
+            // Si todo es correcto, quitar mensaje de error
+            mostrarErrorEnCampo(nombreCampoModelo, "", input);
+        }
+    });
+}
+
+// Función para escuchar el input de nombre y apellido y validar formato
+function configurarValidacionNombreApellido(idInput, nombreCampoModelo, idMensajes) {
+    // Obtener el input
+    const input = document.getElementById(idInput);
+
+    // Si no existe el input, salir de la función
+    if (!input) return;
+
+    // Obtener los mensajes desde el elemento HTML
+    const mensajes = obtenerMensajesDesdeElemento(idMensajes);
+
+    // Escuchar el evento input para validar el formato
+    input.addEventListener("input", () => {
+
+        // Obtener el valor del input
+        const valor = input.value;
+
+        // Revisar el minimo y el máximo de caracteres
+        const min = parseInt(mensajes.min || "2"), max = parseInt(mensajes.max || "30");
+
+        // Si el valor es menor que el mínimo o mayor que el máximo, mostrar mensaje de error
+        if (valor.length < min || valor.length > max) {
+
+            // Mostrar mensaje de error con los valores mínimos y máximos
+            const mensaje = (mensajes.msjLen || "").replace("{0}", min).replace("{1}", max);
+            mostrarErrorEnCampo(nombreCampoModelo, mensaje, input); return;
+        }
+
+        // Validar formato del nombre o apellido
+        if (!patronNombreApellido.test(valor)) {
+
+            // Si el formato no es válido, mostrar mensaje de error
+            mostrarErrorEnCampo(nombreCampoModelo, mensajes.msj || "", input); return;
+        }
+
+        // Si todo es correcto, quitar mensaje de error
+        mostrarErrorEnCampo(nombreCampoModelo, "", input);
+    });
+}
+
+// Función para escuchar el input de teléfono y validar formato
+function configurarValidacionTelefono(idInput, nombreCampoModelo, idMensajes) {
+
+    // Obtener el input
+    const input = document.getElementById(idInput);
+
+    // Si no existe el input, salir de la función
+    if (!input) return;
+
+    // Obtener los mensajes desde el elemento HTML
+    const mensajes = obtenerMensajesDesdeElemento(idMensajes);
+
+    // Escuchar el evento keydown para evitar espacios
+    input.addEventListener("input", () => {
+        // Obtener el valor del input y quitar espacios al inicio y final
+        const valor = input.value.trim();
+
+        // Si el valor está vacío, mostrar mensaje de campo obligatorio
+        if (valor === "") { mostrarErrorEnCampo(nombreCampoModelo, "", input); return; }
+
+        // Validar formato del teléfono
+        if (!patronTelefono.test(valor)) {
+            mostrarErrorEnCampo(nombreCampoModelo, mensajes.msj || "", input);
+        } else {
+            mostrarErrorEnCampo(nombreCampoModelo, "", input);
+        }
+    });
 }
 
 // Función para poder cargar las páginas de la tablas de las vistas parciales

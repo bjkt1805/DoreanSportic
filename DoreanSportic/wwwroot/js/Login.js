@@ -109,7 +109,7 @@ const patronPasswordFuerte = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$
 const patronEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.((com|org|net|es|edu|gov|mil|info|co|io)|[a-zA-Z]{2,6})$/;
 const patronTelefono = /^(\+?\d{7,15}|(\+?\d{1,4}[-.\s]?)?(\d{2,4}[-.\s]?){2,4}\d{2,4})$/;
 
-// Función para escuchar el input ed usuario y validar formato
+// Función para escuchar el input de usuario y validar formato
 function configurarValidacionUsuario(idInput, nombreCampoModelo, idMensajes) {
     // Obtener el input
     const input = document.getElementById(idInput);
