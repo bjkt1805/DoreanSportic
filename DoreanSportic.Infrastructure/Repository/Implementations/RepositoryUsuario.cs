@@ -36,7 +36,9 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         public async Task<ICollection<Usuario>> ListAsync()
         {
             //Select * from Usuario
-            var collection = await _context.Set<Usuario>().ToListAsync();
+            var collection = await _context.Set<Usuario>()
+                .Include(u => u.IdRolNavigation)
+                .ToListAsync();
             return collection;
         }
 

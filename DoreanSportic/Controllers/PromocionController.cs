@@ -32,7 +32,7 @@ namespace DoreanSportic.Controllers
             return View(collection.ToPagedList(page ?? 1, 5));
         }
 
-        // GET: ResennaValoracionController DASHBOARDADMIN
+        // GET: PromocionController DASHBOARDADMIN
         public async Task<ActionResult> IndexAdmin(int? page)
         {
             var collection = await _servicePromocion.ListAsync();
@@ -161,20 +161,5 @@ namespace DoreanSportic.Controllers
             }
         }
 
-
-        // POST: ProductoController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

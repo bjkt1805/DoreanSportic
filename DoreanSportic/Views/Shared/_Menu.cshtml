@@ -191,10 +191,17 @@
                     {
                         <li>
                             <p class="w-100">
-                                <b>@Localizer["Último inicio de sesión"]:</b> @lastLoginText
+                                <b>@Localizer["Último login"]:</b> @lastLoginText
                             </p>
                         </li>
                     }
+                    <li>
+                        <p class="w-100">
+                            <a class="btn btn-ghost" asp-controller="Usuario" asp-action="EditarPerfil">
+                                @Localizer["Editar perfil"]
+                            </a>
+                        </p>
+                    </li>
                     <li>
                         <form asp-action="Logout" asp-controller="Login" method="post">
                             @Html.AntiForgeryToken()

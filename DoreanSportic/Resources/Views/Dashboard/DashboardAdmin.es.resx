@@ -126,6 +126,9 @@
   <data name="Reseñas" xml:space="preserve">
     <value>Reseñas</value>
   </data>
+  <data name="Usuarios" xml:space="preserve">
+    <value>Usuarios</value>
+  </data>
   <data name="Selecciona una opción del menú lateral para empezar" xml:space="preserve">
     <value>Selecciona una opción del menú lateral para empezar</value>
   </data>

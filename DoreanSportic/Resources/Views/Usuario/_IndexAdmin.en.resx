@@ -117,28 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Administrador" xml:space="preserve">
-    <value>Administrator</value>
+  <data name="Listado de usuarios" xml:space="preserve">
+    <value>List of users</value>
   </data>
-  <data name="Productos" xml:space="preserve">
-    <value>Products</value>
+  <data name="Rol" xml:space="preserve">
+    <value>Role</value>
   </data>
-  <data name="Reseñas" xml:space="preserve">
-    <value>Reviews</value>
+  <data name="Último inicio de sesión" xml:space="preserve">
+    <value>Last login</value>
   </data>
-  <data name="Usuarios" xml:space="preserve">
-    <value>Users</value>
+  <data name="Editar" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="Selecciona una opción del menú lateral para empezar" xml:space="preserve">
-    <value>Select an option from the side menu to get started</value>
+  <data name="Ver detalles" xml:space="preserve">
+    <value>View details</value>
   </data>
-  <data name="Cargando" xml:space="preserve">
-    <value>Loading</value>
+  <data name="Nombre de usuario" xml:space="preserve">
+    <value>Username</value>
   </data>
-  <data name="Bienvenido al panel de administrador" xml:space="preserve">
-    <value>Welcome to the admin panel</value>
+  <data name="Fecha de registro" xml:space="preserve">
+    <value>Registration date</value>
   </data>
-  <data name="Promociones" xml:space="preserve">
-    <value>Promotions</value>
+  <data name="CREAR USUARIO" xml:space="preserve">
+    <value>CREATE USER</value>
   </data>
 </root>
