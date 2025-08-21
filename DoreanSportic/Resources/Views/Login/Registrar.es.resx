@@ -190,7 +190,7 @@
     <value>¡Cuenta registrada exitosamente!</value>
   </data>
   <data name="El usuario debe tener entre {{0}} y {{1}} caracteres" xml:space="preserve">
-    <value>El usuario debe tener entre {{0}} y {{1}} caracteres</value>
+    <value>El usuario debe tener entre  {{0}} y {{1}} caracteres</value>
   </data>
   <data name="Solo letras, números, punto, guion y guion bajo" xml:space="preserve">
     <value>Solo letras, números, punto, guion y guion bajo</value>

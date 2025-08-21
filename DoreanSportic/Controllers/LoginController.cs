@@ -162,24 +162,6 @@ namespace Libreria.Web.Controllers
                 return Json(new { success = false, errors = errores });
             }
 
-            // Validar si el usuario ya existe
-            if (await _serviceUsuario.ExisteUserNameAsync(viewModel.UserName))
-            {
-                // Reasignar los sexos al viewModel
-                viewModel.Sexos = await ObtenerSexosAsync();
-
-                // Si el usuario ya existe, enviar el mensaje de error en formato JSON
-                return Json(new
-                {
-                    success = false,
-                    errors = new
-                    {
-                        UserName = "UsuarioYaExiste"
-                    }
-                });
-
-            }
-
             // Validar si el email ya está registrado
             if (await _serviceCliente.ExisteEmailAsync(viewModel.Email))
             {
@@ -193,6 +175,24 @@ namespace Libreria.Web.Controllers
                     errors = new
                     {
                         Email = "CorreoElectronicoYaRegistrado"
+                    }
+                });
+
+            }
+
+            // Validar si el usuario ya existe
+            if (await _serviceUsuario.ExisteUserNameAsync(viewModel.UserName))
+            {
+                // Reasignar los sexos al viewModel
+                viewModel.Sexos = await ObtenerSexosAsync();
+
+                // Si el usuario ya existe, enviar el mensaje de error en formato JSON
+                return Json(new
+                {
+                    success = false,
+                    errors = new
+                    {
+                        UserName = "UsuarioYaExiste"
                     }
                 });
 
@@ -219,7 +219,7 @@ namespace Libreria.Web.Controllers
                 FechaRegistro = DateTime.Now,
                 EsActivo = true,
                 Estado = true,
-                IdRol = 2 // “Cliente”
+                IdRol = viewModel.IdTipoUsuario
             });
 
             // Si el usuario se creó correctamente, redirigir a la página de inicio de sesión

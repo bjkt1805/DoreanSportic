@@ -79,7 +79,7 @@ namespace DoreanSportic.Web.Resources.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last name must be between {{2}} and {{1}} characters long.
+        ///   Looks up a localized string similar to Last name must be between {{0}} and {{1}} characters long.
         /// </summary>
         public static string Apellido_Length {
             get {
@@ -178,7 +178,7 @@ namespace DoreanSportic.Web.Resources.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First name must be between {{2}} and {{1}} characters long.
+        ///   Looks up a localized string similar to First name must be between {{0}} and {{1}} characters long.
         /// </summary>
         public static string Nombre_Length {
             get {
@@ -205,7 +205,7 @@ namespace DoreanSportic.Web.Resources.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password must be between {{2}} and {{1}} characters long.
+        ///   Looks up a localized string similar to Password must be between {{0}} and {{1}} characters long.
         /// </summary>
         public static string Password_Length {
             get {
@@ -268,7 +268,7 @@ namespace DoreanSportic.Web.Resources.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid role.
+        ///   Looks up a localized string similar to Please select a role.
         /// </summary>
         public static string TipoUsuario_Range {
             get {
@@ -304,7 +304,7 @@ namespace DoreanSportic.Web.Resources.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username must be between {{2}} and {{1}} characters long.
+        ///   Looks up a localized string similar to Username must be between {{0}} and {{1}} characters long.
         /// </summary>
         public static string UserName_Length {
             get {

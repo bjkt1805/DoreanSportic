@@ -130,10 +130,10 @@
     <value>Rol de usuario</value>
   </data>
   <data name="TipoUsuario_Range" xml:space="preserve">
-    <value>Rol no válido</value>
+    <value>Por favor seleccione un rol</value>
   </data>
   <data name="UserName_Length" xml:space="preserve">
-    <value>El usuario debe tener entre {{2}} y {{1}} caracteres</value>
+    <value>El usuario debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
   <data name="UserName_Format" xml:space="preserve">
     <value>Solo letras, números, punto, guion y guion bajo</value>
@@ -145,7 +145,7 @@
     <value>La contraseña es requerida</value>
   </data>
   <data name="Password_Length" xml:space="preserve">
-    <value>La contraseña debe tener entre {{2}} y {{1}} caracteres</value>
+    <value>La contraseña debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
   <data name="Password_Strength" xml:space="preserve">
     <value>Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial</value>
@@ -166,7 +166,7 @@
     <value>El nombre es requerido</value>
   </data>
   <data name="Nombre_Length" xml:space="preserve">
-    <value>El nombre debe tener entre {{2}} y {{1}} caracteres</value>
+    <value>El nombre debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
   <data name="Nombre_Format" xml:space="preserve">
     <value>El nombre solo debe contener letras</value>
@@ -178,7 +178,7 @@
     <value>El apellido es requerido</value>
   </data>
   <data name="Apellido_Length" xml:space="preserve">
-    <value>El apellido debe tener entre {{2}} y {{1}} caracteres</value>
+    <value>El apellido debe tener entre {{0}} y {{1}} caracteres</value>
   </data>
   <data name="Apellido_Format" xml:space="preserve">
     <value>El apellido solo debe contener letras</value>

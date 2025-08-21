@@ -130,10 +130,10 @@
     <value>User role</value>
   </data>
   <data name="TipoUsuario_Range" xml:space="preserve">
-    <value>Invalid role</value>
+    <value>Please select a role</value>
   </data>
   <data name="UserName_Length" xml:space="preserve">
-    <value>Username must be between {{2}} and {{1}} characters long</value>
+    <value>Username must be between {{0}} and {{1}} characters long</value>
   </data>
   <data name="UserName_Format" xml:space="preserve">
     <value>Only letters, numbers, dot, hyphen, and underscore are allowed</value>
@@ -145,7 +145,7 @@
     <value>Password is required</value>
   </data>
   <data name="Password_Length" xml:space="preserve">
-    <value>Password must be between {{2}} and {{1}} characters long</value>
+    <value>Password must be between {{0}} and {{1}} characters long</value>
   </data>
   <data name="Password_Strength" xml:space="preserve">
     <value>Must contain at least one uppercase letter, one lowercase letter, one number, and one special character</value>
@@ -166,7 +166,7 @@
     <value>First name is required</value>
   </data>
   <data name="Nombre_Length" xml:space="preserve">
-    <value>First name must be between {{2}} and {{1}} characters long</value>
+    <value>First name must be between {{0}} and {{1}} characters long</value>
   </data>
   <data name="Nombre_Format" xml:space="preserve">
     <value>First name must contain only letters</value>
@@ -178,7 +178,7 @@
     <value>Last name is required</value>
   </data>
   <data name="Apellido_Length" xml:space="preserve">
-    <value>Last name must be between {{2}} and {{1}} characters long</value>
+    <value>Last name must be between {{0}} and {{1}} characters long</value>
   </data>
   <data name="Apellido_Format" xml:space="preserve">
     <value>Last name must contain only letters</value>
