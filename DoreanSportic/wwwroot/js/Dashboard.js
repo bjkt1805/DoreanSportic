@@ -590,8 +590,9 @@ function escucharInputCantidad() {
 // Función para poder cargar las páginas de la tablas de las vistas parciales
 // sin recargar la página
 
-// Lógica para manejar paginación de reseñas y promociones sin recargar toda la página
+// Lógica para manejar paginación de reseñas, promociones y usuarios sin recargar toda la página
 document.addEventListener('click', function (e) {
+
     // Paginación de reseñas
     if (e.target.matches('a.pagina-resenna')) {
         e.preventDefault();
@@ -627,6 +628,25 @@ document.addEventListener('click', function (e) {
             .catch(err => {
                 console.error("Error al cargar promociones:", err);
                 document.getElementById("zona-promociones").innerHTML = "<p class='text-red-500'>ERROR</p>";
+            });
+    }
+
+    // Paginación de usuarios
+    if (e.target.matches('a.pagina-usuario')) {
+        e.preventDefault();
+        const url = e.target.getAttribute('href');
+
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error("ERROR");
+                return res.text();
+            })
+            .then(html => {
+                document.getElementById("zona-usuarios").innerHTML = html;
+            })
+            .catch(err => {
+                console.error("Error al cargar usuarios:", err);
+                document.getElementById("zona-usuarios").innerHTML = "<p class='text-red-500'>ERROR</p>";
             });
     }
 });

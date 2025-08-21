@@ -79,7 +79,22 @@ namespace DoreanSportic.Controllers
         //GET: UsuarioController/Create
         public async Task<IActionResult> Create()
         {
-            return PartialView("_CreateUsuario");
+            var roles = await _serviceRol.ListAsync();
+            var viewModel = new RegistroViewModel
+            {
+                // Obtener la lista de tipos de usuario para el combo
+                TiposUsuario = roles
+                    .Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Nombre
+                    })
+                    .ToList(),
+
+                // Obtener la lista de sexos para el combo
+                Sexos = await ObtenerSexosAsync()
+            };
+            return PartialView("_CreateUsuario", viewModel);
 
         }
 

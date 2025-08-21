@@ -123,8 +123,8 @@
   <data name="Rol" xml:space="preserve">
     <value>Role</value>
   </data>
-  <data name="Último inicio de sesión" xml:space="preserve">
-    <value>Last login</value>
+  <data name="Último inicio de sesión (UTC)" xml:space="preserve">
+    <value>Last login (UTC)</value>
   </data>
   <data name="Editar" xml:space="preserve">
     <value>Edit</value>

@@ -2,17 +2,18 @@
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 @using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
 @inject IViewLocalizer Localizer
 
 <div class="mb-4 overflow-x-auto bg-base-100 relative w-125">
-    <div id="zona-promociones" class="mb-4 overflow-x-auto bg-base-100 relative">
+    <div id="zona-usuarios" class="mb-4 overflow-x-auto bg-base-100 relative">
         <h1 class="py-2 font-bold">
             @(Localizer["Listado de usuarios"])
         </h1>
         <!-- Contenedor del botón de crear producto-->
         <div class="mb-2 flex flex-row gap-4">
             <button class="btn btn-sm btn-outline bg-[#006400] text-white w-50"
-                    onclick="cargarVista('/Promocion/Create')">
+                    onclick="cargarVista('/Usuario/Create')">
                 @(Localizer["CREAR USUARIO"])
 
             </button>
@@ -31,7 +32,7 @@
                         @(Localizer["Rol"])
                     </th>
                     <th class="text-center">
-                        @(Localizer["Último inicio de sesión"])
+                        @(Localizer["Último inicio de sesión (UTC)"])
                     </th>
                     <th class="text-center"></th>
                 </tr>
@@ -83,7 +84,7 @@
                                                                     Display = PagedListDisplayMode.Always,
                                                                     MaximumPageNumbersToDisplay = 5,
                                                                     LiElementClasses = new[] { "join-item" },
-                                                                    PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item", "pagina-promocion" }, // 👈 clase nueva
+                                                                    PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item", "pagina-usuario" }, 
                                                                     UlElementClasses = new[] { "join" },
                                                                     ContainerDivClasses = new[] { "join" }
                                                                 })
