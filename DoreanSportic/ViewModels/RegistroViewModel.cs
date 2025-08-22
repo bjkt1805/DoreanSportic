@@ -7,6 +7,13 @@ using DoreanSportic.Web.Resources.ViewModels;
 namespace DoreanSportic.Web.ViewModels;
 public class RegistroViewModel
 {
+
+    [Required]
+    public int Id { get; set; }
+
+    [Required]
+    public int IdCliente { get; set; }
+
     [Display(Name = "UserName_DisplayName", ResourceType = typeof(RegistroViewModelResources))]
     [Required(ErrorMessageResourceType = typeof(RegistroViewModelResources),
               ErrorMessageResourceName = "UserName_Required")]
@@ -89,6 +96,8 @@ public class RegistroViewModel
         ErrorMessageResourceType = typeof(RegistroViewModelResources),
         ErrorMessageResourceName = "TipoUsuario_Range")] 
     public int IdTipoUsuario { get; set; } = 0;
+
+    public bool Estado { get; set; }
 
     [ValidateNever]
     public IEnumerable<SelectListItem>? TiposUsuario { get; set; }

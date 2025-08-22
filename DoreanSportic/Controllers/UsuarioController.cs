@@ -177,57 +177,72 @@ namespace DoreanSportic.Controllers
         }
 
         // GET: UsuarioController/Edit/5
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var promocion = await _servicePromocion.FindByIdAsync(id);
+        public async Task<IActionResult> Edit(int id)
+        {
+            var usuario = await _serviceUsuario.FindByIdAsync(id);
+            if (usuario is null) return NotFound();
 
-        //    if (promocion == null)
-        //        return NotFound();
+            var cliente = await _serviceCliente.FindByIdAsync(usuario.IdCliente);
 
-        //    // Validar que la fecha de hoy sea igual o menor a la fecha de 
-        //    // fin de la promoción para habilitar la edición
-        //    var hoy = DateTime.Today;
-        //    bool esEditable = hoy <= promocion.FechaFin;
+            var vm = new RegistroViewModel
+            {
+                Id = usuario.Id,
+                IdCliente = usuario.IdCliente,
+                Nombre = cliente.Nombre,
+                Apellido = cliente.Apellido,
+                Email = cliente.Email,
+                Telefono = cliente.Telefono,
+                IdSexo = cliente.IdSexo ?? 3,
+                UserName = usuario.UserName,
+                IdTipoUsuario = usuario.IdRol,
+                Estado = usuario.Estado,
+                Sexos = await ObtenerSexosAsync(),
+                TiposUsuario = (await _serviceRol.ListAsync()).Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Nombre })
+            };
 
-        //    // Viewbag que se enviará a la vista para determinar si la promoción es editable
-        //    ViewBag.EsEditable = esEditable;
-
-        //    // Obtener categorías y productos
-        //    var categorias = await _serviceCategoria.ListAsync();
-        //    var productos = await _serviceProducto.ListAsync();
-
-        //    ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
-        //    ViewBag.ListProductos = productos;
-
-        //    return PartialView("_EditPromocion", promocion);
-        //}
+            // Si la cargarás por AJAX:
+            return PartialView("_EditUsuario", vm);
+        }
 
         // POST: UsuarioController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(PromocionDTO dto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        // Cargar ViewBags por si se reenvía a la vista
-        //        var categorias = await _serviceUsuario.ListAsync();
-        //        var productos = await _serviceProducto.ListAsync();
-        //        ViewBag.ListCategorias = new SelectList(categorias, "Id", "Nombre");
-        //        ViewBag.ListProductos = productos.Select(p =>
-        //            new SelectListItem { Value = p.Id.ToString(), Text = p.Nombre }).ToList();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(RegistroViewModel vm, [FromForm(Name = "_Estado")] bool? estadoFallback)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errores = ModelState.Where(x => x.Value!.Errors.Any())
+                    .ToDictionary(k => k.Key, v => v.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+                return Json(new { success = false, errors = errores });
+            }
 
-        //        return PartialView("_EditPromocion", dto);
-        //    }
+            // Resolver Estado desde toggle + fallback
+            var estadoFinal = vm.Estado || (estadoFallback.HasValue && estadoFallback.Value);
 
-        //    try
-        //    {
-        //        await _servicePromocion.UpdateAsync(dto);
-        //        return Json(new { success = true, mensaje = "PromocionActualizada" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, mensaje = "Error" });
-        //    }
-        //}
+            // Actualizar Cliente
+            await _serviceCliente.UpdateAsync(new ClienteDTO
+            {
+                Id = vm.IdCliente,
+                Nombre = vm.Nombre,
+                Apellido = vm.Apellido,
+                Email = vm.Email,
+                Telefono = vm.Telefono,
+                IdSexo = vm.IdSexo,
+                Estado = true // si aplica
+            });
+
+            // Actualizar Usuario
+            await _serviceUsuario.UpdateAsync(new UsuarioDTO
+            {
+                Id = vm.Id,
+                IdCliente = vm.IdCliente,
+                UserName = vm.UserName,
+                IdRol = vm.IdTipoUsuario,
+                Estado = estadoFinal,
+                EsActivo = estadoFinal
+            });
+
+            return Json(new { success = true });
+        }
     }
 }

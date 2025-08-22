@@ -101,7 +101,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
 
         // Actualizar el usuario
-        public async Task<bool> UpdateAsync(Usuario entity)
+        public async Task<bool> ActualizarUsuarioAsync(Usuario entity)
         {
             // Actualizar el usuario en la base de datos
             _context.Set<Usuario>().Update(entity);
@@ -121,6 +121,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         // Cambiar solo campos necesarios de Usuario
         public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
 
+        // Obtener fecha/hora de inicio de sesión
         public async Task<DateTime?> GetLastLoginUtcAsync(int id)
         {
             return await _context.Set<Usuario>()
@@ -129,9 +130,10 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                 .FirstOrDefaultAsync();
         }
 
+        // Actualizar fecha/hora de inicio de sesión
         public async Task ActualizarFechaHoraUltimoLogin(int id, DateTime utcNow)
         {
-            // EF Core 7/8
+            
             await _context.Set<Usuario>()
                 .Where(u => u.Id == id)
                 .ExecuteUpdateAsync(s => s.SetProperty(u => u.UltimoInicioSesionUtc, utcNow));

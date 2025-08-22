@@ -19,6 +19,9 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Crear usuario
         Task<int> CrearUsuarioAsync(UsuarioDTO dto);
 
+        // Actualizar usuario
+        Task<bool> ActualizarUsuarioAsync(UsuarioDTO dto);
+
         // Login de usuario 
         Task<UsuarioDTO?> LoginAsync(string id, string password);
 
@@ -27,5 +30,6 @@ namespace DoreanSportic.Application.Services.Interfaces
 
         // Registrar inicio de sesión
         Task<DateTime?> RegistrarInicioSesionAsync(int usuarioId);
+
     }
 }

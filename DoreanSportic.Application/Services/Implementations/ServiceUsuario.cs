@@ -53,6 +53,13 @@ namespace DoreanSportic.Application.Services.Implementations
             return await _repository.CrearUsuarioAsync(objectMapped);
         }
 
+        public async Task<bool> ActualizarUsuarioAsync(UsuarioDTO dto)
+        {
+            var objectMapped = _mapper.Map<Usuario>(dto);
+            var rows = await _repository.ActualizarUsuarioAsync(objectMapped);
+            return rows > 0;
+        }
+
         public async Task<bool> ExisteUserNameAsync(string userName)
         {
             // Verificar si el nombre de usuario ya existe en la base de datos
