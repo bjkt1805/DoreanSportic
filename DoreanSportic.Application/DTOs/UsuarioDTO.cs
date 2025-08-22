@@ -19,8 +19,6 @@ public record UsuarioDTO
 
     public DateTime FechaRegistro { get; set; }
 
-    public bool EsActivo { get; set; }
-
     public DateTime? UltimoInicioSesionUtc { get; set; }
 
     public int IdRol { get; set; }

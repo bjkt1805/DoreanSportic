@@ -141,6 +141,94 @@ function cargarVista(ruta) {
         });
 }
 
+//Delegación de submit para EditUsuario (funciona aunque el form se inyecte luego) 
+(function initEditUsuarioDelegation() {
+    // Asegurar que el script no se ejecute más de una vez
+    if (window.__editUsuarioDelegationBound) return;
+
+    // Se asigna true a la variable para evitar múltiples asignaciones
+    window.__editUsuarioDelegationBound = true;
+
+    // Usar captura (tercer parámetro true) para asegurar que llegue el evento
+    document.addEventListener('submit', async function onEditUsuarioSubmit(ev) {
+
+        // Evitar que el evento se propague a otros formularios
+        const form = ev.target;
+
+        // Si no existe formulario o no es el correcto, salir de la función
+        if (!form || form.id !== 'formEditUsuario') return;
+
+        // Evitar el comportamiento por defecto del formulario
+        ev.preventDefault();
+
+        // Asegurar unobtrusive validation para este form (por si se inyectó después)
+        if ($ && $.validator && $.validator.unobtrusive) {
+            $.validator.unobtrusive.parse(form);
+            if (!$(form).valid()) return;
+        }
+
+        // Crear un objeto FormData con los datos del formulario
+        const formData = new FormData(form);
+
+        // Enviar solicitud POST al servidor
+        try {
+            const resp = await fetch(form.action || '/Usuario/Edit', {
+                method: form.method || 'POST',
+                body: formData
+            });
+            const data = await resp.json();
+
+            // Si la respuesta es exitosa, data.success será true
+            if (data.success) {
+
+                // Si la respuesta es exitosa, data.success será true
+                if (data.success) {
+
+                    // Si el registro es exitoso, mostrar Toast y redirigir a la página de Login o a la URL indicada
+                    mostrarToast(getMensaje("editarok"), "success");
+                    // Resetear el formulario si hay respuesta exitosa
+                    form.reset();
+                    // Esperar .60 segundos para redirigir a "/Usuario/IndexAdmin"
+                    // y para que el toast sea visible en pantalla
+                    if (typeof cargarVista === "function") {
+                        setTimeout(() => cargarVista("/Usuario/IndexAdmin"), 600);
+                    }
+
+                    // Limpiar el formulario
+                    form.reset();
+                    return;
+                }
+            }
+
+            // Manejo de errores por campo
+            const errs = data.errors || data.errores;
+            if (errs && typeof pintarErroresFormulario === 'function') {
+                pintarErroresFormulario(form, errs);
+
+                // Toast corto con el primer error (opcional)
+                const firstKey = Object.keys(errs)[0];
+                const firstMsg = Array.isArray(errs[firstKey]) ? errs[firstKey][0] : errs[firstKey];
+                if (firstMsg && typeof mostrarToast === 'function') {
+                    const text = typeof getTranslation === 'function' ? getTranslation(firstMsg) : firstMsg;
+                    mostrarToast(text, 'error');
+                }
+                return;
+            }
+
+            // Fallback
+            const msgs = document.getElementById('mensajes-internacionalizados');
+            typeof mostrarToast === 'function' &&
+                mostrarToast(msgs?.dataset?.errorInesperado || (typeof getMensaje === 'function' && getMensaje('msjErrorInesperado')) || 'Error inesperado', 'error');
+
+        } catch (error) {
+            console.error('Error al editar usuario:', error);
+            const msgs = document.getElementById('mensajes-internacionalizados');
+            typeof mostrarToast === 'function' &&
+                mostrarToast(msgs?.dataset?.errorInesperado || (typeof getMensaje === 'function' && getMensaje('msjErrorInesperado')) || 'Error inesperado', 'error');
+        }
+    }, true);
+})();
+
 //Función para cargar la vista de cards de los productos
 function inicializarVistaProductos() {
     const toggle = document.querySelector('input[type="checkbox"]');
@@ -1605,6 +1693,18 @@ function getCurrentLangShort() {
     const culture = getCurrentCulture();
     return culture.split('-')[0];
 }
+
+// Cuando el DOM esté listo, cargar los eventos de validación de los campos del formulario de registro
+document.addEventListener("DOMContentLoaded", () => {
+
+    configurarValidacionUsuario("UserName", "UserName", "msj-usuario");
+    configurarValidacionPassword("Password", "Password", "msj-password");
+    configurarValidacionConfirmacionPassword("ConfirmPassword", "Password", "ConfirmPassword", "msj-confirm");
+    configurarValidacionEmail("Email", "Email", "msj-email");
+    configurarValidacionNombreApellido("Nombre", "Nombre", "msj-nombre");
+    configurarValidacionNombreApellido("Apellido", "Apellido", "msj-apellido");
+    configurarValidacionTelefono("Telefono", "Telefono", "msj-telefono");
+});
 
 
 

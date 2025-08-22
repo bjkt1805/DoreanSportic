@@ -62,7 +62,6 @@ namespace DoreanSportic.Application.Services.Implementations
                 IdCliente = dto.IdCliente,
                 IdRol = dto.IdRol,
                 Estado = dto.Estado,
-                EsActivo = dto.EsActivo,
                 UserName = dto.UserName,
                 PasswordHash = dto.PasswordHash
             };

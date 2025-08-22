@@ -221,7 +221,6 @@ namespace Libreria.Web.Controllers
                 // Crear el hash de la contraseña utilizando PasswordHasher
                 PasswordHash = PasswordHasher.Hash(viewModel.Password),
                 FechaRegistro = DateTime.Now,
-                EsActivo = true,
                 Estado = true,
                 IdRol = viewModel.IdTipoUsuario
             });

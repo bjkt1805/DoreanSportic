@@ -167,7 +167,6 @@ namespace DoreanSportic.Controllers
                 // Crear el hash de la contraseña utilizando PasswordHasher
                 PasswordHash = PasswordHasher.Hash(viewModel.Password),
                 FechaRegistro = DateTime.Now,
-                EsActivo = true,
                 Estado = true,
                 IdRol = viewModel.IdTipoUsuario
             });
@@ -216,8 +215,8 @@ namespace DoreanSportic.Controllers
                 return Json(new { success = false, errors = errores });
             }
 
-            // Resolver Estado desde toggle + fallback
-            var estadoFinal = vm.Estado || (estadoFallback.HasValue && estadoFallback.Value);
+            //// Resolver Estado desde toggle + fallback
+            //var estadoFinal = vm.Estado || (estadoFallback.HasValue && estadoFallback.Value);
 
             // Actualizar Cliente
             await _serviceCliente.ActualizarClienteAsync(new ClienteDTO
@@ -228,7 +227,7 @@ namespace DoreanSportic.Controllers
                 Email = vm.Email,
                 Telefono = vm.Telefono,
                 IdSexo = vm.IdSexo,
-                Estado = true // si aplica
+                Estado = true
             });
 
             // Hashear la contraseña si se proporcionó una nueva
@@ -241,8 +240,7 @@ namespace DoreanSportic.Controllers
                 IdCliente = vm.IdCliente,
                 UserName = vm.UserName,
                 IdRol = vm.IdTipoUsuario,
-                Estado = estadoFinal,
-                EsActivo = estadoFinal, 
+                Estado = vm.Estado,
                 PasswordHash = nuevoPasswordHash
             });
 

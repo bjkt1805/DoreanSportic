@@ -21,15 +21,15 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         {
             var @object = await _context.Set<Usuario>()
                                 // Solo usuarios activos
-                                .FirstOrDefaultAsync(u => u.Id == id && u.Estado); 
+                                .FirstOrDefaultAsync(u => u.Id == id); 
             return @object!;
         }
 
-        public async Task<Usuario> FindByUserNameAsync(string userName)
+        public async Task<Usuario> FindByUserNameAsync(string userName) 
         {
             var @object = await _context.Set<Usuario>()
                                 // Solo usuarios activos
-                                .FirstOrDefaultAsync(u => u.UserName == userName && u.Estado && u.EsActivo);
+                                .FirstOrDefaultAsync(u => u.UserName == userName && u.Estado);
             return @object!;
         }
 
@@ -97,7 +97,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                 .Include(u => u.IdClienteNavigation)
                 .FirstOrDefaultAsync(u =>
                     u.UserName == userName &&
-                    u.Estado && u.EsActivo);
+                    u.Estado);
         }
 
         // Actualizar el usuario
@@ -106,7 +106,6 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             _context.Attach(entity);
             _context.Entry(entity).Property(u => u.IdRol).IsModified = true;
             _context.Entry(entity).Property(u => u.Estado).IsModified = true;
-            _context.Entry(entity).Property(u => u.EsActivo).IsModified = true;
 
             if (!string.IsNullOrWhiteSpace(entity.UserName))
                 _context.Entry(entity).Property(u => u.UserName).IsModified = true;

@@ -133,23 +133,41 @@
 
             <!-- Botón -->
             <div class="form-control mt-4">
-                <button type="submit" class="btn btn-primary w-full">@Localizer["Guardar cambios"]</button>
+                <button type="submit" class="btn btn-primary w-full">@Localizer["Actualizar usuario"]</button>
             </div>
         </div>
 
-        <!-- Columna 2 (ayudas) -->
+        <!-- Columna 2: Ayudas -->
         <div class="flex flex-col gap-2 w-1/3">
             <div class="w-full">
-                <p class="font-bold italic">@Localizer["Información"]</p>
-                <p class="text-sm">@Localizer["Puede actualizar correo, teléfono, sexo, rol y estado del usuario."]</p>
+                <p class="font-bold italic">@Localizer["Requisitos de seguridad"]</p>
+                <ul class="list-disc list-inside text-sm">
+                    <li>@Localizer["- La contraseña debe tener 8 a 64 caracteres"]</li>
+                    <li>@Localizer["- Debe incluir mayúscula, minúscula, número y símbolo"]</li>
+                    <li>@Localizer["- El nombre de usuario admite letras, números, punto, guion y guion bajo"]</li>
+                </ul>
+            </div>
+
+            <div class="w-full">
+                <p class="font-bold italic">@Localizer["Políticas"]</p>
+                <p class="text-sm">@Localizer["- El correo debe ser único. El nombre y apellido solo letras"]</p>
             </div>
         </div>
     </div>
 </form>
 
 <!-- Mensajes para JS -->
-<div id="mensajes-internacionalizados-usuario-edit" class="hidden"
-     data-ok='@Localizer["Usuario actualizado correctamente"]'
+<div id="mensajes-internacionalizados" class="hidden"
+     data-editarOK='@Localizer["¡Usuario actualizado correctamente!"]'
      data-errorForm='@Localizer["Corrige los errores del formulario"]'
-     data-errorInesperado='@Localizer["Error inesperado"]'>
+     data-errorInesperado='@Localizer["Error inesperado"]'
+     data-usuarioLong='@Localizer["El usuario debe tener entre {{0}} y {{1}} caracteres"]'
+     data-usuarioForm='@Localizer["Solo letras, números, punto, guion y guion bajo"]'
+     data-passLen='@Localizer["La contraseña debe tener entre {{0}} y {{1}} caracteres"]'
+     data-passReq='@Localizer["Debe tener al menos una mayúscula, una minúscula, un número y un carácter especial"]'
+     data-confirmar='@Localizer["Las contraseñas no coinciden"]'
+     data-email='@Localizer["Correo electrónico no válido"]'
+     data-nombre='@Localizer["El nombre solo debe contener letras"]'
+     data-apellido='@Localizer["El apellido solo debe contener letras"]'
+     data-tel='@Localizer["Número de teléfono no válido"]'>
 </div>

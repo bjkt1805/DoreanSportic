@@ -417,9 +417,6 @@ public partial class DoreanSporticContext : DbContext
             entity.HasIndex(e => e.IdCliente, "UQ__Usuario__885457EFC40F32E5").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.EsActivo)
-                .HasDefaultValue(true)
-                .HasColumnName("esActivo");
             entity.Property(e => e.Estado).HasColumnName("estado");
             entity.Property(e => e.FechaRegistro)
                 .HasDefaultValueSql("(getdate())")

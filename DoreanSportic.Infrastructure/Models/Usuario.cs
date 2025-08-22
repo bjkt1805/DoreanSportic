@@ -15,8 +15,6 @@ public partial class Usuario
 
     public DateTime FechaRegistro { get; set; }
 
-    public bool EsActivo { get; set; }
-
     public int IdRol { get; set; }
 
     public DateTime? UltimoInicioSesionUtc { get; set; }
