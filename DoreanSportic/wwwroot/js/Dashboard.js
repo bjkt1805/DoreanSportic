@@ -266,6 +266,34 @@ function cargarDetallePromocion(idPromocion) {
         });
 }
 
+// Función para cargar la vista de detalles del usuario
+function cargarDetalleUsuario(idUsuario) {
+
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('contenido-dinamico');
+
+    loader.classList.remove('hidden');
+    container.innerHTML = "";
+
+    fetch(`/Usuario/DetailsAdmin/${idUsuario}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            setTimeout(() => {
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+            }, 300);
+        })
+        .catch(err => {
+            console.error("Error al cargar detalles:", err);
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
+            loader.classList.add('hidden');
+        });
+
+}
+
 // Función para inicializar el carrusel de la vista de detalles del producto
 function inicializarCarrusel() {
     let currentSlide = 1;
@@ -498,6 +526,36 @@ function cargarEditarPromocion(idPromocion) {
             container.innerHTML = `<p class="text-red-500">ERROR</p>`;
             loader.classList.add('hidden');
         });
+}
+
+// Función javascript para cargar la vista de editar usuario (_EditUsuario)
+// Función para cargar la vista parcial de edición de un usuario
+function cargarEditarUsuario(idUsuario) {
+    const loader = document.getElementById('loader');
+    const container = document.getElementById('contenido-dinamico');
+
+
+    loader.classList.remove('hidden');
+    container.innerHTML = "";
+
+    fetch(`/Usuario/Edit/${idUsuario}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            setTimeout(() => {
+                container.innerHTML = html;
+                loader.classList.add('hidden');
+
+            }, 300);
+        })
+        .catch(err => {
+            console.error("Error al cargar la vista de edición:", err);
+            container.innerHTML = `<p class="text-red-500">ERROR</p>`;
+            loader.classList.add('hidden');
+        });
+
 }
 
 // Función para mostrar el toast en las vistas parciales

@@ -18,7 +18,7 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<int> CrearClienteAsync(ClienteDTO dto);
 
         // Actualizar cliente
-        Task ActualizarClienteAsync(ClienteDTO dto);
+        Task <bool> ActualizarClienteAsync(ClienteDTO dto);
         Task<bool> ExisteEmailAsync(string email);
     }
 }

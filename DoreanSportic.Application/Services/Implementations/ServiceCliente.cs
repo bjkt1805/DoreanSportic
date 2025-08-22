@@ -54,17 +54,19 @@ namespace DoreanSportic.Application.Services.Implementations
             return await _repository.CrearClienteAsync(objectMapped);
         }
 
-        public async Task ActualizarClienteAsync(ClienteDTO dto)
+        public async Task<bool> ActualizarClienteAsync(ClienteDTO dto)
         {
-            var rows = await _repository.ActualizarClienteAsync(
-                id: dto.Id,
-                nombre: dto.Nombre,
-                apellido: dto.Apellido,
-                email: dto.Email,
-                telefono: dto.Telefono,
-                idSexo: dto.IdSexo,
-                estado: dto.Estado
-            );
+            var entity = new Cliente
+            {
+                Id = dto.Id,
+                Nombre = dto.Nombre,
+                Apellido = dto.Apellido,
+                Email = dto.Email,
+                Telefono = dto.Telefono,
+                IdSexo = dto.IdSexo,
+                Estado = dto.Estado
+            };
+            var rows = await _repository.ActualizarClienteAsync(entity);
             return rows > 0;
         }
     }

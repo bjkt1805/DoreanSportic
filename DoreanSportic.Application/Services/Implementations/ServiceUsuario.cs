@@ -55,8 +55,19 @@ namespace DoreanSportic.Application.Services.Implementations
 
         public async Task<bool> ActualizarUsuarioAsync(UsuarioDTO dto)
         {
-            var objectMapped = _mapper.Map<Usuario>(dto);
-            var rows = await _repository.ActualizarUsuarioAsync(objectMapped);
+            // Mapeo manual para evitar sobreescritura de PasswordHash si no se proporciona una nueva contraseña
+            var entity = new Usuario
+            {
+                Id = dto.Id,
+                IdCliente = dto.IdCliente,
+                IdRol = dto.IdRol,
+                Estado = dto.Estado,
+                EsActivo = dto.EsActivo,
+                UserName = dto.UserName,
+                PasswordHash = dto.PasswordHash
+            };
+
+            var rows = await _repository.ActualizarUsuarioAsync(entity);
             return rows > 0;
         }
 

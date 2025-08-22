@@ -220,7 +220,7 @@ namespace DoreanSportic.Controllers
             var estadoFinal = vm.Estado || (estadoFallback.HasValue && estadoFallback.Value);
 
             // Actualizar Cliente
-            await _serviceCliente.UpdateAsync(new ClienteDTO
+            await _serviceCliente.ActualizarClienteAsync(new ClienteDTO
             {
                 Id = vm.IdCliente,
                 Nombre = vm.Nombre,
@@ -231,15 +231,19 @@ namespace DoreanSportic.Controllers
                 Estado = true // si aplica
             });
 
+            // Hashear la contraseña si se proporcionó una nueva
+            var nuevoPasswordHash = PasswordHasher.Hash(vm.Password);
+
             // Actualizar Usuario
-            await _serviceUsuario.UpdateAsync(new UsuarioDTO
+            await _serviceUsuario.ActualizarUsuarioAsync(new UsuarioDTO
             {
                 Id = vm.Id,
                 IdCliente = vm.IdCliente,
                 UserName = vm.UserName,
                 IdRol = vm.IdTipoUsuario,
                 Estado = estadoFinal,
-                EsActivo = estadoFinal
+                EsActivo = estadoFinal, 
+                PasswordHash = nuevoPasswordHash
             });
 
             return Json(new { success = true });

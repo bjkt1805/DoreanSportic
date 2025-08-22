@@ -94,6 +94,26 @@
                 </div>
             </div>
 
+            <!-- Contraseña y confirmar contraseña en fila -->
+            <div class="flex flex-row gap-4">
+
+                <div class="form-control w-full">
+                    <label asp-for="Password" class="label">
+                        <span class="label-text font-bold text-black">@Localizer["Contraseña"]</span>
+                    </label>
+                    <input asp-for="Password" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
+                    <span asp-validation-for="Password" class="text-sm italic" style=" color:red; font-size: small"></span>
+                </div>
+
+                <div class="form-control w-full">
+                    <label asp-for="ConfirmPassword" class="label">
+                        <span class="label-text font-bold text-black">@Localizer["Confirmar contraseña"]</span>
+                    </label>
+                    <input asp-for="ConfirmPassword" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
+                    <span asp-validation-for="ConfirmPassword" class="text-sm italic" style="color:red; font-size: small"></span>
+                </div>
+            </div>
+
             <!-- Toggle Estado -->
             <div class="form-control w-fit">
                 <label class="label">

@@ -19,7 +19,7 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
         Task<bool> ExisteUserNameAsync(String userName);
         Task<int> CrearUsuarioAsync(Usuario entity);
 
-        Task<bool> ActualizarUsuarioAsync(Usuario entity);
+        Task<int> ActualizarUsuarioAsync(Usuario entity);
 
         // Buscar usuario por cliente
         Task<Usuario?> FindByUserNameWithClienteAsync(string userName);

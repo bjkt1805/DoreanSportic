@@ -101,21 +101,20 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
 
         // Actualizar el usuario
-        public async Task<bool> ActualizarUsuarioAsync(Usuario entity)
+        public async Task<int> ActualizarUsuarioAsync(Usuario entity)
         {
-            // Actualizar el usuario en la base de datos
-            _context.Set<Usuario>().Update(entity);
-            try
-            {
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // Manejar la excepción si ocurre un error al guardar
-                Console.WriteLine("Error al actualizar el usuario: " + ex.Message);
-                return false;
-            }
+            _context.Attach(entity);
+            _context.Entry(entity).Property(u => u.IdRol).IsModified = true;
+            _context.Entry(entity).Property(u => u.Estado).IsModified = true;
+            _context.Entry(entity).Property(u => u.EsActivo).IsModified = true;
+
+            if (!string.IsNullOrWhiteSpace(entity.UserName))
+                _context.Entry(entity).Property(u => u.UserName).IsModified = true;
+
+            // Contraseña siempre viene (por regla de negocio) con el hash
+            _context.Entry(entity).Property(u => u.PasswordHash).IsModified = true;
+
+            return await _context.SaveChangesAsync();
         }
 
         // Cambiar solo campos necesarios de Usuario
