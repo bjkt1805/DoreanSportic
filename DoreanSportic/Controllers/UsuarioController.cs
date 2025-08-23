@@ -2,13 +2,14 @@
 using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
-using DoreanSportic.Web.ViewModels;
 using DoreanSportic.Web.Utils;
+using DoreanSportic.Web.ViewModels;
 using Libreria.Web.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
@@ -199,7 +200,7 @@ namespace DoreanSportic.Controllers
                 TiposUsuario = (await _serviceRol.ListAsync()).Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Nombre })
             };
 
-            // Si la cargarás por AJAX:
+            
             return PartialView("_EditUsuario", vm);
         }
 
@@ -214,9 +215,6 @@ namespace DoreanSportic.Controllers
                     .ToDictionary(k => k.Key, v => v.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
                 return Json(new { success = false, errors = errores });
             }
-
-            //// Resolver Estado desde toggle + fallback
-            //var estadoFinal = vm.Estado || (estadoFallback.HasValue && estadoFallback.Value);
 
             // Actualizar Cliente
             await _serviceCliente.ActualizarClienteAsync(new ClienteDTO
@@ -245,6 +243,49 @@ namespace DoreanSportic.Controllers
             });
 
             return Json(new { success = true });
+        }
+
+        // GET: UsuarioController/EditarPerfil/5
+        [HttpGet]
+        public async Task<IActionResult> EditarPerfil()
+        {
+            // Obtener el Id de Usuario desde los claims
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                          ?? User.FindFirst("UsuarioId")?.Value;
+
+            // Validar que el Id sea válido si no retornar Forbidden
+            if (!int.TryParse(idClaim, out var usuarioId))
+                return Forbid();
+
+            // Cargar usuario
+            var usuario = await _serviceUsuario.FindByIdAsync(usuarioId);
+            if (usuario is null) return NotFound();
+
+            // Cargar cliente
+            var cliente = await _serviceCliente.FindByIdAsync(usuario.IdCliente);
+            if (cliente is null) return NotFound();
+
+            // Armar ViewModel
+            var vm = new RegistroViewModel
+            {
+                Id = usuario.Id,
+                IdCliente = usuario.IdCliente,
+                Nombre = cliente.Nombre,
+                Apellido = cliente.Apellido,
+                Email = cliente.Email,
+                Telefono = cliente.Telefono,
+                IdSexo = cliente.IdSexo ?? 3, // 3 = “Seleccione”
+                UserName = usuario.UserName,
+                IdTipoUsuario = usuario.IdRol,
+                Estado = usuario.Estado,
+                Sexos = await ObtenerSexosAsync(),
+                TiposUsuario = (await _serviceRol.ListAsync())
+                                 .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Nombre })
+                                 .ToList()
+            };
+
+            //Devolver vista EditUsuario con LayoutLogin y el modelo
+            return View("EditUsuario", vm);
         }
     }
 }
