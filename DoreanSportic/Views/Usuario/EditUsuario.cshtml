@@ -1,4 +1,4 @@
-﻿@model DoreanSportic.Web.ViewModels.RegistroViewModel
+﻿@model DoreanSportic.Web.ViewModels.EditUsuarioViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
@@ -54,8 +54,9 @@
         <div class="text-center lg:text-left max-w-xl">
             <h1 class="text-5xl font-bold" style="font-size: 25px">@Localizer["Editar usuario"]</h1>
             <p class="py-6 font-bold">
-                @Localizer["Actualiza los datos del usuario. El nombre de usuario no se puede modificar desde esta vista."]
+                @Localizer["Actualiza los datos del usuario"]
             </p>
+            <span class="italic font-bold" style="font-size: 12px">@Localizer["* El nombre de usuario solo puede ser modificado por el administrador *"]</span>
         </div>
 
         <div class="card bg-base-100 w-full max-w-3xl shrink-0 shadow-2xl">
@@ -64,7 +65,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-sm italic" style="color:red; font-size: small"></div>
 
                 <!-- Opción A: si usas la función manejarSubmitUsuarioEdit -->
-                <form id="formEditUsuario"
+                <form id="formEditarUsuario"
                       asp-action="Edit"
                       asp-controller="Usuario"
                       method="post"
@@ -122,38 +123,28 @@
 
                         <!-- SIN contraseña: esta vista no cambia la contraseña -->
 
-                        <!-- Botón -->
+                        <!-- Botón para actualizar datos -->
                         <button class="btn bg-[#004AAD] text-white mt-4 w-full" type="submit">
-                            @Localizer["Actualizar usuario"]
+                            @Localizer["Actualizar datos"]
                         </button>
+
+                        <!-- Botón para cancelar -->
+                        <a class="btn btn-soft text-black mt-2" asp-controller="Login" asp-action="Login">@Localizer["Cancelar"]</a>
                     </fieldset>
                 </form>
 
-                <hr />
-
-                <p class="text-sm">
-                    <a class="link link-hover font-semibold" href="javascript:void(0);" onclick="cargarVista('/Usuario/IndexAdmin')">
-                        @Localizer["Volver al listado"]
-                    </a>
-                </p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Mensajes para JS (edición) -->
-<div id="mensajes-internacionalizados-usuario-edit" class="hidden"
+<div id="mensajes-internacionalizados" class="hidden"
      data-ok='@Localizer["¡Usuario actualizado correctamente!"]'
      data-errorform='@Localizer["Corrige los errores del formulario"]'
      data-errorinesperado='@Localizer["Error inesperado"]'
-     data-usuarioLong='@Localizer["El usuario debe tener entre {{0}} y {{1}} caracteres"]'
-     data-usuarioForm='@Localizer["Solo letras, números, punto, guion y guion bajo"]'
      data-email='@Localizer["Correo electrónico no válido"]'
      data-nombre='@Localizer["El nombre solo debe contener letras"]'
      data-apellido='@Localizer["El apellido solo debe contener letras"]'
      data-tel='@Localizer["Número de teléfono no válido"]'>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

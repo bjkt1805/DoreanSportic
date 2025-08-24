@@ -35,8 +35,16 @@ namespace DoreanSportic.Application.Services.Implementations
         }
         public async Task<bool> ExisteEmailAsync(string email)
         {
-            // Verificar si el nombre de usuario ya existe en la base de datos
+            // Verificar si el correoElectrónico ya existe en la base de datos a la hora
+            // de registrar el usuario
             return await _repository.ExisteEmailAsync(email);
+        }
+
+        public async Task<bool> ExisteEmailEditUsuarioAsync(string email, int? idCliente = null)
+        {
+            // Verificar si el correo electrónico ya está asignado a otro usuario
+            // a la hora de revisar su asignación
+            return await _repository.ExisteEmailEditUsuarioAsync(email, idCliente);
         }
         public async Task<ICollection<ClienteDTO>> ListAsync()
         {

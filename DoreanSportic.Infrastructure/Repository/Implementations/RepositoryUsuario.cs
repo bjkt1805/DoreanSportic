@@ -116,6 +116,12 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return await _context.SaveChangesAsync();
         }
 
+        // Actualizar el usuario (vista EditUsuario)
+        public async Task<int> ActualizarUsuarioEditAsync(Usuario entity)
+        {
+            return await _context.SaveChangesAsync();
+        }
+
         // Cambiar solo campos necesarios de Usuario
         public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
 

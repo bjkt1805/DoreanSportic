@@ -126,6 +126,9 @@
   <data name="Reseñas" xml:space="preserve">
     <value>Reviews</value>
   </data>
+  <data name="Estadísticas" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
   <data name="Usuarios" xml:space="preserve">
     <value>Users</value>
   </data>

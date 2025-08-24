@@ -2,6 +2,7 @@
 using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
 using DoreanSportic.Infrastructure.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

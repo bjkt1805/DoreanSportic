@@ -1,5 +1,6 @@
 ﻿@model DoreanSportic.Web.ViewModels.DetalleProductoViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
+@using System.Security.Claims
 @inject IViewLocalizer Localizer
 
 @using DoreanSportic.Infrastructure.Models
@@ -21,6 +22,12 @@
     var hoy = DateTime.Today;
 }
 
+<!-- Usuario -->
+@{
+    var isAuth = User?.Identity?.IsAuthenticated == true;
+    var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var userNameClaim = User.FindFirst("UserName")?.Value ?? User.Identity?.Name; // si faltara el claim, usa el Name
+}
 
 <div class="p-4 flex flex-row gap-5">
     <div class="flex flex-col gap-2">
@@ -28,10 +35,20 @@
             <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">@(Localizer["Volver al listado"])</a>
 
             <!-- Botón para dejar reseña -->
-            <button class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
-                    onclick="modalResenna.showModal()">
-                @(Localizer["Dejar reseña"])
-            </button>
+            @if (User?.Identity?.IsAuthenticated == true)
+            {
+                <button class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
+                        onclick="modalResenna.showModal()">
+                    @Localizer["Dejar reseña"]
+                </button>
+            }
+            else
+            {
+                <a class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
+                   asp-controller="Login" asp-action="Login">
+                    @Localizer["Inicia sesión para dejar reseña"]
+                </a>
+            }
 
         </div>
         <h1><b>@(Localizer["DETALLE DEL PRODUCTO"])</b></h1>
@@ -416,9 +433,20 @@
 
             <!-- Usuario -->
             <div class="form-control mb-3">
-                <label class="label font-bold">@(Localizer["Usuario"]): @(Model.UsuarioActual.UserName)</label>
-                <input type="hidden" name="IdUsuario" value=@(Model.UsuarioActual.Id) />
-                <input type="hidden" name="Usuario" value=@(Model.UsuarioActual.UserName) />
+                @if (isAuth)
+                {
+                    <label class="label font-bold">
+                        @Localizer["Usuario"]: @userNameClaim
+                    </label>
+                    <input type="hidden" name="IdUsuario" value="@userIdClaim" />
+                    <input type="hidden" name="Usuario" value="@userNameClaim" />
+                }
+                else
+                {
+                    <div class="alert alert-warning text-sm">
+                        @Localizer["Debes iniciar sesión para dejar una reseña"]
+                    </div>
+                }
             </div>
 
             <!-- Comentario -->

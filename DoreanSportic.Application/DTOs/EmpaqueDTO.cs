@@ -13,15 +13,9 @@ public record EmpaqueDTO
 
     public string TipoEmpaque { get; set; } = null!;
 
-    public string? Observaciones { get; set; }
-
-    public byte[]? Imagen { get; set; }
-
     public decimal? PrecioBase { get; set; }
 
     public bool Estado { get; set; }
-
-    public virtual ICollection<CarritoDetalle> CarritoDetalle { get; set; } = new List<CarritoDetalle>();
 
     public virtual ICollection<PedidoDetalle> PedidoDetalle { get; set; } = new List<PedidoDetalle>();
 }

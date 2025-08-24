@@ -222,6 +222,9 @@
   <data name="AGOTADO" xml:space="preserve">
     <value>OUT OF STOCK</value>
   </data>
+  <data name="Inicia sesión para dejar reseña" xml:space="preserve">
+    <value>Sign in to leave a review</value>
+  </data>
   <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
     <value>PRODUCT DETAIL</value>
   </data>

@@ -47,7 +47,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                     .Include(r => r.IdUsuarioNavigation)
                     .Include(r => r.IdProductoNavigation)
                     .Where(r => r.IdProducto == idProducto)
-                    .OrderByDescending(r => r.Id)
+                    .OrderByDescending(r => r.FechaResenna)
                     .ToListAsync();
 
             return collection;

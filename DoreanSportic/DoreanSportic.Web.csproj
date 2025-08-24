@@ -54,6 +54,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>LoginViewModelResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\ViewModels\EditUsuarioViewModelResources.Designer.cs">
+      <DependentUpon>EditUsuarioViewModelResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Resources\ViewModels\RegistroViewModelResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -65,6 +70,17 @@
     <EmbeddedResource Update="Resources\ViewModels\LoginViewModelResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LoginViewModelResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ViewModels\EditUsuarioViewModelResources.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>EditUsuarioViewModelResources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ViewModels\EditUsuarioViewModelResources.es.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ViewModels\EditUsuarioViewModelResources.en.resx">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ViewModels\RegistroViewModelResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

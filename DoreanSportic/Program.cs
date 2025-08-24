@@ -64,6 +64,7 @@ builder.Services.AddTransient<IRepositoryRol, RepositoryRol>();
 builder.Services.AddTransient<IRepositorySexo, RepositorySexo>();
 builder.Services.AddTransient<IRepositoryTarjeta, RepositoryTarjeta>();
 builder.Services.AddTransient<IRepositoryUsuario, RepositoryUsuario>();
+builder.Services.AddTransient<IRepositoryReporte, RepositoryReporte>();
 
 //Services
 builder.Services.AddTransient<IServiceCategoria, ServiceCategoria>();
@@ -82,6 +83,7 @@ builder.Services.AddTransient<IServiceRol, ServiceRol>();
 builder.Services.AddTransient<IServiceSexo, ServiceSexo>();
 builder.Services.AddTransient<IServiceTarjeta, ServiceTarjeta>();
 builder.Services.AddTransient<IServiceUsuario, ServiceUsuario>();
+builder.Services.AddTransient<IServiceReporte, ServiceReporte>();
 
 // Hasher para autenticación
 builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();

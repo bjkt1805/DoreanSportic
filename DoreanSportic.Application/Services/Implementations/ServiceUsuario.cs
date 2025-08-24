@@ -70,6 +70,26 @@ namespace DoreanSportic.Application.Services.Implementations
             return rows > 0;
         }
 
+        // Método Actualizar para la vista EditUsuario
+        public async Task<bool> ActualizarUsuarioEditAsync(UsuarioDTO dto)
+        {
+            // Mapeo manual para evitar sobreescritura de PasswordHash si no se proporciona una nueva contraseña
+            var entity = new Usuario
+            {
+                Id = dto.Id,
+                IdCliente = dto.IdCliente,
+                UserName = dto.UserName,
+                PasswordHash = dto.PasswordHash,
+                FechaRegistro = dto.FechaRegistro,
+                IdRol = dto.IdRol,
+                UltimoInicioSesionUtc = dto.UltimoInicioSesionUtc,
+                Estado = dto.Estado,
+            };
+
+            var rows = await _repository.ActualizarUsuarioEditAsync(entity);
+            return rows >= 0;
+        }
+
         public async Task<bool> ExisteUserNameAsync(string userName)
         {
             // Verificar si el nombre de usuario ya existe en la base de datos

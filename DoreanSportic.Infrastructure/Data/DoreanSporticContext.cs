@@ -92,7 +92,6 @@ public partial class DoreanSporticContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.Imagen).HasColumnName("imagen");
             entity.Property(e => e.PrecioBase)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("precioBase");

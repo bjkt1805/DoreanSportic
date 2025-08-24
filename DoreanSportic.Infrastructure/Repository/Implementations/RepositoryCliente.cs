@@ -32,9 +32,19 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
         }
         public async Task<bool> ExisteEmailAsync(string email)
         {
-            // Verificar si existe un usuario con el mismo correo electrónico
+            // Verificar si ya existe este correo en la base datos
             return await _context.Set<Cliente>()
                 .AnyAsync(c => c.Email == email && c.Estado);
+        }
+
+        public async Task<bool> ExisteEmailEditUsuarioAsync(string email, int? idCliente = null)
+        {
+            // Verificar si existe un usuario con el mismo correo electrónico
+            return await _context.Set<Cliente>()
+                .AnyAsync(c =>
+                    c.Email == email &&
+                    c.Estado &&
+                    c.Id != idCliente); // Se excluye de la consulta el id del cliente actual
         }
 
         public async Task<ICollection<Cliente>> ListAsync()

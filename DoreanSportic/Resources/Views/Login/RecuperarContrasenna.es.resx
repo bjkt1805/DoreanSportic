@@ -126,6 +126,9 @@
   <data name="Usuario" xml:space="preserve">
     <value>Usuario</value>
   </data>
+  <data name="Cancelar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
   <data name="Contraseña recuperada" xml:space="preserve">
     <value>Contraseña recuperada</value>
   </data>

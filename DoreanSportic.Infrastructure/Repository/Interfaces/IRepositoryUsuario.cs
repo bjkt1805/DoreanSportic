@@ -21,6 +21,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         Task<int> ActualizarUsuarioAsync(Usuario entity);
 
+        Task<int> ActualizarUsuarioEditAsync(Usuario entity);
+
         // Buscar usuario por cliente
         Task<Usuario?> FindByUserNameWithClienteAsync(string userName);
 

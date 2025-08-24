@@ -14,6 +14,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         Task<bool> ExisteEmailAsync(String email);
 
+        Task<bool> ExisteEmailEditUsuarioAsync(String email, int? idCliente = null);
+
         Task<int> CrearClienteAsync(Cliente entity);
 
         Task<int> ActualizarClienteAsync(Cliente entity);

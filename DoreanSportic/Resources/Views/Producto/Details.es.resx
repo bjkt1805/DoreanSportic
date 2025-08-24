@@ -222,6 +222,9 @@
   <data name="AGOTADO" xml:space="preserve">
     <value>AGOTADO</value>
   </data>
+  <data name="Inicia sesión para dejar reseña" xml:space="preserve">
+    <value>Inicia sesión para dejar reseña</value>
+  </data>
   <data name="DETALLE DEL PRODUCTO" xml:space="preserve">
     <value>DETALLE DEL PRODUCTO</value>
   </data>

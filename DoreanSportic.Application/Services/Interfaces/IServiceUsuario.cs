@@ -22,6 +22,10 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Actualizar usuario
         Task<bool> ActualizarUsuarioAsync(UsuarioDTO dto);
 
+        // Actualizar usuario (vista EditUsuario)
+
+        Task<bool> ActualizarUsuarioEditAsync(UsuarioDTO dto);
+
         // Login de usuario 
         Task<UsuarioDTO?> LoginAsync(string id, string password);
 

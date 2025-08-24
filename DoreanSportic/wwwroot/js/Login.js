@@ -496,6 +496,64 @@ function manejarSubmitRecuperarContrasenna(event) {
         });
 }
 
+// Función para manejar el envío del formulario de editar usuario
+function manejarSubmitEditarUsuario(event) {
+    // Prevenir el envío del formulario por defecto
+    event.preventDefault();
+
+    // Obtener el formulario
+    const form = event.target;
+
+    // Habilitar validación unobtrusive del formulario
+    $.validator.unobtrusive.parse(form);
+
+    // Si el formulario no es válido, salir de la función
+    if (!$(form).valid()) return;
+
+    // Crear un objeto FormData con los datos del formulario
+    const formData = new FormData(form);
+
+    // Hacer la petición AJAX al servidor
+    fetch("/Usuario/EditarPerfil", {
+        method: form.method,
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Si el login es exitoso, mostrar Toast y redirigir a la página principal o a la URL indicada
+                mostrarToast(getMensaje("ok"), "success");
+                // Resetear el formulario si hay respuesta exitosa
+                form.reset();
+                // Esperar 1 segundo para redirigir a "/Home/Index"
+                // para que el toast sea visible en pantalla
+                setTimeout(() => {
+                    window.location.href = "/Producto/Index";
+                }, 1000);
+                return;
+            }
+
+            // Si viene un mensaje simple del backend, mostrar el error en el formulario
+            if (data.errors) {
+                pintarErroresFormulario(form, data.errors || data.errores);
+                return;
+            }
+
+            // Si algún caso devuelve diccionario de errores por campo
+            if (data.errors || data.errores) {
+                pintarErroresFormulario(form, data.errors || data.errores);
+                return;
+            }
+
+            // fallback
+            mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
+        })
+        // Capturar cualquier error de la petición
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarToast(getMensaje?.("msjErrorInesperado") || "Error inesperado", "error");
+        });
+}
 // Función para mostrar el toast a la hora de login/registro/cambio de contraseña
 // ya sea exitoso o error
 function mostrarToast(mensaje, tipo = "info") {
@@ -532,6 +590,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const formRegistro = document.querySelector("#formRegistro");
     // Obtener el formulario de cambio de contraseña
     const formRecuperarContrasenna = document.querySelector("#formRecuperarContrasenna");
+    // Obtener el formulario de editar usuario
+    const formEditarUsuario = document.querySelector("#formEditarUsuario");
 
     // Si el formulario de login existe, agregar el evento de envío
     if (formLogin) {
@@ -546,6 +606,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si el formulario de cambio de contraseña existe, agregar el evento de envío
     if (formRecuperarContrasenna) {
         formRecuperarContrasenna.addEventListener("submit", manejarSubmitRecuperarContrasenna);
+    }
+
+    // Si el formulario de editar usuario existe, agregar el evento de envío
+    if (formEditarUsuario) {
+        formEditarUsuario.addEventListener("submit", manejarSubmitEditarUsuario);
     }
 
 });

@@ -122,16 +122,23 @@ function cargarVista(ruta) {
                     escucharInputCantidad();
                 }
 
-                                // Inicializar el form de creación de usuario
+                // Inicializar el form de creación de usuario
                 if (ruta == "/Usuario/Create") {
                     inicializarCrearUsuario();
                 }
 
+                // Al cargar la vista parcial, resetear guard para permitir una nueva inicialización “limpia”
+                window.__dashboardInitBound = false;
+
+                // Inicializar gráficos del dashboard si el parcial los trae
+                if (document.getElementById('chart-ventas-dia')) {
+                    if (typeof inicializarDashboardGraficos === 'function') {
+                        inicializarDashboardGraficos();
+                    }
+                }
+
                 // Cargar reseñas del producto
                 cargarResennasProducto(null, false);
-
-
-
 
             }, 300);
         })
@@ -1693,6 +1700,239 @@ function getCurrentLangShort() {
     const culture = getCurrentCulture();
     return culture.split('-')[0];
 }
+
+// Función para cargar el dashboard de estadísticas junto con sus helpers y carga de gráficos/kpis
+(function () {
+
+    // Variables para los gráficos (Chart.js)
+    let chartVentasDia, chartVentasMes, chartPedidosEstado, chartTopProductos;
+
+    // Función para crear o actualizar un gráfico
+    function ensureChart(ctx, type, data, options) {
+
+        // Si ya existe un gráfico en este contexto, destruirlo antes de crear uno nuevo
+        if (ctx._chart) {
+            ctx._chart.destroy();
+        }
+
+        // Crear un nuevo gráfico y almacenarlo en el contexto para futuras referencias
+        ctx._chart = new Chart(ctx, { type, data, options });
+        return ctx._chart;
+    }
+
+    // Función para obtener JSON desde una URL con manejo básico de errores
+    async function fetchJson(url) {
+
+        // Usar fetch con encabezado para indicar que es una solicitud AJAX
+        const r = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+
+        // Si la respuesta no es OK, lanzar un error
+        if (!r.ok) throw new Error("HTTP " + r.status);
+
+        // Devolver el JSON
+        return await r.json();
+    }
+
+    // Ventas por día
+    async function loadVentasDia() {
+
+        // Obtener los valores de los inputs de fecha
+        const desde = document.getElementById('ventas-dia-desde')?.value;
+        const hasta = document.getElementById('ventas-dia-hasta')?.value;
+
+        // Construir la query string si hay fechas
+        const qs = new URLSearchParams();
+        if (desde) qs.append('from', desde);
+        if (hasta) qs.append('to', hasta);
+
+        // Llamar al endpoint con las fechas (si existen)
+        const url = '/Reporte/VentasPorDia' + (qs.toString() ? '?' + qs.toString() : '');
+        const json = await fetchJson(url);
+
+        // Obtener el canvas y su contexto
+        const canvas = document.getElementById('chart-ventas-dia');
+
+        // Si no existe el canvas, salir
+        if (!canvas) return;
+
+        // Obtener el contexto 2D
+        const ctx = canvas.getContext('2d');
+
+        // Crear o actualizar el gráfico
+        chartVentasDia = ensureChart(ctx, 'bar', {
+            labels: json.labels,
+            datasets: [{
+                label: 'Pedidos',
+                data: json.data
+            }]
+        }, { responsive: true, plugins: { legend: { display: true } } });
+    }
+
+    // Ventas por mes (por año)
+    async function loadVentasMes() {
+
+        // Obtener el valor del input de año
+        const anio = document.getElementById('ventas-mes-anio')?.value;
+
+        // Construir la URL con el año si existe
+        const url = '/Reporte/VentasPorMes' + (anio ? ('?year=' + anio) : '');
+        const json = await fetchJson(url);
+
+        // Obtener el canvas y su contexto
+        const canvas = document.getElementById('chart-ventas-mes');
+
+        // Si no existe el canvas, salir
+        if (!canvas) return;
+
+        // Obtener el contexto 2D
+        const ctx = canvas.getContext('2d');
+
+        // Crear o actualizar el gráfico
+        chartVentasMes = ensureChart(ctx, 'line', {
+            labels: json.labels,
+            datasets: [{
+                label: 'Pedidos',
+                data: json.data,
+                tension: .3,
+                fill: false
+            }]
+        }, { responsive: true, plugins: { legend: { display: true } } });
+    }
+
+    // Pedidos por estado
+    async function loadPedidosEstado() {
+
+        // Llamar al endpoint
+        const json = await fetchJson('/Reporte/PedidosPorEstado');
+
+        // Obtener el canvas y su contexto
+        const canvas = document.getElementById('chart-pedidos-estado');
+
+        // Si no existe el canvas, salir
+        if (!canvas) return;
+
+        // Obtener el contexto 2D
+        const ctx = canvas.getContext('2d');
+
+        // Crear o actualizar el gráfico
+        chartPedidosEstado = ensureChart(ctx, 'doughnut', {
+            labels: json.labels,
+            datasets: [{
+                label: 'Pedidos',
+                data: json.data
+            }]
+        }, { responsive: true });
+    }
+
+    // Top 3 productos
+    async function loadTopProductos() {
+
+        // Obtener el valor del input de N (3)
+        const n = document.getElementById('top-n')?.value || 3;
+
+        // Llamar al endpoint con N(3)
+        const json = await fetchJson('/Reporte/TopProductos?n=' + encodeURIComponent(n));
+
+        // Obtener el canvas y su contexto
+        const canvas = document.getElementById('chart-top-productos');
+
+        // Si no existe el canvas, salir
+        if (!canvas) return;
+
+        // Obtener el contexto 2D
+        const ctx = canvas.getContext('2d');
+
+        // Crear o actualizar el gráfico
+        chartTopProductos = ensureChart(ctx, 'bar', {
+            labels: json.labels,
+            datasets: [{
+                label: 'Cantidad vendida',
+                data: json.data
+            }]
+        }, { responsive: true });
+    }
+
+    // Reseñas recientes
+    async function loadResennas() {
+
+        // Obtener el valor del input de N (3)
+        const n = document.getElementById('res-n')?.value || 3;
+
+        // Obtener el elemento UL donde se mostrarán las reseñas
+        const list = document.getElementById('lista-resennas');
+
+        // Si no existe el UL, salir
+        if (!list) return;
+
+        // Mostrar mensaje de cargando
+        list.innerHTML = '<li class="text-sm opacity-60">Cargando...</li>';
+        const json = await fetchJson('/Reporte/ResennasRecientes?n=' + encodeURIComponent(n));
+
+        // Si no hay reseñas, mostrar mensaje
+        if (!Array.isArray(json) || json.length === 0) {
+            list.innerHTML = '<li class="text-sm opacity-60">Sin reseñas</li>';
+            return;
+        }
+
+        // Mapear las reseñas a elementos LI
+        list.innerHTML = json.map(r => `
+            <li class="p-3 rounded border flex flex-col gap-1 mb-3">
+                <div class="flex justify-between">
+                    <b>${r.producto}</b>
+                    <span class="text-xs opacity-70">${r.fecha}</span>
+                </div>
+                <div class="text-sm">
+                    <b>Usuario:</b> ${r.usuario} &nbsp;&nbsp; <b>Calificación:</b> ${r.calificacion}/5
+                </div>
+                <div class="text-sm italic">"${r.comentario ?? ''}"</div>
+            </li>
+        `).join('');
+    }
+
+    // Inicializador público que se llama tras cargar el parcial del dashboard
+    window.inicializarDashboardGraficos = function () {
+
+        // Evitar múltiples inicializaciones sobre el mismo DOM
+        if (window.__dashboardInitBound) return;
+        window.__dashboardInitBound = true;
+
+        // Defaults de filtros (si existen los inputs)
+        try {
+            const d = new Date();
+            const hoy = d.toISOString().slice(0, 10);
+            const hace14 = new Date(d.getTime() - 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+            if (document.getElementById('ventas-dia-desde')) document.getElementById('ventas-dia-desde').value = hace14;
+            if (document.getElementById('ventas-dia-hasta')) document.getElementById('ventas-dia-hasta').value = hoy;
+            if (document.getElementById('ventas-mes-anio')) document.getElementById('ventas-mes-anio').value = d.getFullYear();
+        } catch { /* no-op */ }
+
+        // Eventos de filtros (botones)
+
+        // Obtener el botón de filtrar por día y cargar ventas por día mediante el evento click
+        const btnDia = document.getElementById('btn-filtrar-dia');
+        if (btnDia) btnDia.addEventListener('click', () => loadVentasDia().catch(console.error));
+
+        // Obtener el botón de filtrar por mes y cargar ventas por mes mediante el evento click
+        const btnMes = document.getElementById('btn-filtrar-mes');
+        if (btnMes) btnMes.addEventListener('click', () => loadVentasMes().catch(console.error));
+
+        // Obtener el select de top 3 productos y cargar top productos mediante el evento change
+        const selTopN = document.getElementById('top-n');
+        if (selTopN) selTopN.addEventListener('change', () => loadTopProductos().catch(console.error));
+
+        // Obtener el select de 3 reseñas y cargar reseñas mediante el evento change
+        const selResN = document.getElementById('res-n');
+        if (selResN) selResN.addEventListener('change', () => loadResennas().catch(console.error));
+
+        // Cargas iniciales (sólo si los elementos existen)
+        if (document.getElementById('chart-ventas-dia')) loadVentasDia().catch(console.error);
+        if (document.getElementById('chart-ventas-mes')) loadVentasMes().catch(console.error);
+        if (document.getElementById('chart-pedidos-estado')) loadPedidosEstado().catch(console.error);
+        if (document.getElementById('chart-top-productos')) loadTopProductos().catch(console.error);
+        if (document.getElementById('lista-resennas')) loadResennas().catch(console.error);
+    };
+})();
+
 
 // Cuando el DOM esté listo, cargar los eventos de validación de los campos del formulario de registro
 document.addEventListener("DOMContentLoaded", () => {

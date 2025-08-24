@@ -102,7 +102,8 @@ namespace Libreria.Web.Controllers
                 new Claim("ClienteId", cliente.Id.ToString()), // Asignar el ID del cliente como Claim personalizado
                 new Claim(ClaimTypes.Role, usuario.IdRol.ToString()), // Asignar el rol del usuario
                 new Claim("RolNombre", usuario.IdRol == 1 ? "Administrador" : "Cliente"), // Asignar el nombre del rol como Claim personalizado
-                new Claim("LastLoginUtc", ultimoPrevioUtc?.ToString("O") ?? "") // Asignar la fecha del último inicio de sesión previo en formato ISO 8601 o cadena vacía si es nulo
+                new Claim("LastLoginUtc", ultimoPrevioUtc?.ToString("O") ?? ""), // Asignar la fecha del último inicio de sesión previo en formato ISO 8601 o cadena vacía si es nulo
+                new Claim("UserName", usuario.UserName) // Asignar el nombre de usuario como Claim personalizado
             };
 
             // Crear el objeto ClaimsIdentity con los claims

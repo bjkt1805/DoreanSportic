@@ -117,31 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Administrador" xml:space="preserve">
-    <value>Administrador</value>
+  <data name="Editar usuario" xml:space="preserve">
+    <value>Edit user</value>
   </data>
-  <data name="Productos" xml:space="preserve">
-    <value>Productos</value>
+  <data name="Error inesperado" xml:space="preserve">
+    <value>Unexpected error</value>
   </data>
-  <data name="Reseñas" xml:space="preserve">
-    <value>Reseñas</value>
+  <data name="Nombre" xml:space="preserve">
+    <value>Name</value>
   </data>
-  <data name="Estadísticas" xml:space="preserve">
-    <value>Estadísticas</value>
+  <data name="Número de teléfono no válido" xml:space="preserve">
+    <value>Invalid telephone number</value>
   </data>
-  <data name="Usuarios" xml:space="preserve">
-    <value>Usuarios</value>
+  <data name="Correo electrónico no válido" xml:space="preserve">
+    <value>Invalid email</value>
   </data>
-  <data name="Selecciona una opción del menú lateral para empezar" xml:space="preserve">
-    <value>Selecciona una opción del menú lateral para empezar</value>
+  <data name="Teléfono (opcional)" xml:space="preserve">
+    <value>Telephone (optional)</value>
   </data>
-  <data name="Cargando" xml:space="preserve">
-    <value>Cargando</value>
+  <data name="Usuario" xml:space="preserve">
+    <value>User</value>
   </data>
-  <data name="Bienvenido al panel de administrador" xml:space="preserve">
-    <value>Bienvenido al panel de administrador</value>
+  <data name="Cancelar" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Promociones" xml:space="preserve">
-    <value>Promociones</value>
+  <data name="Actualizar datos" xml:space="preserve">
+    <value>Update data</value>
+  </data>
+  <data name="Seleccione" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Sexo (opcional)" xml:space="preserve">
+    <value>Sex (optional)</value>
+  </data>
+  <data name="Correo electrónico" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="¡Usuario actualizado correctamente!" xml:space="preserve">
+    <value>User successfully updated!</value>
+  </data>
+  <data name="El nombre solo debe contener letras" xml:space="preserve">
+    <value>The name must only contain letters</value>
+  </data>
+  <data name="El apellido solo debe contener letras" xml:space="preserve">
+    <value>Last name must only contain letters</value>
+  </data>
+  <data name="Corrige los errores del formulario" xml:space="preserve">
+    <value>Correct form errors</value>
+  </data>
+  <data name="Apellido" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="* El nombre de usuario solo puede ser modificado por el administrador *" xml:space="preserve">
+    <value>* User name can be modified by the administrator only *</value>
+  </data>
+  <data name="Actualiza los datos del usuario" xml:space="preserve">
+    <value>Update user data</value>
   </data>
 </root>

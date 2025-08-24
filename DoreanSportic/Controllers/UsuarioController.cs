@@ -266,7 +266,7 @@ namespace DoreanSportic.Controllers
             if (cliente is null) return NotFound();
 
             // Armar ViewModel
-            var vm = new RegistroViewModel
+            var vm = new EditUsuarioViewModel
             {
                 Id = usuario.Id,
                 IdCliente = usuario.IdCliente,
@@ -276,8 +276,6 @@ namespace DoreanSportic.Controllers
                 Telefono = cliente.Telefono,
                 IdSexo = cliente.IdSexo ?? 3, // 3 = “Seleccione”
                 UserName = usuario.UserName,
-                IdTipoUsuario = usuario.IdRol,
-                Estado = usuario.Estado,
                 Sexos = await ObtenerSexosAsync(),
                 TiposUsuario = (await _serviceRol.ListAsync())
                                  .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Nombre })
@@ -287,5 +285,81 @@ namespace DoreanSportic.Controllers
             //Devolver vista EditUsuario con LayoutLogin y el modelo
             return View("EditUsuario", vm);
         }
+
+        // POST: Usuario/EditarPerfil (actualiza SOLO al usuario logueado)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditarPerfil(EditUsuarioViewModel vm, [FromForm(Name = "_Estado")] bool? estadoFallback)
+        {
+            // Utilizar el id del usuario logueado (no el posteado en el form, que podría ser otro)
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                          ?? User.FindFirst("UsuarioId")?.Value;
+
+            // Validar que el Id sea válido si no retornar Unauthorized
+            if (!int.TryParse(idClaim, out var usuarioId))
+                return Forbid();
+
+            // Validación del modelo
+            if (!ModelState.IsValid)
+            {
+                var errores = ModelState.Where(x => x.Value!.Errors.Any())
+                    .ToDictionary(k => k.Key, v => v.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+                return Json(new { success = false, errors = errores });
+            }
+
+            // Validar si el email ya está registrado
+            if (await _serviceCliente.ExisteEmailEditUsuarioAsync(vm.Email, vm.IdCliente))
+            {
+
+                // Si el correo ya está registrada, enviar el mensaje de error en formato JSON
+                return Json(new
+                {
+                    success = false,
+                    errors = new
+                    {
+                        Email = "CorreoElectronicoYaRegistrado"
+                    }
+                });
+
+            }
+
+            // Cargar usuario real para conocer IdCliente “confiable”
+            var usuario = await _serviceUsuario.FindByIdAsync(usuarioId);
+            if (usuario is null) return Json(new { success = false, errors = new { _global = new[] { "Usuario no encontrado" } } });
+
+            // Actualizar Cliente (usamos el IdCliente del usuario real, no el posteado)
+            var okCliente = await _serviceCliente.ActualizarClienteAsync(new ClienteDTO
+            {
+                Id = usuario.IdCliente,
+                Nombre = vm.Nombre,
+                Apellido = vm.Apellido,
+                Email = vm.Email,
+                Telefono = vm.Telefono,
+                IdSexo = vm.IdSexo,
+                Estado = true
+            });
+
+            // Actualizar Usuario (rol + estado; username no editable aquí)
+            var okUsuario = await _serviceUsuario.ActualizarUsuarioEditAsync(new UsuarioDTO
+            {
+                Id = usuario.Id,
+                IdCliente = usuario.IdCliente,
+                UserName = usuario.UserName,
+                PasswordHash = usuario.PasswordHash, // Mantener la misma contraseña
+                FechaRegistro = usuario.FechaRegistro,
+                IdRol = usuario.IdRol, // Mantener el mismo rol
+                UltimoInicioSesionUtc = usuario.UltimoInicioSesionUtc,
+                Estado = usuario.Estado // Mantener el mismo estado
+            });
+
+            // Si el cliente y usuario se actualizaron correctamente, devolver éxito
+
+            if (okCliente && okUsuario)
+                return Json(new { success = true });
+
+            // Si hubo un error, devolver mensaje genérico
+            return Json(new { success = false, errors = new { _global = new[] { "No se pudo actualizar" } } });
+        }
+
     }
 }
