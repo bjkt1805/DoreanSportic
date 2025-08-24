@@ -8,11 +8,12 @@
 
         <!-- Ventas por día -->
         <div class="card bg-base-100 shadow-lg p-4" style="width: 50%">
-            <h3 class="font-bold mb-2">Ventas por día</h3>
+            <h3 class="font-bold mb-2">@(Localizer["Ventas por día"])</h3>
             <div class="flex gap-2 mb-2">
                 <input id="ventas-dia-desde" type="date" class="input input-bordered" />
+                <p class="mt-2">@(Localizer["Hasta:"]) </p>
                 <input id="ventas-dia-hasta" type="date" class="input input-bordered" />
-                <button id="btn-filtrar-dia" class="btn btn-primary">Filtrar</button>
+                <button id="btn-filtrar-dia" class="btn btn-primary">@(Localizer["Filtrar"])</button>
             </div>
             <!-- contenedor con altura fija -->
             <div class="relative h-56">
@@ -22,10 +23,10 @@
 
         <!-- Ventas por mes -->
         <div class="card bg-base-100 shadow-lg p-4" style="width: 50%">
-            <h3 class="font-bold mb-2">Ventas por mes</h3>
+            <h3 class="font-bold mb-2">@(Localizer["Ventas por mes"])</h3>
             <div class="flex gap-2 mb-2">
                 <input id="ventas-mes-anio" type="number" class="input input-bordered w-32" placeholder="Año" />
-                <button id="btn-filtrar-mes" class="btn btn-primary">Filtrar</button>
+                <button id="btn-filtrar-mes" class="btn btn-primary">@(Localizer["Filtrar"])</button>
             </div>
             <!-- contenedor con altura fija -->
             <div class="relative h-56">
@@ -38,7 +39,7 @@
 
         <!-- Pedidos por estado -->
         <div class="card bg-base-100 shadow-lg p-4" style="width: 50%">
-            <h3 class="font-bold mb-2">Pedidos por estado</h3>
+            <h3 class="font-bold mb-2">@(Localizer["Pedidos por estado de pago (Pendiente/Pagado)"])</h3>
             <!-- contenedor con altura fija -->
             <div class="relative" style="height: 90%">
                 <canvas id="chart-pedidos-estado" style="margin-left: 20%"></canvas>
@@ -47,7 +48,7 @@
 
         <!-- Top 3 productos -->
         <div class="card bg-base-100 shadow-lg p-4" style="width: 50%">
-            <h3 class="font-bold mb-2">Top 3 productos por ventas</h3>
+            <h3 class="font-bold mb-2">@(Localizer["Top 3 productos por ventas"])</h3>
             <div class="relative" style="height: 90%">
                 <canvas id="chart-top-productos"></canvas>
             </div>
@@ -55,11 +56,9 @@
 
     </div>
 
-
-
-    <!-- Últimas reseñas -->
+    <!-- Últimas 3 reseñas -->
     <div class="card bg-base-100 shadow-lg p-4 lg:col-span-2">
-        <h3 class="font-bold mb-2">Reseñas más recientes</h3>
+        <h3 class="font-bold mb-2">@(Localizer["Reseñas más recientes"])</h3>
         <ul id="lista-resennas" class="space-y-2 gap-3"></ul>
     </div>
 

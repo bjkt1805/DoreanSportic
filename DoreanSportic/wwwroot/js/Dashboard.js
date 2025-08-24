@@ -39,6 +39,18 @@ window.translations = {
     },
 };
 
+// Para internacionalización de la información de los gráficos del dashboard
+Object.assign(window.translations, {
+    Pedidos: { es: "Pedidos", en: "Orders" },
+    CantidadVendida: { es: "Cantidad vendida", en: "Units sold" },
+    Cargando: { es: "Cargando...", en: "Loading..." },
+    SinResenas: { es: "Sin reseñas", en: "No reviews" },
+    Usuario: { es: "Usuario", en: "User" },
+    Calificacion: { es: "Calificación", en: "Rating" }
+});
+
+
+
 // Función que sirve como handler para pintar los errores que vienen del servidor/modelo
 // para los formularios de login, cambio de contraseña y registro
 function mostrarErrorEnCampo(nombreCampoModelo, mensaje, elementoInput) {
@@ -1701,6 +1713,17 @@ function getCurrentLangShort() {
     return culture.split('-')[0];
 }
 
+// Helpers i18n/format para los gráficos del dashboard
+
+const t = (k) => (typeof getTranslation === 'function' ? getTranslation(k) : k);
+const culture = (typeof getCurrentCulture === 'function' ? getCurrentCulture() : 'en');
+const nf = new Intl.NumberFormat(culture);
+const df = new Intl.DateTimeFormat(culture, { dateStyle: 'medium' });
+
+function formatDateLocal(v) {
+    try { return df.format(new Date(v)); } catch { return v; }
+}
+
 // Función para cargar el dashboard de estadísticas junto con sus helpers y carga de gráficos/kpis
 (function () {
 
@@ -1761,10 +1784,7 @@ function getCurrentLangShort() {
         // Crear o actualizar el gráfico
         chartVentasDia = ensureChart(ctx, 'bar', {
             labels: json.labels,
-            datasets: [{
-                label: 'Pedidos',
-                data: json.data
-            }]
+            datasets: [{ label: t('Pedidos'), data: json.data }]
         }, { responsive: true, plugins: { legend: { display: true } } });
     }
 
@@ -1790,12 +1810,8 @@ function getCurrentLangShort() {
         // Crear o actualizar el gráfico
         chartVentasMes = ensureChart(ctx, 'line', {
             labels: json.labels,
-            datasets: [{
-                label: 'Pedidos',
-                data: json.data,
-                tension: .3,
-                fill: false
-            }]
+            datasets: [{ label: t('Pedidos'), data: json.data, tension: .3, fill: false }]
+
         }, { responsive: true, plugins: { legend: { display: true } } });
     }
 
@@ -1817,10 +1833,8 @@ function getCurrentLangShort() {
         // Crear o actualizar el gráfico
         chartPedidosEstado = ensureChart(ctx, 'doughnut', {
             labels: json.labels,
-            datasets: [{
-                label: 'Pedidos',
-                data: json.data
-            }]
+            datasets: [{ label: t('Pedidos'), data: json.data }]
+
         }, { responsive: true });
     }
 
@@ -1845,10 +1859,8 @@ function getCurrentLangShort() {
         // Crear o actualizar el gráfico
         chartTopProductos = ensureChart(ctx, 'bar', {
             labels: json.labels,
-            datasets: [{
-                label: 'Cantidad vendida',
-                data: json.data
-            }]
+            datasets: [{ label: t('CantidadVendida'), data: json.data }]
+
         }, { responsive: true });
     }
 
@@ -1865,12 +1877,12 @@ function getCurrentLangShort() {
         if (!list) return;
 
         // Mostrar mensaje de cargando
-        list.innerHTML = '<li class="text-sm opacity-60">Cargando...</li>';
+        list.innerHTML = `<li class="text-sm opacity-60">${t('Cargando')}</li>`;
         const json = await fetchJson('/Reporte/ResennasRecientes?n=' + encodeURIComponent(n));
 
         // Si no hay reseñas, mostrar mensaje
         if (!Array.isArray(json) || json.length === 0) {
-            list.innerHTML = '<li class="text-sm opacity-60">Sin reseñas</li>';
+            list.innerHTML = `<li class="text-sm opacity-60">${t('SinResenas')}</li>`;
             return;
         }
 
@@ -1879,10 +1891,10 @@ function getCurrentLangShort() {
             <li class="p-3 rounded border flex flex-col gap-1 mb-3">
                 <div class="flex justify-between">
                     <b>${r.producto}</b>
-                    <span class="text-xs opacity-70">${r.fecha}</span>
+                    <span class="text-xs opacity-70">${formatDateLocal(r.fecha)}</span>
                 </div>
                 <div class="text-sm">
-                    <b>Usuario:</b> ${r.usuario} &nbsp;&nbsp; <b>Calificación:</b> ${r.calificacion}/5
+                    <b>${t('Usuario')}:</b> ${r.usuario} &nbsp;&nbsp; <b>${t('Calificacion')}:</b> ${r.calificacion}/5
                 </div>
                 <div class="text-sm italic">"${r.comentario ?? ''}"</div>
             </li>
@@ -1905,6 +1917,91 @@ function getCurrentLangShort() {
             if (document.getElementById('ventas-dia-hasta')) document.getElementById('ventas-dia-hasta').value = hoy;
             if (document.getElementById('ventas-mes-anio')) document.getElementById('ventas-mes-anio').value = d.getFullYear();
         } catch { /* no-op */ }
+
+        // Blindaje de los inputs de fechas y spinner de año
+        const inDesde = document.getElementById('ventas-dia-desde');
+        const inHasta = document.getElementById('ventas-dia-hasta');
+        const inYear = document.getElementById('ventas-mes-anio');
+
+        // Bloquear escritura (pero permitir navegación con Tab/Arrows)
+        function blockTyping(inp, { blockBeforeInput = true } = {}) {
+            if (!inp) return;
+            // **Solo bloquear beforeinput si se indica**
+            if (blockBeforeInput) {
+                inp.addEventListener('beforeinput', e => e.preventDefault());
+            }
+            inp.addEventListener('keydown', e => {
+                const nav = ['Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+                if (!nav.includes(e.key)) e.preventDefault();
+            });
+            inp.addEventListener('paste', e => e.preventDefault());
+            inp.addEventListener('drop', e => e.preventDefault());
+        }
+
+        // Bloquear escritura en los inputs de fecha y año
+        blockTyping(inDesde);
+        blockTyping(inHasta);
+
+        // Para el año: NO bloquear beforeinput para que funcione el spinner
+        blockTyping(inYear, { blockBeforeInput: false });
+
+        // Mantener el date-picker visible
+        [inDesde, inHasta].forEach(inp => {
+            if (!inp) return;
+            // Evita que se abra el teclado en móviles
+            inp.setAttribute('inputmode', 'none');
+            // Abre el picker al enfocar o hacer click (si el navegador soporta showPicker)
+            if ('showPicker' in HTMLInputElement.prototype) {
+                inp.addEventListener('focus', () => inp.showPicker());
+                inp.addEventListener('click', () => inp.showPicker());
+            }
+        });
+
+        // Evitar cambiar el año con la rueda del mouse (pero conservar flechas)
+        if (inYear) {
+            inYear.setAttribute('inputmode', 'numeric');
+            inYear.setAttribute('pattern', '[0-9]*');
+            inYear.addEventListener('wheel', e => e.preventDefault(), { passive: false });
+        }
+
+        // Reglas de rango para fechas (hasta ≥ desde)
+        if (inDesde && inHasta) {
+            if (inDesde.value) inHasta.min = inDesde.value;
+            if (inHasta.value) inDesde.max = inHasta.value;
+
+            inDesde.addEventListener('change', () => {
+                inHasta.min = inDesde.value || '';
+                if (inHasta.value && inHasta.value < inDesde.value) {
+                    inHasta.value = inDesde.value;
+                }
+            });
+
+            inHasta.addEventListener('change', () => {
+                inDesde.max = inHasta.value || '';
+                if (inDesde.value && inDesde.value > inHasta.value) {
+                    inDesde.value = inHasta.value;
+                }
+            });
+        }
+
+        // Rango para el año [2000, año actual] manteniendo el spinner
+        if (inYear) {
+            const curr = new Date().getFullYear();
+            const minY = 2000;
+            inYear.min = String(minY);
+            inYear.max = String(curr);
+
+            const clampYear = () => {
+                let val = parseInt(inYear.value, 10);
+                if (isNaN(val)) { inYear.value = String(curr); return; }
+                if (val < minY) val = minY;
+                if (val > curr) val = curr;
+                inYear.value = String(val);
+            };
+            inYear.addEventListener('input', clampYear);
+            clampYear();
+        }
+
 
         // Eventos de filtros (botones)
 
