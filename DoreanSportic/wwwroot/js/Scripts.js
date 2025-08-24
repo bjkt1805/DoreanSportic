@@ -1,4 +1,14 @@
-﻿//Función de Alpine.js para poder cargar las imágenes en Create Producto (Dashboard Admin) y hacer la validación 
+﻿// Función debounce para realizar la búsqueda de productos 
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
+
+//Función de Alpine.js para poder cargar las imágenes en Create Producto (Dashboard Admin) y hacer la validación 
 // client-side a través del formulario de productos
 function dataFileDnD() {
     return {
@@ -379,6 +389,32 @@ document.addEventListener("DOMContentLoaded", () => {
     recargarResumenCarritoNavbar();
 });
 
+// Cuando el DOM esté listo, inicializar la búsqueda global de productos
+document.addEventListener('DOMContentLoaded', () => {
+    // Evitar múltiples inicializaciones
+    if (window.__buscarGlobalInitBound) return;
+    window.__buscarGlobalInitBound = true;
+
+    // Obtener el input de búsqueda global
+    const input = document.getElementById('input-buscar-global');
+    if (!input) return; // el menú no está en esta página
+
+    // Función debounce para limitar la frecuencia de búsqueda
+    const lanzarBusqueda = debounce(() => {
+        const q = input.value.trim();
+        // Evento que escucha Producto/Index.cshtml
+        window.dispatchEvent(new CustomEvent('buscar-productos', { detail: { q } }));
+    }, 300);
+
+    input.addEventListener('input', lanzarBusqueda); // Escuchar cambios en el input
+    input.addEventListener('search', lanzarBusqueda); // Escuchar el evento de búsqueda (cuando se limpia el input) 
+    input.addEventListener('change', lanzarBusqueda); // Escuchar cambios en el input (móvil)
+
+    // Escuchar la tecla Enter para lanzar la búsqueda inmediatamente
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') lanzarBusqueda();
+    });
+});
 
 
 

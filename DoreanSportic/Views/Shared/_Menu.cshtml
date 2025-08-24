@@ -20,6 +20,20 @@
     }
 }
 
+
+@{
+    // Obtener el controlador y la acción actuales para lógica condicional si es necesario
+
+    // Obtenemos el nombre del controlador y la acción actuales
+    var controller = (ViewContext.RouteData.Values["controller"] as string) ?? "";
+    var action = (ViewContext.RouteData.Values["action"] as string) ?? "";
+
+    // Verificar si estamos en el índice de productos (para mostrar el buscador)
+    var isProductoIndex = controller.Equals("Producto", StringComparison.OrdinalIgnoreCase)
+                          && action.Equals("Index", StringComparison.OrdinalIgnoreCase);
+}
+
+
 <div class="navbar bg-[#004AAD] text-white w-screen">
 
     <!--Navbar responsivo-->
@@ -106,10 +120,15 @@
             </svg>
         </label> *@
 
-        <!-- Input del buscador del sitio-->
-        <div style="padding-right: 15px">
-            <input type="text" placeholder=@(Localizer["Buscar productos"]) class="input input-bordered w-24 md:w-auto text-black" />
-        </div>
+        @if (isProductoIndex)
+        {
+            <!-- Input de búsqueda global (solo en la vista Index de productos) -->
+            <div style="padding-right: 15px">
+                <input id="input-buscar-global" type="search"
+                       placeholder="@(Localizer["Buscar productos"])"
+                       class="input input-bordered w-24 md:w-auto text-black" />
+            </div>
+        }
 
         <!-- Para seleccionar el idioma de la aplicación -->
         @{

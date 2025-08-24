@@ -1,17 +1,21 @@
 ﻿using DoreanSportic.Application.DTOs;
 using DoreanSportic.Application.Services.Implementations;
 using DoreanSportic.Application.Services.Interfaces;
+using DoreanSportic.Infrastructure.Data;
 using DoreanSportic.Infrastructure.Models;
 using DoreanSportic.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using System.Linq;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
 {
+
     public class ProductoController : Controller
     {
         private readonly IServiceProducto _serviceProducto;
@@ -22,6 +26,7 @@ namespace DoreanSportic.Controllers
         private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceUsuario _serviceUsuario;
         private readonly IServiceEmpaque _serviceEmpaque;
+        private readonly DoreanSporticContext _context;
 
         public ProductoController(IServiceProducto serviceProducto,
             IServiceMarca serviceMarca,
@@ -30,7 +35,8 @@ namespace DoreanSportic.Controllers
             ILogger<ServiceProducto> logger,
             IServiceResennaValoracion serviceResennaValoracion,
             IServiceUsuario serviceUsuario,
-            IServiceEmpaque serviceEmpaque)
+            IServiceEmpaque serviceEmpaque,
+            DoreanSporticContext context)
         {
             _serviceProducto = serviceProducto;
             _serviceMarca = serviceMarca;
@@ -40,12 +46,22 @@ namespace DoreanSportic.Controllers
             _serviceResennaValoracion = serviceResennaValoracion;
             _serviceUsuario = serviceUsuario;
             _serviceEmpaque = serviceEmpaque;
+            _context = context;
         }
 
         // GET: ProductoController
         public async Task<ActionResult> Index()
         {
             var collection = await _serviceProducto.ListAsync();
+
+            // Cargar etiquetas y ponerlas en ViewBag
+            var etiquetas = await _context.Etiqueta
+            .AsNoTracking()
+            .OrderBy(e => e.Nombre)
+            .Select(e => new EtiquetaDTO { Id = e.Id, Nombre = e.Nombre })
+            .ToListAsync();
+
+            ViewBag.Etiquetas = etiquetas;
             return View(collection);
         }
 
@@ -316,26 +332,77 @@ namespace DoreanSportic.Controllers
             });
         }
 
+        // GET: ProductoController/Buscar
+        [HttpGet]
+        public async Task<IActionResult> Buscar(int? idCategoria, string? q, [FromQuery] List<string>? tagsNombres)
+        {
+            // Construir la consulta base a enviar a la base de datos por LINQ
+            var productos = _context.Producto
+                .AsNoTracking()
+                .Include(p => p.IdMarcaNavigation)
+                .Include(p => p.IdCategoriaNavigation).ThenInclude(c => c.IdPromocion)
+                .Include(p => p.IdPromocion)
+                .Include(p => p.IdEtiqueta)
+                .Include(p => p.ImagenesProducto)
+                .AsQueryable();
 
-        // GET: ProductoController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+            // Si se envía idCategoria, filtrar por esa categoría
+            if (idCategoria.HasValue)
+                productos = productos.Where(p => p.IdCategoria == idCategoria.Value);
 
-        // POST: ProductoController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            // Si se envía q (texto de busqueda), filtrar por nombre que contenga q (case insensitive)
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var qLower = q.ToLower();
+                productos = productos.Where(p => p.Nombre.ToLower().Contains(qLower));
+            }
+
+            // Si se envían tagsNombres, filtrar por productos que tengan todas las etiquetas indicadas
+            if (tagsNombres != null && tagsNombres.Count > 0)
+            {
+                // Normalizar: sin nulos/espacios, en minúsculas y sin duplicados
+                var tagsLower = tagsNombres
+                    .Where(t => !string.IsNullOrWhiteSpace(t))
+                    .Select(t => t.Trim().ToLower())
+                    .Distinct()
+                    .ToList();
+
+                // Filtrar productos que tengan SOLO todas las etiquetas indicadas
+                productos = productos.Where(p =>
+                    // Para cada tag solicitado, el producto debe tener alguna etiqueta con ese nombre
+                    tagsLower.All(t =>
+                        p.IdEtiqueta
+                         .Select(e => e.Nombre.ToLower())
+                         .Contains(t)
+                    )
+                );
+            }
+
+            // Traer la lista final de productos ya filtrada
+            var listaDto = await productos
+                .OrderBy(p => p.Nombre)
+                .Select(p => new DoreanSportic.Application.DTOs.ProductoDTO
+                {
+                    Id = p.Id,
+                    Nombre = p.Nombre,
+                    PrecioBase = p.PrecioBase,
+                    Stock = p.Stock,
+                    PrimeraImagen = p.PrimeraImagen,
+                    IdMarcaNavigation = new DoreanSportic.Infrastructure.Models.Marca
+                    {
+                        Nombre = p.IdMarcaNavigation.Nombre
+                    },
+                    IdCategoriaNavigation = new DoreanSportic.Infrastructure.Models.Categoria
+                    {
+                        IdPromocion = p.IdCategoriaNavigation.IdPromocion.ToList()
+                    },
+                    IdPromocion = p.IdPromocion.ToList(),
+                    IdEtiqueta = p.IdEtiqueta.ToList()
+                })
+                .ToListAsync();
+
+            return PartialView("_CardsProducto", listaDto);
+        }
+
     }
 }

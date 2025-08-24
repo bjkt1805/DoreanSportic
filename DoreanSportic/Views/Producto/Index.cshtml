@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using DoreanSportic.Application.DTOs
 @inject IViewLocalizer Localizer
 
 @model IEnumerable<DoreanSportic.Application.DTOs.ProductoDTO>
@@ -30,7 +31,20 @@
     </a>
 </div>
 
+@* Filtro de etiquetas *@
+<div id="filtro-etiquetas" class="flex flex-wrap gap-2 mb-4 w-auto items-center justify-center">
+    @* Renderizar las etiquetas *@
+    @foreach (var et in ViewBag.Etiquetas as IEnumerable<EtiquetaDTO> ?? Enumerable.Empty<EtiquetaDTO>())
+    {
+        <label class="cursor-pointer text-white bg-primary flex items-center gap-2 text-sm border rounded px-2 py-1">
+            <input type="checkbox" class="chk-etiqueta" value="@et.Nombre" />
+            <span>@et.Nombre</span>
+        </label>
+    }
+</div>
+
 <br />
+
 
 <!-- Contenedor del spinner de carga -->
 
@@ -50,47 +64,78 @@
             const tabs = document.querySelectorAll('#tabs-categorias .tab');
             const loader = document.getElementById('loader');
             const container = document.getElementById('card-productos-body');
+             const chkEtiquetas = () =>
+                Array.from(document.querySelectorAll('.chk-etiqueta:checked'))
+                     .map(x => x.value); 
+            let categoriaActiva = 1; // por defecto "Ropa"
 
             if (!tabs.length || !loader || !container) return;
 
-            // Asignar evento a cada tab
+            // --- Búsqueda global desde el header (sección #3) ---
+            window.addEventListener('buscar-productos', (ev) => {
+                // ev.detail.q => texto buscado
+                cargar({ idCategoria: categoriaActiva, q: ev.detail?.q || '', tagsNombres: chkEtiquetas() });
+            });
+
+            // Tabs categoría
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    // Quitar clase activa a todos
                     tabs.forEach(t => t.classList.remove('tab-active'));
-                    // Activar solo el tab clicado
                     tab.classList.add('tab-active');
-
-                    // Obtener ID de categoría
-                    const idCategoria = tab.dataset.id;
-                    cargarProductosPorCategoria(idCategoria);
+                    categoriaActiva = parseInt(tab.dataset.id, 10);
+                    cargar({ idCategoria: categoriaActiva, tagsNombres: chkEtiquetas() });
                 });
             });
 
-            function cargarProductosPorCategoria(idCategoria) {
+            // Filtro de etiquetas (escucha cambios)
+            document.getElementById('filtro-etiquetas')?.addEventListener('change', () => {
+                cargar({ idCategoria: categoriaActiva, tagsNombres: chkEtiquetas() });
+            });
+
+            // Utilidad para armar querystring con arrays (?tags=1&tags=2)
+            function buildQuery(params) {
+                const qs = new URLSearchParams();
+                if (params.idCategoria != null) qs.set('idCategoria', params.idCategoria);
+                if (params.q) qs.set('q', params.q);
+                (params.tagsNombres || []).forEach(t => qs.append('tagsNombres', t));
+                return qs.toString();
+            }
+
+            function cargar(params) {
                 loader.classList.remove('hidden');
                 container.innerHTML = "";
+                const url = '/Producto/Buscar?' + buildQuery(params);
 
-                fetch(`/Producto/FiltrarPorCategoria?idCategoria=${idCategoria}`)
+                fetch(url)
                     .then(res => res.text())
                     .then(html => {
                         setTimeout(() => {
                             container.innerHTML = html;
                             loader.classList.add('hidden');
-                        }, 500);
+                        }, 200);
                     })
-                    .catch(error => {
-                        console.error("Error al cargar productos:", error);
-                        setTimeout(() => {
-                            container.innerHTML = "<p class='text-red-500'>ERROR</p>";
-                            loader.classList.add('hidden');
-                        }, 500);
+                    .catch(err => {
+                        console.error('Error al cargar productos:', err);
+                        container.innerHTML = "<p class='text-red-500'>ERROR</p>";
+                        loader.classList.add('hidden');
                     });
             }
 
-            // Cargar ropa (categoría 1) al inicio
-            cargarProductosPorCategoria(1);
+            // Cargar ropa (1) al inicio
+            cargar({ idCategoria: 1 });
+
+            // Cargar etiquetas por AJAX
+
+            // fetch('/Etiqueta/All').then(r=>r.json()).then(list => {
+            //     const cont = document.getElementById('filtro-etiquetas');
+            //     cont.innerHTML = list.map(e => `
+            //        <label class="cursor-pointer flex items-center gap-2 text-sm border rounded px-2 py-1">
+            //            <input type="checkbox" class="chk-etiqueta" value="${e.id}" />
+            //            <span>${e.nombre}</span>
+            //        </label>`).join('');
+            // });
         });
     </script>
 }
+
 
