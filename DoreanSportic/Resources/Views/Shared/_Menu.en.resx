@@ -123,6 +123,12 @@
   <data name="Administrador" xml:space="preserve">
     <value>Administrator</value>
   </data>
+  <data name="Último login" xml:space="preserve">
+    <value>Last login</value>
+  </data>
+  <data name="Editar perfil" xml:space="preserve">
+    <value>Edit profile</value>
+  </data>
   <data name="Nuestros productos" xml:space="preserve">
     <value>Our Products</value>
   </data>
