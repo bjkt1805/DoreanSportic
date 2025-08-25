@@ -48,6 +48,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
                     .Include(r => r.IdProductoNavigation)
                     .Where(r => r.IdProducto == idProducto)
                     .OrderByDescending(r => r.FechaResenna)
+                    .Take(2) // Las últimas dos reseñas
                     .ToListAsync();
 
             return collection;
