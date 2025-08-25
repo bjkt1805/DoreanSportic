@@ -46,10 +46,9 @@ Object.assign(window.translations, {
     Cargando: { es: "Cargando...", en: "Loading..." },
     SinResenas: { es: "Sin reseñas", en: "No reviews" },
     Usuario: { es: "Usuario", en: "User" },
-    Calificacion: { es: "Calificación", en: "Rating" }
+    Calificacion: { es: "Calificación", en: "Rating" },
+    Resennas: { es: "Reseñas", en: "Reviews" }
 });
-
-
 
 // Función que sirve como handler para pintar los errores que vienen del servidor/modelo
 // para los formularios de login, cambio de contraseña y registro
@@ -137,6 +136,12 @@ function cargarVista(ruta) {
                 // Inicializar el form de creación de usuario
                 if (ruta == "/Usuario/Create") {
                     inicializarCrearUsuario();
+                }
+
+                // Inicializar la función de mostrar las estadísticas de las reseñas
+
+                if (ruta == "/ResennaValoracion/IndexAdmin") {
+                    cargarResennaStats();
                 }
 
                 // Al cargar la vista parcial, resetear guard para permitir una nueva inicialización “limpia”
@@ -2029,6 +2034,64 @@ function formatDateLocal(v) {
         if (document.getElementById('lista-resennas')) loadResennas().catch(console.error);
     };
 })();
+
+// Stats de reseñas (estrellas) ---
+async function cargarResennaStats() {
+    try {
+        // Llamar al endpoint
+        const r = await fetch('/ResennaValoracion/ResennaStats', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+
+        // Si la respuesta no es OK, lanzar un error
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const s = await r.json(); // { star5, star4, star3, star2, star1, total, average }
+
+        // Pintar KPIs (si existen en el DOM)
+        const byId = id => document.getElementById(id);
+        byId('kpi-star5') && (byId('kpi-star5').textContent = s.star5);
+        byId('kpi-star4') && (byId('kpi-star4').textContent = s.star4);
+        byId('kpi-star3') && (byId('kpi-star3').textContent = s.star3);
+        byId('kpi-star2') && (byId('kpi-star2').textContent = s.star2);
+        byId('kpi-star1') && (byId('kpi-star1').textContent = s.star1);
+
+        // Promedio con 2 decimales
+        byId('kpi-avg') && (byId('kpi-avg').textContent = (s.average ?? 0).toFixed(2));
+        byId('kpi-total') && (byId('kpi-total').textContent = `Total: ${s.total}`);
+
+        // Renderizar gráfico de barras
+        renderChartResennas(s);
+
+    } catch (err) {
+        console.error('Error cargando ResennaStats:', err);
+    }
+}
+
+// Función para renderizar el gráfico de reseñas (barras)
+function renderChartResennas(s) {
+    // Obtener el canvas
+    const el = document.getElementById('chart-resennas');
+
+    // Si no existe el canvas, salir
+    if (!el) return;
+
+    // Obtener el contexto 2D
+    const ctx = el.getContext('2d');
+
+    // Limpiar gráfico previo si existe
+    if (ctx._chart) ctx._chart.destroy();
+
+    // Crear el gráfico de barras
+    ctx._chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['⭐5', '⭐4', '⭐3', '⭐2', '⭐1'],
+            datasets: [{
+                label: t("Resennas"),
+                data: [s.star5, s.star4, s.star3, s.star2, s.star1]
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+}
 
 
 // Cuando el DOM esté listo, cargar los eventos de validación de los campos del formulario de registro

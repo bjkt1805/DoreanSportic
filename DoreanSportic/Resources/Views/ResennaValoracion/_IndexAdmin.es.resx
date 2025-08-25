@@ -126,6 +126,15 @@
   <data name="Ver detalles" xml:space="preserve">
     <value>Ver detalles</value>
   </data>
+  <data name="Gráfico de estadísticas de reseñas" xml:space="preserve">
+    <value>Gráfico de estadísticas de reseñas</value>
+  </data>
+  <data name="Promedio" xml:space="preserve">
+    <value>Promedio</value>
+  </data>
+  <data name="Cantidad de reseñas:" xml:space="preserve">
+    <value>Cantidad de reseñas:</value>
+  </data>
   <data name="Calificación" xml:space="preserve">
     <value>Calificación</value>
   </data>

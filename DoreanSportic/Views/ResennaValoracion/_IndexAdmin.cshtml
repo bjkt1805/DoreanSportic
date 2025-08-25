@@ -73,3 +73,51 @@
     </div>
 
 </div>
+
+<!-- KPIs de valoraciones -->
+<div id="kpi-resennas" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
+
+    <div class="flex flex-row justify-between">
+        <div class="flex flex-row p-3 rounded border text-center">
+            <div class="text-xs opacity-70">@(Localizer["Cantidad de reseñas:"]) ⭐ 5 -> </div>
+            <div id="kpi-star5" class="text-xl font-bold"> —</div>
+        </div>
+        <div class="flex flex-row p-3 rounded border text-center">
+            <div class="text-xs opacity-70">@(Localizer["Cantidad de reseñas:"]) ⭐ 4 -> </div>
+            <div id="kpi-star4" class="text-xl font-bold">—</div>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-between">
+        <div class="flex flex-row p-3 rounded border text-center">
+            <div class="text-xs opacity-70">@(Localizer["Cantidad de reseñas:"]) ⭐ 3 -> </div>
+            <div id="kpi-star3" class="text-xl font-bold">—</div>
+        </div>
+        <div class="flex flex-row p-3 rounded border text-center">
+            <div class="text-xs opacity-70">@(Localizer["Cantidad de reseñas:"]) ⭐ 2 -> </div>
+            <div id="kpi-star2" class="text-xl font-bold">—</div>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-between">
+        <div class="flex flex-row p-3 rounded border text-center">
+            <div class="text-xs opacity-70">@(Localizer["Cantidad de reseñas:"]) ⭐ 1 -> </div>
+            <div id="kpi-star1" class="text-xl font-bold">—</div>
+        </div>
+    </div>
+
+    <div class="p-3 rounded border text-center">
+        <div class="text-xl opacity-70">@(Localizer["Promedio"])</div>
+        <div id="kpi-avg" class="text-xl font-bold">—</div>
+        <div class="text-[10px] opacity-70" id="kpi-total">—</div>
+    </div>
+
+</div>
+
+<h1><b>@(Localizer["Gráfico de estadísticas de reseñas"])</b></h1>
+<br />
+
+<div style="height: 90%">
+    <canvas id="chart-resennas"></canvas>
+</div>
+

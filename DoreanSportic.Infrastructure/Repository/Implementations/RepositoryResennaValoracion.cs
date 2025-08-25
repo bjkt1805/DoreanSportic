@@ -87,5 +87,37 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             }
             return entity.Id;
         }
+
+        // Nuevo método para obtener estadísticas de valoraciones
+        public async Task<(int Star5, int Star4, int Star3, int Star2, int Star1, int Total, double Average)> GetStatsAsync()
+        {
+            // Agrupar por calificación
+            var grupos = await _context.ResennaValoracion
+                .GroupBy(r => r.Calificacion)
+                .Select(g => new { Star = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            // Obtener el conteo para cada calificación, si no existe, asignar 0
+            int s5 = grupos.FirstOrDefault(x => x.Star == 5)?.Count ?? 0;
+            int s4 = grupos.FirstOrDefault(x => x.Star == 4)?.Count ?? 0;
+            int s3 = grupos.FirstOrDefault(x => x.Star == 3)?.Count ?? 0;
+            int s2 = grupos.FirstOrDefault(x => x.Star == 2)?.Count ?? 0;
+            int s1 = grupos.FirstOrDefault(x => x.Star == 1)?.Count ?? 0;
+
+            // Calcular total y promedio
+            int total = s1 + s2 + s3 + s4 + s5;
+            double avg = 0;
+
+            // Si el total es mayor que 0, calcular el promedio
+            if (total > 0)
+            {
+                var suma = 5 * s5 + 4 * s4 + 3 * s3 + 2 * s2 + 1 * s1;
+                avg = (double)suma / total;
+            }
+
+            // Retornar los resultados
+            return (s5, s4, s3, s2, s1, total, avg);
+        }
+
     }
 }

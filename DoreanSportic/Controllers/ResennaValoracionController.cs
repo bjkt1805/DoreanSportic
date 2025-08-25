@@ -86,5 +86,13 @@ namespace DoreanSportic.Web.Controllers
 
             return Ok(new { success = true });
         }
+
+        // GET: ResennaValoracionController/ResennaStats
+        [HttpGet]
+        public async Task<IActionResult> ResennaStats()
+        {
+            var stats = await _serviceResennaValoracion.GetStatsAsync();
+            return Json(stats);
+        }
     }
 }

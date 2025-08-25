@@ -51,5 +51,23 @@ namespace DoreanSportic.Application.Services.Implementations
             var objectMapped = _mapper.Map<ResennaValoracion>(dto);
             return await _repository.AddAsync(objectMapped);
         }
+
+        public async Task<ResennaValoracionStatsDTO> GetStatsAsync()
+        {
+            // Llamar al repositorio para obtener las estadísticas
+            var (s5, s4, s3, s2, s1, total, avg) = await _repository.GetStatsAsync();
+
+            // Mapear los resultados al DTO
+            return new ResennaValoracionStatsDTO
+            {
+                Star5 = s5,
+                Star4 = s4,
+                Star3 = s3,
+                Star2 = s2,
+                Star1 = s1,
+                Total = total,
+                Average = avg
+            };
+        }
     }
 }

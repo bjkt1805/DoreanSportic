@@ -16,5 +16,8 @@ namespace DoreanSportic.Application.Services.Interfaces
         Task<ResennaValoracionDTO> FindByIdAsync(int id);
 
         Task<int> AddAsync(ResennaValoracionDTO dto);
+
+        // Método para obtener estadísticas de valoraciones
+        Task<ResennaValoracionStatsDTO> GetStatsAsync();
     }
 }
