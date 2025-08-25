@@ -135,6 +135,12 @@
   <data name="Impuesto (IVA 13%)" xml:space="preserve">
     <value>Tax (VAT 13%)</value>
   </data>
+  <data name="IVA (13%)" xml:space="preserve">
+    <value>VAT 13%</value>
+  </data>
+  <data name="Imagen personalizada" xml:space="preserve">
+    <value>Custom image</value>
+  </data>
   <data name="Foto" xml:space="preserve">
     <value>Photo</value>
   </data>
@@ -144,11 +150,14 @@
   <data name="Criterios de personalización" xml:space="preserve">
     <value>Personalization criteria</value>
   </data>
-  <data name="Detalle de personalizaciones" xml:space="preserve">
-    <value>Personalization details</value>
+  <data name="Detalle de productos personalizados" xml:space="preserve">
+    <value>Customized product details</value>
   </data>
   <data name="Producto" xml:space="preserve">
     <value>Product</value>
+  </data>
+  <data name="Precio" xml:space="preserve">
+    <value>Price</value>
   </data>
   <data name="Cantidad" xml:space="preserve">
     <value>Quantity</value>
@@ -156,7 +165,7 @@
   <data name="Detalle de productos" xml:space="preserve">
     <value>Product details</value>
   </data>
-  <data name="Mensaje personalizado" xml:space="preserve">
-    <value>Personalized message</value>
+  <data name="Mensaje" xml:space="preserve">
+    <value>Message</value>
   </data>
 </root>

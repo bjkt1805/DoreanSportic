@@ -1,4 +1,11 @@
-﻿// Función para formatear números a dos decimales y agregar el símbolo de colón
+﻿
+// Localizador de textos (si existe)
+const { localizer } = window.PedidoConfig || {};
+
+// Función para traducir textos usando el localizador
+const t = (k) => (localizer && typeof localizer[k] !== 'undefined' ? localizer[k] : k);
+
+// Función para formatear números a dos decimales y agregar el símbolo de colón
 function formatColones(value) {
 
     // Obtener el valor como número, si no es un número válido, asignar 0
@@ -495,9 +502,9 @@ function bindParcialEventos(root, localizer) {
 
             // Bloquear si no hay selección real
 
-            if (!provinciaId) { mostrarToast('Seleccione una provincia', "error"); selectProv?.focus(); return; }
-            if (!cantonId) { mostrarToast('Seleccione un cantón', "error"); selectCant?.focus(); return; }
-            if (!distritoId) { mostrarToast('Seleccione un distrito', "error"); selectDist?.focus(); return; }
+            if (!provinciaId) { mostrarToast(localizer['Seleccione una provincia'], "error"); selectProv?.focus(); return; }
+            if (!cantonId) { mostrarToast(localizer['Seleccione un cantón'], "error"); selectCant?.focus(); return; }
+            if (!distritoId) { mostrarToast(localizer['Seleccione un distrito'], "error"); selectDist?.focus(); return; }
 
             // Asignar a constantes de tipo String el texto de las opciones seleccionadas en los selects de provincia, cantón y distrito
             const provinciaTxt = selectProv?.selectedOptions[0]?.text || '';
@@ -703,7 +710,7 @@ function bindParcialEventos(root, localizer) {
                             const vuelto = Math.max(0, num - Math.ceil(total)); // evitar “céntimos” para el cambio
 
                             // Si existe el input de vuelto, mostrar el vuelto formateado
-                            if (changeInput) changeInput.value = formatColones(vuelto); 
+                            if (changeInput) changeInput.value = formatColones(vuelto);
 
                             // Mantener solo dígitos en crudo (sin formato)
                             e.target.value = raw;
@@ -769,58 +776,68 @@ function bindParcialEventos(root, localizer) {
                             if (!/^\d{16}$/.test(numDigits)) {
 
                                 // Si no tiene 16 dígitos, mostrar error y asignar ok a false
-                                setErr('err-card-number', 'Debe tener 16 dígitos');
+                                document.getElementById('err-card-number').textContent = localizer["Debe tener 16 dígitos"];
+                                document.getElementById('err-card-number').style.cssText = 'font-size:10px; font-style:italic; color:red';
                                 ok = false;
                             } else if (!luhnCheck(cardNum)) {
 
                                 // Si no pasa validación Luhn, mostrar error y asignar ok a false
-                                setErr('err-card-number', 'Número inválido');
+                                document.getElementById('err-card-number').textContent = localizer["Número inválido"];
+                                document.getElementById('err-card-number').style.cssText = 'font-size:10px; font-style:italic; color:red';
                                 ok = false;
                             } else {
                                 // Si es válido, limpiar el error
-                                setErr('err-card-number', '');
+                                document.getElementById('err-card-number').textContent = '';
+
                             }
 
                             // Si la fecha de expiración no es válida o está vencida
                             if (!expValida(cardExp)) {
 
                                 // Mostrar error y asignar ok a false
-                                setErr('err-card-exp', 'Fecha inválida o vencida (MM/AA).');
+                                document.getElementById('err-card-exp').textContent = localizer["Fecha inválida o vencida (MM/AA)."];
+                                document.getElementById('err-card-exp').style.cssText = 'font-size:10px; font-style:italic; color:red';
+
                                 ok = false;
                             } else {
 
                                 // Si es válida, limpiar el error
-                                setErr('err-card-exp', '');
+                                document.getElementById('err-card-exp').textContent = '';
                             }
 
                             // Validación del CVV (3 o 4 dígitos)
                             if (!/^\d{3,4}$/.test(cardCVV)) {
 
                                 // Si no es válido, mostrar error y asignar ok a false
-                                setErr('err-card-cvv', 'CVV inválido (3 o 4 dígitos).');
+                                document.getElementById('err-card-cvv').textContent = localizer["CVV inválido (3 o 4 dígitos)."];
+                                document.getElementById('err-card-cvv').style.cssText = 'font-size:10px; font-style:italic; color:red';
+
                                 ok = false;
                             } else {
 
                                 // Si la validación es correcta, limpiar el error
-                                setErr('err-card-cvv', '');
+                                document.getElementById('err-card-cvv').textContent = '';
                             }
 
                             // Si el nombre del titular de la tarjeta está vacío
                             if (!cardName) {
 
                                 // Mostrar error y asignar ok a false
-                                setErr('err-card-name', 'El nombre es requerido.');
+                                document.getElementById('err-card-name').textContent = localizer["El nombre es requerido."];
+                                document.getElementById('err-card-name').style.cssText = 'font-size:10px; font-style:italic; color:red';
+
                                 ok = false;
                             } else {
 
                                 // Si el nombre es válido, limpiar el error
-                                setErr('err-card-name', '');
+                                document.getElementById('err-card-name').textContent = '';
+
                             }
 
                             // Si alguna validación falló, no continuar
                             if (!ok) return;
 
-                        // Si el método es efectivo
+                            // Si el método es efectivo
                         } else {
 
                             // Obtener el monto de efectivo ingresado y hacer parse mediante función parseMoney
@@ -848,7 +865,7 @@ function bindParcialEventos(root, localizer) {
 
                                 ok = false;
 
-                            // Si el monto de efectivo es válido, limpiar el error
+                                // Si el monto de efectivo es válido, limpiar el error
                             } else {
                                 document.getElementById('err-cash-amount').textContent = '';
                             }
@@ -883,7 +900,7 @@ function bindParcialEventos(root, localizer) {
                                     userId: userId,
 
                                     // Enviar el método de pago seleccionado (1 = efectivo, 2 = tarjeta)
-                                    metodoPago: metodoPago, 
+                                    metodoPago: metodoPago,
                                     // Enviar direccionEnvio como null ya que se envío en el encabezado previamente
                                     direccionEnvio: direccionCompuesta
                                 })
@@ -942,7 +959,7 @@ function bindParcialEventos(root, localizer) {
                 }
             } catch {
                 // Si la respuesta no es exitosa, mostrar mensaje de error
-                mostrarToast('Error inesperado', "error");
+                mostrarToast(localizer["Error inesperado al pagar"], "error");
             }
         });
 }
@@ -990,7 +1007,7 @@ function initPedidoDetails(pedidoId, localizer) {
 
         // Validación mínima en caso de que no haya seleccionado provincia, cantón o distrito
         if (!provinciaText || !cantonText || !distritoText) {
-            alert('Por favor seleccione provincia, cantón y distrito para la dirección de envío.');
+            mostrarToast('Por favor seleccione provincia, cantón y distrito para la dirección de envío.', "error");
             return;
         }
 
@@ -1333,10 +1350,12 @@ async function cargarProvincias() {
         // Parsear la respuesta JSON
         const data = await response.json();
         // Ir cargando las provincias en el select y resetear cantones y distritos
-        selectProvincia.innerHTML = `<option value="">Provincia</option>` +
+        selectProvincia.innerHTML =
+            `<option value="">${t('Provincia')}</option>` +
             data.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('');
-        document.getElementById('sel-canton').innerHTML = `<option value="">Cantón</option>`;
-        document.getElementById('sel-distrito').innerHTML = `<option value="">Distrito</option>`;
+
+        document.getElementById('sel-canton').innerHTML = `<option value="">${t('Cantón')}</option>`;
+        document.getElementById('sel-distrito').innerHTML = `<option value="">${t('Distrito')}</option>`;
         document.getElementById('sel-canton').disabled = true;
         document.getElementById('sel-distrito').disabled = true;
     } catch {
@@ -1362,10 +1381,10 @@ async function cargarProvincias() {
 
             // Parsear la respuesta JSON
             const data = await response.json();
-            selectCanton.innerHTML = `<option value="">Cantón</option>` +
+            selectCanton.innerHTML = `<option value="">${t('Cantón')}</option>` +
                 data.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
             selectCanton.disabled = false;
-            selectDistrito.innerHTML = `<option value="">Distrito</option>`;
+            selectDistrito.innerHTML = `<option value="">${t('Distrito')}</option>`;
             selectDistrito.disabled = true;
         } catch {
             return null;
@@ -1391,7 +1410,7 @@ async function cargarProvincias() {
 
             // Parsear la respuesta JSON
             const data = await response.json();
-            selectDistrito.innerHTML = `<option value="">Distrito</option>` +
+            selectDistrito.innerHTML = `<option value="">${t('Distrito')}</option>` +
                 data.map(d => `<option value="${d.id}">${d.nombre}</option>`).join('');
             selectDistrito.disabled = false;
         } catch {
@@ -1478,6 +1497,15 @@ document.addEventListener("DOMContentLoaded", () => {
             "Error inesperado al pagar": "Error inesperado al pagar",
             "Error al procesar la compra": "Error al procesar la compra",
             "Pago completado. ¡Gracias!": "Pago completado. ¡Gracias!",
+            "Seleccione una provincia": "Seleccione una provincia",
+            "Seleccione un cantón": "Seleccione un cantón",
+            "Seleccione un distrito": "Seleccione un distrito",
+            "Debe tener 16 dígitos": "Debe tener 16 dígitos",
+            "Número inválido": "Número inválido",
+            "Fecha inválida o vencida (MM/AA).": "Fecha inválida o vencida(MM/ AA).",
+            "CVV inválido (3 o 4 dígitos).": "CVV inválido(3 o 4 dígitos).",
+            "El nombre es requerido.": "El nombre es requerido.",
+            "Error al procesar el pedido": "Error al procesar el pedido"
         };
     }
 

@@ -84,12 +84,12 @@
 
                         @* Campo de Usuario *@
                         <label class="label" asp-for="UserName">@Localizer["Usuario"]</label>
-                        <input class="input input-bordered" asp-for="UserName" placeholder="Usuario" style="border-color:black;" />
+                        <input class="input input-bordered" asp-for="UserName" placeholder=@Localizer["Usuario"] style="border-color:black;" />
                         <span class="text-error text-sm italic" asp-validation-for="UserName" style="color:red; font-size: small"></span>
 
                         @* Campo de Contraseña *@
                         <label class="label mt-3" asp-for="Password">@Localizer["Contrasenna"]</label>
-                        <input class="input input-bordered" asp-for="Password" type="password" placeholder="Contraseña" style="border-color:black" />
+                        <input class="input input-bordered" asp-for="Password" type="password" placeholder=@Localizer["Contrasenna"] style="border-color:black" />
                         <span class="text-error text-sm italic" asp-validation-for="Password" style="color:red; font-size: small"></span>
 
                         @* Campo de se me olvidó la contraseña*@

@@ -117,46 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Volver al listado" xml:space="preserve">
-    <value>Back to list</value>
+  <data name="No hay productos en el carrito" xml:space="preserve">
+    <value>There are no products in the cart.</value>
   </data>
-  <data name="Dirección de envío (el envío es gratis)" xml:space="preserve">
-    <value>Shipping address (shipping is free)</value>
+  <data name="Imagen personalizada" xml:space="preserve">
+    <value>Custom image</value>
   </data>
-  <data name="INFORMACIÓN DEL CLIENTE" xml:space="preserve">
-    <value>CUSTOMER INFORMATION</value>
+  <data name="Mensaje personalizado" xml:space="preserve">
+    <value>Personalized message</value>
   </data>
-  <data name="Cargando detalles del pedido..." xml:space="preserve">
-    <value>Loading order details...</value>
+  <data name="Producto" xml:space="preserve">
+    <value>Product</value>
   </data>
-  <data name="Hora de emisión" xml:space="preserve">
-    <value>Creation time</value>
+  <data name="Impuesto (IVA 13%)" xml:space="preserve">
+    <value>Tax (VAT 13%)</value>
   </data>
-  <data name="Método de pago" xml:space="preserve">
-    <value>Payment method</value>
+  <data name="Sin foto" xml:space="preserve">
+    <value>No photo</value>
   </data>
-  <data name="Fecha del pedido" xml:space="preserve">
-    <value>Order date</value>
+  <data name="Mensaje" xml:space="preserve">
+    <value>Message</value>
   </data>
-  <data name="Estado de pago" xml:space="preserve">
-    <value>Payment status</value>
+  <data name="Detalle de productos personalizados" xml:space="preserve">
+    <value>Customized product details</value>
   </data>
-  <data name="Correo electrónico" xml:space="preserve">
-    <value>Email address</value>
+  <data name="Subtotal empaques (ya incluido)" xml:space="preserve">
+    <value>Subtotal packaging (already included)</value>
   </data>
-  <data name="Teléfono" xml:space="preserve">
-    <value>Phone</value>
+  <data name="Total a pagar" xml:space="preserve">
+    <value>Total to pay</value>
   </data>
-  <data name="Nombre" xml:space="preserve">
-    <value>Name</value>
+  <data name="Pagar" xml:space="preserve">
+    <value>Pay</value>
   </data>
-  <data name="Dirección" xml:space="preserve">
-    <value>Address</value>
+  <data name="Subtotal (productos + personalizaciones)" xml:space="preserve">
+    <value>Subtotal (products + customizations)</value>
   </data>
-  <data name="Pedido" xml:space="preserve">
-    <value>Order</value>
+  <data name="Empaque" xml:space="preserve">
+    <value>Packing</value>
   </data>
-  <data name="Formato de 24 horas" xml:space="preserve">
-    <value>24 hour format</value>
+  <data name="IVA (13%)" xml:space="preserve">
+    <value>VAT (13%)</value>
+  </data>
+  <data name="Foto" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="Criterios de personalización" xml:space="preserve">
+    <value>Personalization criteria</value>
+  </data>
+  <data name="Precio" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Eliminar" xml:space="preserve">
+    <value>Eliminate</value>
+  </data>
+  <data name="Cantidad" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Agregar productos" xml:space="preserve">
+    <value>Add products</value>
   </data>
 </root>

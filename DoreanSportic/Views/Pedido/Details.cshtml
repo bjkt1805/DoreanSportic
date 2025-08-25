@@ -18,9 +18,9 @@
                 <img src="@Url.Content("~/Assets/DoreanSporticLogo.png")" asp-append-version="true"
                      alt="Company Logo" class="h-10 w-25 mr-4">
                 <p class="text-sm text-slate-500"><b>Dorean Sportic S.A.</b></p>
-                <p class="text-sm text-slate-500"><b>Dirección: </b>San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
-                <p class="text-sm text-slate-500"><b>Teléfono: </b>72969719</p>
-                <p class="text-sm text-slate-500"><b>Email:</b> doreansportic@gmail.com</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Dirección"]:</b> San Juan, Santa Bárbara, Heredia, Costa Rica.</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Teléfono"]:</b> 72969719</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Correo electrónico"]:</b> doreansportic@gmail.com</p>
             </div>
 
             <!-- Información del pedido/factura -->
@@ -31,11 +31,11 @@
                     var fechaFormateada = Model.FechaPedido.ToString("dd/MM/yyyy");
                     var horaFormateada = Model.FechaPedido.ToString("HH:mm:ss");
                 }
-                <p class="text-sm text-slate-500"><b>Fecha del pedido: </b>@fechaFormateada</p>
-                <p class="text-sm text-slate-500"><b>Hora de emisión: </b>@horaFormateada</p>
-                <p class="text-slate-500" style="font-size: 12px"><i>* Formato de 24 horas *</i></p>
-                <p class="text-sm text-slate-500"><b>Estado de pago: </b>@Html.DisplayFor(model => model.EstadoPago)</p>
-                <p class="text-sm text-slate-500"><b>Método de pago: </b>@Html.DisplayFor(model => model.IdMetodoPagoNavigation.Nombre)</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Fecha del pedido"]: </b>@fechaFormateada</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Hora de emisión"]: </b>@horaFormateada</p>
+                <p class="text-slate-500" style="font-size: 12px"><i>* @Localizer["Formato de 24 horas"] *</i></p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Estado de pago"]: </b>@Html.DisplayFor(model => model.EstadoPago)</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Método de pago"]: </b>@Html.DisplayFor(model => model.IdMetodoPagoNavigation.Nombre)</p>
 
 
             </div>
@@ -44,17 +44,17 @@
             <!-- Información del cliente -->
             <div class="mb-4 w-100 p-2">
             <p class="text-sm text-slate-500">
-                    <b>Pedido #: </b><u>@Html.DisplayFor(model => model.Id)</u>
+                <b>@Localizer["Pedido"] #: </b><u>@Html.DisplayFor(model => model.Id)</u>
                 </p>
             <div class="border rounded mt-2 p-2">
                     <h2 class="font-bold text-slate-700">@Localizer["INFORMACIÓN DEL CLIENTE"]</h2>
                     <p class="text-slate-600">
-                        <b>Nombre: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Nombre)
+                    <b>@Localizer["Nombre"]: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Nombre)
                         @Html.DisplayFor(model => model.IdClienteNavigation.Apellido)
                     </p>
-                    <p class="text-sm text-slate-500"><b>Teléfono: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Telefono)</p>
-                    <p class="text-sm text-slate-500"><b>Correo electrónico: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Email)</p>
-                    <p class="text-sm text-slate-500"><b>Dirección de envío: </b>@Html.DisplayFor(model => model.DireccionEnvio)</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Teléfono"]: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Telefono)</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Correo electrónico"]: </b>@Html.DisplayFor(model => model.IdClienteNavigation.Email)</p>
+                <p class="text-sm text-slate-500"><b>@Localizer["Dirección de envío (el envío es gratis)"]: </b>@Html.DisplayFor(model => model.DireccionEnvio)</p>
 
                 </div>
 

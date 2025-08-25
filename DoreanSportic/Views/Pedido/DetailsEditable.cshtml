@@ -167,7 +167,7 @@
         <!-- Contenedor del pago del pedido-->
         <div id="modalPago-content">
             <div class="flex flex-row justify-between mt-1">
-                <h3 class="text-lg font-bold mb-2">PROCESAR PAGO</h3>
+                <h3 class="text-lg font-bold mb-2">@(Localizer["PROCESAR PAGO"])</h3>
 
                 <button type="button"
                         class="btn btn-sm btn-circle bg-black text-white"
@@ -175,13 +175,13 @@
                     ✕
                 </button>
             </div>
-            <p class="text-xs italic mb-4">Elija un método de pago y complete los datos.</p>
+            <p class="text-xs italic mb-4">@(Localizer["Elija un método de pago y complete los datos"])</p>
 
             <!-- Método de pago -->
             <div class="form-control mb-4">
-                <label class="label font-bold mb-2">Método de pago</label>
+                <label class="label font-bold mb-2">@(Localizer["Método de pago"])</label>
                 <div class="flex gap-4">
-                    <label><input type="radio" name="pago-metodo" value="tarjeta" checked /> Tarjeta (Crédito/Débito)</label>
+                    <label><input type="radio" name="pago-metodo" value="tarjeta" checked />@(Localizer["Tarjeta (Crédito/Débito)"])</label>
                     <label><input type="radio" name="pago-metodo" value="efectivo" /> Efectivo</label>
                 </div>
             </div>
@@ -189,15 +189,15 @@
             <!-- Formulario TARJETA -->
             <div id="section-tarjeta" class="space-y-3">
                 <div>
-                    <label class="label font-bold">Número de tarjeta</label>
+                    <label class="label font-bold">@(Localizer["Número de tarjeta"])</label>
                     <input id="card-number" class="input input-bordered w-full" maxlength="19" placeholder="#### #### #### ####" inputmode="numeric" />
                     <div id="err-card-number" class="text-red-600 text-xs mt-1"></div>
                 </div>
 
                 <div class="flex gap-3">
                     <div class="w-1/2">
-                        <label class="label font-bold">Fecha expiración (MM/AA)</label>
-                        <input id="card-exp" class="input input-bordered w-full" maxlength="5" placeholder="MM/AA" />
+                        <label class="label font-bold">@(Localizer["Fecha de expiración (MM/AA)"])</label>
+                        <input id="card-exp" class="input input-bordered w-full" maxlength="5" placeholder=@(Localizer["MM / AA"]) />
                         <div id="err-card-exp" class="text-red-600 text-xs mt-1"></div>
                     </div>
                     <div class="w-1/2">
@@ -208,8 +208,8 @@
                 </div>
 
                 <div>
-                    <label class="label font-bold">Nombre del titular</label>
-                    <input id="card-name" class="input input-bordered w-full" maxlength="80" placeholder="Como aparece en la tarjeta" />
+                    <label class="label font-bold">@(Localizer["Nombre del titular"])</label>
+                    <input id="card-name" class="input input-bordered w-full" maxlength="80" placeholder=@(Localizer["Como aparece en la tarjeta"]) />
                     <div id="err-card-name" class="text-red-600 text-xs mt-1"></div>
                 </div>
             </div>
@@ -217,7 +217,7 @@
             <!-- Formulario EFECTIVO -->
             <div id="section-efectivo" class="space-y-3" style="display:none;">
                 <div>
-                    <label class="label font-bold">Monto entregado (₡)</label>
+                    <label class="label font-bold">@(Localizer["Monto entregado (₡)"])</label>
                     <input id="cash-amount"
                            class="input input-bordered w-full"
                            type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" />
@@ -225,7 +225,7 @@
                 </div>
 
                 <div>
-                    <label class="label font-bold">Vuelto</label>
+                    <label class="label font-bold">@(Localizer["Vuelto"])</label>
                     <input id="cash-change" class="input input-bordered w-full" disabled />
                 </div>
             </div>
@@ -233,17 +233,17 @@
             <!-- Resumen -->
             <div class="border rounded p-3 my-4 text-sm">
                 <div><b>Subtotal:</b> <span id="pago-sub">—</span></div>
-                <div><b>Impuesto (13%):</b> <span id="pago-imp">—</span></div>
+                <div><b>@(Localizer["Impuesto (13%):"])</b> <span id="pago-imp">—</span></div>
                 <div><b>Total:</b> <span id="pago-tot">—</span></div>
             </div>
 
             <div class="modal-action flex justify-between">
                 <button type="button" class="btn btn-outline"
                         onclick="document.getElementById('modalPago').close()">
-                    Cancelar
+                    @(Localizer["Cancelar"])
                 </button>
                 <button id="btn-confirmar-pago" type="button" class="btn btn-success text-white">
-                    Confirmar pago
+                    @(Localizer["Confirmar pago"])
                 </button>
             </div>
         </div>
@@ -273,6 +273,18 @@
             "Error inesperado al pagar": "@Localizer["Error inesperado al pagar"]",
             "Error al procesar la compra":"@Localizer["Error al procesar la compra"]",
             "Pago completado. ¡Gracias!": "@Localizer["Pago completado. ¡Gracias!"]",
+            "Provincia": "@Localizer["Provincia"]",
+            "Cantón": "@Localizer["Cantón"]",
+            "Distrito": "@Localizer["Distrito"]",
+            "Seleccione una provincia": "@Localizer["Seleccione una provincia"]",
+            "Seleccione un cantón": "@Localizer["Seleccione un cantón"]",
+            "Seleccione un distrito": "@Localizer["Seleccione un distrito"]",
+            "Debe tener 16 dígitos": "@Localizer["Debe tener 16 dígitos"]",
+            "Número inválido": "@Localizer["Número inválido"]",
+            "Fecha inválida o vencida (MM/AA).": "@Localizer["Fecha inválida o vencida (MM/AA)."]",
+            "CVV inválido (3 o 4 dígitos).": "@Localizer["CVV inválido (3 o 4 dígitos)."]",
+            "El nombre es requerido.": "@Localizer["El nombre es requerido."]",
+            "Error al procesar el pedido": "@Localizer["Error al procesar el pedido"]"
           },
         };
     </script>

@@ -117,46 +117,154 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Volver al listado" xml:space="preserve">
-    <value>Back to list</value>
-  </data>
-  <data name="Dirección de envío (el envío es gratis)" xml:space="preserve">
-    <value>Shipping address (shipping is free)</value>
-  </data>
-  <data name="INFORMACIÓN DEL CLIENTE" xml:space="preserve">
-    <value>CUSTOMER INFORMATION</value>
-  </data>
-  <data name="Cargando detalles del pedido..." xml:space="preserve">
-    <value>Loading order details...</value>
-  </data>
-  <data name="Hora de emisión" xml:space="preserve">
-    <value>Creation time</value>
-  </data>
-  <data name="Método de pago" xml:space="preserve">
-    <value>Payment method</value>
-  </data>
-  <data name="Fecha del pedido" xml:space="preserve">
-    <value>Order date</value>
-  </data>
-  <data name="Estado de pago" xml:space="preserve">
-    <value>Payment status</value>
-  </data>
-  <data name="Correo electrónico" xml:space="preserve">
-    <value>Email address</value>
+  <data name="Dirección" xml:space="preserve">
+    <value>Dirección</value>
   </data>
   <data name="Teléfono" xml:space="preserve">
-    <value>Phone</value>
+    <value>Teléfono</value>
   </data>
-  <data name="Nombre" xml:space="preserve">
-    <value>Name</value>
+  <data name="Vuelto" xml:space="preserve">
+    <value>Vuelto</value>
   </data>
-  <data name="Dirección" xml:space="preserve">
-    <value>Address</value>
+  <data name="Número inválido" xml:space="preserve">
+    <value>Número inválido</value>
   </data>
-  <data name="Pedido" xml:space="preserve">
-    <value>Order</value>
+  <data name="Encabezado guardado" xml:space="preserve">
+    <value>Encabezado guardado</value>
+  </data>
+  <data name="Seleccione una provincia" xml:space="preserve">
+    <value>Seleccione una provincia</value>
+  </data>
+  <data name="Debe tener 16 dígitos" xml:space="preserve">
+    <value>Debe tener 16 dígitos</value>
+  </data>
+  <data name="Seleccione un distrito" xml:space="preserve">
+    <value>Seleccione un distrito</value>
+  </data>
+  <data name="Confirmar pago" xml:space="preserve">
+    <value>Confirmar pago</value>
+  </data>
+  <data name="Impuesto (13%):" xml:space="preserve">
+    <value>Impuesto (13%):</value>
+  </data>
+  <data name="Monto entregado (₡)" xml:space="preserve">
+    <value>Monto entregado (₡)</value>
+  </data>
+  <data name="Monto inválido" xml:space="preserve">
+    <value>Monto inválido</value>
+  </data>
+  <data name="Como aparece en la tarjeta" xml:space="preserve">
+    <value>Como aparece en la tarjeta</value>
+  </data>
+  <data name="Nombre del titular" xml:space="preserve">
+    <value>Nombre del titular</value>
+  </data>
+  <data name="MM / AA" xml:space="preserve">
+    <value>MM / AA</value>
+  </data>
+  <data name="Fecha de expiración (MM/AA)" xml:space="preserve">
+    <value>Fecha de expiración (MM/AA)</value>
+  </data>
+  <data name="Número de tarjeta" xml:space="preserve">
+    <value>Número de tarjeta</value>
+  </data>
+  <data name="Método de pago" xml:space="preserve">
+    <value>Método de pago</value>
+  </data>
+  <data name="Elija un método de pago y complete los datos" xml:space="preserve">
+    <value>Elija un método de pago y complete los datos</value>
+  </data>
+  <data name="El monto debe ser mayor o igual al total" xml:space="preserve">
+    <value>El monto debe ser mayor o igual al total</value>
+  </data>
+  <data name="El nombre es requerido." xml:space="preserve">
+    <value>El nombre es requerido.</value>
+  </data>
+  <data name="PROCESAR PAGO" xml:space="preserve">
+    <value>PROCESAR PAGO</value>
+  </data>
+  <data name="Cantón" xml:space="preserve">
+    <value>Cantón</value>
+  </data>
+  <data name="Dirección de envío (el envío es gratis)" xml:space="preserve">
+    <value>Dirección de envío (el envío es gratis)</value>
+  </data>
+  <data name="Mostrar detalle del cliente" xml:space="preserve">
+    <value>Mostrar detalle del cliente</value>
+  </data>
+  <data name="Cliente" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
+  <data name="Distrito" xml:space="preserve">
+    <value>Distrito</value>
+  </data>
+  <data name="Estado de pago" xml:space="preserve">
+    <value>Estado de pago</value>
+  </data>
+  <data name="Error inesperado" xml:space="preserve">
+    <value>Error inesperado</value>
+  </data>
+  <data name="Error inesperado al pagar" xml:space="preserve">
+    <value>Error inesperado al pagar</value>
+  </data>
+  <data name="Error al procesar la compra" xml:space="preserve">
+    <value>Error al procesar la compra</value>
+  </data>
+  <data name="Error al procesar el pedido" xml:space="preserve">
+    <value>Error al procesar el pedido</value>
+  </data>
+  <data name="No fue posible guardar" xml:space="preserve">
+    <value>No fue posible guardar</value>
+  </data>
+  <data name="Cargando detalles del pedido" xml:space="preserve">
+    <value>Cargando detalles del pedido</value>
+  </data>
+  <data name="Otras señas" xml:space="preserve">
+    <value>Otras señas</value>
+  </data>
+  <data name="Fecha inválida o vencida (MM/AA)." xml:space="preserve">
+    <value>Fecha inválida o vencida (MM/AA).</value>
   </data>
   <data name="Formato de 24 horas" xml:space="preserve">
-    <value>24 hour format</value>
+    <value>Formato de 24 horas</value>
+  </data>
+  <data name="Pago completado. ¡Gracias!" xml:space="preserve">
+    <value>Pago completado. ¡Gracias!</value>
+  </data>
+  <data name="Provincia" xml:space="preserve">
+    <value>Provincia</value>
+  </data>
+  <data name="Tarjeta (Crédito/Débito)" xml:space="preserve">
+    <value>Tarjeta (Crédito/Débito)</value>
+  </data>
+  <data name="Seleccione un cantón" xml:space="preserve">
+    <value>Seleccione un cantón</value>
+  </data>
+  <data name="Hora de emisión" xml:space="preserve">
+    <value>Hora de emisión</value>
+  </data>
+  <data name="Fecha del pedido" xml:space="preserve">
+    <value>Fecha del pedido</value>
+  </data>
+  <data name="Pedido" xml:space="preserve">
+    <value>Pedido</value>
+  </data>
+  <data name="Ej: 200m norte de ..." xml:space="preserve">
+    <value>Ej: 200m norte de ...</value>
+  </data>
+  <data name="INFORMACIÓN DEL CLIENTE" xml:space="preserve">
+    <value>INFORMACIÓN DEL CLIENTE</value>
+  </data>
+  <data name="Cancelar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Correo electrónico" xml:space="preserve">
+    <value>Correo electrónico</value>
+  </data>
+  <data name="CVV inválido (3 o 4 dígitos)." xml:space="preserve">
+    <value>CVV inválido (3 o 4 dígitos).</value>
+  </data>
+  <data name="Correo" xml:space="preserve">
+    <value>Correo</value>
   </data>
 </root>
