@@ -74,5 +74,10 @@ namespace DoreanSportic.Application.Services.Implementations
         {
             await _repository.ReportarAsync(idResenna, idUsuarioReporta, nombreUsuarioReporta, observacion);
         }
+
+        public async Task UpdateEstadoAsync(int id, bool estado)
+        {
+            await _repository.UpdateEstadoAsync(id, estado);
+        }
     }
 }

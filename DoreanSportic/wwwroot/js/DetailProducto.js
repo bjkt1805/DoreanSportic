@@ -631,7 +631,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Cuando el DOM esté listo, manejar el modal de Reporte de Reseña
-// === Reporte de reseña con búsqueda perezosa ===
+// Reporte de reseña con 
 document.addEventListener("click", (e) => {
 
     // Verificar si el click fue en un botón que abre el modal
@@ -668,7 +668,7 @@ document.addEventListener("click", (e) => {
         const label = getMensaje("msjReportar") ? getMensaje("msjReportar") : "Reportar";
 
         // Actualizar el título del modal con el nombre del usuario
-        titulo.textContent = `${label} - ${userName}`;
+        titulo.textContent = `${label}: ${userName}`;
     }
 
     // Enlazar eventos SOLO una vez por instancia del modal
@@ -752,6 +752,8 @@ document.addEventListener("click", (e) => {
     if (typeof modal.showModal === "function") modal.showModal();
     else modal.classList.add("modal-open");
 });
+
+
 
 
 

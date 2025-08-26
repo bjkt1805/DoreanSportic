@@ -37,6 +37,14 @@ window.translations = {
         es: "El correo electrónico ya está registrado",
         en: "Email address is already registered"
     },
+    "Estado actualizado": {
+        es: "Estado actualizado",
+        en: "Status updated"
+    },
+    "Error al actualizar": {
+        es: "Error al actualizar",
+        en: "Error while updating"
+    }
 };
 
 // Para internacionalización de la información de los gráficos del dashboard
@@ -2105,6 +2113,107 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarValidacionNombreApellido("Apellido", "Apellido", "msj-apellido");
     configurarValidacionTelefono("Telefono", "Telefono", "msj-telefono");
 });
+
+// Cuando el DOM esté listo, manejar el toggle de estado de la reseña
+document.addEventListener("change", async (e) => {
+
+    // Verificar si el cambio fue en el toggle
+    const toggle = e.target.closest("#toggleEstadoResenna");
+
+    // Si no es el toggle, salir
+    if (!toggle) return;
+
+    // Buscar el form oculto y token SIEMPRE en el momento del cambio
+    const form = document.getElementById("formToggleEstadoResenna");
+
+    // Si no existe el form, salir
+    if (!form) {
+        return;
+    }
+
+    // Obtener el token anti-CSRF si existe
+    const token = form.querySelector("input[name='__RequestVerificationToken']")?.value;
+
+    // Obtener el id de la reseña desde el dataset del toggle o del input hidden
+    const idInput = form.querySelector("#resennaIdToggle");
+    const idResenna = toggle.dataset.resennaId || idInput?.value;
+
+    // Si no existe el id de la reseña, salir
+    if (!idResenna) {
+        return;
+    }
+
+    // Enviar el cambio de estado al servidor con fetch
+    const nuevoEstado = toggle.checked;
+    toggle.disabled = true;
+    const estadoPrevio = !nuevoEstado;
+
+
+    try {
+
+        // Construir el FormData
+        const fd = new FormData();
+
+        // Añadir los datos necesarios
+        fd.append("id", idResenna);
+        fd.append("estado", String(nuevoEstado));
+
+        // Enviar el formulario con fetch
+        const resp = await fetch("/ResennaValoracion/ToggleEstado", {
+            method: "POST",
+            body: fd,
+            headers: token ? { "RequestVerificationToken": token } : {}
+        });
+
+        // Si la respuesta no es OK, manejar errores
+        if (!resp.ok) {
+            // revertir visualmente
+            toggle.checked = estadoPrevio;
+
+            // Si es error de validación (400), extraer los mensajes
+            if (resp.status === 400) {
+                const data = await resp.json().catch(() => ({}));
+                const msg = data?.message || "Validación fallida";
+                throw new Error(msg);
+            }
+
+            // Si es 401 o 403 (no autorizado), mostrar mensaje de no autorizado
+            if (resp.status === 401 || resp.status === 403) {
+                throw new Error("No autorizado para cambiar el estado");
+            }
+            throw new Error("Error al actualizar el estado");
+        }
+
+        // Si todo fue bien, mostrar mensaje de éxito
+        const result = await resp.json().catch(() => ({}));
+        const okMsg = window.getTranslation ? window.getTranslation("Estado actualizado") : "Estado actualizado";
+        mostrarToast(okMsg, "success");
+    } catch (err) {
+        console.error(err);
+        const errMsg = err.message || (window.getTranslation ? window.getTranslation("Error al actualizar") : "Error al actualizar");
+        mostrarToast(errMsg, "error");
+    } finally {
+        toggle.disabled = false;
+    }
+});
+
+// Cuando el DOM esté listo, cargar las estadísticas de reseñas
+document.addEventListener("click", async (e) => {
+    const a = e.target.closest("#zona-resennas a[href*='TablaAdmin']");
+    if (!a) return;
+
+    e.preventDefault();
+    try {
+        const html = await fetch(a.href, { headers: { "X-Requested-With": "XMLHttpRequest" } }).then(r => r.text());
+        const zona = document.getElementById("zona-resennas");
+        if (zona) zona.innerHTML = html;
+
+        cargarResennaStats();
+    } catch (err) {
+        console.error("Error paginando reseñas:", err);
+    }
+});
+
 
 
 

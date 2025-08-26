@@ -120,6 +120,9 @@
   <data name="Reportar reseña" xml:space="preserve">
     <value>Report review</value>
   </data>
+  <data name="Usuario que reporta" xml:space="preserve">
+    <value>User reporting</value>
+  </data>
   <data name="Reportar" xml:space="preserve">
     <value>Report</value>
   </data>
@@ -138,7 +141,7 @@
   <data name="Inicia sesión para reportar la reseña" xml:space="preserve">
     <value>Sign in to report the review</value>
   </data>
-  <data name="Observación (opcional)" xml:space="preserve">
-    <value>Observation (optional)</value>
+  <data name="Observación (opcional) Máximo 500 caracteres" xml:space="preserve">
+    <value>Observation (optional) Maximum 500 characters</value>
   </data>
 </root>

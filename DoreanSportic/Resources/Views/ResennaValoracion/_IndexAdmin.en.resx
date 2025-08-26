@@ -120,9 +120,6 @@
   <data name="Listado de reseñas" xml:space="preserve">
     <value>List of reviews</value>
   </data>
-  <data name="Usuario" xml:space="preserve">
-    <value>User</value>
-  </data>
   <data name="Ver detalles" xml:space="preserve">
     <value>View details</value>
   </data>
@@ -134,14 +131,5 @@
   </data>
   <data name="Cantidad de reseñas:" xml:space="preserve">
     <value>Number of reviews:</value>
-  </data>
-  <data name="Calificación" xml:space="preserve">
-    <value>Rating</value>
-  </data>
-  <data name="Fecha de la reseña" xml:space="preserve">
-    <value>Date of review</value>
-  </data>
-  <data name="Producto" xml:space="preserve">
-    <value>Product</value>
   </data>
 </root>

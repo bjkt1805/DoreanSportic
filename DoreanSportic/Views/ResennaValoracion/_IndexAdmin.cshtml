@@ -4,74 +4,8 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
-<div class="mb-4 overflow-x-auto bg-base-100 relative">
-    <div id="zona-resennas" class="mb-4 overflow-x-auto bg-base-100 relative">
-        <h1 class="py-2 font-bold">@(Localizer["Listado de reseñas"])</h1>
-        <table class="table w-full rounded-box border border-base-content/5">
-            <!-- head -->
-            <thead class="bg-primary text-white">
-                <tr>
-                    <th class="text-center">@(Localizer["Usuario"])</th>
-                    <th class="text-center">@(Localizer["Producto"])</th>
-                    <th class="text-center">@(Localizer["Calificación"])</th>
-                    <th class="text-center">@(Localizer["Fecha de la reseña"])</th>
-                    <th class="text-center"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-
-                        <td class="font-bold text-left">
-                            @Html.DisplayFor(modelItem => item.IdUsuarioNavigation.UserName)
-                        </td>
-                        <td class="text-left">
-                            @Html.DisplayFor(modelItem => item.IdProductoNavigation.Nombre)
-                        </td>
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.Calificacion) / 5
-                        </td>
-                        <td class="text-center">
-                            @item.FechaResenna.ToString("dd-MM-yyyy")
-                        </td>
-                        <td>
-                            @*                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
- *@@*                         @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
- *@                        <!-- Botón alineado abajo a la derecha -->
-                            <div class="mt-auto flex justify-end gap-2">
-                                <a class="btn btn-soft btn-primary text-white"
-                                   onclick="cargarDetalleResenna(@item.Id)">@(Localizer["Ver detalles"])</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-
-            <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
-                <tr>
-                    <td colspan="5">
-                        <div class="flex justify-end my-2">
-                            <div class="join">
-                                @Html.PagedListPager((IPagedList)Model, page =>
-                                Url.Action("IndexAdmin", new { page }),
-                                                                new PagedListRenderOptions
-                                                                {
-                                                                    Display = PagedListDisplayMode.Always,
-                                                                    MaximumPageNumbersToDisplay = 5,
-                                                                    LiElementClasses = new[] { "join-item" },
-                                                                    PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item", "pagina-resenna" }, 
-                                                                    UlElementClasses = new[] { "join" },
-                                                                    ContainerDivClasses = new[] { "join" }
-                                                                })
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-
+<div id="zona-resennas" class="mb-4 overflow-x-auto bg-base-100 relative">
+    @await Html.PartialAsync("_TablaResennas", Model)
 </div>
 
 <!-- KPIs de valoraciones -->

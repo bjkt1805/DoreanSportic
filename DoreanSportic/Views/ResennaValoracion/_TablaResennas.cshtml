@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
+@inject IViewLocalizer Localizer
+
+<table class="table w-full rounded-box border border-base-content/5">
+  <thead class="bg-primary text-white">
+    <tr>
+      <th class="text-center">@Localizer["Usuario"]</th>
+      <th class="text-center">@Localizer["Producto"]</th>
+      <th class="text-center">@Localizer["Calificación"]</th>
+      <th class="text-center">@Localizer["Fecha de la reseña"]</th>
+      <th class="text-center">@Localizer["Reportada"]</th>
+      <th class="text-center"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  @foreach (var item in Model)
+  {
+    <tr>
+      <td class="font-bold text-left">@item.IdUsuarioNavigation.UserName</td>
+      <td class="text-left">@item.IdProductoNavigation.Nombre</td>
+      <td class="text-center">@item.Calificacion / 5</td>
+      <td class="text-center">@item.FechaResenna.ToString("dd-MM-yyyy")</td>
+      <td class="text-center">@((item.Reportada == true) ? Localizer["Sí"].Value : "No")</td>
+      <td>
+        <div class="mt-auto flex justify-end gap-2">
+          <a class="btn btn-soft btn-primary text-white"
+             onclick="cargarDetalleResenna(@item.Id)">@Localizer["Ver detalles"]</a>
+        </div>
+      </td>
+    </tr>
+  }
+  </tbody>
+
+  <tfoot class="bottom-0 right-0 w-full bg-base-100 border-t">
+    <tr>
+      <td colspan="6">
+        <div class="flex justify-end my-2">
+          <div class="join">
+            @Html.PagedListPager(
+               Model,
+               page => Url.Action("TablaAdmin", new { page }),
+               new PagedListRenderOptions {
+                 Display = PagedListDisplayMode.Always,
+                 MaximumPageNumbersToDisplay = 5,
+                 LiElementClasses = new[] { "join-item" },
+                 PageClasses = new[] { "bg-primary text-white btn btn-ghost", "join-item", "pagina-resenna" },
+                 UlElementClasses = new[] { "join" },
+                 ContainerDivClasses = new[] { "join" }
+               })
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+

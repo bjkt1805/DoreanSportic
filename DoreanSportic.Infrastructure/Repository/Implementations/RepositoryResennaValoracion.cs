@@ -47,7 +47,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             var collection = await _context.ResennaValoracion
                     .Include(r => r.IdUsuarioNavigation)
                     .Include(r => r.IdProductoNavigation)
-                    .Where(r => r.IdProducto == idProducto)
+                    .Where(r => r.IdProducto == idProducto && r.Estado == true)
                     .OrderByDescending(r => r.FechaResenna)
                     .Take(2) // Las últimas dos reseñas
                     .ToListAsync();
@@ -146,6 +146,19 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             else
                 res.ObservacionReporte += Environment.NewLine + linea;
 
+            // Guardar los cambios en la base de datos
+            await _context.SaveChangesAsync();
+        }
+
+        // Método para actualizar el estado (activo/inactivo) de una reseña
+        public async Task UpdateEstadoAsync(int id, bool estado)
+        {
+            // Buscar la reseña por su Id
+            var res = await _context.ResennaValoracion.FirstOrDefaultAsync(x => x.Id == id);
+            // Si no se encuentra, salir
+            if (res == null) return;
+            // Actualizar el estado
+            res.Estado = estado;
             // Guardar los cambios en la base de datos
             await _context.SaveChangesAsync();
         }

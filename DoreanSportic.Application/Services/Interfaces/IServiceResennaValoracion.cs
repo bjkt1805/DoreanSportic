@@ -20,7 +20,12 @@ namespace DoreanSportic.Application.Services.Interfaces
         // Método para obtener estadísticas de valoraciones
         Task<ResennaValoracionStatsDTO> GetStatsAsync();
 
+        // Método para reportar una reseña
         Task ReportarAsync(int idResenna, int idUsuarioReporta, string nombreUsuarioReporta, string? observacion);
+
+        // Método para actualizar el estado (activo/inactivo) de una reseña
+        Task UpdateEstadoAsync(int id, bool estado);
+
 
     }
 }

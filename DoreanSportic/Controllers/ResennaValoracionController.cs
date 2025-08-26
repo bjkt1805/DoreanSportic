@@ -35,6 +35,15 @@ namespace DoreanSportic.Web.Controllers
             return PartialView("_IndexAdmin", collection.ToPagedList(page ?? 1, 5));
         }
 
+
+        // GET: ResennaValoracionController/TablaAdmin
+        [HttpGet]
+        public async Task<IActionResult> TablaAdmin(int? page)
+        {
+            var data = await _serviceResennaValoracion.ListAsync();
+            return PartialView("_TablaResennas", data.ToPagedList(page ?? 1, 5));
+        }
+
         // GET: ResennaValoracionController 
         [HttpGet]
         public async Task<ActionResult> GetResennasPorProducto(int idProducto)
@@ -119,6 +128,15 @@ namespace DoreanSportic.Web.Controllers
             );
 
             return Ok(new { success = true });
+        }
+
+        // POST: ResennaValoracionController/ToggleEstado
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleEstado(int id, bool estado)
+        {
+            await _serviceResennaValoracion.UpdateEstadoAsync(id, estado);
+            return Ok(new { success = true, estado });
         }
 
     }

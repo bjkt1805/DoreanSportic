@@ -126,4 +126,16 @@
   <data name="Volver al listado" xml:space="preserve">
     <value>Volver al listado</value>
   </data>
+  <data name="Estado" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Reportada" xml:space="preserve">
+    <value>Reportada</value>
+  </data>
+  <data name="Inactiva" xml:space="preserve">
+    <value>Inactiva</value>
+  </data>
+  <data name="Activa" xml:space="preserve">
+    <value>Active</value>
+  </data>
 </root>

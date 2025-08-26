@@ -53,7 +53,7 @@
             </div>
 
             <!-- Botón para reportar -->
-            @if (item.Reportada == false && User?.Identity?.IsAuthenticated == true)
+            @if (User?.Identity?.IsAuthenticated == true)
             {
                 <div class="card-footer p-3 flex items-center gap-2" style="display: flex; justify-content:flex-end">
                     <button class="btn btn-sm btn-outline text-white bg-[#FF4D4D]"
@@ -68,10 +68,12 @@
 
             else
             {
-                <a class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
-                   asp-controller="Login" asp-action="Login">
-                    @Localizer["Inicia sesión para reportar la reseña"]
-                </a>
+                <div class="card-footer p-3 flex items-center gap-2" style="display: flex; justify-content:flex-end">
+                    <a class="btn btn-sm btn-outline text-white bg-[#FF4D4D]"
+                       asp-controller="Login" asp-action="Login">
+                        @Localizer["Inicia sesión para reportar la reseña"]
+                    </a>
+                </div>
             }
 
         </div>
@@ -87,13 +89,16 @@
             ✕
         </button>
         <h3 class="font-bold text-lg" id="tituloModalReporte">@Localizer["Reportar reseña"]</h3>
+        <label class="label font-bold">
+            @Localizer["Usuario que reporta"]: @userNameClaim
+        </label>
 
         <form id="formReporte" method="post" class="mt-2">
             @Html.AntiForgeryToken()
             <input type="hidden" name="idResenna" id="inputIdResenna" />
 
             <label class="label">
-                <span class="label-text">@Localizer["Observación (opcional)"]</span>
+                <span class="label-text">@Localizer["Observación (opcional) Máximo 500 caracteres"]</span>
             </label>
             <textarea name="observacion" class="textarea textarea-bordered w-full" maxlength="500" placeholder=@Localizer["Describe brevemente el motivo"]></textarea>
             <span class="text-error text-xs" id="error-observacion"></span>
