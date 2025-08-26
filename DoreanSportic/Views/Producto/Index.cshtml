@@ -11,7 +11,7 @@
 
 <!--Tabs para seleccionar entre "Ropa" y "Accesorios"-->
 
-<div class="tabs tabs-boxed bg-white w-auto shadow-lg mb-4 font-bold items-center justify-center" id="tabs-categorias">
+<div class="tabs tabs-boxed bg-white w-auto shadow-lg mb-1 font-bold items-center justify-center" id="tabs-categorias">
     <a class="tab tab-active" data-id="1">
         <!-- Ícono camiseta -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
@@ -32,7 +32,7 @@
 </div>
 
 @* Filtro de etiquetas *@
-<div id="filtro-etiquetas" class="flex flex-wrap gap-2 mb-4 w-auto items-center justify-center">
+<div id="filtro-etiquetas" class="flex flex-wrap gap-2 w-auto items-center justify-center">
     @* Renderizar las etiquetas *@
     @foreach (var et in ViewBag.Etiquetas as IEnumerable<EtiquetaDTO> ?? Enumerable.Empty<EtiquetaDTO>())
     {
