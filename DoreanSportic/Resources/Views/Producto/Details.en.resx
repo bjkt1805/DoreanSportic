@@ -144,6 +144,9 @@
   <data name="Debe iniciar sesión para reportar" xml:space="preserve">
     <value>You must log in to report</value>
   </data>
+  <data name="Debe iniciar sesión para agregar este producto al carrito" xml:space="preserve">
+    <value>You must log in to add this product to your cart</value>
+  </data>
   <data name="Debe insertar al menos una imagen" xml:space="preserve">
     <value>You must insert at least one image</value>
   </data>

@@ -442,6 +442,12 @@
                 </button>
             </form>
         }
+        else if (!isAuth)
+        {
+            <div class="alert alert-warning text-sm font-bold shadow-lg">
+                <a asp-controller="Login" asp-action="Login">@Localizer["Debe iniciar sesión para agregar este producto al carrito"]</a>
+            </div> 
+        }
 
     </div>
 
