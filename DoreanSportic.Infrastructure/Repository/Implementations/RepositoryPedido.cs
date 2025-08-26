@@ -163,6 +163,18 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             // Verificar si existe algún detalle de pedido asociado al pedidoId
             return await _context.PedidoDetalle.AnyAsync(d => d.IdPedido == pedidoId);
         }
+
+        // Método para verificar que el cliente/usuario compró un producto en el pedido
+        public async Task<bool> UsuarioComproProductoAsync(int userId, int productId)
+        {
+            // Considerar “Pagado” como compra realizada;
+            return await _context.Pedido
+                .Where(p => p.IdCliente == userId
+                            && p.Estado == true
+                            && p.EstadoPago == "Pagado")
+                .AnyAsync(p => p.PedidoDetalle.Any(d => d.IdProducto == productId));
+        }
+
     }
 
 

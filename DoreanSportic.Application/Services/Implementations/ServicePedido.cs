@@ -131,5 +131,10 @@ namespace DoreanSportic.Application.Services.Implementations
             await _repository.UpdateTotalsAndStateAsync(pedidoId, totals.sub, totals.imp, totals.total, "Pagado");
             return true;
         }
+
+        public async Task<bool> UsuarioComproProductoAsync(int userId, int productId)
+        {
+            return await _repository.UsuarioComproProductoAsync(userId, productId);
+        }
     }
 }

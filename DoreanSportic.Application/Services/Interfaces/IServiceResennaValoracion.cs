@@ -11,7 +11,7 @@ namespace DoreanSportic.Application.Services.Interfaces
     {
         Task<ICollection<ResennaValoracionDTO>> ListAsync();
 
-        Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto);
+        Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto, int? calificacion = null);
 
         Task<ResennaValoracionDTO> FindByIdAsync(int id);
 
@@ -25,6 +25,9 @@ namespace DoreanSportic.Application.Services.Interfaces
 
         // Método para actualizar el estado (activo/inactivo) de una reseña
         Task UpdateEstadoAsync(int id, bool estado);
+
+        // Método para verificar si un usuario ya valoró un producto
+        Task<bool> ExistsByUserProductAsync(int userId, int productId);
 
 
     }

@@ -36,10 +36,10 @@ namespace DoreanSportic.Application.Services.Implementations
             return collection;
         }
 
-        public async Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto)
+        public async Task<ICollection<ResennaValoracionDTO>> GetResennasPorProducto(int idProducto, int? calificacion = null)
         {
             //Obtener datos del repositorio
-            var list = await _repository.GetResennasPorProducto(idProducto);
+            var list = await _repository.GetResennasPorProducto(idProducto, calificacion);
             // Map List<ResennaValoracion> a ICollection<ResennaValoracionDTO>
             var collection = _mapper.Map<ICollection<ResennaValoracionDTO>>(list);
             // Return lista
@@ -78,6 +78,12 @@ namespace DoreanSportic.Application.Services.Implementations
         public async Task UpdateEstadoAsync(int id, bool estado)
         {
             await _repository.UpdateEstadoAsync(id, estado);
+        }
+
+        public async Task<bool> ExistsByUserProductAsync(int userId, int productId)
+        {
+            return await _repository.ExistsByUserProductAsync(userId, productId);
+
         }
     }
 }

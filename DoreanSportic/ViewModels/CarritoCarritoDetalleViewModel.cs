@@ -14,6 +14,5 @@ namespace DoreanSportic.Web.ViewModels
 
         public decimal Subtotal { get; set; }
 
-
     }
 }

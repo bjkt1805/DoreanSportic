@@ -383,6 +383,25 @@ function getCurrentLangShort() {
     return culture.split('-')[0];
 }
 
+// Función para hacer toggle de visibilidad de contraseña
+function togglePassword(btn) {
+
+    // Obtener el input de tipo password asociado al botón
+    const input = btn.parentElement.querySelector("input");
+
+    // Si no se encuentra el input, no hacer nada
+    if (!input) return;
+
+    // Hacer toggle del tipo de input y cambiar el ícono del botón
+    if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈"; // cambia ícono cuando se muestra
+    } else {
+        input.type = "password";
+        btn.textContent = "👁️"; // vuelve al ícono de ocultar
+    }
+}
+
 // Cuando el DOM esté listo, cargar la función que recarga el carrito de compras
 // en el navbar cuando se agregan o quitan detalles/productos del carrito de compras
 document.addEventListener("DOMContentLoaded", () => {

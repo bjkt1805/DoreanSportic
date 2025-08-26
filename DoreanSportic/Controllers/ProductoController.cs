@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Linq;
+using System.Security.Claims;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Controllers
@@ -26,6 +27,7 @@ namespace DoreanSportic.Controllers
         private readonly IServiceResennaValoracion _serviceResennaValoracion;
         private readonly IServiceUsuario _serviceUsuario;
         private readonly IServiceEmpaque _serviceEmpaque;
+        private readonly IServicePedido _servicePedido;
         private readonly DoreanSporticContext _context;
 
         public ProductoController(IServiceProducto serviceProducto,
@@ -36,6 +38,7 @@ namespace DoreanSportic.Controllers
             IServiceResennaValoracion serviceResennaValoracion,
             IServiceUsuario serviceUsuario,
             IServiceEmpaque serviceEmpaque,
+            IServicePedido servicePedido,
             DoreanSporticContext context)
         {
             _serviceProducto = serviceProducto;
@@ -46,6 +49,7 @@ namespace DoreanSportic.Controllers
             _serviceResennaValoracion = serviceResennaValoracion;
             _serviceUsuario = serviceUsuario;
             _serviceEmpaque = serviceEmpaque;
+            _servicePedido = servicePedido;
             _context = context;
         }
 
@@ -118,6 +122,21 @@ namespace DoreanSportic.Controllers
                 Resennas = resennas,
                 EmpaquesDisponibles = empaques,
             };
+
+            // Verificar si el usuario autenticado (rol cliente) ha comprado el producto
+            var haComprado = false;
+
+            // Verificar si ya se ha dejado una reseña para este producto
+            var yaResenno = false;
+
+            if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.Role) == "2")
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                haComprado = await _servicePedido.UsuarioComproProductoAsync(userId, producto.Id);
+                yaResenno = await _serviceResennaValoracion.ExistsByUserProductAsync(userId, producto.Id);
+            }
+            viewModel.HaComprado = haComprado;
+            viewModel.YaResenno = yaResenno;
 
             return View(viewModel);
         }

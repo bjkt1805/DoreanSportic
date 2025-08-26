@@ -213,19 +213,26 @@ function manejarEnvioDetallePedido(e) {
 
 //Función para recargar los divs de Zona de Reseñas y Promedio de Calificaciones
 function recargarZonaResennasYPromedio(idProducto) {
-    // Recargar reseñas
-    fetch(`/ResennaValoracion/GetResennasPorProducto?idProducto=${idProducto}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById("zona-resennas").innerHTML = html;
-        });
 
-    // Recargar promedio
+    // Leer filtro seleccionado (si existe)
+    const sel = document.getElementById('filtro-resenna');
+
+    // Si no existe el select, o no tiene valor, enviar cadena vacía
+    const calificacion = sel && sel.value ? sel.value : "";
+
+    // Recargar reseñas con filtro actual
+    const url = new URL(`/ResennaValoracion/GetResennasPorProducto`, window.location.origin);
+    url.searchParams.set('idProducto', idProducto);
+    if (calificacion) url.searchParams.set('calificacion', calificacion);
+
+    fetch(url)
+        .then(r => r.text())
+        .then(html => { document.getElementById("zona-resennas").innerHTML = html; });
+
+    // Recargar promedio (no se filtra; promedio general del producto)
     fetch(`/ResennaValoracion/GetPromedioPorProducto?idProducto=${idProducto}`)
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById("zona-promedio").innerHTML = html;
-        });
+        .then(r => r.text())
+        .then(html => { document.getElementById("zona-promedio").innerHTML = html; });
 }
 
 // Función para mostrar el toast a la hora de dejar la reseña del producto 

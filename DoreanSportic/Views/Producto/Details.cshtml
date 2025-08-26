@@ -27,6 +27,8 @@
     var isAuth = User?.Identity?.IsAuthenticated == true;
     var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
     var userNameClaim = User.FindFirst("UserName")?.Value ?? User.Identity?.Name;
+    var rolClaim = User.FindFirstValue(ClaimTypes.Role); 
+    var esAdmin = rolClaim == "1";
 }
 
 <div class="p-4 flex flex-row gap-5">
@@ -35,11 +37,31 @@
             <a class="btn btn-sm btn-outline bg-[#006400] text-white w-50" asp-action="Index">@(Localizer["Volver al listado"])</a>
 
             <!-- Botón para dejar reseña -->
-            @if (User?.Identity?.IsAuthenticated == true)
+            @if (isAuth && !esAdmin && Model.HaComprado && !Model.YaResenno)
             {
                 <button class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
                         onclick="modalResenna.showModal()">
                     @Localizer["Dejar reseña"]
+                </button>
+            }
+
+            else if (isAuth && !esAdmin && !Model.HaComprado)
+            {
+                <div class="alert alert-warning shadow-lg font-bold">
+                    @Localizer["Solo puedes reseñar productos que hayas comprado"]
+                </div>
+            }
+
+            else if (isAuth && !esAdmin && Model.YaResenno)
+            {
+                <div class="alert alert-warning shadow-lg font-bold">
+                    @Localizer["Ya registraste una reseña para este producto"]
+                </div>
+            }
+
+            else if (esAdmin)
+            {
+                <button class="hidden">
                 </button>
             }
             else
@@ -205,6 +227,19 @@
                 <p class="text-sm">@(Localizer["Cargando promedio..."])</p>
             </div>
 
+            <!-- Filtrar reseñas por calificación -->
+            <div class="flex items-center gap-2 mb-2">
+                <label for="filtro-resenna" class="text-sm font-bold">@Localizer["Filtrar por valoración"]</label>
+                <select id="filtro-resenna" class="select select-bordered select-sm w-25">
+                    <option value="">@Localizer["Todas"]</option>
+                    <option value="5">⭐ 5</option>
+                    <option value="4">⭐ 4</option>
+                    <option value="3">⭐ 3</option>
+                    <option value="2">⭐ 2</option>
+                    <option value="1">⭐ 1</option>
+                </select>
+            </div>
+
             <!-- Cargar las reseñas de los usuarios -->
             <div id="zona-resennas">
                 <p class="text-sm">@(Localizer["Cargando reseñas..."])</p>
@@ -218,8 +253,8 @@
     <!-- Formulario para agregar el producto al pedido -->
     <div class="p-2 h-auto" style="width: 100%">
 
-        <!-- Si el stock del producto es mayor a 0 mostrar el formulario para agregarlo al carrito -->
-        @if (Model.Producto.Stock > 0)
+        <!-- Si el stock del producto es mayor a 0, si el usuario está autenticado y si el usuario NO ES ADMIN mostrar el formulario para agregarlo al carrito -->
+        @if (Model.Producto.Stock > 0 && isAuth && !esAdmin)
         {
 
             <form asp-controller="PedidoDetalle" id="formPedidoDetalle" 
@@ -600,14 +635,33 @@
 
     <!-- Script para cargar las reseñas del producto por medio de AJAX-->
     <script>
-        fetch('/ResennaValoracion/GetResennasPorProducto?idProducto=@Model.Producto.Id')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("zona-resennas").innerHTML = html;
-            })
-            .catch(error => {
-                document.getElementById("zona-resennas").innerHTML = "<p>Error cargando reseñas.</p>";
+          
+          (function(){
+            const idProducto = @Model.Producto.Id;
+
+            async function cargarResennas(calificacion){
+              const url = new URL('/ResennaValoracion/GetResennasPorProducto', window.location.origin);
+              url.searchParams.set('idProducto', idProducto);
+              if (calificacion) url.searchParams.set('calificacion', calificacion);
+
+              const html = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                                .then(r => r.text());
+              document.getElementById("zona-resennas").innerHTML = html;
+            }
+
+            // Carga inicial (todas)
+            cargarResennas();
+
+            // Filtro por select
+            document.addEventListener('DOMContentLoaded', () => {
+              const sel = document.getElementById('filtro-resenna');
+              if (!sel) return;
+              sel.addEventListener('change', () => cargarResennas(sel.value));
             });
+
+            // Exponer para reutilizar desde otros scripts
+            window.__cargarResennasFiltrado = cargarResennas;
+          })();
     </script>
 
     <!-- Script para manejar diferentes eventos sobre la vista de Details del producto -->

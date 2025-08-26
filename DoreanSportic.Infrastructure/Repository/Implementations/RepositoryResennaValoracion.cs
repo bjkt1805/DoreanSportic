@@ -41,18 +41,29 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
         }
 
-        public async Task<ICollection<ResennaValoracion>> GetResennasPorProducto(int idProducto)
+        public async Task<ICollection<ResennaValoracion>> GetResennasPorProducto(int idProducto, int? calificacion = null, int? take = null)
         {
-            //Select * from ResennaValoracion where idProducto = idProducto
-            var collection = await _context.ResennaValoracion
-                    .Include(r => r.IdUsuarioNavigation)
-                    .Include(r => r.IdProductoNavigation)
-                    .Where(r => r.IdProducto == idProducto && r.Estado == true)
-                    .OrderByDescending(r => r.FechaResenna)
-                    .Take(2) // Las últimas dos reseñas
-                    .ToListAsync();
 
-            return collection;
+            // Construir la consulta base (IQueryable)
+            IQueryable<ResennaValoracion> q = _context.ResennaValoracion
+                .Include(r => r.IdUsuarioNavigation)
+                .Include(r => r.IdProductoNavigation)
+                .Where(r => r.IdProducto == idProducto && r.Estado == true);
+
+            // Si se especifica una calificación, filtrar por ella
+            if (calificacion.HasValue)
+                q = q.Where(r => r.Calificacion == calificacion.Value);
+
+
+            // Ordenar la lista por fecha descendente
+            q = q.OrderByDescending(r => r.FechaResenna);
+
+            // Por defecto: últimas dos reseñas si NO hay filtro
+            if (!calificacion.HasValue)
+                q = q.Take(take ?? 2);
+
+            // Ejecutar la consulta y retornar la lista
+            return await q.ToListAsync();
         }
 
         public async Task<int> AddAsync(ResennaValoracion entity)
@@ -161,6 +172,13 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             res.Estado = estado;
             // Guardar los cambios en la base de datos
             await _context.SaveChangesAsync();
+        }
+
+        // Método para verificar si un usuario ya valoró un producto
+        public async Task<bool> ExistsByUserProductAsync(int userId, int productId)
+        {
+            return await _context.ResennaValoracion
+                .AnyAsync(r => r.IdUsuario == userId && r.IdProducto == productId);
         }
 
     }

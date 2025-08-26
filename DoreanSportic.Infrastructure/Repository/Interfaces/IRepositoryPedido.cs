@@ -23,5 +23,8 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         // Método para agregar un detalle al pedido
         Task<bool> AnyDetalleAsync(int pedidoId);
+
+        // Método para verificar que el cliente/usuario çompró un producto en el pedido
+        Task<bool> UsuarioComproProductoAsync(int userId, int productId);
     }
 }

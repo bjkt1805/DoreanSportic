@@ -120,8 +120,14 @@
   <data name="Volver al listado" xml:space="preserve">
     <value>Back to list</value>
   </data>
+  <data name="Ya registraste una reseña para este producto" xml:space="preserve">
+    <value>You have already registered a review for this product</value>
+  </data>
   <data name="¿Desea personalizar el producto?" xml:space="preserve">
     <value>Do you want to customize the product?</value>
+  </data>
+  <data name="Solo puedes reseñar productos que hayas comprado" xml:space="preserve">
+    <value>You can only review products that you have purchased</value>
   </data>
   <data name="Reseña del producto" xml:space="preserve">
     <value>Product review</value>
@@ -179,6 +185,9 @@
   </data>
   <data name="Tipo de empaque" xml:space="preserve">
     <value>Type of packaging</value>
+  </data>
+  <data name="Todas" xml:space="preserve">
+    <value>All</value>
   </data>
   <data name="Sí" xml:space="preserve">
     <value>Yes</value>
@@ -245,6 +254,9 @@
   </data>
   <data name="Fecha de la reseña" xml:space="preserve">
     <value>Review date</value>
+  </data>
+  <data name="Filtrar por valoración" xml:space="preserve">
+    <value>Filter by rating</value>
   </data>
   <data name="Dejar reseña" xml:space="preserve">
     <value>Leave review</value>

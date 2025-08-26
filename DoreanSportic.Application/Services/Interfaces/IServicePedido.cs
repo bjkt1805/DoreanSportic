@@ -26,5 +26,8 @@ namespace DoreanSportic.Application.Services.Interfaces
 
         // Confirmar el pedido: descuenta stock + cambia estado
         Task<bool> ConfirmarAsync(int pedidoId); // descuenta stock + cambia estado
+
+        // Método para verificar que el cliente/usuario compró un producto en el pedido
+        Task<bool> UsuarioComproProductoAsync(int userId, int productId);
     }
 }

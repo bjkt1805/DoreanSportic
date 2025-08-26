@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.SqlServer.Server;
 using System.Security.Claims;
 using X.PagedList.Extensions;
 
@@ -14,11 +15,12 @@ namespace DoreanSportic.Web.Controllers
     public class ResennaValoracionController : Controller
     {
         private readonly IServiceResennaValoracion _serviceResennaValoracion;
+        private readonly IServicePedido _servicePedido;
 
-        public ResennaValoracionController(IServiceResennaValoracion serviceProducto)
+        public ResennaValoracionController(IServiceResennaValoracion serviceResennaValoracion, IServicePedido servicePedido)
         {
-            _serviceResennaValoracion = serviceProducto;
-
+            _serviceResennaValoracion = serviceResennaValoracion;
+            _servicePedido = servicePedido;
         }
 
         // GET: ResennaValoracionController
@@ -46,10 +48,10 @@ namespace DoreanSportic.Web.Controllers
 
         // GET: ResennaValoracionController 
         [HttpGet]
-        public async Task<ActionResult> GetResennasPorProducto(int idProducto)
+        public async Task<ActionResult> GetResennasPorProducto(int idProducto, int? calificacion)
         {
             // Listar las reseñas asociadas a un producto
-            var collection = await _serviceResennaValoracion.GetResennasPorProducto(idProducto);
+            var collection = await _serviceResennaValoracion.GetResennasPorProducto(idProducto, calificacion);
 
             return PartialView("_ResennasProducto", collection);
         }
@@ -89,10 +91,36 @@ namespace DoreanSportic.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ResennaValoracionDTO dto)
         {
+            // Validar el modelo
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-                await _serviceResennaValoracion.AddAsync(dto); // Guardar en BD
+            // Debe estar autenticado
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var rolClaim = User.FindFirstValue(ClaimTypes.Role);
+            if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+                return Forbid();
+
+            // Solo rol Cliente puede reseñar
+            if (rolClaim != "2")
+                return Forbid();
+
+            // Blindaje: forzar que la reseña sea del mismo usuario autenticado
+            dto.IdUsuario = userId;
+
+            // Debe haber comprado el producto (pedido pagado con ese producto)
+            var compro = await _servicePedido.UsuarioComproProductoAsync(userId, dto.IdProducto);
+            if (!compro)
+                return BadRequest(new { error = "Debe haber comprado este producto para dejar una reseña" });
+
+
+            // Revisar que si se hecho una reseña para ese producto
+            var yaExiste = await _serviceResennaValoracion.ExistsByUserProductAsync(userId, dto.IdProducto);
+            if (yaExiste)
+                return BadRequest(new { error = "Ya registraste una reseña para este producto." });
+
+            // Guardar en BD
+            await _serviceResennaValoracion.AddAsync(dto); 
 
             return Ok(new { success = true });
         }

@@ -75,9 +75,22 @@
                         <input class="input input-bordered" asp-for="Usuario" placeholder="@Localizer["Usuario"]" style="border-color:black;" />
                         <span class="text-error text-sm italic" asp-validation-for="Usuario" style="color:red; font-size: small"></span>
 
-                        @* Campor de contrasenna nueva *@
+                        @* Campo de contrasenna nueva *@
                         <label class="label mt-3" asp-for="ContrasennaNueva">@Localizer["Nueva contraseña"]</label>
-                        <input class="input input-bordered" asp-for="ContrasennaNueva" type="password" placeholder="@Localizer["Contraseña"]" style="border-color:black;" />
+                        <div class="relative w-full">
+                            <input class="input input-bordered w-full pr-10"
+                                   asp-for="ContrasennaNueva"
+                                   type="password"
+                                   placeholder=@Localizer["Contraseña"]
+                                   style="border-color:black" />
+
+                            <!-- Botón toggle -->
+                            <button type="button"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                    onclick="togglePassword(this)">
+                                👁️
+                            </button>
+                        </div>
                         <span class="text-error text-sm italic" asp-validation-for="ContrasennaNueva" style="color:red; font-size: small"></span>
                         <span id="msj-password"
                               data-msj-len='@Localizer["La contraseña debe tener entre {{0}} y {{1}} caracteres"]'
@@ -88,7 +101,20 @@
 
                         @* Campo de confirmar contrasenna *@
                         <label class="label mt-3" asp-for="ConfirmarContrasenna">@Localizer["Confirmar contraseña"]</label>
-                        <input class="input input-bordered" asp-for="ConfirmarContrasenna" type="password" placeholder="@Localizer["Confirmar contraseña"]" style="border-color:black;" />
+                        <div class="relative w-full">
+                            <input class="input input-bordered w-full pr-10"
+                                   asp-for="ConfirmarContrasenna"
+                                   type="password"
+                                   placeholder=@Localizer["Confirmar contraseña"]
+                                   style="border-color:black" />
+
+                            <!-- Botón toggle -->
+                            <button type="button"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                    onclick="togglePassword(this)">
+                                👁️
+                            </button>
+                        </div>
                         <span class="text-error text-sm italic" asp-validation-for="ConfirmarContrasenna" style="color:red; font-size: small"></span>
                         <span id="msj-confirm" data-msj='@Localizer["Las contraseñas no coinciden"]' style="display:none"></span>
 

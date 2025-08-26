@@ -101,16 +101,42 @@
                     <label asp-for="Password" class="label">
                         <span class="label-text font-bold text-black">@Localizer["Contraseña"]</span>
                     </label>
-                    <input asp-for="Password" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                    <span asp-validation-for="Password" class="text-sm italic" style=" color:red; font-size: small"></span>
+                    <div class="relative w-full">
+                        <input class="input input-bordered w-full pr-10"
+                               asp-for="Password"
+                               type="password"
+                               placeholder=@Localizer["Contraseña"]
+                               style="border-color:black" />
+
+                        <!-- Botón toggle -->
+                        <button type="button"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                onclick="togglePassword(this)">
+                            👁️
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="text-sm italic" style="margin-left: 10%;color:red; font-size: small"></span>
                 </div>
 
                 <div class="form-control w-full">
                     <label asp-for="ConfirmPassword" class="label">
                         <span class="label-text font-bold text-black">@Localizer["Confirmar contraseña"]</span>
                     </label>
-                    <input asp-for="ConfirmPassword" type="password" class="input input-bordered w-full mb-1 mt-1" style="border-color:black" />
-                    <span asp-validation-for="ConfirmPassword" class="text-sm italic" style="color:red; font-size: small"></span>
+                    <div class="relative w-full">
+                        <input class="input input-bordered w-full pr-10"
+                               asp-for="ConfirmPassword"
+                               type="password"
+                               placeholder=@Localizer["Confirmar contraseña"]
+                               style="border-color:black" />
+
+                        <!-- Botón toggle -->
+                        <button type="button"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                                onclick="togglePassword(this)">
+                            👁️
+                        </button>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-sm italic" style="margin-left: 10%;color:red; font-size: small"></span>
                 </div>
             </div>
 
