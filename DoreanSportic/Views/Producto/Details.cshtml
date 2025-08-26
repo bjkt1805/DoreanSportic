@@ -26,7 +26,7 @@
 @{
     var isAuth = User?.Identity?.IsAuthenticated == true;
     var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    var userNameClaim = User.FindFirst("UserName")?.Value ?? User.Identity?.Name; // si faltara el claim, usa el Name
+    var userNameClaim = User.FindFirst("UserName")?.Value ?? User.Identity?.Name;
 }
 
 <div class="p-4 flex flex-row gap-5">
@@ -412,6 +412,7 @@
 
 </div>
 
+
 <!-- Modal para enviar reseñas -->
 <dialog id="modalResenna" class="modal">
     <div class="modal-box bg-white rounded w-100" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
@@ -541,6 +542,10 @@
      data-msj-solo-imagen="@Localizer["Solo se permiten imágenes"]"
      data-msj-max-500="@Localizer["El mensaje no puede superar los 500 caracteres"]"
      data-msj-validacion-fallida="@Localizer["Validación fallida"]"
+     data-msj-reportar="@Localizer["Reportar"]"
+     data-msj-iniciar-sesion="@Localizer["Debe iniciar sesión para reportar"]"
+	 data-msj-reporte-enviado="@Localizer["Reporte enviado"]"
+	 data-msj-error-reporte="@Localizer["Error al reportar"]"
      style="display:none"
 ></div>
 

@@ -69,5 +69,10 @@ namespace DoreanSportic.Application.Services.Implementations
                 Average = avg
             };
         }
+
+        public async Task ReportarAsync(int idResenna, int idUsuarioReporta, string nombreUsuarioReporta, string? observacion)
+        {
+            await _repository.ReportarAsync(idResenna, idUsuarioReporta, nombreUsuarioReporta, observacion);
+        }
     }
 }

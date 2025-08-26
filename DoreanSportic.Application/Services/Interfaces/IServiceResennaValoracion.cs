@@ -19,5 +19,8 @@ namespace DoreanSportic.Application.Services.Interfaces
 
         // Método para obtener estadísticas de valoraciones
         Task<ResennaValoracionStatsDTO> GetStatsAsync();
+
+        Task ReportarAsync(int idResenna, int idUsuarioReporta, string nombreUsuarioReporta, string? observacion);
+
     }
 }

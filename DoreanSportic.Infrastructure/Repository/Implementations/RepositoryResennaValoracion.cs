@@ -4,6 +4,7 @@ using DoreanSportic.Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,7 +89,7 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
             return entity.Id;
         }
 
-        // Nuevo método para obtener estadísticas de valoraciones
+        // Método para obtener estadísticas de valoraciones
         public async Task<(int Star5, int Star4, int Star3, int Star2, int Star1, int Total, double Average)> GetStatsAsync()
         {
             // Agrupar por calificación
@@ -117,6 +118,36 @@ namespace DoreanSportic.Infrastructure.Repository.Implementations
 
             // Retornar los resultados
             return (s5, s4, s3, s2, s1, total, avg);
+        }
+
+        // Método para reportar una reseña
+        public async Task ReportarAsync(int idResenna, int idUsuarioReporta, string nombreUsuarioReporta, string? observacion)
+        {
+            // Buscar la reseña por su Id
+            var res = await _context.ResennaValoracion.FirstOrDefaultAsync(x => x.Id == idResenna);
+            // Si no se encuentra, salir
+            if (res == null) return;
+
+            // Marcar la reseña como reportada
+            res.Reportada = true;
+
+            // Añadir una línea al campo ObservacionReporte (bitácora para el admin)
+            var stamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture);
+
+            // Formatear la línea a añadir
+            var linea = $"[{stamp}] Reportado por Id={idUsuarioReporta}, User=\"{nombreUsuarioReporta}\""
+                      + (string.IsNullOrWhiteSpace(observacion) ? "" : $": {observacion.Trim()}");
+
+            // Si no hay observaciones previas, asignar la nueva línea
+            if (string.IsNullOrWhiteSpace(res.ObservacionReporte))
+                res.ObservacionReporte = linea;
+
+            // Si ya hay observaciones, añadir la nueva línea al final
+            else
+                res.ObservacionReporte += Environment.NewLine + linea;
+
+            // Guardar los cambios en la base de datos
+            await _context.SaveChangesAsync();
         }
 
     }

@@ -16,7 +16,10 @@ namespace DoreanSportic.Infrastructure.Repository.Interfaces
 
         Task<int> AddAsync(ResennaValoracion entity);
 
-        // Nuevo método para obtener estadísticas de valoraciones
+        // Obtener estadísticas de valoraciones
         Task<(int Star5, int Star4, int Star3, int Star2, int Star1, int Total, double Average)> GetStatsAsync();
+
+        // Método para reportar una reseña
+        Task ReportarAsync(int idResenna, int idUsuarioReporta, string nombreUsuarioReporta, string? observacion);
     }
 }

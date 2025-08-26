@@ -353,6 +353,10 @@ public partial class DoreanSporticContext : DbContext
                 .HasColumnName("fechaResenna");
             entity.Property(e => e.IdProducto).HasColumnName("idProducto");
             entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+            entity.Property(e => e.ObservacionReporte)
+                .HasMaxLength(100)
+                .HasColumnName("observacionReporte");
+            entity.Property(e => e.Reportada).HasColumnName("reportada");
 
             entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.ResennaValoracion)
                 .HasForeignKey(d => d.IdProducto)

@@ -135,11 +135,20 @@
   <data name="Debe ingresar una cantidad válida entre 1 y 100" xml:space="preserve">
     <value>You must enter a valid amount between 1 and 100</value>
   </data>
+  <data name="Debe iniciar sesión para reportar" xml:space="preserve">
+    <value>You must log in to report</value>
+  </data>
   <data name="Debe insertar al menos una imagen" xml:space="preserve">
     <value>You must insert at least one image</value>
   </data>
+  <data name="¡Reporte enviado!" xml:space="preserve">
+    <value>Report sent!</value>
+  </data>
   <data name="Presione &quot;ESC&quot; en el teclado o haga clic en la X para cerrar esta ventana" xml:space="preserve">
     <value>Press "ESC" on the keyboard or click on the x to close this window</value>
+  </data>
+  <data name="Reportar" xml:space="preserve">
+    <value>Repor</value>
   </data>
   <data name="¡Producto agregado al carrito!" xml:space="preserve">
     <value>Product added to cart successfully!</value>

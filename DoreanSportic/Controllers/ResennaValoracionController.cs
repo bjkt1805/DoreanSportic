@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using X.PagedList.Extensions;
 
 namespace DoreanSportic.Web.Controllers
@@ -94,5 +95,31 @@ namespace DoreanSportic.Web.Controllers
             var stats = await _serviceResennaValoracion.GetStatsAsync();
             return Json(stats);
         }
+
+        // POST: ResennaValoracionController/Report
+        // Reportar una reseña (solo usuarios autenticados)
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Report(int idResenna, string? observacion)
+        {
+            // Id y nombre del usuario que REPORTA (NO EL AUTOR DE LA RESEÑA)
+            var idUsuarioClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var nombreUsuario = User.Identity?.Name ?? "usuario";
+
+            // Si no se encuentra el id del usuario en los claims, retornar Unauthorized
+            if (string.IsNullOrWhiteSpace(idUsuarioClaim) || !int.TryParse(idUsuarioClaim, out var idUsuarioReporta))
+                return Unauthorized();
+
+            await _serviceResennaValoracion.ReportarAsync(
+                idResenna,
+                idUsuarioReporta,
+                nombreUsuario,
+                observacion
+            );
+
+            return Ok(new { success = true });
+        }
+
     }
 }

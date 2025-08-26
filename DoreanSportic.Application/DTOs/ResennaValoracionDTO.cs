@@ -33,6 +33,10 @@ public partial class ResennaValoracionDTO
 
     public DateTime FechaResenna { get; set; }
 
+    public bool? Reportada { get; set; }
+
+    public string? ObservacionReporte { get; set; }
+
     public bool Estado { get; set; }
 
     [ValidateNever]

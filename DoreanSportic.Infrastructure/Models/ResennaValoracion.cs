@@ -17,6 +17,10 @@ public partial class ResennaValoracion
 
     public DateTime FechaResenna { get; set; }
 
+    public bool? Reportada { get; set; }
+
+    public string? ObservacionReporte { get; set; }
+
     public bool Estado { get; set; }
 
     public virtual Producto IdProductoNavigation { get; set; } = null!;

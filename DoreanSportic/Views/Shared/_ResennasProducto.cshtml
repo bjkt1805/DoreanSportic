@@ -1,5 +1,14 @@
 ﻿@model IEnumerable<DoreanSportic.Application.DTOs.ResennaValoracionDTO>
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
+<!-- Usuario -->
+@{
+    var isAuth = User?.Identity?.IsAuthenticated == true;
+    var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var userNameClaim = User.FindFirst("UserName")?.Value ?? User.Identity?.Name;
+}
 
 <div class="flex flex-row gap gap-2">
     @foreach (var item in Model)
@@ -8,7 +17,13 @@
 
             <div class="card-body w-75">
 
-                <div class="border-b border-base-300 pb-2 mb-2">
+                <div class="border-b border-base-300 pb-2 mb-2 justify-end">
+
+                    @if (item.Reportada == true)
+                    {
+                        <span class="badge bg-warning mb-1 italic">@Localizer["Reportada"]</span>
+                    }
+
                     <div class="flex flex-row justify-between gap gap-1">
                         <p class="font-bold italic" style="color:#004AAD">@@@item.IdUsuarioNavigation.UserName<p>
                         <span class="text-xs">@item.FechaResenna.ToString("dd-MM-yyyy")</span>
@@ -33,12 +48,63 @@
                             </svg>
                         }
                     </div>
+
                 </div>
             </div>
+
+            <!-- Botón para reportar -->
+            @if (item.Reportada == false && User?.Identity?.IsAuthenticated == true)
+            {
+                <div class="card-footer p-3 flex items-center gap-2" style="display: flex; justify-content:flex-end">
+                    <button class="btn btn-sm btn-outline text-white bg-[#FF4D4D]"
+                            type="button"
+                            data-open-report
+                            data-resenna-id="@item.Id"
+                            data-resenna-user="@item.IdUsuarioNavigation.UserName">
+                        @Localizer["Reportar"]
+                    </button>
+                </div>
+            }
+
+            else
+            {
+                <a class="btn btn-sm btn-outline font-bold bg-warning text-black w-50"
+                   asp-controller="Login" asp-action="Login">
+                    @Localizer["Inicia sesión para reportar la reseña"]
+                </a>
+            }
+
         </div>
 
     }
 </div>
+
+<!-- Modal único para reportar la reseña -->
+<dialog id="modalReporte" class="modal">
+    <div class="modal-box bg-white rounded w-100" style="padding-left: 1%; padding-bottom: 1%; padding-right:1%">
+        <button onclick="modalReporte.close()" class="btn btn-sm btn-circle bg-black text-white"
+                style="margin-left: 100%; margin-top: -5%;">
+            ✕
+        </button>
+        <h3 class="font-bold text-lg" id="tituloModalReporte">@Localizer["Reportar reseña"]</h3>
+
+        <form id="formReporte" method="post" class="mt-2">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="idResenna" id="inputIdResenna" />
+
+            <label class="label">
+                <span class="label-text">@Localizer["Observación (opcional)"]</span>
+            </label>
+            <textarea name="observacion" class="textarea textarea-bordered w-full" maxlength="500" placeholder=@Localizer["Describe brevemente el motivo"]></textarea>
+            <span class="text-error text-xs" id="error-observacion"></span>
+
+            <div class="modal-action mt-3">
+                <button type="button" class="btn" id="btnCancelarReporte">@Localizer["Cancelar"]</button>
+                <button type="submit" class="btn btn-primary" id="btnEnviarReporte">@Localizer["Enviar reporte"]</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 
 
 

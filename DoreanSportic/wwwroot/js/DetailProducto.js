@@ -630,6 +630,130 @@ document.addEventListener("DOMContentLoaded", () => {
     escucharInputMensajePersonalizado();
 });
 
+// Cuando el DOM esté listo, manejar el modal de Reporte de Reseña
+// === Reporte de reseña con búsqueda perezosa ===
+document.addEventListener("click", (e) => {
+
+    // Verificar si el click fue en un botón que abre el modal
+    const btn = e.target.closest("[data-open-report]");
+
+    // Si no es un botón de abrir modal, salir
+    if (!btn) return;
+
+    // Buscar SIEMPRE el modal "actual"
+    const modal = document.getElementById("modalReporte");
+
+    // Si no existe el modal, salir
+    if (!modal) {
+        return;
+    }
+
+    // Obtener referencias a elementos del modal
+    const form = modal.querySelector("#formReporte");
+    const titulo = modal.querySelector("#tituloModalReporte");
+    const input = modal.querySelector("#inputIdResenna");
+    const cancelar = modal.querySelector("#btnCancelarReporte");
+
+    // Obtener datos del botón que abrió el modal
+    const idResenna = btn.dataset.resennaId;
+    const userName = btn.dataset.resennaUser || "";
+
+    // Si existe el input hidden, asignarle el id de la reseña
+    if (input) input.value = idResenna;
+
+    // Si existe el título
+    if (titulo) {
+
+        // Obtener el texto traducido para "Reportar"
+        const label = getMensaje("msjReportar") ? getMensaje("msjReportar") : "Reportar";
+
+        // Actualizar el título del modal con el nombre del usuario
+        titulo.textContent = `${label} - ${userName}`;
+    }
+
+    // Enlazar eventos SOLO una vez por instancia del modal
+    if (!modal.dataset.bound) {
+
+        // Cancelar
+        cancelar?.addEventListener("click", () => {
+
+            // Cerrar el modal  
+            if (typeof modal.close === "function") modal.close();
+            modal.classList.remove("modal-open");
+        });
+
+        // Manejar el envío del formulario de reporte
+        form?.addEventListener("submit", async (ev) => {
+            ev.preventDefault();
+
+            // Construir el FormData
+            const formData = new FormData(form);
+
+            // Obtener el token anti-CSRF si existe
+            const token = form.querySelector("input[name='__RequestVerificationToken']")?.value;
+
+            // Enviar el formulario con fetch
+            try {
+                const resp = await fetch("/ResennaValoracion/Report", {
+                    method: "POST",
+                    body: formData,
+                    headers: token ? { "RequestVerificationToken": token } : {}
+                });
+
+                // Si la respuesta no es OK, manejar errores
+                if (!resp.ok) {
+
+                    // Si es error de validación (400), extraer los mensajes
+                    if (resp.status === 400) {
+                        const errors = await resp.json();
+                        if (errors.observacion) {
+                            const spanErr = modal.querySelector("#error-observacion");
+                            if (spanErr) spanErr.textContent = errors.observacion[0];
+                        }
+                        throw new Error("Validación fallida");
+                    }
+
+                    // Si es 401 (no autorizado), mostrar mensaje de iniciar sesión
+                    if (resp.status === 401) {
+                        throw new Error(getMensaje("msjIniciarSesion") ? getMensaje("msjIniciarSesion") : "Debe iniciar sesión para reportar");
+                    }
+
+                    // Otros errores
+                    throw new Error("Error al enviar el reporte");
+                }
+
+                // Si todo fue bien, mostrar mensaje de éxito
+                await resp.json();
+
+                // Mostrar toast de éxito
+                mostrarToast(getMensaje("msjReporteEnviado") ? getMensaje("msjReporteEnviado") : "Reporte enviado", "success");
+
+                // Cerrar el modal y resetear el formulario
+                if (typeof modal.close === "function") modal.close();
+                modal.classList.remove("modal-open");
+                form.reset();
+
+                // Recargar la zona de reseñas y promedio
+                const idProducto = document.querySelector("input[name='IdProducto']")?.value;
+
+                // Si existe el idProducto, recargar las reseñas y promedio
+                if (idProducto) recargarZonaResennasYPromedio(idProducto);
+            } catch (err) {
+                console.error(err);
+                mostrarToast(err.message || (getMensaje("msjErrorReporte") ? getMensaje("msjErrorReporte") : "Error al reportar"), "error");
+            }
+        });
+
+        // Marcar que ya se enlazaron los eventos
+        modal.dataset.bound = "1";
+    }
+
+    // Mostrar modal de DaisyUI
+    if (typeof modal.showModal === "function") modal.showModal();
+    else modal.classList.add("modal-open");
+});
+
+
 
 
 
