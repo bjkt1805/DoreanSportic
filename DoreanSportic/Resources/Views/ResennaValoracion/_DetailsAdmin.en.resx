@@ -132,10 +132,10 @@
   <data name="Reportada" xml:space="preserve">
     <value>Reported</value>
   </data>
-  <data name="Inactiva" xml:space="preserve">
-    <value>Inactive</value>
+  <data name="Oculta" xml:space="preserve">
+    <value>Hidden</value>
   </data>
-  <data name="Activa" xml:space="preserve">
-    <value>Active</value>
+  <data name="Visible" xml:space="preserve">
+    <value>Visible</value>
   </data>
 </root>
