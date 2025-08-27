@@ -159,8 +159,8 @@
   <data name="Nombre del titular" xml:space="preserve">
     <value>Nombre del titular</value>
   </data>
-  <data name="MM / AA" xml:space="preserve">
-    <value>MM / AA</value>
+  <data name="MM/AA" xml:space="preserve">
+    <value>MM/AA</value>
   </data>
   <data name="Fecha de expiración (MM/AA)" xml:space="preserve">
     <value>Fecha de expiración (MM/AA)</value>
