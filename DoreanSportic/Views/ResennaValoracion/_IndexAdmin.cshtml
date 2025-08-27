@@ -5,6 +5,9 @@
 @inject IViewLocalizer Localizer
 
 <div id="zona-resennas" class="mb-4 overflow-x-auto bg-base-100 relative">
+    <h1 class="py-2 font-bold mb-1">
+        @(Localizer["Listado de reseñas"])
+    </h1>
     @await Html.PartialAsync("_TablaResennas", Model)
 </div>
 

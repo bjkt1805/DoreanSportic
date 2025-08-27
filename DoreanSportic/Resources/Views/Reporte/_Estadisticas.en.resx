@@ -129,6 +129,9 @@
   <data name="Hasta:" xml:space="preserve">
     <value>To:</value>
   </data>
+  <data name="Estadísticas" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
   <data name="Reseñas más recientes" xml:space="preserve">
     <value>Most recent reviews</value>
   </data>
