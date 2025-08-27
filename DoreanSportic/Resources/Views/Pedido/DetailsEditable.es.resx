@@ -153,9 +153,6 @@
   <data name="Monto inválido" xml:space="preserve">
     <value>Monto inválido</value>
   </data>
-  <data name="Como aparece en la tarjeta" xml:space="preserve">
-    <value>Como aparece en la tarjeta</value>
-  </data>
   <data name="Nombre del titular" xml:space="preserve">
     <value>Nombre del titular</value>
   </data>
