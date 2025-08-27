@@ -363,6 +363,7 @@ namespace DoreanSportic.Controllers
                 .Include(p => p.IdPromocion)
                 .Include(p => p.IdEtiqueta)
                 .Include(p => p.ImagenesProducto)
+                .Where(p => p.Estado == true)
                 .AsQueryable();
 
             // Si se envía idCategoria, filtrar por esa categoría

@@ -11,7 +11,7 @@
 
 <!--Tabs para seleccionar entre "Ropa" y "Accesorios"-->
 
-<div class="tabs tabs-boxed bg-white w-auto shadow-lg mb-1 font-bold items-center justify-center" id="tabs-categorias">
+<div class="tabs tabs-boxed bg-white w-auto shadow-lg mb-1 w-screen font-bold items-center justify-center" id="tabs-categorias">
     <a class="tab tab-active" data-id="1">
         <!-- Ícono camiseta -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
@@ -54,7 +54,7 @@
 </div>
 
 <!--Cargar los productos (cards) dependiendo de la categoría del producto-->
-<div id="card-productos-body" class="flex min-h-screen flex-wrap gap-4 justify-center">
+<div id="card-productos-body" class="flex min-h-screen flex-wrap gap-4 justify-center w-screen">
     @await Html.PartialAsync("_CardsProducto", Model)
 </div>
 
